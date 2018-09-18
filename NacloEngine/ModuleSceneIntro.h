@@ -3,6 +3,10 @@
 //#include "p2DynArray.h"
 //#include "Globals.h"
 #include "Primitive.h"
+#include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_opengl2.h"
+#include "ImGui/imgui_impl_sdl.h"
+#include "SDL/include/SDL_opengl.h"
 
 #define MAX_SNAKE 2
 
