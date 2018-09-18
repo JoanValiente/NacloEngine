@@ -25,6 +25,8 @@ public:
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
-public:
+private:
 	Plane* p;
+	bool show_demo_window = true;
+	float clear_color = 0.5f;
 };
