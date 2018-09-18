@@ -60,6 +60,24 @@ update_status ModuleSceneIntro::Update(float dt)
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+
+	//Close Engine
+
+		if (ImGui::BeginMainMenuBar())
+		{
+			if (ImGui::BeginMenu("Main Menu"))
+			{
+				if (ImGui::MenuItem("Close", NULL, false, true))
+				{
+					return UPDATE_STOP;
+				}
+				ImGui::EndMenu();
+			}
+			ImGui::EndMainMenuBar();
+		}
+	
+
+
 	
 	ImGui::ShowDemoWindow(&show_demo_window);
 
@@ -86,6 +104,7 @@ update_status ModuleSceneIntro::Update(float dt)
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
+	
 
 	return UPDATE_CONTINUE;
 }
