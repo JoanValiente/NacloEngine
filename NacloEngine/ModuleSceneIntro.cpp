@@ -55,6 +55,8 @@ bool ModuleSceneIntro::CleanUp()
 // Update
 update_status ModuleSceneIntro::Update(float dt)
 {
+	update_status ret = UPDATE_CONTINUE;
+
 	p->Render();
 
 	ImGui_ImplOpenGL2_NewFrame();
@@ -69,14 +71,12 @@ update_status ModuleSceneIntro::Update(float dt)
 			{
 				if (ImGui::MenuItem("Close", NULL, false, true))
 				{
-					return UPDATE_STOP;
+					ret = UPDATE_STOP;
 				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
 		}
-	
-
 
 	
 	ImGui::ShowDemoWindow(&show_demo_window);
@@ -106,7 +106,7 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	
 
-	return UPDATE_CONTINUE;
+	return ret;
 }
 
 void ModuleSceneIntro::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
