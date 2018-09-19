@@ -69,6 +69,12 @@ update_status ModuleSceneIntro::Update(float dt)
 		{
 			if (ImGui::BeginMenu("Main Menu"))
 			{
+				if (ImGui::MenuItem("Open", NULL, false, true))
+				{
+				}
+				if (ImGui::MenuItem("Save", NULL, false, true))
+				{
+				}
 				if (ImGui::MenuItem("Close", NULL, false, true))
 				{
 					ret = UPDATE_STOP;
