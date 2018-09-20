@@ -12,11 +12,11 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
-class ModuleSceneIntro : public Module
+class ModuleImgui : public Module
 {
 public:
-	ModuleSceneIntro(Application* app, bool start_enabled = true);
-	~ModuleSceneIntro();
+	ModuleImgui(Application* app, bool start_enabled = true);
+	~ModuleImgui();
 
 	bool Start();
 	update_status Update(float dt);
