@@ -2,7 +2,6 @@
 #include "Module.h"
 //#include "p2DynArray.h"
 //#include "Globals.h"
-#include "Primitive.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"
@@ -26,7 +25,6 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 private:
-	Plane* p;
 	bool show_demo_window = true;
 	float clear_color = 0.5f;
 };
