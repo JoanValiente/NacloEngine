@@ -1,6 +1,8 @@
-//#include "Globals.h"
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleImGui.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleWindow.h"
 //#include "PhysBody3D.h"
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)

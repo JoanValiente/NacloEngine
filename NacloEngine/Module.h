@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __Module_H__
+#define __Module_H__
 
 class Application;
 struct PhysBody3D;
@@ -49,4 +50,9 @@ public:
 
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
+
+public:
+	bool active = true;
 };
+
+#endif

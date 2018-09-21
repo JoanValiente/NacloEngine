@@ -1,5 +1,6 @@
-//#include "Globals.h"
+#include "Globals.h"
 #include "Application.h"
+#include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "SDL\include\SDL_opengl.h"
 #include <gl/GL.h>
