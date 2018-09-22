@@ -7,6 +7,7 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "SDL/include/SDL_opengl.h"
 #include "PCG\pcg_variants.h"
+#include "Primitive.h"
 
 #define MAX_SNAKE 2
 
@@ -24,6 +25,9 @@ public:
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
+
+public:
+	plane* grid;
 
 private:
 	bool show_demo_window = true;

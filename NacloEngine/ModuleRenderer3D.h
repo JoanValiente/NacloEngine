@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Light.h"
+#include "Globals.h"
 //#include "MathGeoLib/MathGeoLib.h"
 
 #define MAX_LIGHTS 8
@@ -21,7 +22,7 @@ public:
 	void OnResize(int width, int height);
 
 private:
-	float4x4& perspective(float fovy, float aspect, float n, float f);
+	float4x4 perspective(float fovy, float aspect, float n, float f);
 
 public:
 

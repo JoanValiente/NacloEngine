@@ -98,7 +98,7 @@ bool ModuleRenderer3D::Init()
 	}
 
 	// Projection matrix for
-	//OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	return ret;
 }
@@ -145,21 +145,21 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = float4x4::OpenGLPerspProjRH(0.125f, 512.0f, (float)width, (float)height);
-	glLoadMatrixf((GLfloat*)ProjectionMatrix.Transposed().ptr());
+	ProjectionMatrix = perspective(0.60f, (float)width / (float)height, 0.125f, 512.0f);
+	glLoadMatrixf((GLfloat*)ProjectionMatrix.ptr());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
 
-float4x4 & ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
+float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {
 	float4x4 Perspective;
 
 	float coty = 1.0f / Tan(fovy * (float)pi / 360.0f);
 
 	Perspective.v[0][0] = coty / aspect;
-	Perspective.v[2][1] = coty;
+	Perspective.v[1][1] = coty;
 	Perspective.v[3][2] = (n + f) / (n - f);
 	Perspective.v[3][3] = -1.0f;
 	Perspective.v[4][2] = 2.0f * n * f / (n - f);
