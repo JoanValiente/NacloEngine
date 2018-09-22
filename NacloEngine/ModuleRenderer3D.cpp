@@ -110,10 +110,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf(App->camera->GetViewMatrix());
+	glLoadMatrixf(App->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	//lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
+	lights[0].SetPos(App->camera->Position.x, App->camera->Position.y, App->camera->Position.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -138,17 +138,35 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-/*
+
 void ModuleRenderer3D::OnResize(int width, int height)
 {
 	glViewport(0, 0, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
+	ProjectionMatrix = float4x4::OpenGLPerspProjRH(0.125f, 512.0f, (float)width, (float)height);
+	glLoadMatrixf((GLfloat*)ProjectionMatrix.Transposed().ptr());
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
-*/
+
+float4x4 & ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
+{
+	float4x4 Perspective;
+
+	float coty = 1.0f / Tan(fovy * (float)pi / 360.0f);
+
+	Perspective.v[0][0] = coty / aspect;
+	Perspective.v[2][1] = coty;
+	Perspective.v[3][2] = (n + f) / (n - f);
+	Perspective.v[3][3] = -1.0f;
+	Perspective.v[4][2] = 2.0f * n * f / (n - f);
+	Perspective.v[4][3] = 0.0f;
+
+	return Perspective;
+}
+
+
+

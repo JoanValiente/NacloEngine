@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Light.h"
+//#include "MathGeoLib/MathGeoLib.h"
 
 #define MAX_LIGHTS 8
 
@@ -17,14 +18,17 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	//void OnResize(int width, int height);
+	void OnResize(int width, int height);
+
+private:
+	float4x4& perspective(float fovy, float aspect, float n, float f);
 
 public:
 
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
-	//mat3x3 NormalMatrix;
-	//mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	float3x3 NormalMatrix;
+	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 };
 
 #endif

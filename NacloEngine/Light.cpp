@@ -16,21 +16,21 @@ void Light::Init()
 
 void Light::SetPos(float x, float y, float z)
 {
-	/*
+	
 	position.x = x;
 	position.y = y;
 	position.z = z;
-	*/
+	
 }
 
 void Light::Render()
 {
 	if(on)
 	{
-		/*
+		
 		float pos[] = {position.x, position.y, position.z, 1.0f};
 		glLightfv(ref, GL_POSITION, pos);
-		*/
+		
 	}
 }
 
