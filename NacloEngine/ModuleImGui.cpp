@@ -102,6 +102,11 @@ update_status ModuleImgui::Update(float dt)
 				{
 					show_random_window = true;
 				}
+
+				if (ImGui::MenuItem("Intersections", NULL, false, true))
+				{
+					show_intersection_window = true;
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMainMenuBar();
@@ -130,42 +135,6 @@ update_status ModuleImgui::Update(float dt)
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
 
-	//--------------------------------------------------------------------------------------
-	if (mPlane->Intersects(*mSphere)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mPlane->Intersects(*mAabb)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mPlane->Intersects(*mTriangle)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mPlane->Intersects(*mRay)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mCapsule->Intersects(*mSphere)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mCapsule->Intersects(*mPlane)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mCapsule->Intersects(*mTriangle)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mCapsule->Intersects(*mAabb)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mAabb->Intersects(*mTriangle)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mAabb->Intersects(*mRay)) {
-		LOG("Tus huevos Joan");
-	}
-	if (mAabb->Intersects(*mSphere)) {
-		LOG("Tus huevos Joan");
-	}
-		//--------------------------------------------------------------------------------------
-
 	//Random Number Generator
 	
 	if (show_random_window)
@@ -192,6 +161,96 @@ update_status ModuleImgui::Update(float dt)
 
 		ImGui::End();
 	}
+
+	// Intersects
+
+	if (show_intersection_window)
+	{
+		static bool intersect_test = false; 
+		static char* intersection = "No intersection";
+		static char* intersection_result = "NO";
+
+		ImGui::Begin("Intersection Test");
+		if (ImGui::Button("Plane - Sphere"))
+		{
+			intersection = "Plane - Sphere";
+			intersect_test = mPlane->Intersects(*mSphere);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Plane - AABB"))
+		{
+			intersection = "Plane - AABB";
+			intersect_test = mPlane->Intersects(*mAabb);
+		}
+		if (ImGui::Button("Plane - Triangle"))
+		{
+			intersection = "Plane - Triangle";
+			intersect_test = mPlane->Intersects(*mTriangle);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Plane - Ray"))
+		{
+			intersection = "Plane - Ray";
+			intersect_test = mPlane->Intersects(*mRay);
+		}
+		if (ImGui::Button("AABB - Sphere"))
+		{
+			intersection = "AABB - Sphere";
+			intersect_test = mAabb->Intersects(*mSphere);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("AABB - Ray"))
+		{
+			intersection = "AABB - Ray";
+			intersect_test = mAabb->Intersects(*mRay);
+		}
+		if (ImGui::Button("Capsule - Sphere"))
+		{
+			intersection = "Capsule - Sphere";
+			intersect_test = mCapsule->Intersects(*mSphere);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Capsule - Plane"))
+		{
+			intersection = "Capsule - Plane";
+			intersect_test = mCapsule->Intersects(*mPlane);
+		}
+		if (ImGui::Button("Capsule - Triangle"))
+		{
+			intersection = "Capsule - Triangle";
+			intersect_test = mCapsule->Intersects(*mTriangle);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Capsule - AABB"))
+		{
+			intersection = "Capsule - AABB";
+			intersect_test = mCapsule->Intersects(*mAabb);
+		}
+		if (ImGui::Button("AABB - Triengle"))
+		{
+			intersection = "AABB - Triengle";
+			intersect_test = mAabb->Intersects(*mTriangle);
+		}
+		
+
+		ImGui::NewLine();
+		ImGui::Text(intersection);
+		if (intersect_test == 0)
+		{
+			intersection_result = "No";
+		}
+		else
+			intersection_result = "Yes";
+
+
+		ImGui::Text(intersection_result);
+
+
+		
+
+		ImGui::End();
+	}
+
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
