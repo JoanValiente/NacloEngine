@@ -6,7 +6,8 @@
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "SDL/include/SDL_opengl.h"
-#include "PCG\pcg_variants.h"
+#include "PCG/pcg_variants.h"
+#include "PCG/entropy.h"
 
 #define MAX_SNAKE 2
 
@@ -28,5 +29,6 @@ public:
 private:
 	bool show_demo_window = true;
 	float clear_color = 0.5f;
+	pcg32_random_t rng;
 
 };

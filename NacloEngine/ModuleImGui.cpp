@@ -5,7 +5,6 @@
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
 //#include "PhysBody3D.h"
-
 #include <time.h>
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -34,6 +33,12 @@ bool ModuleImgui::Start()
 
 	// Setup style
 	ImGui::StyleColorsDark();
+
+	srand(time(NULL));
+	uint64_t seeds[2];
+	seeds[0] = rand();
+	seeds[1] = rand();
+	pcg32_srandom_r(&rng, seeds[0], seeds[1]);
 
 	return ret;
 }
@@ -97,7 +102,7 @@ update_status ModuleImgui::Update(float dt)
 	//ImGui::Checkbox("Another Window", &show_another_window);
 
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+	//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
 	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
 		counter++;
@@ -107,10 +112,36 @@ update_status ModuleImgui::Update(float dt)
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
 
+
+	//Random Number Generator
+
+	static int random1 = 0;
+	static int random2 = 0;
+
+	ImGui::Begin("Random Number Generator");
+	ImGui::Text("Generate a random number between 0 - 1");
+	if (ImGui::Button("Generate!"))
+	{
+		random1 = (int)pcg32_boundedrand_r(&rng, 2);
+	}
+	ImGui::SameLine();
+	ImGui::Text("number = %i", random1);
+
+	ImGui::Text("Generate a random number between 0 - 100");
+	if (ImGui::Button("Generate"))
+	{
+		random2 = (int)pcg32_boundedrand_r(&rng, 101);
+	}
+	ImGui::SameLine();
+	ImGui::Text("number = %i", random2);
+
+	ImGui::End();
+
+
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-	
+
 
 	return ret;
 }
