@@ -53,7 +53,7 @@ public:
 		default constructor. Remember to assign to them before use.
 		@see normal, d. */
 	Plane() {}
-	/// Constructs a plane by directly specifying the normal and distance parameters.
+	/// Constructs a plane by directly specifying the normal and distance parameters.	
 	/** @param normal The direction the plane is facing. This vector must have been normalized in advance.
 		@param d The offset of this plane from the origin. The value -d gives the signed distance of this plane from the origin.
 		@see normal, d. */
@@ -174,12 +174,12 @@ public:
 	float SignedDistance(const AABB &aabb) const;
 	float SignedDistance(const OBB &obb) const;
 	float SignedDistance(const Capsule &capsule) const;
-//	float SignedDistance(const Circle &circle) const;
+	float SignedDistance(const Circle &circle) const;
 	float SignedDistance(const Frustum &frustum) const;
 	float SignedDistance(const Line &line) const;
 	float SignedDistance(const LineSegment &lineSegment) const;
 	float SignedDistance(const Ray &ray) const;
-//	float SignedDistance(const Plane &plane) const;
+	float SignedDistance(const Plane &plane) const;
 	float SignedDistance(const Polygon &polygon) const;
 	float SignedDistance(const Polyhedron &polyhedron) const;
 	float SignedDistance(const Sphere &sphere) const;

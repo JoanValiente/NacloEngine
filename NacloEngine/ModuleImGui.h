@@ -28,6 +28,13 @@ public:
 
 public:
 	plane* grid;
+	Plane* mPlane;
+	Sphere* mSphere;
+	Capsule* mCapsule;
+	AABB* mAabb;
+	Frustum* mFrustum;
+	Ray* mRay;
+	Triangle* mTriangle;
 
 private:
 	bool show_demo_window = true;

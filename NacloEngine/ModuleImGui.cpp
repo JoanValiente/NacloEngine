@@ -27,6 +27,14 @@ bool ModuleImgui::Start()
 	grid = new plane(0, 1, 0, 0);
 	grid->axis = true;
 
+	mPlane = new Plane(float3(0.0f, 1.0f, 0.0f), 1.0f);
+	mSphere = new Sphere(float3(0.0f, 1.0f, 0.0f), 1.0f);
+	mCapsule = new Capsule(LineSegment(float3((0.0f, 1.0f, 0.0f)), float3(1.0f, 2.0f, 1.0f)), 3.0f);
+	mAabb = new AABB(float3(0.0f, 1.0f, 0.0f), float3(3.0f, 4.0f, 3.0f));
+	mFrustum = new Frustum();
+	mRay = new Ray(float3(0.0f, 0.0f, 0.0f), float3(1.0f, 1.0f, 1.0f).Normalized());
+	mTriangle = new Triangle(float3(0.0f, 0.0f, 0.0f), float3(3.0f, 3.0f, 3.0f), float3(5.0f, 5.0f, 5.0f));
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -110,6 +118,42 @@ update_status ModuleImgui::Update(float dt)
 	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	ImGui::End();
 
+	//--------------------------------------------------------------------------------------
+	if (mPlane->Intersects(*mSphere)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mPlane->Intersects(*mAabb)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mPlane->Intersects(*mTriangle)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mPlane->Intersects(*mRay)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mCapsule->Intersects(*mSphere)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mCapsule->Intersects(*mPlane)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mCapsule->Intersects(*mTriangle)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mCapsule->Intersects(*mAabb)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mAabb->Intersects(*mTriangle)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mAabb->Intersects(*mRay)) {
+		LOG("Tus huevos Joan");
+	}
+	if (mAabb->Intersects(*mSphere)) {
+		LOG("Tus huevos Joan");
+	}
+
+	//--------------------------------------------------------------------------------------
 
 	grid->Render();
 

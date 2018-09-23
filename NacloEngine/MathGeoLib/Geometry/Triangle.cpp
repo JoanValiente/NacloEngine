@@ -52,7 +52,7 @@ Triangle::Triangle(const vec &a_, const vec &b_, const vec &c_)
 {
 }
 
-void Triangle::Translate(const vec &offset)
+   void Triangle::Translate(const vec &offset)
 {
 	a += offset;
 	b += offset;
