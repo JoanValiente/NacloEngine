@@ -86,6 +86,14 @@ update_status ModuleImgui::Update(float dt)
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Tools"))
+			{
+				if (ImGui::MenuItem("Random Number Generator", NULL, false, true))
+				{
+					show_random_window = true;
+				}
+				ImGui::EndMenu();
+			}
 			ImGui::EndMainMenuBar();
 		}
 
@@ -114,29 +122,31 @@ update_status ModuleImgui::Update(float dt)
 
 
 	//Random Number Generator
-
-	static int random1 = 0;
-	static int random2 = 0;
-
-	ImGui::Begin("Random Number Generator");
-	ImGui::Text("Generate a random number between 0 - 1");
-	if (ImGui::Button("Generate!"))
+	
+	if (show_random_window)
 	{
-		random1 = (int)pcg32_boundedrand_r(&rng, 2);
+		static int random1 = 0;
+		static int random2 = 0;
+
+		ImGui::Begin("Random Number Generator");
+		ImGui::Text("Generate a random number between 0 - 1");
+		if (ImGui::Button("Generate!"))
+		{
+			random1 = (int)pcg32_boundedrand_r(&rng, 2);
+		}
+		ImGui::SameLine();
+		ImGui::Text("number = %i", random1);
+
+		ImGui::Text("Generate a random number between 0 - 100");
+		if (ImGui::Button("Generate"))
+		{
+			random2 = (int)pcg32_boundedrand_r(&rng, 101);
+		}
+		ImGui::SameLine();
+		ImGui::Text("number = %i", random2);
+
+		ImGui::End();
 	}
-	ImGui::SameLine();
-	ImGui::Text("number = %i", random1);
-
-	ImGui::Text("Generate a random number between 0 - 100");
-	if (ImGui::Button("Generate"))
-	{
-		random2 = (int)pcg32_boundedrand_r(&rng, 101);
-	}
-	ImGui::SameLine();
-	ImGui::Text("number = %i", random2);
-
-	ImGui::End();
-
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

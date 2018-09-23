@@ -30,5 +30,5 @@ private:
 	bool show_demo_window = true;
 	float clear_color = 0.5f;
 	pcg32_random_t rng;
-
+	bool show_random_window = false;
 };
