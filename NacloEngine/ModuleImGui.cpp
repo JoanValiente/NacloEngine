@@ -5,7 +5,6 @@
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
 //#include "PhysBody3D.h"
-
 #include <time.h>
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -24,9 +23,7 @@ bool ModuleImgui::Start()
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
-	grid = new plane(0, 1, 0, 0);
-	grid->axis = true;
-
+	//--------------------------------------------------------------------------------------------------------
 	mPlane = new Plane(float3(0.0f, 1.0f, 0.0f), 1.0f);
 	mSphere = new Sphere(float3(0.0f, 1.0f, 0.0f), 1.0f);
 	mCapsule = new Capsule(LineSegment(float3((0.0f, 1.0f, 0.0f)), float3(1.0f, 2.0f, 1.0f)), 3.0f);
@@ -34,6 +31,7 @@ bool ModuleImgui::Start()
 	mFrustum = new Frustum();
 	mRay = new Ray(float3(0.0f, 0.0f, 0.0f), float3(1.0f, 1.0f, 1.0f).Normalized());
 	mTriangle = new Triangle(float3(0.0f, 0.0f, 0.0f), float3(3.0f, 3.0f, 3.0f), float3(5.0f, 5.0f, 5.0f));
+	//---------------------------------------------------------------------------------------------------------
 
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -45,6 +43,12 @@ bool ModuleImgui::Start()
 
 	// Setup style
 	ImGui::StyleColorsDark();
+
+	srand(time(NULL));
+	uint64_t seeds[2];
+	seeds[0] = rand();
+	seeds[1] = rand();
+	pcg32_srandom_r(&rng, seeds[0], seeds[1]);
 
 	return ret;
 }
@@ -92,6 +96,14 @@ update_status ModuleImgui::Update(float dt)
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Tools"))
+			{
+				if (ImGui::MenuItem("Random Number Generator", NULL, false, true))
+				{
+					show_random_window = true;
+				}
+				ImGui::EndMenu();
+			}
 			ImGui::EndMainMenuBar();
 		}
 
@@ -108,7 +120,7 @@ update_status ModuleImgui::Update(float dt)
 	//ImGui::Checkbox("Another Window", &show_another_window);
 
 	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-	ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+	//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
 	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
 		counter++;
@@ -152,10 +164,34 @@ update_status ModuleImgui::Update(float dt)
 	if (mAabb->Intersects(*mSphere)) {
 		LOG("Tus huevos Joan");
 	}
+		//--------------------------------------------------------------------------------------
 
-	//--------------------------------------------------------------------------------------
+	//Random Number Generator
+	
+	if (show_random_window)
+	{
+		static int random1 = 0;
+		static int random2 = 0;
 
-	grid->Render();
+		ImGui::Begin("Random Number Generator");
+		ImGui::Text("Generate a random number between 0 - 1");
+		if (ImGui::Button("Generate!"))
+		{
+			random1 = (int)pcg32_boundedrand_r(&rng, 2);
+		}
+		ImGui::SameLine();
+		ImGui::Text("number = %i", random1);
+
+		ImGui::Text("Generate a random number between 0 - 100");
+		if (ImGui::Button("Generate"))
+		{
+			random2 = (int)pcg32_boundedrand_r(&rng, 101);
+		}
+		ImGui::SameLine();
+		ImGui::Text("number = %i", random2);
+
+		ImGui::End();
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

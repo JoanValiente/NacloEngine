@@ -6,8 +6,13 @@
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "SDL/include/SDL_opengl.h"
+<<<<<<< HEAD
 #include "PCG\pcg_variants.h"
 #include "Primitive.h"
+=======
+#include "PCG/pcg_variants.h"
+#include "PCG/entropy.h"
+>>>>>>> a8b220e5c5f2e9f01bf96756d9cb81e8db48bdf2
 
 #define MAX_SNAKE 2
 
@@ -27,7 +32,6 @@ public:
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
 public:
-	plane* grid;
 	Plane* mPlane;
 	Sphere* mSphere;
 	Capsule* mCapsule;
@@ -39,5 +43,6 @@ public:
 private:
 	bool show_demo_window = true;
 	float clear_color = 0.5f;
-
+	pcg32_random_t rng;
+	bool show_random_window = false;
 };
