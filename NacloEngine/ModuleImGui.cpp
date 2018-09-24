@@ -139,14 +139,14 @@ update_status ModuleImgui::Update(float dt)
 	
 	if (show_random_window)
 	{
-		static float random1 = 0;
+		static double random1 = 0.0f;
 		static int random2 = 0;
 
 		ImGui::Begin("Random Number Generator");
 		ImGui::Text("Generate a random number between 0 - 1");
 		if (ImGui::Button("Generate!"))
 		{
-			random1 = (float)pcg32_boundedrand_r(&rng, 2);
+			random1 = ldexp(pcg32_random_r(&rng), -32);
 		}
 		ImGui::SameLine();
 		ImGui::Text("number = %f", random1);
