@@ -156,6 +156,8 @@ float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float 
 {
 	float4x4 Perspective;
 
+	Perspective = float4x4::zero;
+
 	float coty = 1.0f / Tan(fovy * (float)pi / 360.0f);
 
 	Perspective.v[0][0] = coty / aspect;
