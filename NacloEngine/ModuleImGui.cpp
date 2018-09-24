@@ -139,17 +139,17 @@ update_status ModuleImgui::Update(float dt)
 	
 	if (show_random_window)
 	{
-		static int random1 = 0;
+		static float random1 = 0;
 		static int random2 = 0;
 
 		ImGui::Begin("Random Number Generator");
 		ImGui::Text("Generate a random number between 0 - 1");
 		if (ImGui::Button("Generate!"))
 		{
-			random1 = (int)pcg32_boundedrand_r(&rng, 2);
+			random1 = (float)pcg32_boundedrand_r(&rng, 2);
 		}
 		ImGui::SameLine();
-		ImGui::Text("number = %i", random1);
+		ImGui::Text("number = %f", random1);
 
 		ImGui::Text("Generate a random number between 0 - 100");
 		if (ImGui::Button("Generate"))
