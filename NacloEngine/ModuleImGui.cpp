@@ -380,6 +380,35 @@ void ModuleImgui::Configuration_Window()
 			}
 			ImGui::Spacing();
 
+			if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
+			{
+				App->window->SetWindowFullscreen(App->window->window);
+			}
+
+			if (ImGui::Checkbox("Borderless", &App->window->borderless))
+			{
+				App->window->SetWindowBorderless(App->window->window);
+			}
+
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetTooltip("Restart to apply");
+			}
+
+			if (ImGui::Checkbox("Resizable", &App->window->resizable))
+			{
+				App->window->SetWindowResizable(App->window->window);
+			}
+
+			if (ImGui::IsItemHovered())
+			{
+				ImGui::SetTooltip("Restart to apply");
+			}
+
+			if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
+			{
+				App->window->SetWindowFullDesktop(App->window->window);
+			}
 
 		}
 
