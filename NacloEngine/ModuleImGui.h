@@ -41,6 +41,7 @@ public:
 	plane* grid;
 
 private:
+	bool show_configuration_window = false;
 	bool show_demo_window = true;
 	float clear_color = 0.5f;
 	pcg32_random_t rng;
