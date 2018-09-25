@@ -47,6 +47,8 @@ bool Application::Init()
 
 	engine_name = "Naclo Engine";
 	organization_name = "UPC CITM";
+	author_1_name = "David Lozano Sanchez";
+	author_2_name = "Joan Valiente Lorite";
 
 	list<Module*>::const_iterator item;
 	item = modules.begin();

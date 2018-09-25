@@ -205,6 +205,10 @@ void ModuleImgui::Tools()
 	{
 		Configuration_Window();
 	}
+	if (show_about_window)
+	{
+		About_Window();
+	}
 }
 
 void ModuleImgui::Random_Number_Generator_Window()
@@ -495,6 +499,26 @@ void ModuleImgui::Configuration_Window()
 
 void ModuleImgui::About_Window()
 {
+	if (ImGui::Begin("About"), &show_about_window)
+	{
+		ImGui::InputText("Engine Name", App->engine_name, 20);
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+
+		ImGui::Text("AUTHORS");
+		ImGui::Spacing();
+		ImGui::Spacing();
+
+
+		ImGui::Text("David Lozano Sanchez");
+		ImGui::Text("Joan Valiente Lorite");
+
+
+
+		ImGui::End();
+	}
 }
 
 void ModuleImgui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)

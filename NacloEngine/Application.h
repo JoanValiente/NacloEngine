@@ -40,6 +40,8 @@ public:
 	bool CleanUp();
 
 	char* engine_name;
+	char* author_1_name;
+	char* author_2_name;
 	char* organization_name;
 
 private:
