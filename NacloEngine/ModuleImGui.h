@@ -24,7 +24,10 @@ public:
 	~ModuleImgui();
 
 	bool Start();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
+	update_status PostUpdate(float dt);
+
 	bool CleanUp();
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
@@ -41,11 +44,23 @@ public:
 	plane* grid;
 
 private:
-	bool show_configuration_window = false;
-	bool show_demo_window = true;
+
+	bool Show_Main_Menu_Bar();
+	void Tools();
+	void Random_Number_Generator_Window();
+	void Intersection_Window();
+	void Configuration_Window();
+
+
+private:
 	float clear_color = 0.5f;
 	pcg32_random_t rng;
+
 	bool show_random_window = false;
 	bool show_intersection_window = false;
+	bool show_configuration_window = false;
+	bool show_demo_window = true;
+
+	bool close_engine = false; 
 
 };

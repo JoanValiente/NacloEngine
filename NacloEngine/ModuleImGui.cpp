@@ -57,7 +57,47 @@ bool ModuleImgui::Start()
 	return ret;
 }
 
-// Load assets
+
+update_status ModuleImgui::PreUpdate(float dt)
+{
+	update_status ret = UPDATE_CONTINUE;
+
+	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplSDL2_NewFrame(App->window->window);
+	ImGui::NewFrame();
+
+	return ret; 
+}
+
+// Update
+update_status ModuleImgui::Update(float dt)
+{
+	update_status ret = UPDATE_CONTINUE;
+
+	close_engine = Show_Main_Menu_Bar();
+	Tools();
+	
+	ImGui::ShowDemoWindow(&show_demo_window);
+
+	return ret;
+}
+
+update_status ModuleImgui::PostUpdate(float dt)
+{
+	update_status ret = UPDATE_CONTINUE;
+
+	grid->Render();
+	ImGui::Render();
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
+	if (!close_engine)
+	{
+		ret = UPDATE_STOP;
+	}
+
+	return ret;
+}
+
 bool ModuleImgui::CleanUp()
 {
 	LOG("Unloading Intro scene");
@@ -73,223 +113,203 @@ bool ModuleImgui::CleanUp()
 	return true;
 }
 
-// Update
-update_status ModuleImgui::Update(float dt)
+bool ModuleImgui::Show_Main_Menu_Bar()
 {
-	update_status ret = UPDATE_CONTINUE;
+	bool ret = true;
 
-	ImGui_ImplOpenGL2_NewFrame();
-	ImGui_ImplSDL2_NewFrame(App->window->window);
-	ImGui::NewFrame();
-
-	//Close Engine
-
-		if (ImGui::BeginMainMenuBar())
-		{
-			if (ImGui::BeginMenu("Main Menu"))
-			{
-				if (ImGui::MenuItem("Open", NULL, false, true))
-				{					
-				}
-				if (ImGui::MenuItem("Save", NULL, false, true))
-				{
-				}
-				if (ImGui::MenuItem("Close", NULL, false, true))
-				{
-					ret = UPDATE_STOP;
-				}
-				ImGui::EndMenu();
-			}
-			if (ImGui::BeginMenu("Tools"))
-			{
-				if (ImGui::MenuItem("Random Number Generator", NULL, false, true))
-				{
-					show_random_window = true;
-				}
-				if (ImGui::MenuItem("Intersections", NULL, false, true))
-				{
-					show_intersection_window = true;
-				}
-				if (ImGui::MenuItem("Configuration", NULL, false, true))
-				{
-					show_configuration_window = true;
-				}
-				ImGui::EndMenu();
-			}
-			ImGui::EndMainMenuBar();
-		}		
-		
-		ImGui::ShowDemoWindow(&show_demo_window);
-
-	static float f = 0.0f;
-	static int counter = 0;
-
-	ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-	ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-	ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-	//ImGui::Checkbox("Another Window", &show_another_window);
-
-	ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f    
-	//ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-	if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-		counter++;
-	ImGui::SameLine();
-	ImGui::Text("counter = %d", counter);
-
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-	ImGui::End();
-
-	//Random Number Generator
-	
-	if (show_random_window)
+	if (ImGui::BeginMainMenuBar())
 	{
-		static double random1 = 0.0f;
-		static int random2 = 0;
-
-		if (!ImGui::Begin(("Random Number Generator"), &show_random_window))
+		if (ImGui::BeginMenu("Main Menu"))
 		{
-			ImGui::End();
+			if (ImGui::MenuItem("Open", NULL, false, true))
+			{
+			}
+			if (ImGui::MenuItem("Save", NULL, false, true))
+			{
+			}
+			if (ImGui::MenuItem("Close", NULL, false, true))
+			{
+				ret = false;
+			}
+			ImGui::EndMenu();
 		}
-		else
+		if (ImGui::BeginMenu("Tools"))
 		{
-			ImGui::Text("Generate a random number between 0 - 1");
-			if (ImGui::Button("Generate!"))
+			if (ImGui::MenuItem("Random Number Generator", NULL, false, true))
 			{
-				random1 = ldexp(pcg32_random_r(&rng), -32);
+				show_random_window = true;
 			}
-			ImGui::SameLine();
-			ImGui::Text("number = %f", random1);
-
-			ImGui::Text("Generate a random number between 0 - 100");
-			if (ImGui::Button("Generate"))
+			if (ImGui::MenuItem("Intersections", NULL, false, true))
 			{
-				random2 = (int)pcg32_boundedrand_r(&rng, 101);
+				show_intersection_window = true;
 			}
-			ImGui::SameLine();
-			ImGui::Text("number = %i", random2);
-
-			ImGui::End();
+			if (ImGui::MenuItem("Configuration", NULL, false, true))
+			{
+				show_configuration_window = true;
+			}
+			ImGui::EndMenu();
 		}
+		ImGui::EndMainMenuBar();
 	}
 
-	// Intersects
+	return ret;
+}
+
+void ModuleImgui::Tools()
+{
+	if (show_random_window)
+	{
+		Random_Number_Generator_Window();
+	}
 
 	if (show_intersection_window)
 	{
-		static bool intersect_test = false; 
-		static char* intersection = "No intersection";
-		static char* intersection_result = "NO";
-
-		
-		if (!ImGui::Begin("Intersection Test", &show_intersection_window))
-		{
-			ImGui::End();
-		}
-		else
-		{
-			if (ImGui::Button("Plane - Sphere"))
-			{
-				intersection = "Plane - Sphere";
-				intersect_test = mPlane->Intersects(*mSphere);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Plane - AABB"))
-			{
-				intersection = "Plane - AABB";
-				intersect_test = mPlane->Intersects(*mAabb);
-			}
-			if (ImGui::Button("Plane - Triangle"))
-			{
-				intersection = "Plane - Triangle";
-				intersect_test = mPlane->Intersects(*mTriangle);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Plane - Ray"))
-			{
-				intersection = "Plane - Ray";
-				intersect_test = mPlane->Intersects(*mRay);
-			}
-			if (ImGui::Button("AABB - Sphere"))
-			{
-				intersection = "AABB - Sphere";
-				intersect_test = mAabb->Intersects(*mSphere);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("AABB - Ray"))
-			{
-				intersection = "AABB - Ray";
-				intersect_test = mAabb->Intersects(*mRay);
-			}
-			if (ImGui::Button("Capsule - Sphere"))
-			{
-				intersection = "Capsule - Sphere";
-				intersect_test = mCapsule->Intersects(*mSphere);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Capsule - Plane"))
-			{
-				intersection = "Capsule - Plane";
-				intersect_test = mCapsule->Intersects(*mPlane);
-			}
-			if (ImGui::Button("Capsule - Triangle"))
-			{
-				intersection = "Capsule - Triangle";
-				intersect_test = mCapsule->Intersects(*mTriangle);
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("Capsule - AABB"))
-			{
-				intersection = "Capsule - AABB";
-				intersect_test = mCapsule->Intersects(*mAabb);
-			}
-			if (ImGui::Button("AABB - Triengle"))
-			{
-				intersection = "AABB - Triengle";
-				intersect_test = mAabb->Intersects(*mTriangle);
-			}
-
-			ImGui::NewLine();
-			ImGui::Text(intersection);
-
-			if (intersect_test == 0)
-			{
-				intersection_result = "No";
-			}
-			else
-			{
-				intersection_result = "Yes";
-			}
-
-			ImGui::Text(intersection_result);
-			ImGui::End();
-		}
+		Intersection_Window();
 	}
-
-	//Configuration
 
 	if (show_configuration_window)
 	{
-		if (!ImGui::Begin("Configuration", &show_configuration_window))
+		Configuration_Window();
+	}
+}
+
+void ModuleImgui::Random_Number_Generator_Window()
+{
+	static double random1 = 0.0f;
+	static int random2 = 0;
+
+	if (!ImGui::Begin(("Random Number Generator"), &show_random_window))
+	{
+		ImGui::End();
+	}
+	else
+	{
+		ImGui::Text("Generate a random number between 0 - 1");
+		if (ImGui::Button("Generate!"))
 		{
-			ImGui::End();
+			random1 = ldexp(pcg32_random_r(&rng), -32);
+		}
+		ImGui::SameLine();
+		ImGui::Text("number = %f", random1);
+
+		ImGui::Text("Generate a random number between 0 - 100");
+		if (ImGui::Button("Generate"))
+		{
+			random2 = (int)pcg32_boundedrand_r(&rng, 101);
+		}
+		ImGui::SameLine();
+		ImGui::Text("number = %i", random2);
+
+		ImGui::End();
+	}
+}
+
+void ModuleImgui::Intersection_Window()
+{
+	static bool intersect_test = false;
+	static char* intersection = "No intersection";
+	static char* intersection_result = "NO";
+
+
+	if (!ImGui::Begin("Intersection Test", &show_intersection_window))
+	{
+		ImGui::End();
+	}
+	else
+	{
+		if (ImGui::Button("Plane - Sphere"))
+		{
+			intersection = "Plane - Sphere";
+			intersect_test = mPlane->Intersects(*mSphere);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Plane - AABB"))
+		{
+			intersection = "Plane - AABB";
+			intersect_test = mPlane->Intersects(*mAabb);
+		}
+		if (ImGui::Button("Plane - Triangle"))
+		{
+			intersection = "Plane - Triangle";
+			intersect_test = mPlane->Intersects(*mTriangle);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Plane - Ray"))
+		{
+			intersection = "Plane - Ray";
+			intersect_test = mPlane->Intersects(*mRay);
+		}
+		if (ImGui::Button("AABB - Sphere"))
+		{
+			intersection = "AABB - Sphere";
+			intersect_test = mAabb->Intersects(*mSphere);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("AABB - Ray"))
+		{
+			intersection = "AABB - Ray";
+			intersect_test = mAabb->Intersects(*mRay);
+		}
+		if (ImGui::Button("Capsule - Sphere"))
+		{
+			intersection = "Capsule - Sphere";
+			intersect_test = mCapsule->Intersects(*mSphere);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Capsule - Plane"))
+		{
+			intersection = "Capsule - Plane";
+			intersect_test = mCapsule->Intersects(*mPlane);
+		}
+		if (ImGui::Button("Capsule - Triangle"))
+		{
+			intersection = "Capsule - Triangle";
+			intersect_test = mCapsule->Intersects(*mTriangle);
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Capsule - AABB"))
+		{
+			intersection = "Capsule - AABB";
+			intersect_test = mCapsule->Intersects(*mAabb);
+		}
+		if (ImGui::Button("AABB - Triengle"))
+		{
+			intersection = "AABB - Triengle";
+			intersect_test = mAabb->Intersects(*mTriangle);
+		}
+
+		ImGui::NewLine();
+		ImGui::Text(intersection);
+
+		if (intersect_test == 0)
+		{
+			intersection_result = "No";
 		}
 		else
 		{
-			ImGui::Text("Test");
-			ImGui::End();
+			intersection_result = "Yes";
 		}
-	}
 
-	grid->Render();
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-	   
-	return ret;
+		ImGui::Text(intersection_result);
+		ImGui::End();
+	}
+}
+
+void ModuleImgui::Configuration_Window()
+{
+	if (!ImGui::Begin("Configuration", &show_configuration_window))
+	{
+		ImGui::End();
+	}
+	else
+	{
+		ImGui::Text("Test");
+		ImGui::End();
+	}
 }
 
 void ModuleImgui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 {
 }
+
 
