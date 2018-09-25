@@ -15,6 +15,7 @@
 struct PhysBody3D;
 struct PhysMotor3D;
 
+
 class ModuleImgui : public Module
 {
 public:
@@ -27,6 +28,8 @@ public:
 	update_status PostUpdate(float dt);
 
 	bool CleanUp();
+
+	void ConsoleLog(const char* text);
 
 	void OnCollision(PhysBody3D* body1, PhysBody3D* body2);
 
@@ -41,6 +44,8 @@ public:
 
 	plane* grid;
 
+	bool show_console_window = true;
+
 private:
 
 	bool Show_Main_Menu_Bar();
@@ -49,8 +54,7 @@ private:
 	void Intersection_Window();
 	void Configuration_Window();
 	void About_Window();
-
-
+	void Console_Window();
 
 private:
 	float clear_color = 0.5f;
@@ -62,6 +66,8 @@ private:
 	bool show_demo_window = true;
 	bool show_about_window = true;
 
+	ImGuiTextBuffer console_logs;
+	bool ConsoleScroll;
 
 	bool close_engine = false; 
 

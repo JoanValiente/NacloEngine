@@ -20,6 +20,7 @@ ModuleImgui::~ModuleImgui()
 bool ModuleImgui::Start()
 {
 	LOG("Loading Intro assets");
+
 	bool ret = true;
 
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
@@ -75,10 +76,9 @@ update_status ModuleImgui::PreUpdate(float dt)
 update_status ModuleImgui::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
-
 	close_engine = Show_Main_Menu_Bar();
 	Tools();
-	
+
 	ImGui::ShowDemoWindow(&show_demo_window);
 
 	return ret;
@@ -103,7 +103,7 @@ update_status ModuleImgui::PostUpdate(float dt)
 bool ModuleImgui::CleanUp()
 {
 	LOG("Unloading Intro scene");
-
+	show_console_window = false;
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
@@ -113,6 +113,12 @@ bool ModuleImgui::CleanUp()
 	SDL_Quit();
 
 	return true;
+}
+
+void ModuleImgui::ConsoleLog(const char * text)
+{	
+	console_logs.appendf(text);
+	ConsoleScroll = true;
 }
 
 bool ModuleImgui::Show_Main_Menu_Bar()
@@ -209,6 +215,10 @@ void ModuleImgui::Tools()
 	{
 		About_Window();
 	}
+	if(show_console_window)
+	{
+		Console_Window();
+	}
 }
 
 void ModuleImgui::Random_Number_Generator_Window()
@@ -259,6 +269,7 @@ void ModuleImgui::Intersection_Window()
 		{
 			intersection = "Plane - Sphere";
 			intersect_test = mPlane->Intersects(*mSphere);
+			LOG("Plane - Sphere Button pressed");
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Plane - AABB"))
@@ -519,6 +530,17 @@ void ModuleImgui::About_Window()
 
 		ImGui::End();
 	}
+}
+
+void ModuleImgui::Console_Window()
+{
+	ImGui::Begin("Console", &show_console_window);
+
+	ImGui::TextUnformatted(console_logs.begin());
+	if (ConsoleScroll)
+		ImGui::SetScrollHere(1.0f);
+	ConsoleScroll = false;
+	ImGui::End();
 }
 
 void ModuleImgui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)

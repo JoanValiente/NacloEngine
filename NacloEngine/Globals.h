@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __GLOBALS_H_
+#define __GLOBALS_H_
 
 // Warning disabled ---
 #pragma warning( disable : 4577 ) // Warning that exceptions are disabled
@@ -36,3 +37,5 @@ enum update_status
 #define WIN_BORDERLESS false
 #define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
+
+#endif

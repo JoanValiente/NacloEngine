@@ -44,11 +44,15 @@ public:
 	char* author_2_name;
 	char* organization_name;
 
+	void Log(const char* text);
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
 };
+
+extern Application* App;
 
 #endif

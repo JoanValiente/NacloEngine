@@ -143,6 +143,11 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::Log(const char * text)
+{
+	imgui->ConsoleLog(text);
+}
+
 void Application::AddModule(Module* mod)
 {
 	modules.push_back(mod);
