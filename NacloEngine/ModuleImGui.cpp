@@ -4,8 +4,10 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
-//#include "PhysBody3D.h"
 #include <time.h>
+
+
+
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -367,12 +369,96 @@ void ModuleImgui::Configuration_Window()
 
 		if (ImGui::CollapsingHeader("Window"))
 		{
+			if (ImGui::SliderFloat("Brightness", &App->window->brightness, 0.0f, 1.0f))
+			{
+				App->window->SetBrightnes(App->window->window, App->window->brightness);
+			}
+
+			if (ImGui::SliderInt("Width", &App->window->width, 1, 1920) || ImGui::SliderInt("Height", &App->window->height, 1, 1080))
+			{
+				App->window->SetWindowSize(App->window->window, App->window->width, App->window->height);
+			}
+			ImGui::Spacing();
+
 
 		}
 
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
+			ImGui::Text("SDL Version: ");
+			ImGui::SameLine();
 
+			SDL_version curren_version;
+			SDL_VERSION(&curren_version);
+			char sdlVer[38];
+			sprintf_s(sdlVer, sizeof(sdlVer), "%d.%d.%d", curren_version.major, curren_version.minor, curren_version.patch);
+			ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), sdlVer);
+			ImGui::Separator();
+
+			ImGui::Text("CPUs: ");
+			ImGui::SameLine();
+	
+			int cpu = SDL_GetCPUCount();
+			char cpuVer[38];
+			sprintf_s(cpuVer, sizeof(sdlVer), "%i", cpu);
+			ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), cpuVer);
+		
+
+			ImGui::Text("System RAM: ");
+			ImGui::SameLine();
+		
+			cpu = SDL_GetSystemRAM() / 1000;
+			sprintf_s(cpuVer, sizeof(sdlVer), "%i Gb", cpu);
+			ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), cpuVer);
+
+			ImGui::Text("Caps: ");
+			ImGui::SameLine();
+
+			if (SDL_HasRDTSC())
+			{
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "RDTSC");
+				ImGui::SameLine();
+			}
+			if (SDL_HasMMX())
+			{
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "MMX");
+				ImGui::SameLine();		 
+			}							 
+			if (SDL_HasAVX())			 
+			{							 
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "AVX");
+				ImGui::SameLine();		
+			}							
+			if (SDL_HasAVX2())			
+			{							
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "AVX2");
+				ImGui::SameLine();		
+			}							
+			if (SDL_HasSSE())			
+			{							
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "SSE");
+				ImGui::SameLine();		
+			}							
+			if (SDL_HasSSE2())			
+			{							
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "SSE2");
+				ImGui::SameLine();
+			}
+			if (SDL_HasSSE3())
+			{
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "SSE3");
+				ImGui::SameLine();
+			}
+			if (SDL_HasSSE41())
+			{
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "SSE41");
+				ImGui::SameLine();
+			}
+			if (SDL_HasSSE42())
+			{
+				ImGui::TextColored(ImVec4(1, 0.7f, 0, 100), "SSE42");
+
+			}
 		}
 		ImGui::End();
 	}

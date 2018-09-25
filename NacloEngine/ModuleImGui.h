@@ -1,7 +1,5 @@
 #pragma once
 #include "Module.h"
-//#include "p2DynArray.h"
-//#include "Globals.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"

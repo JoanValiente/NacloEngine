@@ -19,13 +19,20 @@ public:
 	bool CleanUp();
 
 	void SetTitle(const char* title);
+	void SetBrightnes(SDL_Window* window, float brightness);
+	void SetWindowSize(SDL_Window* window, int width, int height);
 
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
 
 	//The surface contained by the window
-	SDL_Surface* screen_surface;
+	SDL_Surface* screen_surface; 
+
+	float brightness = 1.0f;
+
+	int width = SCREEN_WIDTH * SCREEN_SIZE;
+	int height = SCREEN_HEIGHT * SCREEN_SIZE;
 };
 
 #endif // __ModuleWindow_H__

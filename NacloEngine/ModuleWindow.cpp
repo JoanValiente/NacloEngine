@@ -57,6 +57,8 @@ bool ModuleWindow::Init()
 
 		window = SDL_CreateWindow(App->engine_name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
+		SDL_SetWindowBrightness(window, brightness);
+
 		if(window == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
@@ -68,7 +70,6 @@ bool ModuleWindow::Init()
 			screen_surface = SDL_GetWindowSurface(window);
 		}
 	}
-
 	return ret;
 }
 
@@ -91,4 +92,18 @@ bool ModuleWindow::CleanUp()
 void ModuleWindow::SetTitle(const char* title)
 {
 	SDL_SetWindowTitle(window, title);
+
 }
+
+void ModuleWindow::SetBrightnes(SDL_Window* window, float brightness)
+{
+	SDL_SetWindowBrightness(window, brightness);
+	SDL_UpdateWindowSurface(window);
+}
+
+void ModuleWindow::SetWindowSize(SDL_Window * window, int width, int height)
+{
+	SDL_SetWindowSize(window, width, height);
+	SDL_UpdateWindowSurface(window);
+}
+
