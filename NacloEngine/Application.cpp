@@ -44,6 +44,10 @@ bool Application::Init()
 	bool ret = true;
 
 	// Call Init() in all modules
+
+	engine_name = "Naclo Engine";
+	organization_name = "UPC CITM";
+
 	list<Module*>::const_iterator item;
 	item = modules.begin();
 

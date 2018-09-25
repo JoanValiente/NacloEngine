@@ -58,9 +58,13 @@ private:
 
 	bool show_random_window = false;
 	bool show_intersection_window = false;
-	bool show_configuration_window = false;
+	bool show_configuration_window = true;
 	bool show_demo_window = true;
 
 	bool close_engine = false; 
+
+	std::vector<float> vector_ms;
+	std::vector<float> vector_fps;
+	std::vector<float> vector_memory_usage;
 
 };

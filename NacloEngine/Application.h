@@ -39,6 +39,9 @@ public:
 	update_status Update();
 	bool CleanUp();
 
+	char* engine_name;
+	char* organization_name;
+
 private:
 
 	void AddModule(Module* mod);
