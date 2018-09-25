@@ -118,7 +118,7 @@ bool ModuleImgui::CleanUp()
 void ModuleImgui::ConsoleLog(const char * text)
 {	
 	console_logs.appendf(text);
-	ConsoleScroll = true;
+	ConsoleScroll = true;	
 }
 
 bool ModuleImgui::Show_Main_Menu_Bar()
@@ -132,8 +132,9 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			if (ImGui::MenuItem("Open", NULL, false, true))
 			{
 			}
-			if (ImGui::MenuItem("Save", NULL, false, true))
+			if (ImGui::MenuItem("Console", NULL, false, true))
 			{
+				show_console_window = true;
 			}
 			if (ImGui::MenuItem("Close", NULL, false, true))
 			{

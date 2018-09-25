@@ -44,8 +44,6 @@ public:
 
 	plane* grid;
 
-	bool show_console_window = true;
-
 private:
 
 	bool Show_Main_Menu_Bar();
@@ -65,6 +63,7 @@ private:
 	bool show_configuration_window = true;
 	bool show_demo_window = true;
 	bool show_about_window = true;
+	bool show_console_window = false;
 
 	ImGuiTextBuffer console_logs;
 	bool ConsoleScroll;
