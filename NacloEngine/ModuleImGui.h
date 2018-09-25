@@ -38,6 +38,8 @@ public:
 	Ray* mRay;
 	Triangle* mTriangle;
 
+	plane* grid;
+
 private:
 	bool show_demo_window = true;
 	float clear_color = 0.5f;

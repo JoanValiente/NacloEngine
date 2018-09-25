@@ -18,7 +18,7 @@ PrimitiveTypes Primitive::GetType() const
 void Primitive::Render() const
 {
 	glPushMatrix();
-	glMultMatrixf((GLfloat*)transform.v);
+	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 
 	if(axis == true)
 	{
@@ -243,21 +243,28 @@ void line::InnerRender() const
 }
 
 // PLANE ==================================================
-plane::plane() : Primitive(), normal(0, 1, 0), constant(1)
+plane::plane() : Primitive()
 {
 	type = PrimitiveTypes::Primitive_Plane;
 }
 
-plane::plane(float x, float y, float z, float d) : Primitive(), normal(x, y, z), constant(d)
+plane::plane(float x, float y, float z, float d) : Primitive()
 {
 	type = PrimitiveTypes::Primitive_Plane;
+	float3 pos(x, y, z);
+	mathGeoLibPlane = new Plane(pos, d);
 }
 
 void plane::InnerRender() const
 {
 	glLineWidth(1.0f);
-
-	glBegin(GL_LINES);
+	
+	if (grid) {
+		glBegin(GL_LINES);
+	}
+	else {
+		glBegin(GL_TRIANGLE_STRIP);
+	}
 
 	float d = 200.0f;
 

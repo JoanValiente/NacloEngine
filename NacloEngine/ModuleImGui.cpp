@@ -23,6 +23,10 @@ bool ModuleImgui::Start()
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
+	grid = new plane(0, 1, 0, 0);
+	grid->axis = true;
+	grid->grid = true;
+
 	//--------------------------------------------------------------------------------------------------------
 	mPlane = new Plane(float3(0.0f, 1.0f, 0.0f), 1.0f);
 	mSphere = new Sphere(float3(0.0f, 1.0f, 0.0f), 1.0f);
@@ -251,10 +255,10 @@ update_status ModuleImgui::Update(float dt)
 		ImGui::End();
 	}
 
-
+	grid->Render();
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-
+	   
 	return ret;
 }
 

@@ -89,6 +89,6 @@ public:
 	plane(float x, float y, float z, float d);
 	void InnerRender() const;
 public:
-	float3 normal;
-	float constant;
+	bool grid = false;
+	Plane* mathGeoLibPlane;
 };

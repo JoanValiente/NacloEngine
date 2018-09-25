@@ -70,30 +70,29 @@ update_status ModuleCamera3D::Update(float dt)
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
 
-		float Sensitivity = 0.25f;
+		float Sensitivity = 0.01f;
 
 		Position -= Reference;
 
-		if(dx != 0)
+		if (dx != 0)
 		{
 			float DeltaX = (float)dx * Sensitivity;
-			float3x3 aux = float3x3::RotateY(DeltaX);
 
-			X = aux * X;
-			Y = aux * Y;
-			Z = aux * Z;
+			float3x3 rotationMatrix = float3x3::RotateY(DeltaX);
+			X = rotationMatrix * X;
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
 		}
 
-		if(dy != 0)
+		if (dy != 0)
 		{
 			float DeltaY = (float)dy * Sensitivity;
-			float3x3 aux = float3x3::RotateX(DeltaY);
 
-			X = aux * X;
-			Y = aux * Y;
-			Z = aux * Z;
+			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X, DeltaY);
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
 
-			if(Y.y < 0.0f)
+			if (Y.y < 0.0f)
 			{
 				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
 				Y = Cross(Z, X);
@@ -119,8 +118,9 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 	this->Reference = Reference;
 
 	Z = (Position - Reference).Normalized();
-	X = Cross(float3(0.0f, 1.0f, 0.0f), Z).Normalized();
-	Y = Cross(Z, X);
+	X = float3(0.0f, 1.0f, 0.0f).Cross(Z);
+	X.Normalize();
+	Y = Z.Cross(X);
 
 	if(!RotateAroundReference)
 	{
@@ -139,8 +139,9 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 	Reference = Spot;
 
 	Z = (Position - Reference).Normalized();
-	X = (Cross(float3(0.0f, 1.0f, 0.0f), Z).Normalized());
-	Y = Cross(Z, X);
+	X = float3(0.0f, 1.0f, 0.0f).Cross(Z);
+	X.Normalize();
+	Y = Z.Cross(X);
 
 	CalculateViewMatrix();
 }
@@ -162,8 +163,7 @@ void ModuleCamera3D::Move(const float3 &Movement)
 
 float* ModuleCamera3D::GetViewMatrix()
 {
-	ViewMatrix.Transpose();
-	return (float*)ViewMatrix.v;
+	return (float*)&ViewMatrix;
 }
 
 
