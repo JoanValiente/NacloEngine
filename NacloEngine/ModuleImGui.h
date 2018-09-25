@@ -50,6 +50,8 @@ private:
 	void Random_Number_Generator_Window();
 	void Intersection_Window();
 	void Configuration_Window();
+	void About_Window();
+
 
 
 private:
@@ -60,6 +62,8 @@ private:
 	bool show_intersection_window = false;
 	bool show_configuration_window = true;
 	bool show_demo_window = true;
+	bool show_about_window = true;
+
 
 	bool close_engine = false; 
 

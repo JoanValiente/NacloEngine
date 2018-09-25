@@ -149,6 +149,38 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			}
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("About", NULL, false, true))
+			{
+				show_about_window = true; 
+			}
+
+			if (ImGui::BeginMenu("Help"))
+			{
+
+				if (ImGui::MenuItem("Documentation", NULL, false, true))
+				{
+					ShellExecuteA(NULL, NULL, "https://github.com/JoanValiente/NacloEngine", NULL, NULL, NULL);
+				}
+
+				if (ImGui::MenuItem("Download Last Version", NULL, false, true))
+				{
+					ShellExecuteA(NULL, NULL, "https://github.com/JoanValiente/NacloEngine/releases", NULL, NULL, NULL);
+				}
+
+
+				if (ImGui::MenuItem("Report Bug", NULL, false, true))
+				{
+					ShellExecuteA(NULL, NULL, "https://github.com/JoanValiente/NacloEngine/issues", NULL, NULL, NULL);
+				}
+
+				ImGui::EndMenu(); 
+			}
+			
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
 	}
 
@@ -344,6 +376,10 @@ void ModuleImgui::Configuration_Window()
 		}
 		ImGui::End();
 	}
+}
+
+void ModuleImgui::About_Window()
+{
 }
 
 void ModuleImgui::OnCollision(PhysBody3D* body1, PhysBody3D* body2)
