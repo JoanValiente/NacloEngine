@@ -4,7 +4,6 @@
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"
 #include "SDL/include/SDL_opengl.h"
-#include "PCG\pcg_variants.h"
 #include "Primitive.h"
 #include "PCG/pcg_variants.h"
 #include "PCG/entropy.h"
@@ -60,9 +59,9 @@ private:
 
 	bool show_random_window = false;
 	bool show_intersection_window = false;
-	bool show_configuration_window = true;
+	bool show_configuration_window = false;
 	bool show_demo_window = true;
-	bool show_about_window = true;
+	bool show_about_window = false;
 	bool show_console_window = false;
 
 	ImGuiTextBuffer console_logs;
