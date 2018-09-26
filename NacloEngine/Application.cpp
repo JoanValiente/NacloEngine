@@ -5,22 +5,22 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
-	imgui = new ModuleImgui(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
+	imgui = new ModuleImgui(this);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
+
+		// ImGui
+	AddModule(imgui);
 
 	// Main Modules
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
 	AddModule(audio);
-	
-	// ImGui
-	AddModule(imgui);
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -170,7 +170,7 @@ bool Application::CleanUp()
 
 void Application::Log(const char * text)
 {
-	imgui->ConsoleLog(text);
+	imgui->Log(text);
 }
 
 void Application::AddModule(Module* mod)
