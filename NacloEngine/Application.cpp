@@ -80,13 +80,38 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	dt = (float)ms_timer.Read() / 1000.0f;
 	ms_timer.Start();
 }
 
 // ---------------------------------------------
 void Application::FinishUpdate()
 {
+	last_ms = ms_timer.ReadMs();
+
+	if (!vsync) {
+
+		double ms_cap = 0;
+
+		if (FPS_cap > 0) 
+		{
+			ms_cap = 1000 / FPS_cap;
+		}
+
+		else 
+		{
+			ms_cap = 1000 / 60;
+		}
+
+		if (last_ms < ms_cap)
+		{
+			SDL_Delay(ms_cap - last_ms);
+		}
+
+	}
+
+	last_ms = ms_timer.ReadMs();
+	last_FPS = 1000.0 / last_ms;
+	dt = 1 / last_FPS;
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

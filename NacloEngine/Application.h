@@ -11,6 +11,8 @@
 #include "ModuleImgui.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "PerfTimer.h"
+
 
 using namespace std;
 
@@ -24,10 +26,16 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 
+	int		FPS_cap = 60;
+	bool	vsync = false;
+
 private:
 
-	Timer	ms_timer;
-	float	dt;
+	PerfTimer	ms_timer;
+	double		last_FPS = 0.0f;
+	double		last_ms = 0.0f;
+	float		dt = 0.0f;
+
 	list<Module*> modules;
 
 public:
