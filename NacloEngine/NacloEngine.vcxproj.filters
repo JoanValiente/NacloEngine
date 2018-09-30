@@ -324,6 +324,9 @@
     <ClInclude Include="OpenGL.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="PanelOpenGL.h">
+      <Filter>Sources\Modules\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -513,6 +516,9 @@
       <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelConfiguration.cpp">
+      <Filter>Sources\Modules\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelOpenGL.cpp">
       <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
   </ItemGroup>
