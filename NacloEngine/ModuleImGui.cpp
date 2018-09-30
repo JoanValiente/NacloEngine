@@ -11,6 +11,7 @@
 #include "PanelConsole.h"
 #include "PanelIntersections.h"
 #include "PanelRandomNumberGenerator.h"
+#include "PanelOpenGL.h"
 
 
 #include <time.h>
@@ -32,6 +33,7 @@ bool ModuleImgui::Init()
 	panels.push_back(intersections = new PanelIntersections());
 	panels.push_back(randomNumberGenerator = new PanelRandomNumberGenerator());
 	panels.push_back(about = new PanelAbout());
+	panels.push_back(opengloptions = new PanelOpenGl());
 
 	return ret;
 }
@@ -178,6 +180,10 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			if (ImGui::MenuItem("Configuration", NULL, false, true))
 			{
 				configuration->active = true;
+			}
+			if (ImGui::MenuItem("OpenGl options", NULL, false, true))
+			{
+				opengloptions->active = true;
 			}
 			ImGui::EndMenu();
 		}

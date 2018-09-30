@@ -18,6 +18,7 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelIntersections;
 class PanelRandomNumberGenerator;
+class PanelOpenGl;
 
 class ModuleImgui : public Module
 {
@@ -44,6 +45,7 @@ public:
 	PanelAbout* about = nullptr;
 	PanelIntersections* intersections = nullptr;
 	PanelRandomNumberGenerator* randomNumberGenerator = nullptr;
+	PanelOpenGl* opengloptions = nullptr;
 
 private:
 
