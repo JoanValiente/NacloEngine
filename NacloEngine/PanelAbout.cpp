@@ -66,7 +66,21 @@ void PanelAbout::Draw()
 		{
 			ShellExecuteA(NULL, NULL, "http://www.flipcode.com/archives/Presenting_A_Memory_Manager.shtml", NULL, NULL, NULL);
 		}
+		ImGui::Text("OpenGl");
+		if (ImGui::IsItemClicked())
+		{
+			ShellExecuteA(NULL, NULL, "http://glew.sourceforge.net/", NULL, NULL, NULL);
+		}
 
+		ImGui::Text("Glew");
+		if (ImGui::IsItemClicked())
+		{
+			ShellExecuteA(NULL, NULL, "https://github.com/nigels-com/glew", NULL, NULL, NULL);
+		}
+
+
+
+		
 	}
 	ImGui::End();
 }
