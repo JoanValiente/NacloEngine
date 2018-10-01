@@ -1,3 +1,4 @@
+#include "OpenGL.h" 
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleImGui.h"
@@ -12,7 +13,6 @@
 #include "PanelIntersections.h"
 #include "PanelRandomNumberGenerator.h"
 #include "PanelOpenGL.h"
-
 
 #include <time.h>
 
@@ -77,6 +77,91 @@ update_status ModuleImgui::Update(float dt)
 	update_status ret = UPDATE_CONTINUE;
 	close_engine = Show_Main_Menu_Bar();
 
+	/*
+	glBegin(GL_TRIANGLE_STRIP);
+	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
+	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
+	glColor3f(0.0, 1.0, 0.0); glVertex3f(2.0, 0.0, 2.0);
+	glColor3f(0.0, 0.0, 1.0); glVertex3f(0.0, 0.0, -2.8);
+	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
+	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
+	glEnd();
+	*/
+	/*
+	glBegin(GL_TRIANGLE_STRIP);
+	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
+	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
+	glColor3f(0.0, 1.0, 0.0); glVertex3f(2.0, 0.0, 2.0);
+	glColor3f(0.0, 0.0, 1.0); glVertex3f(0.0, 0.0, -2.8);
+	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
+	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
+	glEnd();
+	*/
+
+	glLineWidth(2.0f);
+	glBegin(GL_LINES);
+	glColor3f(1.0, 1.0, 1.0);
+	glVertex3f(0.0f,0.0f,0.0f);
+	glVertex3f(0.0f, 10.0f, 0.0f);
+	glEnd();
+	glLineWidth(1.0f);
+
+	glBegin(GL_TRIANGLES);
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(2.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 2.0f, 0.0f);
+	
+	glVertex3f(0.0f, 2.0f, 0.0f);
+	glVertex3f(2.0f, 0.0f, 0.0f);
+	glVertex3f(2.0f, 2.0f, 0.0f);
+
+	glColor3f(1.0, 0.0, 1.0);
+	glVertex3f(2.0f, 2.0f, 0.0f);
+	glVertex3f(2.0f, 0.0f, 0.0f);
+	glVertex3f(2.0f, 0.0f, -2.0f);
+
+	glVertex3f(2.0f, 2.0f, 0.0f);
+	glVertex3f(2.0f, 0.0f, -2.0f);
+	glVertex3f(2.0f, 2.0f, -2.0f);
+
+	glColor3f(0.0, 1.0, 1.0);
+	glVertex3f(2.0f, 2.0f, -2.0f);
+	glVertex3f(2.0f, 0.0f, -2.0f);
+	glVertex3f(0.0f, 0.0f, -2.0f);
+
+	glVertex3f(0.0f, 2.0f, -2.0f);
+	glVertex3f(2.0f, 2.0f, -2.0f);
+	glVertex3f(0.0f, 0.0f, -2.0f);
+
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(0.0f, 2.0f, -2.0f);
+	glVertex3f(0.0f, 0.0f, -2.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+
+	glVertex3f(0.0f, 2.0f, -2.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 2.0f, 0.0f);
+
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex3f(0.0f, 2.0f, -2.0f);
+	glVertex3f(0.0f, 2.0f, 0.0f);
+	glVertex3f(2.0f, 2.0f, 0.0f);
+
+	glVertex3f(0.0f, 2.0f, -2.0f);
+	glVertex3f(2.0f, 2.0f, 0.0f);
+	glVertex3f(2.0f, 2.0f, -2.0f);
+
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex3f(0.0f, 0.0f, -2.0f);
+	glVertex3f(2.0f, 0.0f, 0.0f);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+
+	glVertex3f(0.0f, 0.0f, -2.0f);
+	glVertex3f(2.0f, 0.0f, -2.0f);
+	glVertex3f(2.0f, 0.0f, 0.0f);
+	glEnd();
+	
 	for (vector<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
 	{
 		Panel* panel = (*it);
