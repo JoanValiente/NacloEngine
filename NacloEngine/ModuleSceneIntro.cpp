@@ -26,12 +26,12 @@ bool ModuleSceneIntro::Start()
 	vertexs[7] = 1.0f;
 	vertexs[8] = 1.0f;
 
-	/*
+	
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
-	*/
+	
 
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
@@ -48,13 +48,14 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 	
-	/*
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glDrawArrays(GL_TRIANGLES, 0, 9);
 	glDisableClientState(GL_VERTEX_ARRAY);
-	*/
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	
 	/*
 	glBegin(GL_TRIANGLE_STRIP);
 	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
