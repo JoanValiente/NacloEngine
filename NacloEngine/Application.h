@@ -12,6 +12,7 @@
 #include "ModuleImgui.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ModuleSceneIntro.h"
 #include "PerfTimer.h"
 
 
@@ -26,6 +27,7 @@ public:
 	ModuleImgui* imgui;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
+	ModuleSceneIntro* sceneintro;
 
 	int		FPS_cap = 60;
 	bool	vsync = false;

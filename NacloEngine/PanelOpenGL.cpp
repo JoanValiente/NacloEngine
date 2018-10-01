@@ -1,6 +1,9 @@
 #include "PanelOpenGL.h"
 #include "Imgui/imgui.h"
 #include "Application.h"
+#include "OpenGL.h"
+
+
 
 PanelOpenGl::PanelOpenGl() : Panel("OpenGL")
 {
@@ -19,8 +22,7 @@ void PanelOpenGl::Draw()
 		static bool cull_face = glIsEnabled(GL_CULL_FACE);
 		static bool lighting = glIsEnabled(GL_LIGHTING);
 		static bool color_material = glIsEnabled(GL_COLOR_MATERIAL);
-		static bool texture_2D = glIsEnabled(GL_TEXTURE_2D);
-
+		static bool texture_2D = glIsEnabled(GL_TEXTURE_2D);		
 
 		if (ImGui::Checkbox("Depth Test", &depth_test))
 		{

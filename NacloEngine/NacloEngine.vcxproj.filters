@@ -40,6 +40,9 @@
     <Filter Include="Sources\Modules\Panels">
       <UniqueIdentifier>{83f46af7-e02f-40c0-9e56-41d76082527b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Glew">
+      <UniqueIdentifier>{3c096f87-7a2f-405c-9ae9-0fbe824317e3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -327,6 +330,21 @@
     <ClInclude Include="PanelOpenGL.h">
       <Filter>Sources\Modules\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="GL\include\eglew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\glew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\glxew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="GL\include\wglew.h">
+      <Filter>Sources\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleSceneIntro.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -520,6 +538,9 @@
     </ClCompile>
     <ClCompile Include="PanelOpenGL.cpp">
       <Filter>Sources\Modules\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleSceneIntro.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

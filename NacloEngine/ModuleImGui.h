@@ -5,7 +5,6 @@
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"
-#include "SDL/include/SDL_opengl.h"
 #include "Primitive.h"
 #include "PCG/pcg_variants.h"
 #include "PCG/entropy.h"
@@ -37,8 +36,6 @@ public:
 	void Log(const char* text);
 
 public:
-
-	plane* grid;
 
 	PanelConsole* console = nullptr;
 	PanelConfiguration* configuration = nullptr;

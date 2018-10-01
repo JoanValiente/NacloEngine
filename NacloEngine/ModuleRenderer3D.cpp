@@ -6,7 +6,7 @@
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
-#pragma comment (lib, "GL/lib//glew32.lib")
+#pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
@@ -68,7 +68,8 @@ bool ModuleRenderer3D::Init()
 		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		//Check for error
 		error = glGetError();
 		if(error != GL_NO_ERROR)

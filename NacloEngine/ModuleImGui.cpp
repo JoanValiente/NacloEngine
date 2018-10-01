@@ -45,13 +45,6 @@ bool ModuleImgui::Start()
 
 	bool ret = true;
 
-	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(float3(0, 0, 0));
-
-	grid = new plane(0, 1, 0, 0);
-	grid->axis = true;
-	grid->grid = true;
-
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -103,7 +96,6 @@ update_status ModuleImgui::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	grid->Render();
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
