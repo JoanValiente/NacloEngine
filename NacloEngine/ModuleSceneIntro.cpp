@@ -29,6 +29,7 @@ bool ModuleSceneIntro::Start()
 	/*
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
 	*/
 
@@ -46,7 +47,7 @@ bool ModuleSceneIntro::Start()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
-
+	
 	/*
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
@@ -54,7 +55,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	glDrawArrays(GL_TRIANGLES, 0, 9);
 	glDisableClientState(GL_VERTEX_ARRAY);
 	*/
-
 	/*
 	glBegin(GL_TRIANGLE_STRIP);
 	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
@@ -139,25 +139,35 @@ update_status ModuleSceneIntro::Update(float dt)
 	glVertex3f(0.0f, 0.0f, -2.0f);
 	glVertex3f(2.0f, 0.0f, -2.0f);
 	glVertex3f(2.0f, 0.0f, 0.0f);
-	glEnd();
 	*/
+	glEnd();
 
 	return ret;
 }
 
 update_status ModuleSceneIntro::PostUpdate(float dt)
 {
+	update_status ret = UPDATE_CONTINUE;
+
 	grid->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
-	return UPDATE_CONTINUE;
+	return ret;
 }
 
 bool ModuleSceneIntro::CleanUp()
 {
 	LOG("Unloading Intro Scene");
 	
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
+	SDL_GL_DeleteContext(App->renderer3D->context);
+	SDL_DestroyWindow(App->window->window);
+	SDL_Quit();
+
 	return false;
 }

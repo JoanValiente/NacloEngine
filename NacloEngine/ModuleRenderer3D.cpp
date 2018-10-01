@@ -1,8 +1,8 @@
+#include "OpenGL.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
-#include "OpenGL.h"
 
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
@@ -104,6 +104,7 @@ bool ModuleRenderer3D::Init()
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_TEXTURE_2D);
 
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
