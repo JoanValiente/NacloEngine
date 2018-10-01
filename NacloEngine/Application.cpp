@@ -5,10 +5,10 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
+	sceneintro = new ModuleSceneIntro(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	imgui = new ModuleImgui(this);
-	sceneintro = new ModuleSceneIntro(this);
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
@@ -20,10 +20,9 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	AddModule(sceneintro);
-
+	AddModule(imgui);
 
 	// Renderer last!
-	AddModule(imgui);
 	AddModule(renderer3D);
 }
 

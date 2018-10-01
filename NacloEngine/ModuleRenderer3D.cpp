@@ -30,6 +30,14 @@ bool ModuleRenderer3D::Init()
 		LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+
+	GLenum err = glewInit(); // … check for errors 
+
+	if (err != GLEW_OK)
+	{
+		LOG("Glew library could not init %s\n", glewGetErrorString(err));
+		ret = false;
+	}
 	
 	if(ret == true)
 	{
