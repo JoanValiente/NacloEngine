@@ -14,8 +14,6 @@ Application::Application()
 	// They will CleanUp() in reverse order
 
 		// ImGui
-	AddModule(imgui);
-
 	// Main Modules
 	AddModule(window);
 	AddModule(camera);
@@ -23,7 +21,9 @@ Application::Application()
 	AddModule(audio);
 	AddModule(sceneintro);
 
+
 	// Renderer last!
+	AddModule(imgui);
 	AddModule(renderer3D);
 }
 

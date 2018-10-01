@@ -1,8 +1,7 @@
 
 #include "Globals.h"
-#include <gl/GL.h>
-#include <gl/GLU.h>
 #include "Primitive.h"
+#include "OpenGL.h"
 
 // ------------------------------------------------------------
 Primitive::Primitive() : transform(float4x4::identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
