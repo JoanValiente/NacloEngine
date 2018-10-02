@@ -2,7 +2,7 @@
 #define __PANELINTERSECTIONS_H__
 
 #include "Panel.h"
-#include "Primitive.h"
+#include "MathGeoLib/MathGeoLib.h"
 
 class PanelIntersections : public Panel
 {

@@ -4,6 +4,8 @@
 #include "Module.h"
 #include <list>
 
+struct Cube;
+struct plane;
 
 class ModuleSceneIntro : public Module
 {

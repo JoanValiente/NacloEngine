@@ -2,10 +2,10 @@
 #define __MODULEIMGUI_H__
 
 #include "Module.h"
+#include "MathGeoLib/MathGeoLib.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_opengl2.h"
 #include "ImGui/imgui_impl_sdl.h"
-#include "Primitive.h"
 #include "PCG/pcg_variants.h"
 #include "PCG/entropy.h"
 
