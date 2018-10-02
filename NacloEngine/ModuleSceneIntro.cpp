@@ -15,7 +15,7 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start() 
 {
 	//glewInit();
-	vertexs[0] = 0.0f;  vertexs[1] = 0.0f;  vertexs[2] = 0.0f;
+	/*vertexs[0] = 0.0f;  vertexs[1] = 0.0f;  vertexs[2] = 0.0f;
 	vertexs[3] = 0.0f;	vertexs[4] = 1.0f;	vertexs[5] = 0.0f;
 	vertexs[6] = 1.0f;	vertexs[7] = 1.0f;	vertexs[8] = 0.0f;
 
@@ -63,7 +63,8 @@ bool ModuleSceneIntro::Start()
 	vertexs[102] = 0.0f;vertexs[103] = 1.0f; vertexs[104] = 1.0f;
 	vertexs[105] = 1.0f;vertexs[106] = 1.0f; vertexs[107] = 0.0f;
 
-	
+	*/
+
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
@@ -80,6 +81,8 @@ bool ModuleSceneIntro::Start()
 	cube->axis = true;
 
 	Ray = new ray(float3(0.0f, 2.0f, 0.0f), float3(5.0f, 2.0f, 0.0f));
+
+	test = new sphere(float3(4.0f,1.0f,0.0f), 1.0);
 
 	return true;
 
@@ -190,9 +193,10 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	grid->Render();
+	//grid->Render();
 	cube->Render();
 	Ray->Render();
+	test->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
