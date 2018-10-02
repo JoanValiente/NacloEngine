@@ -1,3 +1,4 @@
+#include "OpenGL.h"
 #include "Application.h"
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
@@ -75,7 +76,7 @@ bool ModuleSceneIntro::Start()
 	grid->axis = true;
 	grid->grid = true;
 
-	cube = new Cube(float3(2.0f, 2.0f, 2.0f), float3(2.0f,2.0f,2.0f));
+	cube = new Cube(float3(0.0f, 0.0f, 0.0f), float3(2.0f,2.0f,2.0f));
 
 	return true;
 

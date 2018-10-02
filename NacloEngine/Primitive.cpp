@@ -152,9 +152,9 @@ glEnd();
 	vertex[18] = -sx; vertex[19] = sy; vertex[20] = sz;
 	vertex[21] = sx; vertex[22] = sy; vertex[23] = sz;
 
-	glGenBuffers(1, &vertexId);
+	glGenBuffers(1, (GLuint*) &vertexId);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * 24, vertex, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	GLubyte index[36]{
@@ -180,9 +180,9 @@ glEnd();
 
 	//indexSize = sizeof(index) / sizeof(GLubyte);
 
-	glGenBuffers(1, &indexId);
+	glGenBuffers(1, (GLuint*) &indexId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 36, index, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 36, index, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
@@ -199,7 +199,7 @@ void Cube::InnerRender() const
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 

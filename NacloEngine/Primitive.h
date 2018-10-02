@@ -1,5 +1,4 @@
 #pragma once
-#include "Glew/include/glew.h"
 #include "Color.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -47,8 +46,8 @@ public:
 	float3 size;
 
 private:
-	GLuint indexId = 0;
-	GLuint vertexId = 0;
+	uint indexId = 0;
+	uint vertexId = 0;
 
 	//GLsizei indexSize = 0;
 	float vertex[24];
