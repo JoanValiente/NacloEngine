@@ -19,34 +19,7 @@ void Primitive::Render() const
 
 	if (axis == true)
 	{
-		// Draw Axis Grid
-		glLineWidth(2.0f);
-
-		glBegin(GL_LINES);
-
-		glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
-		glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
-
-		glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
-		glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
-		glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
-
-		glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
-
-		glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
-		glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
-		glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
-		glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
-
-		glEnd();
-
-		glLineWidth(1.0f);
+		AxisRender();
 	}
 
 	glColor3f(color.r, color.g, color.b);
@@ -75,6 +48,10 @@ void Primitive::InnerRender() const
 	glPointSize(1.0f);
 }
 
+void Primitive::AxisRender() const
+{
+}
+
 // ------------------------------------------------------------
 void Primitive::SetPos(float x, float y, float z)
 {
@@ -94,7 +71,7 @@ void Primitive::Scale(float x, float y, float z)
 }
 
 // CUBE ============================================
-Cube::Cube(float3 position, float3 size) : Primitive(), size(size)
+Cube::Cube(float3 position, float3 size) : Primitive(), size(size), position(position)
 {
 	type = PrimitiveTypes::Primitive_Cube;
 
@@ -215,6 +192,32 @@ void Cube::InnerRender() const
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+void Cube::AxisRender() const
+{
+	glBegin(GL_LINES);
+
+	glLineWidth(1.f);
+
+	// Y axis
+	glColor3f(0.f, 255.f, 0.f);
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x, position.y + size.y, position.z);
+
+	// X axis
+	glColor3f(255.f, 0.f, 0.f);
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x + size.x, position.y, position.z);
+
+	// Z axis
+	glColor3f(0.f, 0.f, 255.f);
+	glVertex3f(position.x, position.y, position.z);
+	glVertex3f(position.x, position.y, position.z + size.z);
+
+	glColor3f(1.f, 1.f, 1.f);
+
+	glEnd();
+}
+
 /*
 // SPHERE ============================================
 sphere::sphere() : Primitive(), radius(1.0f)
@@ -307,7 +310,7 @@ void line::InnerRender() const
 */
 
 // PLANE ==================================================
-plane::plane(float3 position, float3 size) : Primitive(), size(size)
+plane::plane(float3 position, float3 size) : Primitive(), size(size), position(position)
 {
 	type = PrimitiveTypes::Primitive_Plane;
 	float vertex[12] = {
@@ -358,6 +361,37 @@ void plane::InnerRender() const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glDisableClientState(GL_VERTEX_ARRAY);	
+}
+
+void plane::AxisRender() const
+{
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+
+	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(1.0f, 0.1f, 0.0f); glVertex3f(1.1f, -0.1f, 0.0f);
+	glVertex3f(1.1f, 0.1f, 0.0f); glVertex3f(1.0f, -0.1f, 0.0f);
+
+	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.05f, 1.25f, 0.0f); glVertex3f(0.0f, 1.15f, 0.0f);
+	glVertex3f(0.0f, 1.15f, 0.0f); glVertex3f(0.0f, 1.05f, 0.0f);
+
+	glColor4f(0.0f, 0.0f, 1.0f, 1.0f);
+
+	glVertex3f(0.0f, 0.0f, 0.0f); glVertex3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.05f, 0.1f, 1.05f); glVertex3f(0.05f, 0.1f, 1.05f);
+	glVertex3f(0.05f, 0.1f, 1.05f); glVertex3f(-0.05f, -0.1f, 1.05f);
+	glVertex3f(-0.05f, -0.1f, 1.05f); glVertex3f(0.05f, -0.1f, 1.05f);
+
+	glEnd();
+
+	glLineWidth(1.0f);
 }
 
 ray::ray(float3 startPos, float3 endPos) : Primitive()
