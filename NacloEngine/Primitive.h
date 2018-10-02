@@ -50,8 +50,8 @@ private:
 	GLuint indexId = 0;
 	GLuint vertexId = 0;
 
-	GLsizei indexSize = 0;
-	GLfloat* vertex;
+	//GLsizei indexSize = 0;
+	float vertex[24];
 };
 
 /*

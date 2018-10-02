@@ -15,7 +15,7 @@ PrimitiveTypes Primitive::GetType() const
 void Primitive::Render() const
 {
 	glPushMatrix();
-	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
+	glMultMatrixf((GLfloat*)transform.ptr());
 
 	if (axis == true)
 	{
@@ -143,16 +143,14 @@ glVertex3f(-sx, -sy, sz);
 
 glEnd();
 */
-	vertex = new GLfloat[24]{
-		-sx, -sy, sz, // (0)
-		 sx, -sy, sz, // (1)
-		-sx, sy, sz, // (2)
-		 sx, sy, sz, // (3)
-		-sx, -sy, sz, // (4)
-		 sx, -sy, sz, // (5)
-		-sx, sy, sz, // (6)
-		 sx, sy, sz  // (7)
-	};
+	vertex[0] = -sx; vertex[1] = -sy; vertex[2] = sz;
+	vertex[3] = sx; vertex[4] = -sy; vertex[5] = sz;
+	vertex[6] = -sx; vertex[7] = sy; vertex[8] = sz;
+	vertex[9] = sx; vertex[10] = sy; vertex[11] = sz;
+	vertex[12] = -sx; vertex[13] = -sy; vertex[14] = sz;
+	vertex[15] = sx; vertex[16] = -sy; vertex[17] = sz;
+	vertex[18] = -sx; vertex[19] = sy; vertex[20] = sz;
+	vertex[21] = sx; vertex[22] = sy; vertex[23] = sz;
 
 	glGenBuffers(1, &vertexId);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
@@ -180,7 +178,7 @@ glEnd();
 		1, 4, 5 
 	};
 
-	indexSize = sizeof(index) / sizeof(GLubyte);
+	//indexSize = sizeof(index) / sizeof(GLubyte);
 
 	glGenBuffers(1, &indexId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
@@ -202,7 +200,7 @@ void Cube::InnerRender() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexId);
-	glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_BYTE, NULL);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glDisableClientState(GL_VERTEX_ARRAY);
