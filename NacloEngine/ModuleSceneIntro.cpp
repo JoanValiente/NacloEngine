@@ -78,6 +78,8 @@ bool ModuleSceneIntro::Start()
 
 	cube = new Cube(float3(0.0f, 3.0f, 0.0f), float3(2.0f,2.0f,2.0f));
 
+	Ray = new ray(float3(0.0f, 2.0f, 0.0f), float3(5.0f, 2.0f, 0.0f));
+
 	return true;
 
 }
@@ -189,6 +191,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 
 	grid->Render();
 	cube->Render();
+	Ray->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

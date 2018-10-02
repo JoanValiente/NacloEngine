@@ -6,6 +6,7 @@
 
 struct Cube;
 struct plane;
+struct ray;
 
 class ModuleSceneIntro : public Module
 {
@@ -23,8 +24,8 @@ public:
 
 private:
 	plane * grid;
-
 	Cube * cube;
+	ray * Ray;
 
 	float vertexs[200];
 	uint indices[8] = { 0,1,2 };
