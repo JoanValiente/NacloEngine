@@ -20,13 +20,15 @@ public:
 
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
-	
 
-private:
+	void WireMode();
+	
+public:
 	plane * grid;
 	Cube * cube;
 	ray * Ray;
 
+private:
 	float vertexs[200];
 	uint indices[8] = { 0,1,2 };
 	uint my_id = 0;

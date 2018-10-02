@@ -44,6 +44,8 @@ public:
 	PanelRandomNumberGenerator* randomNumberGenerator = nullptr;
 	PanelOpenGl* opengloptions = nullptr;
 
+	bool wire_mode = false;
+
 private:
 
 	bool Show_Main_Menu_Bar();
