@@ -97,7 +97,6 @@ void Primitive::Scale(float x, float y, float z)
 Cube::Cube(float3 position, float3 size) : Primitive(), size(size)
 {
 	type = PrimitiveTypes::Primitive_Cube;
-	SetPos(position.x, position.y, position.z);
 
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
@@ -143,21 +142,31 @@ glVertex3f(-sx, -sy, sz);
 
 glEnd();
 */
-	vertex[0] = -sx; vertex[1] = -sy; vertex[2] = sz;
-	vertex[3] = sx; vertex[4] = -sy; vertex[5] = sz;
-	vertex[6] = -sx; vertex[7] = sy; vertex[8] = sz;
-	vertex[9] = sx; vertex[10] = sy; vertex[11] = sz;
-	vertex[12] = -sx; vertex[13] = -sy; vertex[14] = sz;
-	vertex[15] = sx; vertex[16] = -sy; vertex[17] = sz;
-	vertex[18] = -sx; vertex[19] = sy; vertex[20] = sz;
-	vertex[21] = sx; vertex[22] = sy; vertex[23] = sz;
+
+	float vertex[24] = {
+		-sx, -sy,  sz,
+		 sx, -sy,  sz,
+		-sx,  sy,  sz,
+		 sx,  sy,  sz,
+		-sx, -sy, -sz,
+		 sx, -sy, -sz,
+		-sx,  sy, -sz,
+		 sx,  sy, -sz
+	};
+
+	for (int i = 0; i < 24; i += 3) {
+
+		vertex[i] += position.x;
+		vertex[i + 1] += position.y;
+		vertex[i + 2] += position.z;
+	}
 
 	glGenBuffers(1, (GLuint*) &vertexId);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 24, vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	GLubyte index[36]{
+	uint index[36]{
 		// Front
 		0, 1, 2,
 		1, 3, 2,
@@ -184,11 +193,11 @@ glEnd();
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 36, index, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
 }
 
 Cube::~Cube()
 {
-	delete[] vertex;
 }
 
 void Cube::InnerRender() const
@@ -200,7 +209,7 @@ void Cube::InnerRender() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_BYTE, NULL);
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	glDisableClientState(GL_VERTEX_ARRAY);

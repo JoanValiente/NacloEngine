@@ -50,7 +50,6 @@ private:
 	uint vertexId = 0;
 
 	//GLsizei indexSize = 0;
-	float vertex[24];
 };
 
 /*

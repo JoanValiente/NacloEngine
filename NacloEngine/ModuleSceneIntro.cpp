@@ -76,7 +76,7 @@ bool ModuleSceneIntro::Start()
 	grid->axis = true;
 	grid->grid = true;
 
-	cube = new Cube(float3(0.0f, 0.0f, 0.0f), float3(2.0f,2.0f,2.0f));
+	cube = new Cube(float3(0.0f, 3.0f, 0.0f), float3(5.0f,5.0f,5.0f));
 
 	return true;
 
