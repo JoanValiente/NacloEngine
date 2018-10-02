@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleSceneIntro.h"
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -131,7 +132,7 @@ void ModuleImgui::Log(const char * text)
 bool ModuleImgui::Show_Main_Menu_Bar()
 {
 	bool ret = true;
-
+	
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Main Menu"))
@@ -166,6 +167,10 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			if (ImGui::MenuItem("OpenGl options", NULL, false, true))
 			{
 				opengloptions->active = true;
+			}
+			if (ImGui::Checkbox("Wire Mode", &wire_mode))
+			{
+				App->sceneintro->WireMode();
 			}
 			ImGui::EndMenu();
 		}

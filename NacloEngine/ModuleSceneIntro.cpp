@@ -3,6 +3,7 @@
 #include "ModuleSceneIntro.h"
 #include "Primitive.h"
 #include "Globals.h"
+#include "PanelOpenGL.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -15,7 +16,9 @@ ModuleSceneIntro::~ModuleSceneIntro()
 bool ModuleSceneIntro::Start() 
 {
 	//glewInit();
-	/*vertexs[0] = 0.0f;  vertexs[1] = 0.0f;  vertexs[2] = 0.0f;
+
+	/*
+	vertexs[0] = 0.0f;  vertexs[1] = 0.0f;  vertexs[2] = 0.0f;
 	vertexs[3] = 0.0f;	vertexs[4] = 1.0f;	vertexs[5] = 0.0f;
 	vertexs[6] = 1.0f;	vertexs[7] = 1.0f;	vertexs[8] = 0.0f;
 
@@ -70,6 +73,7 @@ bool ModuleSceneIntro::Start()
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
@@ -91,100 +95,7 @@ bool ModuleSceneIntro::Start()
 update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, my_id);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-	glDisableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	/*
-	glBegin(GL_TRIANGLE_STRIP);
-	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
-	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
-	glColor3f(0.0, 1.0, 0.0); glVertex3f(2.0, 0.0, 2.0);
-	glColor3f(0.0, 0.0, 1.0); glVertex3f(0.0, 0.0, -2.8);
-	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
-	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
-	glEnd();
-	*/
-	/*
-	glBegin(GL_TRIANGLE_STRIP);
-	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
-	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
-	glColor3f(0.0, 1.0, 0.0); glVertex3f(2.0, 0.0, 2.0);
-	glColor3f(0.0, 0.0, 1.0); glVertex3f(0.0, 0.0, -2.8);
-	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
-	glColor3f(1.0, 0.0, 0.0); glVertex3f(-2.0, 0.0, 2.0);
-	glEnd();
-	*/
-
-	/*
-	glLineWidth(2.0f);
-	glBegin(GL_LINES);
-	glColor3f(1.0, 1.0, 1.0);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 10.0f, 0.0f);
-	glEnd();
-	glLineWidth(1.0f);
-
-	glBegin(GL_TRIANGLES);
-	glColor3f(1.0, 0.0, 0.0);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(2.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 2.0f, 0.0f);
-
-	glVertex3f(0.0f, 2.0f, 0.0f);
-	glVertex3f(2.0f, 0.0f, 0.0f);
-	glVertex3f(2.0f, 2.0f, 0.0f);
-
-	glColor3f(1.0, 0.0, 1.0);
-	glVertex3f(2.0f, 2.0f, 0.0f);
-	glVertex3f(2.0f, 0.0f, 0.0f);
-	glVertex3f(2.0f, 0.0f, -2.0f);
-
-	glVertex3f(2.0f, 2.0f, 0.0f);
-	glVertex3f(2.0f, 0.0f, -2.0f);
-	glVertex3f(2.0f, 2.0f, -2.0f);
-
-	glColor3f(0.0, 1.0, 1.0);
-	glVertex3f(2.0f, 2.0f, -2.0f);
-	glVertex3f(2.0f, 0.0f, -2.0f);
-	glVertex3f(0.0f, 0.0f, -2.0f);
-
-	glVertex3f(0.0f, 2.0f, -2.0f);
-	glVertex3f(2.0f, 2.0f, -2.0f);
-	glVertex3f(0.0f, 0.0f, -2.0f);
-
-	glColor3f(0.0, 0.0, 1.0);
-	glVertex3f(0.0f, 2.0f, -2.0f);
-	glVertex3f(0.0f, 0.0f, -2.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glVertex3f(0.0f, 2.0f, -2.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 2.0f, 0.0f);
-
-	glColor3f(1.0, 1.0, 0.0);
-	glVertex3f(0.0f, 2.0f, -2.0f);
-	glVertex3f(0.0f, 2.0f, 0.0f);
-	glVertex3f(2.0f, 2.0f, 0.0f);
-
-	glVertex3f(0.0f, 2.0f, -2.0f);
-	glVertex3f(2.0f, 2.0f, 0.0f);
-	glVertex3f(2.0f, 2.0f, -2.0f);
-
-	glColor3f(1.0, 1.0, 0.0);
-	glVertex3f(0.0f, 0.0f, -2.0f);
-	glVertex3f(2.0f, 0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glVertex3f(0.0f, 0.0f, -2.0f);
-	glVertex3f(2.0f, 0.0f, -2.0f);
-	glVertex3f(2.0f, 0.0f, 0.0f);
-	*/
-	glEnd();
 
 	return ret;
 }
@@ -193,7 +104,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	//grid->Render();
+	grid->Render();
 	cube->Render();
 	Ray->Render();
 	test->Render();
@@ -202,6 +113,16 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	return ret;
+}
+
+void ModuleSceneIntro::WireMode()
+{
+	if (App->imgui->wire_mode) {
+		cube->wire = true;
+	}
+	else {
+		cube->wire = false;
+	}
 }
 
 bool ModuleSceneIntro::CleanUp()
