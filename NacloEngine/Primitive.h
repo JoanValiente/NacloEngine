@@ -52,6 +52,22 @@ private:
 	//GLsizei indexSize = 0;
 };
 
+// ============================================
+
+class plane : public Primitive
+{
+public:
+	plane(float3 pos = float3(0.0f, 0.0f, 0.0f), float3 size = float3(200.0f, 0.0f, 200.0f));
+	void InnerRender() const;
+public:
+	bool grid = false;
+	float3 size;
+
+private:
+	uint indexId = 0;
+	uint vertexId = 0;
+};
+
 /*
 // ============================================
 class sphere : public Primitive
@@ -88,15 +104,3 @@ public:
 	float3 destination;
 };
 */
-
-// ============================================
-class plane : public Primitive
-{
-public:
-	plane();
-	plane(float x, float y, float z, float d);
-	void InnerRender() const;
-public:
-	bool grid = false;
-	Plane* mathGeoLibPlane;
-};

@@ -307,38 +307,56 @@ void line::InnerRender() const
 */
 
 // PLANE ==================================================
-plane::plane() : Primitive()
+plane::plane(float3 position, float3 size) : Primitive(), size(size)
 {
 	type = PrimitiveTypes::Primitive_Plane;
-}
+	float vertex[12] = {
+		 size.x, position.y, -size.z,
+		 size.x, position.y,  size.z,
+		-size.x, position.y, -size.z,
+		-size.x, position.y,  size.z 
+	};
 
-plane::plane(float x, float y, float z, float d) : Primitive()
-{
-	type = PrimitiveTypes::Primitive_Plane;
-	float3 pos(x, y, z);
-	mathGeoLibPlane = new Plane(pos, d);
+	for (int i = 0; i < 24; i += 3) {
+
+		vertex[i] += position.x;
+		vertex[i + 1] += position.y;
+		vertex[i + 2] += position.z;
+	}
+
+	glGenBuffers(1, (GLuint*)&vertexId);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	uint index[6]{
+		2, 1, 0,
+		3, 1, 2 
+	};
+
+	glGenBuffers(1, (GLuint*)&indexId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 6, index, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
 void plane::InnerRender() const
 {
-	glLineWidth(1.0f);
-	
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
 	if (grid) {
-		glBegin(GL_LINES);
+		glDrawElements(GL_LINES, 36, GL_UNSIGNED_INT, NULL);
 	}
 	else {
-		glBegin(GL_TRIANGLE_STRIP);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	}
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	float d = 200.0f;
-
-	for (float i = -d; i <= d; i += 1.0f)
-	{
-		glVertex3f(i, 0.0f, -d);
-		glVertex3f(i, 0.0f, d);
-		glVertex3f(-d, 0.0f, i);
-		glVertex3f(d, 0.0f, i);
-	}
-
-	glEnd();
+	glDisableClientState(GL_VERTEX_ARRAY);
+	
 }

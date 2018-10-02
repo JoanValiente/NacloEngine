@@ -72,11 +72,11 @@ bool ModuleSceneIntro::Start()
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
-	grid = new plane(0, 1, 0, 0);
+	grid = new plane(float3(0.0f, 0.0f, 0.0f), float3(100.0f, 0, 100.0f));
 	grid->axis = true;
 	grid->grid = true;
 
-	cube = new Cube(float3(0.0f, 3.0f, 0.0f), float3(5.0f,5.0f,5.0f));
+	cube = new Cube(float3(0.0f, 3.0f, 0.0f), float3(2.0f,2.0f,2.0f));
 
 	return true;
 
