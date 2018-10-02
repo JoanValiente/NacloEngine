@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleSceneIntro.h"
+#include "Primitive.h"
 #include "OpenGL.h" 
 #include "Globals.h"
 
@@ -66,8 +67,7 @@ bool ModuleSceneIntro::Start()
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 180 * 3, vertexs, GL_STATIC_DRAW);
-	
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
@@ -75,6 +75,8 @@ bool ModuleSceneIntro::Start()
 	grid = new plane(0, 1, 0, 0);
 	grid->axis = true;
 	grid->grid = true;
+
+	cube = new Cube(float3(0.0f, 0.0f, 0.0f), float3(2.0f,2.0f,2.0f));
 
 	return true;
 
@@ -91,7 +93,6 @@ update_status ModuleSceneIntro::Update(float dt)
 	glDisableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	
 	/*
 	glBegin(GL_TRIANGLE_STRIP);
 	glColor3f(1.0, 1.0, 1.0); glVertex3f(0.0, 4.0, 0.0);
@@ -187,6 +188,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	grid->Render();
+	cube->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

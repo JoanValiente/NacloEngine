@@ -1,4 +1,5 @@
 #pragma once
+#include "Glew/include/glew.h"
 #include "Color.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -36,16 +37,24 @@ protected:
 };
 
 // ============================================
-class cube : public Primitive
+class Cube : public Primitive
 {
 public :
-	cube();
-	cube(float sizeX, float sizeY, float sizeZ);
+	Cube(float3 pos = float3(0.0f,0.0f,0.0f), float3 size = float3(1.0f, 1.0f, 1.0f));
+	~Cube();
 	void InnerRender() const;
 public:
 	float3 size;
+
+private:
+	GLuint indexId = 0;
+	GLuint vertexId = 0;
+
+	GLsizei indexSize = 0;
+	GLfloat* vertex;
 };
 
+/*
 // ============================================
 class sphere : public Primitive
 {
@@ -80,6 +89,7 @@ public:
 	float3 origin;
 	float3 destination;
 };
+*/
 
 // ============================================
 class plane : public Primitive

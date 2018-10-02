@@ -22,6 +22,8 @@ public:
 private:
 	plane * grid;
 
+	Cube * cube;
+
 	float vertexs[200];
 	uint indices[8] = { 0,1,2 };
 	uint my_id = 0;

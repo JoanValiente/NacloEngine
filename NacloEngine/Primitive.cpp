@@ -1,12 +1,10 @@
-
+#include "OpenGL.h"
 #include "Globals.h"
 #include "Primitive.h"
-#include "OpenGL.h"
 
 // ------------------------------------------------------------
 Primitive::Primitive() : transform(float4x4::identity), color(White), wire(false), axis(false), type(PrimitiveTypes::Primitive_Point)
 {}
-
 // ------------------------------------------------------------
 PrimitiveTypes Primitive::GetType() const
 {
@@ -19,7 +17,7 @@ void Primitive::Render() const
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.Transposed().ptr());
 
-	if(axis == true)
+	if (axis == true)
 	{
 		// Draw Axis Grid
 		glLineWidth(2.0f);
@@ -53,7 +51,7 @@ void Primitive::Render() const
 
 	glColor3f(color.r, color.g, color.b);
 
-	if(wire)
+	if (wire)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -96,62 +94,121 @@ void Primitive::Scale(float x, float y, float z)
 }
 
 // CUBE ============================================
-cube::cube() : Primitive(), size(1.0f, 1.0f, 1.0f)
+Cube::Cube(float3 position, float3 size) : Primitive(), size(size)
 {
 	type = PrimitiveTypes::Primitive_Cube;
-}
+	SetPos(position.x, position.y, position.z);
 
-cube::cube(float sizeX, float sizeY, float sizeZ) : Primitive(), size(sizeX, sizeY, sizeZ)
-{
-	type = PrimitiveTypes::Primitive_Cube;
-}
-
-void cube::InnerRender() const
-{	
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
 	float sz = size.z * 0.5f;
+	/*
+glBegin(GL_QUADS);
 
-	glBegin(GL_QUADS);
+glNormal3f(0.0f, 0.0f, 1.0f);
+glVertex3f(-sx, -sy, sz);
+glVertex3f(sx, -sy, sz);
+glVertex3f(sx, sy, sz);
+glVertex3f(-sx, sy, sz);
 
-	glNormal3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-sx, -sy, sz);
-	glVertex3f( sx, -sy, sz);
-	glVertex3f( sx,  sy, sz);
-	glVertex3f(-sx,  sy, sz);
+glNormal3f(0.0f, 0.0f, -1.0f);
+glVertex3f(sx, -sy, -sz);
+glVertex3f(-sx, -sy, -sz);
+glVertex3f(-sx, sy, -sz);
+glVertex3f(sx, sy, -sz);
 
-	glNormal3f(0.0f, 0.0f, -1.0f);
-	glVertex3f( sx, -sy, -sz);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(-sx,  sy, -sz);
-	glVertex3f( sx,  sy, -sz);
+glNormal3f(1.0f, 0.0f, 0.0f);
+glVertex3f(sx, -sy, sz);
+glVertex3f(sx, -sy, -sz);
+glVertex3f(sx, sy, -sz);
+glVertex3f(sx, sy, sz);
 
-	glNormal3f(1.0f, 0.0f, 0.0f);
-	glVertex3f(sx, -sy,  sz);
-	glVertex3f(sx, -sy, -sz);
-	glVertex3f(sx,  sy, -sz);
-	glVertex3f(sx,  sy,  sz);
+glNormal3f(-1.0f, 0.0f, 0.0f);
+glVertex3f(-sx, -sy, -sz);
+glVertex3f(-sx, -sy, sz);
+glVertex3f(-sx, sy, sz);
+glVertex3f(-sx, sy, -sz);
 
-	glNormal3f(-1.0f, 0.0f, 0.0f);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f(-sx, -sy,  sz);
-	glVertex3f(-sx,  sy,  sz);
-	glVertex3f(-sx,  sy, -sz);
+glNormal3f(0.0f, 1.0f, 0.0f);
+glVertex3f(-sx, sy, sz);
+glVertex3f(sx, sy, sz);
+glVertex3f(sx, sy, -sz);
+glVertex3f(-sx, sy, -sz);
 
-	glNormal3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(-sx, sy,  sz);
-	glVertex3f( sx, sy,  sz);
-	glVertex3f( sx, sy, -sz);
-	glVertex3f(-sx, sy, -sz);
+glNormal3f(0.0f, -1.0f, 0.0f);
+glVertex3f(-sx, -sy, -sz);
+glVertex3f(sx, -sy, -sz);
+glVertex3f(sx, -sy, sz);
+glVertex3f(-sx, -sy, sz);
 
-	glNormal3f(0.0f, -1.0f, 0.0f);
-	glVertex3f(-sx, -sy, -sz);
-	glVertex3f( sx, -sy, -sz);
-	glVertex3f( sx, -sy,  sz);
-	glVertex3f(-sx, -sy,  sz);
+glEnd();
+*/
+	vertex = new GLfloat[24]{
+		-sx, -sy, sz, // (0)
+		 sx, -sy, sz, // (1)
+		-sx, sy, sz, // (2)
+		 sx, sy, sz, // (3)
+		-sx, -sy, sz, // (4)
+		 sx, -sy, sz, // (5)
+		-sx, sy, sz, // (6)
+		 sx, sy, sz  // (7)
+	};
 
-	glEnd();
+	glGenBuffers(1, &vertexId);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(GLuint) * 24, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	GLubyte index[36]{
+		// Front
+		0, 1, 2,
+		1, 3, 2,
+		// Right
+		1, 5, 3,
+		5, 7, 3,
+		// Back
+		5, 4, 7,
+		4, 6, 7,
+		// Left
+		4, 0, 6,
+		0, 2, 6,
+		// Top
+		2, 3, 6,
+		3, 7, 6,
+		// Bottom
+		0, 4, 1,
+		1, 4, 5 
+	};
+
+	indexSize = sizeof(index) / sizeof(GLubyte);
+
+	glGenBuffers(1, &indexId);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(GLuint) * 36, index, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
+
+Cube::~Cube()
+{
+	delete[] vertex;
+}
+
+void Cube::InnerRender() const
+{	
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexId);
+	glDrawElements(GL_TRIANGLES, indexSize, GL_UNSIGNED_BYTE, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+}
+
+/*
 // SPHERE ============================================
 sphere::sphere() : Primitive(), radius(1.0f)
 {
@@ -240,6 +297,7 @@ void line::InnerRender() const
 
 	glLineWidth(1.0f);
 }
+*/
 
 // PLANE ==================================================
 plane::plane() : Primitive()
