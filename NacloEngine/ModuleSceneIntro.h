@@ -8,6 +8,8 @@ struct Cube;
 struct plane;
 struct ray;
 struct Arrow;
+struct sphere;
+
 
 class ModuleSceneIntro : public Module
 {
@@ -29,6 +31,7 @@ public:
 	Cube * cube;
 	ray * Ray;
 	Arrow * arrow;
+	sphere * test; 
 
 private:
 	float vertexs[200];

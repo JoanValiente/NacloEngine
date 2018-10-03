@@ -92,6 +92,30 @@ public:
 private:
 	uint vertexId = 0;
 };
+
+class sphere : public Primitive
+{
+public:
+	sphere(float3 pos = float3(0.0f, 0.0f, 0.0f), float radius = 1, uint rings = 8, uint sectors = 8);
+	~sphere();
+	void InnerRender() const;
+
+public:
+	float3 position;
+	float3 radius;
+
+private:
+	uint indexId = 0;
+	uint vertexId = 0;
+
+	std::vector<GLfloat> vertices;
+	std::vector<GLfloat> normals;
+	std::vector<GLfloat> texcoords;
+	std::vector<GLushort> indices;
+
+	//GLsizei indexSize = 0;
+};
+
 /*
 // ============================================
 class sphere : public Primitive
