@@ -83,6 +83,15 @@ private:
 	uint vertexId = 0;
 };
 
+class Arrow : public Primitive
+{
+public:
+	Arrow(float3 startPos = float3(0.0f, 0.0f, 0.0f), float3 endPos = float3(0.0f, 0.0f, 0.0f));
+	void InnerRender() const;
+
+private:
+	uint vertexId = 0;
+};
 /*
 // ============================================
 class sphere : public Primitive

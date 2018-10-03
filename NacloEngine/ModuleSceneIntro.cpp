@@ -22,10 +22,12 @@ bool ModuleSceneIntro::Start()
 	grid->axis = true;
 	grid->grid = true;
 
-	cube = new Cube(float3(0.0f, 3.0f, 0.0f), float3(2.0f,2.0f,2.0f));
+	cube = new Cube(float3(10.0f, 0.0f, 0.0f), float3(2.0f,2.0f,2.0f));
 	cube->axis = true;
 
 	Ray = new ray(float3(0.0f, 2.0f, 0.0f), float3(5.0f, 2.0f, 0.0f));
+
+	arrow = new Arrow(float3(0.0f, 3.0f, 0.0f), float3(5.0f, 3.0f, 0.0f));
 
 	return true;
 
@@ -46,6 +48,7 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	grid->Render();
 	cube->Render();
 	Ray->Render();
+	arrow->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

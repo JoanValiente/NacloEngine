@@ -202,16 +202,22 @@ void Cube::AxisRender() const
 	glColor3f(0.f, 255.f, 0.f);
 	glVertex3f(position.x, position.y, position.z);
 	glVertex3f(position.x, position.y + size.y, position.z);
+	glVertex3f(position.x - 0.05f, position.y + size.y, position.z); glVertex3f(position.x, position.y + size.y + 0.15f, position.z);
+	glVertex3f(position.x + 0.05f, position.y + size.y, position.z); glVertex3f(position.x, position.y + size.y + 0.15f, position.z);
 
 	// X axis
 	glColor3f(255.f, 0.f, 0.f);
 	glVertex3f(position.x, position.y, position.z);
 	glVertex3f(position.x + size.x, position.y, position.z);
+	glVertex3f(position.x + size.x, position.y - 0.05f, position.z); glVertex3f(position.x + size.x + 0.15f, position.y, position.z);
+	glVertex3f(position.x + size.x, position.y + 0.05f, position.z); glVertex3f(position.x + size.x + 0.15f, position.y, position.z);
 
 	// Z axis
 	glColor3f(0.f, 0.f, 255.f);
 	glVertex3f(position.x, position.y, position.z);
 	glVertex3f(position.x, position.y, position.z + size.z);
+	glVertex3f(position.x, position.y - 0.05f, position.z + size.z); glVertex3f(position.x, position.y, position.z + size.z + 0.15f);
+	glVertex3f(position.x, position.y + 0.05f, position.z + size.z); glVertex3f(position.x, position.y, position.z + size.z + 0.15f);
 
 	glColor3f(1.f, 1.f, 1.f);
 
@@ -419,4 +425,34 @@ void ray::InnerRender() const
 
 	glDisableClientState(GL_VERTEX_ARRAY);
 
+}
+
+Arrow::Arrow(float3 startPos, float3 endPos) : Primitive()
+{
+	float vertex[18] = {
+		startPos.x, startPos.y, startPos.z,
+		endPos.x, endPos.y, endPos.z,
+		endPos.x + 1.0f, endPos.y - 2.0f, endPos.z,
+		endPos.x, endPos.y, endPos.z,
+		endPos.x, endPos.y, endPos.z,
+		endPos.x - 1.0f, endPos.y - 2.0f, endPos.z,
+	};
+	
+	glGenBuffers(1, (GLuint*)&vertexId);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6, vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+}
+
+void Arrow::InnerRender() const
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glDrawArrays(GL_LINES, 0, 2);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
 }
