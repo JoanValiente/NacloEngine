@@ -460,42 +460,42 @@ void Arrow::InnerRender() const
 
 sphere::sphere(float3 pos, float radius, uint rings, uint sectors)
 {
-	float const R = 1. / (float)(rings - 1);
-	float const S = 1. / (float)(sectors - 1);
+	float const R = 1.0f / (float)(rings - 1);
+	float const S = 1.0f / (float)(sectors - 1);
 	int r, s;
 
-	vertices.resize(rings * sectors * 3);
-	normals.resize(rings * sectors * 3);
-	texcoords.resize(rings * sectors * 2);
-	std::vector<GLfloat>::iterator v = vertices.begin();
-	std::vector<GLfloat>::iterator n = normals.begin();
-	std::vector<GLfloat>::iterator t = texcoords.begin();
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
-		float const y = sin(-PI/2 + PI * r * R);
-		float const x = cos(2 * PI * s * S) * sin(PI * r * R);
-		float const z = sin(2 * PI * s * S) * sin(PI * r * R);
+	vertexId.resize(rings * sectors * 3);
 
-		*t++ = s * S;
-		*t++ = r * R;
+	std::vector<GLfloat>::iterator v = vertexId.begin();
 
-		*v++ = x * radius;
-		*v++ = y * radius;
-		*v++ = z * radius;
+	for (r = 0; r < rings; r++)
+	{
+		for (s = 0; s < sectors; s++)
+		{
+			float const y = sin(-PI / 2 + PI * r * R);
+			float const x = cos(2 * PI * s * S) * sin(PI * r * R);
+			float const z = sin(2 * PI * s * S) * sin(PI * r * R);
 
-		*n++ = x;
-		*n++ = y;
-		*n++ = z;
+			*v++ = x * radius;
+			*v++ = y * radius;
+			*v++ = z * radius;
+		}
 	}
 
-	indices.resize(rings * sectors * 4);
-	std::vector<GLushort>::iterator i = indices.begin();
-	for (r = 0; r < rings; r++) for (s = 0; s < sectors; s++) {
-		*i++ = r * sectors + s;
-		*i++ = r * sectors + (s + 1);
-		*i++ = (r + 1) * sectors + (s + 1);
-		*i++ = (r + 1) * sectors + s;
+	indexId.resize(rings * sectors * 4);
+	
+	std::vector<GLushort>::iterator i = indexId.begin();
+	for (r = 0; r < rings; r++) 
+	{
+		for (s = 0; s < sectors; s++) 
+		{
+			*i++ = r * sectors + s;
+			*i++ = r * sectors + (s + 1);
+			*i++ = (r + 1) * sectors + (s + 1);
+			*i++ = (r + 1) * sectors + s;
+		}
 	}
-	indices.resize((rings * (sectors - 1) * 4 ) - 4);
+	indexId.resize((rings * (sectors - 1) * 4 ) - 4);
 }
 
 sphere::~sphere()
@@ -504,19 +504,11 @@ sphere::~sphere()
 
 void sphere::InnerRender() const
 {
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	//glTranslatef(position.x, position.y, position.z);
-
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
+	glVertexPointer(3, GL_FLOAT, 0, &vertexId[0]);
+	glDrawElements(GL_QUADS, indexId.size(), GL_UNSIGNED_SHORT, &indexId[0]);
 
-	glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
-
-	glPopMatrix();
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-
 }
 

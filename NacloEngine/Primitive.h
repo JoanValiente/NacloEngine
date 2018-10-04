@@ -105,13 +105,8 @@ public:
 	float3 radius;
 
 private:
-	uint indexId = 0;
-	uint vertexId = 0;
-
-	std::vector<GLfloat> vertices;
-	std::vector<GLfloat> normals;
-	std::vector<GLfloat> texcoords;
-	std::vector<GLushort> indices;
+	std::vector<GLfloat> vertexId;
+	std::vector<GLushort> indexId;
 
 	//GLsizei indexSize = 0;
 };
