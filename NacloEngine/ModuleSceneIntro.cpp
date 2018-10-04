@@ -89,7 +89,7 @@ bool ModuleSceneIntro::Start()
 
 	arrow = new Arrow(float3(0.0f, 3.0f, 0.0f), float3(5.0f, 3.0f, 0.0f));
 
-	test = new sphere(float3(4.0f,1.0f,0.0f), 1.0);
+	test = new sphere(float3(4.0f,1.0f,0.0f), 1.0, 32U, 32U);
 
 
 	return true;

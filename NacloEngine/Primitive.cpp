@@ -495,7 +495,7 @@ sphere::sphere(float3 pos, float radius, uint rings, uint sectors)
 		*i++ = (r + 1) * sectors + (s + 1);
 		*i++ = (r + 1) * sectors + s;
 	}
-
+	indices.resize((rings * (sectors - 1) * 4 ) - 4);
 }
 
 sphere::~sphere()
@@ -506,13 +506,13 @@ void sphere::InnerRender() const
 {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
-//	glTranslatef(position.x, position.y, position.z);
+	//glTranslatef(position.x, position.y, position.z);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, &vertices[0]);
 
-	glDrawElements(GL_QUADS, 220, GL_UNSIGNED_SHORT, &indices[0]);
+	glDrawElements(GL_QUADS, indices.size(), GL_UNSIGNED_SHORT, &indices[0]);
 
 	glPopMatrix();
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
