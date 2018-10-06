@@ -10,6 +10,7 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleImgui.h"
+#include "ModuleLoadMeshes.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleSceneIntro.h"
@@ -25,6 +26,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModuleImgui* imgui;
+	ModuleLoadMeshes* meshes;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleSceneIntro* sceneintro;

@@ -6,6 +6,7 @@ Application::Application()
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
 	sceneintro = new ModuleSceneIntro(this);
+	meshes = new ModuleLoadMeshes(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	imgui = new ModuleImgui(this);
@@ -21,6 +22,7 @@ Application::Application()
 	AddModule(audio);
 	AddModule(sceneintro);
 	AddModule(imgui);
+	AddModule(meshes);
 
 	// Renderer last!
 	AddModule(renderer3D);
