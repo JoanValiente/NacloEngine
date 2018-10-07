@@ -13,7 +13,6 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleSceneIntro.h"
-#include "ModuleFiles.h"
 #include "PerfTimer.h"
 
 
@@ -29,7 +28,6 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleSceneIntro* sceneintro;
-	ModuleFiles* files;
 
 	int		FPS_cap = 60;
 	bool	vsync = false;
