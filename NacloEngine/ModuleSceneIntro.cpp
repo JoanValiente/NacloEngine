@@ -82,6 +82,7 @@ bool ModuleSceneIntro::Start()
 	grid->axis = true;
 	grid->grid = true;
 
+	App->meshes->LoadFBX("Assets/Models/warrior.FBX");
 	return true;
 }
 
@@ -89,6 +90,7 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
+	App->renderer3D->DrawMeshes(App->meshes->mesh);
 
 	return ret;
 }

@@ -27,6 +27,13 @@ bool ModuleLoadMeshes::CleanUp()
 {
 	aiDetachAllLogStreams();
 
+	if (mesh.indices != nullptr)
+		delete[]mesh.indices;
+
+	if (mesh.vertices != nullptr)
+		delete[]mesh.vertices;
+
+
 	return true;
 }
 
