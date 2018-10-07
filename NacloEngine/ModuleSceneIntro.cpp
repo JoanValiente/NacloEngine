@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "Globals.h"
 #include "PanelOpenGL.h"
+#include "ModuleLoadMeshes.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -81,6 +82,7 @@ bool ModuleSceneIntro::Start()
 	grid->axis = true;
 	grid->grid = true;
 
+
 	cube = new Cube(float3(10.0f, 0.0f, 0.0f), float3(2.0f,2.0f,2.0f));
 	cube->axis = true;
 
@@ -93,14 +95,16 @@ bool ModuleSceneIntro::Start()
 
 	Cylinder = new cylinder();
 
-	return true;
+	App->meshes->LoadFBX("Assets/Models/warrior.FBX");
 
+	return true;
 }
 
 update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
+	App->renderer3D->DrawMeshes(App->meshes->mesh);
 
 	return ret;
 }
@@ -136,6 +140,7 @@ void ModuleSceneIntro::WireMode()
 		cube->wire = false;
 		Cylinder->wire = false;
 		test->wire = false;
+
 	}
 }
 

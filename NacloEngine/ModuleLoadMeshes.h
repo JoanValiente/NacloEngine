@@ -6,6 +6,17 @@
 #include "OpenGL.h"
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
+struct Mesh
+{
+	GLuint id_indices = 0;
+	uint num_indices = 0;
+	uint* indices = nullptr;
+
+	GLuint id_vertices = 0;
+	uint num_vertices = 0;
+	float* vertices = nullptr;
+};
+
 class ModuleLoadMeshes : public Module
 {
 public:
@@ -17,13 +28,8 @@ public:
 	void LoadFBX(const char* path);
 
 public:
-	GLuint id_indices = 0;
-	uint num_indices = 0;
-	uint* indices = nullptr;
 
-	GLuint id_vertices = 0;
-	uint num_vertices = 0;
-	float* vertices = nullptr;
+	Mesh mesh;
 
 };
 
