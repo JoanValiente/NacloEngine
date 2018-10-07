@@ -91,6 +91,7 @@ bool ModuleSceneIntro::Start()
 
 	test = new sphere(float3(4.0f,1.0f,0.0f), 1.0, 32U, 32U);
 
+	Cylinder = new cylinder();
 
 	return true;
 
@@ -113,8 +114,9 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	Ray->Render();
 
 	arrow->Render();
+	Cylinder->Render();
 
-	test->Render();
+	//test->Render();
 
 
 	ImGui::Render();
@@ -127,10 +129,12 @@ void ModuleSceneIntro::WireMode()
 {
 	if (App->imgui->wire_mode) {
 		cube->wire = true;
+		Cylinder->wire = true;
 		test->wire = true;
 	}
 	else {
 		cube->wire = false;
+		Cylinder->wire = false;
 		test->wire = false;
 	}
 }

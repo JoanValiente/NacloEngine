@@ -9,6 +9,7 @@ struct plane;
 struct ray;
 struct Arrow;
 struct sphere;
+struct cylinder; 
 
 
 class ModuleSceneIntro : public Module
@@ -32,6 +33,7 @@ public:
 	ray * Ray;
 	Arrow * arrow;
 	sphere * test; 
+	cylinder * Cylinder;
 
 private:
 	float vertexs[200];

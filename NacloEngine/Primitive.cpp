@@ -79,47 +79,6 @@ Cube::Cube(float3 position, float3 size) : Primitive(), size(size), position(pos
 	float sx = size.x * 0.5f;
 	float sy = size.y * 0.5f;
 	float sz = size.z * 0.5f;
-	/*
-glBegin(GL_QUADS);
-
-glNormal3f(0.0f, 0.0f, 1.0f);
-glVertex3f(-sx, -sy, sz);
-glVertex3f(sx, -sy, sz);
-glVertex3f(sx, sy, sz);
-glVertex3f(-sx, sy, sz);
-
-glNormal3f(0.0f, 0.0f, -1.0f);
-glVertex3f(sx, -sy, -sz);
-glVertex3f(-sx, -sy, -sz);
-glVertex3f(-sx, sy, -sz);
-glVertex3f(sx, sy, -sz);
-
-glNormal3f(1.0f, 0.0f, 0.0f);
-glVertex3f(sx, -sy, sz);
-glVertex3f(sx, -sy, -sz);
-glVertex3f(sx, sy, -sz);
-glVertex3f(sx, sy, sz);
-
-glNormal3f(-1.0f, 0.0f, 0.0f);
-glVertex3f(-sx, -sy, -sz);
-glVertex3f(-sx, -sy, sz);
-glVertex3f(-sx, sy, sz);
-glVertex3f(-sx, sy, -sz);
-
-glNormal3f(0.0f, 1.0f, 0.0f);
-glVertex3f(-sx, sy, sz);
-glVertex3f(sx, sy, sz);
-glVertex3f(sx, sy, -sz);
-glVertex3f(-sx, sy, -sz);
-
-glNormal3f(0.0f, -1.0f, 0.0f);
-glVertex3f(-sx, -sy, -sz);
-glVertex3f(sx, -sy, -sz);
-glVertex3f(sx, -sy, sz);
-glVertex3f(-sx, -sy, sz);
-
-glEnd();
-*/
 
 	float vertex[24] = {
 		-sx, -sy,  sz,
@@ -226,22 +185,6 @@ void Cube::AxisRender() const
 }
 
 /*
-// SPHERE ============================================
-sphere::sphere() : Primitive(), radius(1.0f)
-{
-	type = PrimitiveTypes::Primitive_Sphere;
-}
-
-sphere::sphere(float radius) : Primitive(), radius(radius)
-{
-	type = PrimitiveTypes::Primitive_Sphere;
-}
-
-void sphere::InnerRender() const
-{
-	//glutSolidSphere(radius, 25, 25);
-}
-
 
 // CYLINDER ============================================
 cylinder::cylinder() : Primitive(), radius(1.0f), height(1.0f)
@@ -290,30 +233,6 @@ void cylinder::InnerRender() const
 	glEnd();
 }
 
-// LINE ==================================================
-line::line() : Primitive(), origin(0, 0, 0), destination(1, 1, 1)
-{
-	type = PrimitiveTypes::Primitive_Line;
-}
-
-line::line(float x, float y, float z) : Primitive(), origin(0, 0, 0), destination(x, y, z)
-{
-	type = PrimitiveTypes::Primitive_Line;
-}
-
-void line::InnerRender() const
-{
-	glLineWidth(2.0f);
-
-	glBegin(GL_LINES);
-
-	glVertex3f(origin.x, origin.y, origin.z);
-	glVertex3f(destination.x, destination.y, destination.z);
-
-	glEnd();
-
-	glLineWidth(1.0f);
-}
 */
 
 // PLANE ==================================================
@@ -401,6 +320,7 @@ void plane::AxisRender() const
 	glLineWidth(1.0f);
 }
 
+//RAY
 ray::ray(float3 startPos, float3 endPos) : Primitive()
 {
 	float vertex[6] = {
@@ -428,6 +348,7 @@ void ray::InnerRender() const
 
 }
 
+//ARROW
 Arrow::Arrow(float3 startPos, float3 endPos) : Primitive()
 {
 	float vertex[18] = {
@@ -458,6 +379,7 @@ void Arrow::InnerRender() const
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
+//SPHERE
 sphere::sphere(float3 pos, float radius, uint rings, uint sectors)
 {
 	float const R = 1.0f / (float)(rings - 1);
@@ -467,7 +389,7 @@ sphere::sphere(float3 pos, float radius, uint rings, uint sectors)
 	vertexId.resize(rings * sectors * 3);
 
 	std::vector<GLfloat>::iterator v = vertexId.begin();
-
+	
 	for (r = 0; r < rings; r++)
 	{
 		for (s = 0; s < sectors; s++)
@@ -481,6 +403,7 @@ sphere::sphere(float3 pos, float radius, uint rings, uint sectors)
 			*v++ = z * radius;
 		}
 	}
+	
 
 	indexId.resize(rings * sectors * 4);
 	
@@ -512,3 +435,87 @@ void sphere::InnerRender() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+//CYLYNDER
+
+cylinder::cylinder(float3 pos, float radius, float height, uint rings, uint sectors)
+{
+	float const R = 1.0f / (float)(rings - 1);
+	float const S = 1.0f / (float)(sectors - 1);
+	int r, s;
+
+	vertexId.resize(rings * sectors * 4);
+
+	std::vector<GLfloat>::iterator v = vertexId.begin();
+
+	// Cylinder Top
+	/*
+	for (s = 0; s < sectors; s++)
+	{
+		float const y = 0;
+		float const x = cos(2 * PI * s * S);
+		float const z = sin(2 * PI * s * S);
+		*v++ = z * radius;
+		*v++ = y;
+		*v++ = x * radius;
+		
+	}
+	
+	
+	for (int i = 0; i < 200; i += 3) {
+
+		vertexId[i] += pos.x;
+		vertexId[i + 1] += pos.y + height;
+		vertexId[i + 2] += pos.z;
+	}	
+	*/
+	// Cylinder "Cover"
+	
+	//v = vertexId.end();
+
+	for (r = 1; r < rings; r++)
+	{
+		for (s = 0; s < sectors; s++)
+		{
+			float const y = sin(PI * r * R);
+			float const x = cos(2 * PI * s * S);
+			float const z = sin(2 * PI * s * S);
+
+			*v++ = x * radius;
+			*v++ = y;
+			*v++ = z * radius;
+		}
+	}
+
+	vertexId.resize((sectors - 1) * 2 * 4);
+	
+	indexId.resize(rings * sectors * 4);
+
+	std::vector<GLushort>::iterator i = indexId.begin();
+	for (r = 0; r < rings; r++)
+	{
+		for (s = 0; s < sectors; s++)
+		{
+			*i++ = r * sectors + s;
+			*i++ = r * sectors + (s + 1);
+			*i++ = (r + 1) * sectors + (s + 1);
+			*i++ = (r + 1) * sectors + s;
+		}
+	}
+
+	indexId.resize((rings * rings + (sectors - 1) * 2 + 1) * 4);
+
+}
+
+cylinder::~cylinder()
+{
+}
+
+void cylinder::InnerRender() const
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, &vertexId[0]);
+	glDrawElements(GL_QUADS, indexId.size(), GL_UNSIGNED_SHORT, &indexId[0]);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

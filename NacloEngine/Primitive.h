@@ -102,7 +102,7 @@ public:
 
 public:
 	float3 position;
-	float3 radius;
+	float radius;
 
 private:
 	std::vector<GLfloat> vertexId;
@@ -111,18 +111,24 @@ private:
 	//GLsizei indexSize = 0;
 };
 
-/*
-// ============================================
-class sphere : public Primitive
+class cylinder : public Primitive
 {
-public:
-	sphere();
-	sphere(float radius);
+public: 
+	cylinder(float3 pos = float3(0.0f, 0.0f, 0.0f), float radius = 1, float height = 1, uint rings = 4U, uint sectors = 16U);
+	virtual ~cylinder();
 	void InnerRender() const;
+
 public:
+	float3 position;
 	float radius;
+	float height;
+
+private: 
+	std::vector<GLfloat> vertexId;
+	std::vector<GLushort> indexId;
 };
 
+/*
 // ============================================
 class cylinder : public Primitive
 {
