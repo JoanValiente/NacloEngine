@@ -4,6 +4,7 @@
 #include "Primitive.h"
 #include "Globals.h"
 #include "PanelOpenGL.h"
+#include "ModuleLoadMeshes.h"
 
 ModuleSceneIntro::ModuleSceneIntro(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -81,19 +82,7 @@ bool ModuleSceneIntro::Start()
 	grid->axis = true;
 	grid->grid = true;
 
-	cube = new Cube(float3(10.0f, 0.0f, 0.0f), float3(2.0f,2.0f,2.0f));
-	cube->axis = true;
-
-	Ray = new ray(float3(0.0f, 2.0f, 0.0f), float3(5.0f, 2.0f, 0.0f));
-
-
-	arrow = new Arrow(float3(0.0f, 3.0f, 0.0f), float3(5.0f, 3.0f, 0.0f));
-
-	test = new sphere(float3(4.0f,1.0f,0.0f), 1.0, 32U, 32U);
-
-
 	return true;
-
 }
 
 update_status ModuleSceneIntro::Update(float dt)
@@ -109,13 +98,6 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	grid->Render();
-	cube->Render();
-	Ray->Render();
-
-	arrow->Render();
-
-	test->Render();
-
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -126,12 +108,10 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 void ModuleSceneIntro::WireMode()
 {
 	if (App->imgui->wire_mode) {
-		cube->wire = true;
-		test->wire = true;
+		
 	}
 	else {
-		cube->wire = false;
-		test->wire = false;
+
 	}
 }
 

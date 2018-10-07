@@ -160,6 +160,21 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
+void ModuleRenderer3D::DrawMeshes(Mesh mesh)
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
+	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+}
+
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {

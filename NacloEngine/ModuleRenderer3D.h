@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "Light.h"
 #include "Globals.h"
+#include "ModuleLoadMeshes.h"
 //#include "MathGeoLib/MathGeoLib.h"
 
 #define MAX_LIGHTS 8
@@ -18,6 +19,8 @@ public:
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
+
+	void DrawMeshes(Mesh meshes);
 
 	void OnResize(int width, int height);
 
