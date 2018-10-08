@@ -1,6 +1,5 @@
 #include "ModuleLoadMeshes.h"
 
-#include "Assimp/include/cimport.h"
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 
@@ -48,7 +47,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 			mesh.num_vertices = new_mesh->mNumVertices;
 			mesh.vertices = new float[mesh.num_vertices * 3];
 			memcpy(mesh.vertices, new_mesh->mVertices, sizeof(float)*mesh.num_vertices * 3);
-			LOG("New mesh with %d verices", mesh.num_vertices);
+			LOG("New mesh with %d vertices", mesh.num_vertices);
 
 			if (new_mesh->HasFaces())
 			{
@@ -64,6 +63,29 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 					else
 						memcpy(&mesh.indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
 
+				}
+			}
+
+			if (new_mesh->HasTextureCoords(mesh.id_texture))
+			{
+				mesh.num_texture = new_mesh->mNumVertices;
+				mesh.texture = new float[mesh.num_texture * 2];
+				LOG("New mesh with %d textures", mesh.num_texture);
+				for (uint num_textures = 0; num_textures < new_mesh->mNumVertices; ++num_textures)
+				{
+					memcpy(&mesh.texture[num_textures * 2], &new_mesh->mTextureCoords[num_textures], 2 * sizeof(float));
+				}
+
+			}
+
+			aiColor4D* colors_mesh = *new_mesh->mColors;
+
+			if (colors_mesh != nullptr)
+			{
+				mesh.colors = new float[mesh.num_vertices * 3];
+				for (int num_color = 0; num_color < mesh.num_vertices; ++num_color)
+				{
+					memcpy(mesh.colors, &colors_mesh[num_color], sizeof(float)*mesh.num_vertices * 3);
 				}
 			}
 		}
