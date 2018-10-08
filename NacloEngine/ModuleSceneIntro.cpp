@@ -18,7 +18,6 @@ bool ModuleSceneIntro::Start()
 {
 	//glewInit();
 
-	/*
 	vertexs[0] = 0.0f;  vertexs[1] = 0.0f;  vertexs[2] = 0.0f;
 	vertexs[3] = 0.0f;	vertexs[4] = 1.0f;	vertexs[5] = 0.0f;
 	vertexs[6] = 1.0f;	vertexs[7] = 1.0f;	vertexs[8] = 0.0f;
@@ -67,13 +66,31 @@ bool ModuleSceneIntro::Start()
 	vertexs[102] = 0.0f;vertexs[103] = 1.0f; vertexs[104] = 1.0f;
 	vertexs[105] = 1.0f;vertexs[106] = 1.0f; vertexs[107] = 0.0f;
 
-	*/
-
 	glGenBuffers(1, (GLuint*) &(my_id));
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	GLubyte checkImage[4][4][4];
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, (GLuint*) &(ImageName));
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 4, 4, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
@@ -106,6 +123,17 @@ update_status ModuleSceneIntro::Update(float dt)
 
 	App->renderer3D->DrawMeshes(App->meshes->mesh);
 
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, my_id);
+	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glEnableClientState(GL_TEXTURE_2D);	glTexCoord2f(0.0f, 0.0f);	glTexCoord2f(0.0f, 1.0f);	glTexCoord2f(1.0f, 0.0f);	glBindTexture(GL_ARRAY_BUFFER, ImageName);
+	glDisableClientState(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	return ret;
 }
 
@@ -114,12 +142,13 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	grid->Render();
+	/*
 	cube->Render();
 	Ray->Render();
 
 	arrow->Render();
 	Cylinder->Render();
-
+	*/
 	//test->Render();
 
 

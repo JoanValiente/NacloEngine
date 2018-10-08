@@ -25,7 +25,7 @@ struct Mesh
 	GLuint id_color = 0;
 	uint num_color = 0;
 	float* colors = nullptr;
-	aiColor4D color_4D;
+	aiColor4D color;
 };
 
 class ModuleLoadMeshes : public Module

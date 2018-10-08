@@ -66,7 +66,6 @@ struct aiLogStream
 {
     /** callback to be called */
     aiLogStreamCallback callback;
-
     /** user data to be passed to the callback */
     char* user;
 };
