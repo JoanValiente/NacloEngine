@@ -22,6 +22,8 @@ struct Mesh
 	uint num_texture = 0;
 	float* texture = nullptr;
 
+	GLuint texture_path = 0;
+
 	GLuint id_color = 0;
 	uint num_color = 0;
 	float* colors = nullptr;
@@ -38,6 +40,7 @@ public:
 	bool CleanUp();
 
 	void LoadFBX(const char* path);
+	GLuint LoadTexture(const char* path);
 
 public:
 	Mesh mesh;

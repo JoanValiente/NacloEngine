@@ -162,6 +162,8 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::DrawMeshes(Mesh mesh)
 {
+	mesh.texture_path = App->meshes->LoadTexture("Assets/Textures/lenna.png");
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	//glColor4f(mesh.color.r, mesh.color.g, mesh.color.b, mesh.color.a);
