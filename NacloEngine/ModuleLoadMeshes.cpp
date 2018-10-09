@@ -3,6 +3,12 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 
+#pragma comment (lib,"Assimp/libx86/assimp.lib")
+#pragma comment (lib, "Devil/libx86/DevIL.lib")
+#pragma comment (lib, "Devil/libx86/ILU.lib")
+#pragma comment (lib, "Devil/libx86/ILUT.lib")
+
+
 ModuleLoadMeshes::ModuleLoadMeshes(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
 
@@ -11,6 +17,16 @@ ModuleLoadMeshes::ModuleLoadMeshes(Application*app, bool start_enabled) : Module
 ModuleLoadMeshes::~ModuleLoadMeshes()
 {
 
+}
+
+bool ModuleLoadMeshes::Init()
+{
+	bool ret = true;
+
+	ilInit();
+	ilutRenderer(ILUT_OPENGL);
+
+	return ret;
 }
 
 bool ModuleLoadMeshes::Start()

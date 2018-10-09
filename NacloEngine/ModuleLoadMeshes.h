@@ -5,8 +5,8 @@
 #include "Module.h"
 #include "OpenGL.h"
 #include "Assimp/include/cimport.h"
-
-#pragma comment (lib,"Assimp/libx86/assimp.lib")
+#include "Devil/include/ilut.h"
+#include "Devil/include/il.h"
 
 struct Mesh
 {
@@ -33,15 +33,18 @@ class ModuleLoadMeshes : public Module
 public:
 	ModuleLoadMeshes(Application* app, bool start_enabled = true);
 	~ModuleLoadMeshes();
+	bool Init();
 	bool Start();
 	bool CleanUp();
 
 	void LoadFBX(const char* path);
 
 public:
-
 	Mesh mesh;
 
+private:
+	ILsizei num;
+	ILuint *images;
 };
 
 #endif // !_MODULE_LOADMESHES_
