@@ -3,6 +3,10 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 
+
+#include "Application.h"
+
+
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
 #pragma comment (lib, "Devil/libx86/ILU.lib")
@@ -56,6 +60,7 @@ bool ModuleLoadMeshes::CleanUp()
 
 void ModuleLoadMeshes::LoadFBX(const char * path)
 {
+
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
 	if (scene != nullptr && scene->HasMeshes()) {
@@ -101,7 +106,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 			}
 
 			aiMaterial* tex = scene->mMaterials[0];
-
+			
 			if (tex != nullptr)
 			{
 				aiString path;
@@ -125,16 +130,16 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 					path.Clear();
 				}
 			}
-
-			if (new_mesh->HasTextureCoords(mesh.id_texture))
+			
+			if (new_mesh->HasTextureCoords(0))
 			{
 				mesh.num_texture = new_mesh->mNumVertices;
 				mesh.texture = new float[mesh.num_texture * 2];
 				LOG("New mesh with %d textures", mesh.num_texture);
 				for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
 				{
-					memcpy(&mesh.texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, 2 * sizeof(float));
-					memcpy(&mesh.texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].y, 2 * sizeof(float));
+					memcpy(&mesh.texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
+					memcpy(&mesh.texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
 				}
 
 			}
@@ -152,10 +157,11 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 		glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh.num_texture, mesh.texture, GL_STATIC_DRAW);
 
+		/*
 		glGenBuffers(1, (GLuint*) &(mesh.id_color));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_color);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh.num_color, mesh.colors, GL_STATIC_DRAW);
-
+		*/
 	}
 }
 

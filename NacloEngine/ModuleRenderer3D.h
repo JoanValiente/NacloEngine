@@ -7,6 +7,8 @@
 #include "ModuleLoadMeshes.h"
 //#include "MathGeoLib/MathGeoLib.h"
 
+#include <list>
+
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module
@@ -23,6 +25,8 @@ public:
 	void DrawMeshes(Mesh meshes);
 
 	void OnResize(int width, int height);
+
+	void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh);
 
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);

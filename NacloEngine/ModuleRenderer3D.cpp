@@ -162,20 +162,28 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::DrawMeshes(Mesh mesh)
 {
-	mesh.texture_path = App->meshes->LoadTexture("Assets/Textures/lenna.png");
+	mesh.texture_path = App->meshes->LoadTexture("Assets/Textures/Baker_house.png");
 
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, mesh.texture_path);
 	glEnableClientState(GL_VERTEX_ARRAY);
-
-	//glColor4f(mesh.color.r, mesh.color.g, mesh.color.b, mesh.color.a);
-
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
-	glDrawElements(GL_TRIANGLES, mesh.num_indices, GL_UNSIGNED_INT, NULL);
+
+	glDrawElements(GL_TRIANGLES,mesh.num_indices, GL_UNSIGNED_INT, NULL);
+
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 
 }
 
@@ -209,4 +217,3 @@ float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float 
 
 	return Perspective;
 }
-

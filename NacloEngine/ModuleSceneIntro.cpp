@@ -71,7 +71,7 @@ bool ModuleSceneIntro::Start()
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36 * 3, vertexs, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
+	/*
 	GLubyte checkImage[32][32][4];
 	for (int i = 0; i < 32; i++) {
 		for (int j = 0; j < 32; j++) {
@@ -92,7 +92,7 @@ bool ModuleSceneIntro::Start()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
-
+	*/
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
 
@@ -113,7 +113,7 @@ bool ModuleSceneIntro::Start()
 
 	Cylinder = new cylinder();
 
-	App->meshes->LoadFBX("Assets/Models/warrior.FBX");
+	App->meshes->LoadFBX("Assets/Models/BakerHouse.FBX");
 
 	return true;
 }
