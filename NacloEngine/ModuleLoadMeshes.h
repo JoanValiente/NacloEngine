@@ -41,10 +41,6 @@ public:
 
 public:
 	Mesh mesh;
-
-private:
-	ILsizei num;
-	ILuint *images;
 };
 
 #endif // !_MODULE_LOADMESHES_

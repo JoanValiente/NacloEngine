@@ -76,24 +76,17 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 					{
 						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 					}
-					else
+					else {
 						memcpy(&mesh.indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
-
+					}
 				}
 			}
 
-			if (new_mesh->HasTextureCoords(mesh.id_texture))
+			aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
+			if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &mesh.color) == aiReturn_FAILURE || mesh.color == aiColor4D(0, 0, 0, 1))
 			{
-				mesh.num_texture = new_mesh->mNumVertices;
-				mesh.texture = new float[mesh.num_texture * 2];
-				LOG("New mesh with %d textures", mesh.num_texture);
-				for (uint num_textures = 0; num_textures < new_mesh->mNumVertices; ++num_textures)
-				{
-					memcpy(&mesh.texture[num_textures * 2], &new_mesh->mTextureCoords[num_textures], 2 * sizeof(float));
-				}
-
+				mesh.color = { 255.0f,255.0f,255.0f,255.0f };
 			}
-
 			aiColor4D* colors_mesh = *new_mesh->mColors;
 
 			if (colors_mesh != nullptr)
@@ -104,6 +97,45 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 					memcpy(mesh.colors, &colors_mesh[num_color], sizeof(float)*mesh.num_vertices * 3);
 				}
 			}
+
+			aiMaterial* tex = scene->mMaterials[0];
+
+			if (tex != nullptr)
+			{
+				aiString path;
+				tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+				if (path.length > 0)
+				{
+					std::string path_location = path.data;
+					path_location.erase(0, path_location.find_last_of("\\") + 1);
+					std::string folder = "Textures/";
+					folder += path_location;
+
+					ILuint id;
+					ilGenImages(1, &id);
+					ilBindImage(id);
+					ilLoadImage(folder.c_str());
+
+					mesh.id_texture = ilutGLBindTexImage();
+
+					folder.clear();
+					path_location.clear();
+					path.Clear();
+				}
+			}
+
+			if (new_mesh->HasTextureCoords(mesh.id_texture))
+			{
+				mesh.num_texture = new_mesh->mNumVertices;
+				mesh.texture = new float[mesh.num_texture * 2];
+				LOG("New mesh with %d textures", mesh.num_texture);
+				for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
+				{
+					memcpy(&mesh.texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, 2 * sizeof(float));
+					memcpy(&mesh.texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].y, 2 * sizeof(float));
+				}
+
+			}
 		}
 
 		glGenBuffers(1, (GLuint*) &(mesh.id_vertices));
@@ -113,5 +145,14 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 		glGenBuffers(1, (GLuint*) &(mesh.id_indices));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh.num_indices, mesh.indices, GL_STATIC_DRAW);
-	}// Use scene->mNumMeshes to iterate on scene->mMeshes array   aiReleaseImport(scene); } else   LOG(“Error loading scene %s”, full_path);
+
+		glGenBuffers(1, (GLuint*) &(mesh.id_texture));
+		glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh.num_texture, mesh.texture, GL_STATIC_DRAW);
+
+		glGenBuffers(1, (GLuint*) &(mesh.id_color));
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_color);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh.num_color, mesh.colors, GL_STATIC_DRAW);
+
+	}
 }
