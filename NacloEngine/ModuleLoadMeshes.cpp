@@ -165,11 +165,11 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 	}
 }
 
-GLuint ModuleLoadMeshes::LoadTexture(const char * path)
+uint ModuleLoadMeshes::LoadTexture(const char * path)
 {
 		ILuint imageID;				// Create an image ID as a ULuint
 
-		GLuint textureID;			// Create a texture ID as a GLuint
+		uint textureID;			// Create a texture ID as a GLuint
 
 		ILboolean success;			// Create a flag to keep track of success/failure
 

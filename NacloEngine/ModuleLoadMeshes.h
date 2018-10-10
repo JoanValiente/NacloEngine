@@ -10,21 +10,21 @@
 
 struct Mesh
 {
-	GLuint id_indices = 0;
+	uint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
 
-	GLuint id_vertices = 0;
+	uint id_vertices = 0;
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
-	GLuint id_texture = 0;
+	uint id_texture = 0;
 	uint num_texture = 0;
 	float* texture = nullptr;
 
-	GLuint texture_path = 0;
+	uint texture_path = 0;
 
-	GLuint id_color = 0;
+	uint id_color = 0;
 	uint num_color = 0;
 	float* colors = nullptr;
 	aiColor4D color;
@@ -40,7 +40,7 @@ public:
 	bool CleanUp();
 
 	void LoadFBX(const char* path);
-	GLuint LoadTexture(const char* path);
+	uint LoadTexture(const char* path);
 
 public:
 	Mesh mesh;
