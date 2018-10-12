@@ -13,7 +13,6 @@
 #include "PanelRandomNumberGenerator.h"
 #include "PanelOpenGL.h"
 
-#include <time.h>
 
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -33,7 +32,6 @@ bool ModuleImgui::Init()
 	panels.push_back(randomNumberGenerator = new PanelRandomNumberGenerator());
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(opengloptions = new PanelOpenGl());
-
 	return ret;
 }
 
@@ -128,6 +126,7 @@ void ModuleImgui::Log(const char * text)
 	if (console != nullptr)
 		console->ConsoleLog(text);
 }
+
 
 bool ModuleImgui::Show_Main_Menu_Bar()
 {

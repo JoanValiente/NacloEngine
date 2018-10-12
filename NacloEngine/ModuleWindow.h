@@ -25,6 +25,7 @@ public:
 	void SetWindowResizable(SDL_Window* window);
 	void SetWindowFullDesktop(SDL_Window* window);
 	void SetWindowBorderless(SDL_Window* window);
+	void const ShowWindowInfo();
 
 
 

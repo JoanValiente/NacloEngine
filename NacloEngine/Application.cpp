@@ -175,6 +175,42 @@ void Application::Log(const char * text)
 	imgui->Log(text);
 }
 
+void const Application::ShowApplicationInfo()
+{
+	ImGui::InputText("Engine Name", App->engine_name, 20);
+	ImGui::InputText("Organization", App->organization_name, 20);
+
+	if (vector_fps.size() != 100)
+	{
+		vector_fps.push_back(ImGui::GetIO().Framerate);
+		vector_ms.push_back(1000 / ImGui::GetIO().Framerate);
+	}
+
+	else
+	{
+		vector_fps.erase(vector_fps.begin());
+		vector_fps.push_back(ImGui::GetIO().Framerate);
+
+		vector_ms.erase(vector_ms.begin());
+		vector_ms.push_back(1000 / ImGui::GetIO().Framerate);
+	}
+
+	char title[25];
+	ImGui::Spacing();
+
+	ImGui::SliderInt("FPS Cap", &App->FPS_cap, 0, 60);
+	ImGui::Spacing();
+
+
+	sprintf_s(title, 25, "Framerate %.1f", vector_fps[vector_fps.size() - 1]);
+	ImGui::PlotHistogram("##framerate", &vector_fps[0], vector_fps.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+	ImGui::Spacing();
+
+
+	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
+	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+}
+
 void Application::AddModule(Module* mod)
 {
 	modules.push_back(mod);

@@ -140,3 +140,48 @@ void ModuleWindow::SetWindowBorderless(SDL_Window * window)
 		SDL_SetWindowFullscreen(window, flags);
 }
 
+void const ModuleWindow::ShowWindowInfo()
+{
+	if (ImGui::SliderFloat("Brightness", &App->window->brightness, 0.0f, 1.0f))
+	{
+		App->window->SetBrightnes(App->window->window, App->window->brightness);
+	}
+
+	if (ImGui::SliderInt("Width", &App->window->width, 1, 1920) || ImGui::SliderInt("Height", &App->window->height, 1, 1080))
+	{
+		App->window->SetWindowSize(App->window->window, App->window->width, App->window->height);
+	}
+	ImGui::Spacing();
+
+	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
+	{
+		App->window->SetWindowFullscreen(App->window->window);
+	}
+
+	if (ImGui::Checkbox("Borderless", &App->window->borderless))
+	{
+		App->window->SetWindowBorderless(App->window->window);
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip("Restart to apply");
+	}
+
+	if (ImGui::Checkbox("Resizable", &App->window->resizable))
+	{
+		App->window->SetWindowResizable(App->window->window);
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip("Restart to apply");
+	}
+
+	if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
+	{
+		App->window->SetWindowFullDesktop(App->window->window);
+	}
+
+}
+

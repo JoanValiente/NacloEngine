@@ -8,6 +8,7 @@
 #define FPS_LOG_SIZE 100
 
 
+
 class PanelConfiguration : public Panel
 {
 public:
@@ -17,8 +18,6 @@ public:
 	void Draw();
 
 private:
-	std::vector<float> vector_ms;
-	std::vector<float> vector_fps;
-	std::vector<float> vector_memory_usage;
+	void ShowHardwareInfo();
 };
 #endif

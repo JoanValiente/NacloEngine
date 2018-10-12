@@ -59,11 +59,18 @@ public:
 
 	void Log(const char* text);
 
+	void const ShowApplicationInfo();
+
 private:
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();
+
+private: 	
+	std::vector<float> vector_ms;
+	std::vector<float> vector_fps;
+	std::vector<float> vector_memory_usage;
 };
 
 extern Application* App;

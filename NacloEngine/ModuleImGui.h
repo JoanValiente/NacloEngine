@@ -44,6 +44,7 @@ public:
 	PanelRandomNumberGenerator* randomNumberGenerator = nullptr;
 	PanelOpenGl* opengloptions = nullptr;
 
+
 	bool wire_mode = false;
 
 private:
