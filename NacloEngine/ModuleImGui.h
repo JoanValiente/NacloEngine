@@ -15,7 +15,6 @@ class Panel;
 class PanelConsole;
 class PanelConfiguration;
 class PanelAbout;
-class PanelIntersections;
 class PanelRandomNumberGenerator;
 class PanelOpenGl;
 
@@ -40,7 +39,6 @@ public:
 	PanelConsole* console = nullptr;
 	PanelConfiguration* configuration = nullptr;
 	PanelAbout* about = nullptr;
-	PanelIntersections* intersections = nullptr;
 	PanelRandomNumberGenerator* randomNumberGenerator = nullptr;
 	PanelOpenGl* opengloptions = nullptr;
 

@@ -315,9 +315,6 @@
     <ClInclude Include="Panel.h">
       <Filter>Sources\Modules\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="PanelIntersections.h">
-      <Filter>Sources\Modules\Panels</Filter>
-    </ClInclude>
     <ClInclude Include="PanelRandomNumberGenerator.h">
       <Filter>Sources\Modules\Panels</Filter>
     </ClInclude>
@@ -528,9 +525,6 @@
       <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Panel.cpp">
-      <Filter>Sources\Modules\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="PanelIntersections.cpp">
       <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelRandomNumberGenerator.cpp">
