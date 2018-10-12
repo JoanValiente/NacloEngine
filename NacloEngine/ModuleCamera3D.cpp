@@ -44,14 +44,12 @@ update_status ModuleCamera3D::Update(float dt)
 	// Now we can make this movememnt frame rate independant!
 
 	float3 newPos(0,0,0);
-
 	
 	float speed = 3.0f * dt;
+
+	// WASD movement
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 8.0f * dt;
-
-	if(App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-	if(App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
@@ -59,6 +57,32 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if(App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 	if(App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+
+	
+	// Wheel mouse zoom
+	if (App->input->GetMouseZ() == 1)
+		newPos -= Z * speed * 5;
+
+	if (App->input->GetMouseZ() == -1)
+		newPos += Z * speed * 5;
+
+
+	// Wheel mouse movement
+	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
+	{
+		if (App->input->GetMouseXMotion() > 0)
+			newPos -= X * (App->input->GetMouseXMotion() * dt) * speed * 5;
+
+		if (App->input->GetMouseXMotion() < 0)
+			newPos -= X * (App->input->GetMouseXMotion() * dt) * speed * 5;
+
+		if (App->input->GetMouseYMotion() > 0)
+			newPos += Y * (App->input->GetMouseYMotion() * dt) * speed * 5;
+
+		if (App->input->GetMouseYMotion() < 0)
+			newPos += Y * (App->input->GetMouseYMotion() * dt) * speed * 5;
+
+	}
 
 	Position += newPos;
 	Reference += newPos;
