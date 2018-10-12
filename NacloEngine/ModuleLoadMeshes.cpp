@@ -14,6 +14,10 @@
 
 #include <iostream>
 
+void myCallback(const char *msg, char *userData) {
+
+	LOG("%s", msg);
+}
 
 ModuleLoadMeshes::ModuleLoadMeshes(Application*app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -37,9 +41,10 @@ bool ModuleLoadMeshes::Init()
 
 bool ModuleLoadMeshes::Start()
 {
-	aiLogStream stream = aiLogStream();
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
+	struct aiLogStream stream;
+	stream.callback = myCallback;
 	aiAttachLogStream(&stream);
+	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 
 	return true;
 }
