@@ -146,6 +146,11 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	App->renderer3D->DrawMeshes(App->meshes->mesh);
+
+	ImGui::Render();
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -162,7 +167,7 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::DrawMeshes(Mesh mesh)
 {
-	glEnable(GL_TEXTURE_2D);
+
 	glBindTexture(GL_TEXTURE_2D, mesh.texture_path);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
@@ -197,6 +202,11 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::AddTexture(const char * path)
+{
+	App->meshes->mesh.texture_path = App->meshes->LoadTexture(path);
 }
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
