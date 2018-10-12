@@ -162,8 +162,6 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::DrawMeshes(Mesh mesh)
 {
-	mesh.texture_path = App->meshes->LoadTexture("Assets/Textures/Baker_house.png");
-
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, mesh.texture_path);
 	glEnableClientState(GL_VERTEX_ARRAY);

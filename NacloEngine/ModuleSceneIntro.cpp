@@ -113,7 +113,7 @@ bool ModuleSceneIntro::Start()
 
 	Cylinder = new cylinder();
 
-	App->meshes->LoadFBX("Assets/Models/BakerHouse.FBX");
+	//App->meshes->LoadFBX("Assets/Models/BakerHouse.FBX");
 
 	return true;
 }

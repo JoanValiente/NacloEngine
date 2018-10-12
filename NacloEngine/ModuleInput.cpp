@@ -91,26 +91,45 @@ update_status ModuleInput::PreUpdate(float dt)
 		switch(e.type)
 		{
 			case SDL_MOUSEWHEEL:
-			mouse_z = e.wheel.y;
-			break;
+			{
+				mouse_z = e.wheel.y;
+				break;
+			}
 
 			case SDL_MOUSEMOTION:
-			mouse_x = e.motion.x / SCREEN_SIZE;
-			mouse_y = e.motion.y / SCREEN_SIZE;
+			{
+				mouse_x = e.motion.x / SCREEN_SIZE;
+				mouse_y = e.motion.y / SCREEN_SIZE;
 
-			mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
-			mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
-			break;
+				mouse_x_motion = e.motion.xrel / SCREEN_SIZE;
+				mouse_y_motion = e.motion.yrel / SCREEN_SIZE;
+				break;
+			}
 
 			case SDL_QUIT:
-			quit = true;
-			break;
+			{
+				quit = true;
+				break;
+			}
 
 			case SDL_WINDOWEVENT:
 			{
 				if (e.window.event == SDL_WINDOWEVENT_RESIZED) {}
 					//App->renderer3D->OnResize(e.window.data1, e.window.data2);
+				break;
 			}
+			
+
+			case SDL_DROPFILE: 
+			{     
+				char* dropped_filedir = nullptr;
+				dropped_filedir = e.drop.file;
+				LoadDraggedFile(dropped_filedir);
+				SDL_free(dropped_filedir);    // Free dropped_filedir memory
+
+				break;
+			}
+		
 		}
 	}
 
@@ -126,4 +145,23 @@ bool ModuleInput::CleanUp()
 	LOG("Quitting SDL input event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;
+}
+
+void const ModuleInput::LoadDraggedFile(char * path)
+{
+	std::string file_path(path);
+	size_t end_string = std::string::npos;
+
+	if (file_path.find(".fbx") != end_string || file_path.find(".FBX") != end_string)
+	{
+		App->meshes->LoadFBX(path);
+	}
+	if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
+	{
+		App->meshes->LoadTexture(path);
+	}
+	if (file_path.find(".jpg") != end_string || file_path.find(".JPG") != end_string)
+	{
+		App->meshes->LoadTexture(path);
+	}
 }
