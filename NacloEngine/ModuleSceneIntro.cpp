@@ -122,8 +122,6 @@ update_status ModuleSceneIntro::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	App->renderer3D->DrawMeshes(App->meshes->mesh);
-
 	/*
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, my_id);
@@ -149,126 +147,6 @@ update_status ModuleSceneIntro::PostUpdate(float dt)
 	Cylinder->Render();
 	*/
 	//test->Render();
-
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
-	glLineWidth(2.0f);
-	glBegin(GL_TRIANGLES);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(0.0f,1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(1.0f,0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(0.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(0.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(1.0f, 1.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(1.0f, 1.0f, -1.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 0.0f);
-	glVertex3f(0.0f, 0.0f, 0.0f);
-
-	glTexCoord2f(1.0f, 1.0f);
-	glVertex3f(0.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 1.0f);
-	glVertex3f(1.0f, 0.0f, -1.0f);
-
-	glTexCoord2f(0.0f, 0.0f);
-	glVertex3f(1.0f, 0.0f, 0.0f);
-
-	glEnd();
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glDisable(GL_TEXTURE_2D);
-
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	return ret;
 }

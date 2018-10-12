@@ -158,10 +158,10 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	}
 	if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{
-		App->meshes->LoadTexture(path);
+		App->renderer3D->AddTexture(path);
 	}
 	if (file_path.find(".jpg") != end_string || file_path.find(".JPG") != end_string)
 	{
-		App->meshes->LoadTexture(path);
+		App->renderer3D->AddTexture(path);
 	}
 }

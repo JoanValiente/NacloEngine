@@ -28,6 +28,8 @@ public:
 
 	void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh);
 
+	void AddTexture(const char* path);
+
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
 
