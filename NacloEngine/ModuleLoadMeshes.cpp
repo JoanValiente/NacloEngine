@@ -44,7 +44,6 @@ bool ModuleLoadMeshes::Start()
 	stream.callback = myCallback;
 	aiAttachLogStream(&stream);
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-
 	return true;
 }
 
