@@ -169,7 +169,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 void ModuleLoadMeshes::ShowMeshInformation()
 {
-	Mesh* test = *App->renderer3D->meshes.begin();
+	Mesh* test = App->renderer3D->meshes.back();
 	if (test != nullptr)
 	{
 		ImGuiTreeNodeFlags flags = 0;
