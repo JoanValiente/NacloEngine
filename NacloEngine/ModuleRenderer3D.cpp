@@ -4,7 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "PanelInspector.h"
-
+#include "ModuleTextures.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -126,6 +126,13 @@ bool ModuleRenderer3D::Init()
 	return ret;
 }
 
+bool ModuleRenderer3D::Start()
+{
+	bool ret = true;
+	checkers_path = App->texture->LoadCheckersTexture();
+	return ret;
+}
+
 // PreUpdate: clear buffer
 update_status ModuleRenderer3D::PreUpdate(float dt)
 {
@@ -174,7 +181,11 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh)
 {
 	glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
-	glBindTexture(GL_TEXTURE_2D, mesh->texture_path);
+	if (!ischecked)
+		glBindTexture(GL_TEXTURE_2D, mesh->texture_path);
+	else
+		glBindTexture(GL_TEXTURE_2D, checkers_path);
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -232,7 +243,6 @@ void ModuleRenderer3D::AddTexture(const char * path)
 		LOG("ERROR LOADING TEXTURE, NO MESH LOADED");
 	}
 }
-
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {

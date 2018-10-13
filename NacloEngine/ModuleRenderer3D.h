@@ -47,6 +47,7 @@ public:
 	~ModuleRenderer3D();
 
 	bool Init();
+	bool Start();
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
 	bool CleanUp();
@@ -69,6 +70,9 @@ public:
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
+	bool ischecked = false;
+	uint checkers_path = 0;
+
 };
 
 #endif
