@@ -21,6 +21,8 @@ public:
 	
 	float* GetViewMatrix();
 	
+	void CreateMeshBox(float3 minVertex, float3 maxVertex);
+	void LookAtMeshBox();
 
 private:
 
@@ -29,6 +31,7 @@ private:
 public:
 	
 	float3 X, Y, Z, Position, Reference;
+	AABB* meshBox = nullptr;
 
 private:
 

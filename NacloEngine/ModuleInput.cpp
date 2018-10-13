@@ -155,6 +155,7 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	if (file_path.find(".fbx") != end_string || file_path.find(".FBX") != end_string)
 	{
 		App->meshes->LoadFBX(path);
+		App->camera->LookAtMeshBox();
 	}
 	if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{

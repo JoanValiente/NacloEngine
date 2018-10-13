@@ -56,6 +56,7 @@ public:
 	void OnResize(int width, int height);
 
 	void AddMesh(Mesh* mesh);
+	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
 
 	void AddTexture(const char* path);

@@ -15,6 +15,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Position = float3(0.0f, 0.0f, 5.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
 	
+	meshBox = new AABB(float3(0.0f,0.0f,0.0f), float3(0.0f, 0.0f, 0.0f));
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -89,7 +90,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	// Mouse motion ----------------
 
-	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
@@ -124,6 +125,10 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 
 		Position = Reference + Z * Position.Length();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_UP) {
+		LookAtMeshBox();
 	}
 
 	// Recalculate matrix -------------
@@ -188,6 +193,19 @@ void ModuleCamera3D::Move(const float3 &Movement)
 float* ModuleCamera3D::GetViewMatrix()
 {
 	return (float*)&ViewMatrix;
+}
+
+void ModuleCamera3D::CreateMeshBox(float3 minVertex, float3 maxVertex)
+{
+	meshBox->minPoint = minVertex;
+	meshBox->maxPoint = maxVertex;
+}
+
+void ModuleCamera3D::LookAtMeshBox()
+{
+	Reference = meshBox->CenterPoint();
+	Position = meshBox->CenterPoint() + meshBox->Size();
+	LookAt(Reference);
 }
 
 
