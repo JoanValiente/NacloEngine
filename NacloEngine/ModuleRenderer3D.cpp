@@ -206,7 +206,7 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 void ModuleRenderer3D::AddTexture(const char * path)
 {
-	App->meshes->mesh.texture_path = App->meshes->LoadTexture(path);
+	App->meshes->mesh.texture_path = App->texture->LoadTexture(path);
 }
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)

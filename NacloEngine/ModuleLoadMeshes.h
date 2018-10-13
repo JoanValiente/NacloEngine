@@ -49,7 +49,6 @@ public:
 	bool CleanUp();
 
 	void LoadFBX(const char* path);
-	uint LoadTexture(const char* path);
 
 	void ShowMeshInformation(const Mesh* mesh);
 

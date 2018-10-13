@@ -15,7 +15,7 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	uint LoadTexture();
+	uint LoadTexture(const char* path);
 
 
 private:
