@@ -57,7 +57,7 @@ public:
 	const float3 GetFbxRotation(const Mesh* mesh);
 
 public:
-	Mesh mesh;
+	Mesh* mesh;
 };
 
 #endif // !_MODULE_LOADMESHES_

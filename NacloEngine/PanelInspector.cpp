@@ -13,9 +13,9 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::Draw()
 {
-	if (ImGui::Begin("patata", &active))
+	if (ImGui::Begin("Inspector", &active))
 	{
-		App->meshes->ShowMeshInformation(&App->meshes->mesh);
+		App->meshes->ShowMeshInformation(App->meshes->mesh);
 		ImGui::End();
 	}
 }

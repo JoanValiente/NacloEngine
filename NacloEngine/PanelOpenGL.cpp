@@ -91,12 +91,12 @@ void PanelOpenGl::Draw()
 		{
 			if (checkers_mode)
 			{
-				textureid = App->meshes->mesh.texture_path;
-				App->meshes->mesh.texture_path = App->texture->LoadCheckersTexture();
+				textureid = App->meshes->mesh->texture_path;
+				App->meshes->mesh->texture_path = App->texture->LoadCheckersTexture();
 			}
 			else
 			{
-				App->meshes->mesh.texture_path = textureid;
+				App->meshes->mesh->texture_path = textureid;
 			}
 		}
 	
