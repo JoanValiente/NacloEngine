@@ -11,6 +11,35 @@
 
 #define MAX_LIGHTS 8
 
+struct Mesh
+{
+	std::string path = "";
+	std::string filename = "";
+
+	float3 position = { 0,0,0 };
+	float3 rotation = { 0,0,0 };
+	float3 scale = { 1,1,1 };
+
+	uint id_indices = 0;
+	uint num_indices = 0;
+	uint* indices = nullptr;
+
+	uint id_vertices = 0;
+	uint num_vertices = 0;
+	float* vertices = nullptr;
+
+	uint id_texture = 0;
+	uint num_texture = 0;
+	float* texture = nullptr;
+
+	uint texture_path = 0;
+
+	uint id_color = 0;
+	uint num_color = 0;
+	float* colors = nullptr;
+	aiColor4D color;
+};
+
 class ModuleRenderer3D : public Module
 {
 public:

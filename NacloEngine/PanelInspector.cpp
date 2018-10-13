@@ -13,9 +13,10 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::Draw()
 {
-	if (ImGui::Begin("Inspector", &active))
+
+	if (!App->renderer3D->meshes.empty())
 	{
-		App->meshes->ShowMeshInformation(App->meshes->mesh);
-		ImGui::End();
+		App->meshes->ShowMeshInformation();
 	}
+
 }

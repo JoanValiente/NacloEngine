@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
+#include "PanelInspector.h"
 
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
@@ -140,6 +141,7 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
 
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -220,8 +222,17 @@ void ModuleRenderer3D::ClearMeshes()
 
 void ModuleRenderer3D::AddTexture(const char * path)
 {
-	App->meshes->mesh->texture_path = App->texture->LoadTexture(path);
+	if (!meshes.empty())
+	{
+		Mesh* test = meshes.back();
+		test->texture_path = App->texture->LoadTexture(path);
+	}
+	else
+	{
+		LOG("ERROR LOADING TEXTURE, NO MESH LOADED");
+	}
 }
+
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {
