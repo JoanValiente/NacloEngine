@@ -269,9 +269,13 @@ void ModuleRenderer3D::AddTexture(const char * path)
 {
 	if (!meshes.empty())
 	{
-		Mesh* test = meshes.back();
-		test->texture_path = App->texture->LoadTexture(path);
+		for (std::vector<Mesh*>::const_iterator iterator = meshes.begin(); iterator != meshes.end(); ++iterator) 
+		{
+			Mesh* texture_add = *iterator;
+			texture_add->texture_path = App->texture->LoadTexture(path);
+		}
 	}
+	
 	else
 	{
 		LOG("ERROR LOADING TEXTURE, NO MESH LOADED");
