@@ -2,6 +2,7 @@
 
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
+#include "PanelInspector.h"
 
 #include "Application.h"
 
@@ -50,14 +51,6 @@ bool ModuleLoadMeshes::Start()
 bool ModuleLoadMeshes::CleanUp()
 {
 	aiDetachAllLogStreams();
-
-	if (mesh->indices != nullptr)
-		delete[]mesh->indices;
-
-	if (mesh->vertices != nullptr)
-		delete[]mesh->vertices;
-
-
 	return true;
 }
 
@@ -65,6 +58,8 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 {
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+	Mesh* mesh = new Mesh();
 
 	mesh->path = path;
 	std::string path_to_name = mesh->path;
@@ -172,79 +167,83 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 	}
 }
 
-void ModuleLoadMeshes::ShowMeshInformation(const Mesh * mesh)
+void ModuleLoadMeshes::ShowMeshInformation()
 {
-	if (mesh != nullptr)
+	Mesh* test = *App->renderer3D->meshes.begin();
+	if (test != nullptr)
 	{
 		ImGuiTreeNodeFlags flags = 0;
 
 		flags |= ImGuiTreeNodeFlags_DefaultOpen;
-		
 
-		float3 position = GetFbxPosition(mesh);
-		float3 rotation = GetFbxRotation(mesh);
-		float3 scale = GetFbxScale(mesh);
+		if (ImGui::Begin("Inspector", &active))
+		{
+			float3 position = GetFbxPosition(test);
+			float3 rotation = GetFbxRotation(test);
+			float3 scale = GetFbxScale(test);
 
-		uint vertice = mesh->num_vertices;
-		uint index = mesh->num_indices;
-		uint uv = mesh->num_texture;
-		uint triangles = mesh->num_indices / 3;
+			uint vertice = test->num_vertices;
+			uint index = test->num_indices;
+			uint uv = test->num_texture;
+			uint triangles = test->num_indices / 3;
 
-		ImTextureID texture_id = (ImTextureID)mesh->texture_path;
-		
-		if (ImGui::CollapsingHeader("Information"), flags)
-		{
-			ImGui::Text("File name: %s", mesh->filename.c_str());
-			ImGui::Text("Path: %s", mesh->path.c_str());
-		}
-		if (ImGui::CollapsingHeader("Transformation"), flags)
-		{
-			//POSITION------------
-			ImGui::Text("Position");
-			ImGui::Text("X:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &position.x);
-			ImGui::Text("Y:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &position.y);
-			ImGui::Text("Z:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &position.z);
-			//ROTATION------------
-			ImGui::Text("Rotation");
-			ImGui::Text("X:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &rotation.x);
-			ImGui::Text("Y:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &rotation.y);
-			ImGui::Text("Z:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &rotation.z);
-			//SCALE------------
-			ImGui::Text("Scale");
-			ImGui::Text("X:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &scale.x);
-			ImGui::Text("Y:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &scale.y);
-			ImGui::Text("Z:");
-			ImGui::SameLine();
-			ImGui::InputFloat("", &scale.z);
+			ImTextureID texture_id = (ImTextureID)test->texture_path;
 
+			if (ImGui::CollapsingHeader("Information"), flags)
+			{
+				ImGui::Text("File name: %s", test->filename.c_str());
+				ImGui::Text("Path: %s", test->path.c_str());
+			}
+			if (ImGui::CollapsingHeader("Transformation"), flags)
+			{
+				//POSITION------------
+				ImGui::Text("Position");
+				ImGui::Text("X:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &position.x);
+				ImGui::Text("Y:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &position.y);
+				ImGui::Text("Z:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &position.z);
+				//ROTATION------------
+				ImGui::Text("Rotation");
+				ImGui::Text("X:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &rotation.x);
+				ImGui::Text("Y:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &rotation.y);
+				ImGui::Text("Z:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &rotation.z);
+				//SCALE------------
+				ImGui::Text("Scale");
+				ImGui::Text("X:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &scale.x);
+				ImGui::Text("Y:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &scale.y);
+				ImGui::Text("Z:");
+				ImGui::SameLine();
+				ImGui::InputFloat("", &scale.z);
+
+			}
+			if (ImGui::CollapsingHeader("Mesh information"), flags)
+			{
+				ImGui::Text("Vertices %i", vertice);
+				ImGui::Text("Index %i", index);
+				ImGui::Text("UV's %i", uv);
+				ImGui::Text("triangles %i", triangles);
+			}
+			if (ImGui::CollapsingHeader("Texture"), flags)
+			{
+				ImGui::Image(texture_id, { 256,256 });
+			}
 		}
-		if (ImGui::CollapsingHeader("Mesh information"), flags)
-		{
-			ImGui::Text("Vertices %i", vertice);
-			ImGui::Text("Index %i", index);
-			ImGui::Text("UV's %i", uv);
-			ImGui::Text("triangles %i", triangles);
-		}
-		if (ImGui::CollapsingHeader("Texture"), flags)
-		{
-			ImGui::Image(texture_id, { 256,256 });
-		}
+		ImGui::End();
 	}
 }
 
