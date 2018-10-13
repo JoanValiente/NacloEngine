@@ -15,11 +15,13 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	uint LoadTexture(const char* path);
+	uint LoadTexture(const char* path) const;
 
+	uint const LoadCheckersTexture();
+
+	uint CreateCheckersTexture(const void* checkImage);
 
 private:
-
 };
 
 #endif // __MODULETEXTURES_H__

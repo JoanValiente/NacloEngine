@@ -41,8 +41,6 @@ private:
 	uint my_id = 0;
 	uint my_indices = 0;
 
-	uint ImageName;
-
 };
 
 #endif // __ModuleAudio_H__

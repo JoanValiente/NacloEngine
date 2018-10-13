@@ -23,6 +23,8 @@ void PanelOpenGl::Draw()
 		static bool lighting = glIsEnabled(GL_LIGHTING);
 		static bool color_material = glIsEnabled(GL_COLOR_MATERIAL);
 		static bool texture_2D = glIsEnabled(GL_TEXTURE_2D);
+		static bool checkers_mode = false;
+		static uint textureid = 0;
 
 		if (ImGui::Checkbox("Depth Test", &depth_test))
 		{
@@ -82,6 +84,19 @@ void PanelOpenGl::Draw()
 			else
 			{
 				glDisable(GL_TEXTURE_2D);
+			}
+		}
+
+		if (ImGui::Checkbox("Checkers Mode", &checkers_mode))
+		{
+			if (checkers_mode)
+			{
+				textureid = App->meshes->mesh.texture_path;
+				App->meshes->mesh.texture_path = App->texture->LoadCheckersTexture();
+			}
+			else
+			{
+				App->meshes->mesh.texture_path = textureid;
 			}
 		}
 	

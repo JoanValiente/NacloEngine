@@ -21,7 +21,7 @@ bool ModuleTextures::CleanUp()
 	return ret;
 }
 
-uint ModuleTextures::LoadTexture(const char* path)
+uint ModuleTextures::LoadTexture(const char* path) const 
 {
 		ILuint imageID;				// Create an image ID as a ULuint
 
@@ -92,10 +92,47 @@ uint ModuleTextures::LoadTexture(const char* path)
 			exit(-1);
 		}
 
+
 		ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 
 		std::cout << "Texture creation successful." << std::endl;
 
 
 		return textureID; // Return the GLuint to the texture so you can use it!
+}
+
+uint const ModuleTextures::LoadCheckersTexture()
+{
+
+	GLubyte checkImage[32][32][4];
+	for (int i = 0; i < 32; i++) {
+		for (int j = 0; j < 32; j++) {
+			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+			checkImage[i][j][0] = (GLubyte)c;
+			checkImage[i][j][1] = (GLubyte)c;
+			checkImage[i][j][2] = (GLubyte)c;
+			checkImage[i][j][3] = (GLubyte)255;
+		}
+	}
+
+	uint textureID = CreateCheckersTexture(checkImage);
+
+	return textureID;
+}
+
+uint ModuleTextures::CreateCheckersTexture(const void* checkImage)
+{
+	uint ImageName = 0;
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, (GLuint*) &(ImageName));
+	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return ImageName; 
 }
