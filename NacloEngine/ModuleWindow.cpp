@@ -129,7 +129,10 @@ void ModuleWindow::SetWindowResizable(SDL_Window * window)
 
 void ModuleWindow::SetWindowFullDesktop(SDL_Window * window)
 {
-	SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	if (fullscreen_desktop)
+		SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	else
+		SDL_SetWindowFullscreen(window, flags);
 }
 
 void ModuleWindow::SetWindowBorderless(SDL_Window * window)
@@ -142,35 +145,25 @@ void ModuleWindow::SetWindowBorderless(SDL_Window * window)
 
 void const ModuleWindow::ShowWindowInfo()
 {
-	if (ImGui::SliderFloat("Brightness", &App->window->brightness, 0.0f, 1.0f))
+	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
 	{
-		App->window->SetBrightnes(App->window->window, App->window->brightness);
+		App->window->SetBrightnes(window, brightness);
 	}
 
-	if (ImGui::SliderInt("Width", &App->window->width, 1, 1920) || ImGui::SliderInt("Height", &App->window->height, 1, 1080))
+	if (ImGui::SliderInt("Width", &width, 1, 1920) || ImGui::SliderInt("Height", &height, 1, 1080))
 	{
-		App->window->SetWindowSize(App->window->window, App->window->width, App->window->height);
+		App->window->SetWindowSize(window, width, height);
 	}
 	ImGui::Spacing();
 
-	if (ImGui::Checkbox("Fullscreen", &App->window->fullscreen))
+	if (ImGui::Checkbox("Fullscreen", &fullscreen))
 	{
-		App->window->SetWindowFullscreen(App->window->window);
+		App->window->SetWindowFullscreen(window);
 	}
 
-	if (ImGui::Checkbox("Borderless", &App->window->borderless))
+	if (ImGui::Checkbox("Borderless", &borderless))
 	{
-		App->window->SetWindowBorderless(App->window->window);
-	}
-
-	if (ImGui::IsItemHovered())
-	{
-		ImGui::SetTooltip("Restart to apply");
-	}
-
-	if (ImGui::Checkbox("Resizable", &App->window->resizable))
-	{
-		App->window->SetWindowResizable(App->window->window);
+		App->window->SetWindowBorderless(window);
 	}
 
 	if (ImGui::IsItemHovered())
@@ -178,9 +171,19 @@ void const ModuleWindow::ShowWindowInfo()
 		ImGui::SetTooltip("Restart to apply");
 	}
 
-	if (ImGui::Checkbox("Fullscreen Desktop", &App->window->fullscreen_desktop))
+	if (ImGui::Checkbox("Resizable", &resizable))
 	{
-		App->window->SetWindowFullDesktop(App->window->window);
+		App->window->SetWindowResizable(window);
+	}
+
+	if (ImGui::IsItemHovered())
+	{
+		ImGui::SetTooltip("Restart to apply");
+	}
+
+	if (ImGui::Checkbox("Fullscreen Desktop", &fullscreen_desktop))
+	{
+		App->window->SetWindowFullDesktop(window);
 	}
 
 }
