@@ -89,15 +89,7 @@ void PanelOpenGl::Draw()
 
 		if (ImGui::Checkbox("Checkers Mode", &checkers_mode))
 		{
-			if (checkers_mode)
-			{
-	//			textureid = App->meshes->mesh->texture_path;
-	//			App->meshes->mesh->texture_path = App->texture->LoadCheckersTexture();
-			}
-			else
-			{
-	//			App->meshes->mesh->texture_path = textureid;
-			}
+			App->renderer3D->ischecked = checkers_mode;
 		}
 	
 		ImGui::End();
