@@ -146,7 +146,9 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	App->renderer3D->DrawMeshes(App->meshes->mesh);
+	for (std::vector<Mesh*>::const_iterator iterator = meshes.begin(); iterator != meshes.end(); ++iterator) {
+		DrawMesh(*iterator);
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -161,25 +163,27 @@ bool ModuleRenderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
+	ClearMeshes();
 
 	return true;
 }
 
-void ModuleRenderer3D::DrawMeshes(Mesh mesh)
+void ModuleRenderer3D::DrawMesh(Mesh* mesh)
 {
+	glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
-	glBindTexture(GL_TEXTURE_2D, mesh.texture_path);
+	glBindTexture(GL_TEXTURE_2D, mesh->texture_path);
 	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_vertices);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_indices);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
 
-	glDrawElements(GL_TRIANGLES,mesh.num_indices, GL_UNSIGNED_INT, NULL);
+	glDrawElements(GL_TRIANGLES,mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -202,6 +206,16 @@ void ModuleRenderer3D::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void ModuleRenderer3D::AddMesh(Mesh * mesh)
+{
+	meshes.push_back(mesh);
+}
+
+void ModuleRenderer3D::ClearMeshes()
+{
+	meshes.clear();
 }
 
 void ModuleRenderer3D::AddTexture(const char * path)

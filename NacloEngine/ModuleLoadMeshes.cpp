@@ -165,11 +165,11 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 		glBindBuffer(GL_ARRAY_BUFFER, mesh.id_texture);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh.num_texture, mesh.texture, GL_STATIC_DRAW);
 
-		/*
 		glGenBuffers(1, (GLuint*) &(mesh.id_color));
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.id_color);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh.num_color, mesh.colors, GL_STATIC_DRAW);
-		*/
+		
+		App->renderer3D->AddMesh(&mesh);
 	}
 }
 

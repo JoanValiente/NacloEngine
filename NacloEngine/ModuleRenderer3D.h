@@ -22,11 +22,12 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void DrawMeshes(Mesh meshes);
+	void DrawMesh(Mesh* meshes);
 
 	void OnResize(int width, int height);
 
-	void ModuleRenderer3D::AddDataMesh(Mesh* data_mesh);
+	void AddMesh(Mesh* mesh);
+	void ClearMeshes();
 
 	void AddTexture(const char* path);
 
@@ -34,7 +35,7 @@ private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
 
 public:
-
+	std::vector<Mesh*> meshes;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;
