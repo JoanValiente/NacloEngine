@@ -7,9 +7,18 @@
 #include "Assimp/include/cimport.h"
 #include "Devil/include/ilut.h"
 #include "Devil/include/il.h"
+#include "MathGeoLib/MathGeoLib.h"
+
 
 struct Mesh
 {
+	std::string path = "";
+	std::string filename = "";
+
+	float3 position = { 0,0,0 };
+	float3 rotation = { 0,0,0 };
+	float3 scale = { 1,1,1 };
+
 	uint id_indices = 0;
 	uint num_indices = 0;
 	uint* indices = nullptr;
@@ -41,6 +50,12 @@ public:
 
 	void LoadFBX(const char* path);
 	uint LoadTexture(const char* path);
+
+	void ShowMeshInformation(const Mesh* mesh);
+
+	const float3 GetFbxPosition(const Mesh* mesh);
+	const float3 GetFbxScale(const Mesh* mesh);
+	const float3 GetFbxRotation(const Mesh* mesh);
 
 public:
 	Mesh mesh;

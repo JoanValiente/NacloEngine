@@ -17,6 +17,7 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelRandomNumberGenerator;
 class PanelOpenGl;
+class PanelInspector;
 
 class ModuleImgui : public Module
 {
@@ -41,6 +42,7 @@ public:
 	PanelAbout* about = nullptr;
 	PanelRandomNumberGenerator* randomNumberGenerator = nullptr;
 	PanelOpenGl* opengloptions = nullptr;
+	PanelInspector* inspector = nullptr;
 
 
 	bool wire_mode = false;

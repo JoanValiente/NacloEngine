@@ -3,7 +3,6 @@
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
 
-
 #include "Application.h"
 
 
@@ -67,6 +66,10 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 {
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+
+	mesh.path = path;
+	std::string path_to_name = mesh.path;
+	mesh.filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
 	if (scene != nullptr && scene->HasMeshes()) {
 		for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
@@ -245,5 +248,98 @@ uint ModuleLoadMeshes::LoadTexture(const char * path)
 
 		std::cout << "Texture creation successful." << std::endl;
 
+
 		return textureID; // Return the GLuint to the texture so you can use it!
+}
+
+void ModuleLoadMeshes::ShowMeshInformation(const Mesh * mesh)
+{
+	if (mesh != nullptr)
+	{
+		ImGuiTreeNodeFlags flags = 0;
+
+		flags |= ImGuiTreeNodeFlags_DefaultOpen;
+		
+
+		float3 position = GetFbxPosition(mesh);
+		float3 rotation = GetFbxRotation(mesh);
+		float3 scale = GetFbxScale(mesh);
+
+		uint vertice = mesh->num_vertices;
+		uint index = mesh->num_indices;
+		uint uv = mesh->num_texture;
+		uint triangles = mesh->num_indices / 3;
+
+		ImTextureID texture_id = (ImTextureID)mesh->texture_path;
+		
+		if (ImGui::CollapsingHeader("Information"), flags)
+		{
+			ImGui::Text("File name: %s", mesh->filename.c_str());
+			ImGui::Text("Path: %s", mesh->path.c_str());
+		}
+		if (ImGui::CollapsingHeader("Transformation"), flags)
+		{
+			//POSITION------------
+			ImGui::Text("Position");
+			ImGui::Text("X:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &position.x);
+			ImGui::Text("Y:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &position.y);
+			ImGui::Text("Z:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &position.z);
+			//ROTATION------------
+			ImGui::Text("Rotation");
+			ImGui::Text("X:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &rotation.x);
+			ImGui::Text("Y:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &rotation.y);
+			ImGui::Text("Z:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &rotation.z);
+			//SCALE------------
+			ImGui::Text("Scale");
+			ImGui::Text("X:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &scale.x);
+			ImGui::Text("Y:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &scale.y);
+			ImGui::Text("Z:");
+			ImGui::SameLine();
+			ImGui::InputFloat("", &scale.z);
+
+		}
+		if (ImGui::CollapsingHeader("Mesh information"), flags)
+		{
+			ImGui::Text("Vertices %i", vertice);
+			ImGui::Text("Index %i", index);
+			ImGui::Text("UV's %i", uv);
+			ImGui::Text("triangles %i", triangles);
+		}
+		if (ImGui::CollapsingHeader("Texture"), flags)
+		{
+			ImGui::Image(texture_id, { 256,256 });
+		}
+	}
+}
+
+
+const float3 ModuleLoadMeshes::GetFbxPosition(const Mesh* mesh)
+{
+	return mesh->position;
+}
+
+const float3 ModuleLoadMeshes::GetFbxScale(const Mesh* mesh)
+{
+	return mesh->scale;
+}
+
+const float3 ModuleLoadMeshes::GetFbxRotation(const Mesh* mesh)
+{
+	return mesh->rotation;
 }

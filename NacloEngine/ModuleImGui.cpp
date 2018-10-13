@@ -11,7 +11,7 @@
 #include "PanelConsole.h"
 #include "PanelRandomNumberGenerator.h"
 #include "PanelOpenGL.h"
-
+#include "PanelInspector.h"
 
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -30,6 +30,7 @@ bool ModuleImgui::Init()
 	panels.push_back(randomNumberGenerator = new PanelRandomNumberGenerator());
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(opengloptions = new PanelOpenGl());
+	panels.push_back(inspector = new PanelInspector());
 	return ret;
 }
 

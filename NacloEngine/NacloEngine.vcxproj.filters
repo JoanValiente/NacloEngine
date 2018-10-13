@@ -345,6 +345,9 @@
     <ClInclude Include="ModuleLoadMeshes.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="PanelInspector.h">
+      <Filter>Sources\Modules\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleAudio.cpp">
@@ -541,6 +544,9 @@
     </ClCompile>
     <ClCompile Include="ModuleLoadMeshes.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelInspector.cpp">
+      <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
