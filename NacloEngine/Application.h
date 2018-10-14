@@ -12,7 +12,6 @@
 #include "ModuleLoadMeshes.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
-#include "ModuleSceneIntro.h"
 #include "ModuleTextures.h"
 #include "PerfTimer.h"
 
@@ -28,7 +27,6 @@ public:
 	ModuleLoadMeshes* meshes;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-	ModuleSceneIntro* sceneintro;
 	ModuleTextures* texture;
 
 	int		FPS_cap = 60;

@@ -5,11 +5,13 @@
 #include "Light.h"
 #include "Globals.h"
 #include "ModuleLoadMeshes.h"
-//#include "MathGeoLib/MathGeoLib.h"
 
 #include <list>
 
 #define MAX_LIGHTS 8
+
+struct plane;
+
 
 struct Mesh
 {
@@ -59,13 +61,17 @@ public:
 	void AddMesh(Mesh* mesh);
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
+	void SetWireMode();
 
 	void AddTexture(const char* path);
 
 	void ShowRenderInfo();
 
+
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
+	plane * grid;
+	bool wire_mode = false;
 
 public:
 	std::vector<Mesh*> meshes;

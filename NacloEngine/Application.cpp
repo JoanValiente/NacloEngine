@@ -4,7 +4,6 @@ Application::Application()
 {
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
-	sceneintro = new ModuleSceneIntro(this);
 	meshes = new ModuleLoadMeshes(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
@@ -20,7 +19,6 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(texture);
-	AddModule(sceneintro);
 	AddModule(imgui);
 	AddModule(meshes);
 

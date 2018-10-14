@@ -1,7 +1,6 @@
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleRenderer3D.h"
-#include "ModuleSceneIntro.h"
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
 
@@ -160,7 +159,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			}
 			if (ImGui::Checkbox("Wire Mode", &wire_mode))
 			{
-				App->sceneintro->WireMode();
+				App->renderer3D->SetWireMode();
 			}
 			ImGui::EndMenu();
 		}

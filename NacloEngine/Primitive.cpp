@@ -278,10 +278,12 @@ void plane::InnerRender() const
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
-	if (grid) {
+	if (grid) 
+	{
 		glDrawElements(GL_LINES, 36, GL_UNSIGNED_INT, NULL);
 	}
-	else {
+	else 
+	{
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	}
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

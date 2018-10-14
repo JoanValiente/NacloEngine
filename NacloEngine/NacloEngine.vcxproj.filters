@@ -333,9 +333,6 @@
     <ClInclude Include="GL\include\wglew.h">
       <Filter>Sources\Glew</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleSceneIntro.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleLoadMeshes.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -529,9 +526,6 @@
     </ClCompile>
     <ClCompile Include="PanelConfiguration.cpp">
       <Filter>Sources\Modules\Panels</Filter>
-    </ClCompile>
-    <ClCompile Include="ModuleSceneIntro.cpp">
-      <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="ModuleLoadMeshes.cpp">
       <Filter>Sources\Modules</Filter>
