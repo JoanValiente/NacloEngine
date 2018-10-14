@@ -182,11 +182,10 @@ update_status ModuleCamera3D::Update(float dt)
 				Y = Cross(Z, X);
 			}
 		}
-
-		// Recalculate matrix -------------
-		CalculateViewMatrix();
-
 	}
+	// Recalculate matrix -------------
+	CalculateViewMatrix();
+
 	return UPDATE_CONTINUE;
 }
 // -----------------------------------------------------------------
