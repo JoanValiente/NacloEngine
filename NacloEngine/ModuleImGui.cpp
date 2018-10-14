@@ -10,7 +10,6 @@
 #include "PanelConfiguration.h"
 #include "PanelConsole.h"
 #include "PanelRandomNumberGenerator.h"
-#include "PanelOpenGL.h"
 #include "PanelInspector.h"
 
 
@@ -29,7 +28,6 @@ bool ModuleImgui::Init()
 	panels.push_back(configuration = new PanelConfiguration());
 	panels.push_back(randomNumberGenerator = new PanelRandomNumberGenerator());
 	panels.push_back(about = new PanelAbout());
-	panels.push_back(opengloptions = new PanelOpenGl());
 	panels.push_back(inspector = new PanelInspector());
 	return ret;
 }
@@ -157,10 +155,6 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			if (ImGui::MenuItem("Configuration", NULL, false, true))
 			{
 				configuration->active = true;
-			}
-			if (ImGui::MenuItem("OpenGl options", NULL, false, true))
-			{
-				opengloptions->active = true;
 			}
 			if (ImGui::Checkbox("Wire Mode", &wire_mode))
 			{
