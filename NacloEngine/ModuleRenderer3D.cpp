@@ -129,9 +129,8 @@ bool ModuleRenderer3D::Init()
 bool ModuleRenderer3D::Start()
 {
 	bool ret = true;
-	grid = new plane(float3(0.0f, 0.0f, 0.0f), float3(10.0f, 0, 10.0f));
-	grid->axis = true;
-	grid->grid = true;
+	Grid = new grid(0,1,0,0);
+	Grid->axis = true;
 
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
@@ -166,7 +165,7 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		DrawMesh(*iterator);
 	}
 
-	grid->Render();
+	Grid->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());

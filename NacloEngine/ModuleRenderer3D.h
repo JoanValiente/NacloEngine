@@ -11,7 +11,7 @@
 #define MAX_LIGHTS 8
 
 struct plane;
-
+struct grid;
 
 struct Mesh
 {
@@ -69,7 +69,7 @@ public:
 
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
-	plane * grid;
+	grid * Grid;
 
 public:
 	bool wire_mode = false;

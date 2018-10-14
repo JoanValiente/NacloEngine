@@ -73,6 +73,18 @@ private:
 	uint vertexId = 0;
 };
 
+class grid : public Primitive
+{
+public:
+	grid(float x, float y, float z, float d);
+	void InnerRender() const;
+	void AxisRender() const;
+
+public:
+	Plane* Grid;
+
+};
+
 class ray : public Primitive
 {
 public:
