@@ -10,7 +10,7 @@ It is currently developed by:
 Project GitHub repository: [NacloEngine](https://github.com/JoanValiente/NacloEngine)
 
 
-##Controls
+## Controls
 
 * Left Alt + Mouse Right button: Look around.
 * Left Alt + Mouse Left button: Look aroud target.
@@ -21,7 +21,7 @@ Project GitHub repository: [NacloEngine](https://github.com/JoanValiente/NacloEn
 * Mouse wheel pressed: Up, right, left and down movement.
 
 
-##License
+## License
 
 Copyright 2018 MIT.
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
