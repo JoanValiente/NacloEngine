@@ -282,6 +282,108 @@ void ModuleRenderer3D::AddTexture(const char * path)
 	}
 }
 
+void ModuleRenderer3D::ShowRenderInformation()
+{
+	static bool depth_test = glIsEnabled(GL_DEPTH_TEST);
+	static bool cull_face = glIsEnabled(GL_CULL_FACE);
+	static bool lighting = glIsEnabled(GL_LIGHTING);
+	static bool line_smooth = glIsEnabled(GL_LINE_SMOOTH);
+	static bool polygon_smooth = glIsEnabled(GL_POLYGON_SMOOTH);
+	static bool color_material = glIsEnabled(GL_COLOR_MATERIAL);
+	static bool texture_2D = glIsEnabled(GL_TEXTURE_2D);
+	static bool checkers_mode = false;
+
+	if (ImGui::Checkbox("Depth Test", &depth_test))
+	{
+		if (depth_test)
+		{
+			glEnable(GL_DEPTH_TEST);
+		}
+		else
+		{
+			glDisable(GL_DEPTH_TEST);
+		}
+	}
+
+	if (ImGui::Checkbox("Cull Face", &cull_face))
+	{
+		if (cull_face)
+		{
+			glEnable(GL_CULL_FACE);
+		}
+		else
+		{
+			glDisable(GL_CULL_FACE);
+		}
+	}
+
+
+	if (ImGui::Checkbox("Lighting", &lighting))
+	{
+		if (lighting)
+		{
+			glEnable(GL_LIGHTING);
+		}
+		else
+		{
+			glDisable(GL_LIGHTING);
+		}
+	}
+
+	if (ImGui::Checkbox("Smooth Lines", &line_smooth))
+	{
+		if (line_smooth)
+		{
+			glEnable(GL_LINE_SMOOTH);
+		}
+		else
+		{
+			glDisable(GL_LINE_SMOOTH);
+		}
+	}
+
+	if (ImGui::Checkbox("Smooth Polygons", &polygon_smooth))
+	{
+		if (polygon_smooth)
+		{
+			glEnable(GL_POLYGON_SMOOTH);
+		}
+		else
+		{
+			glDisable(GL_POLYGON_SMOOTH);
+		}
+	}
+
+	if (ImGui::Checkbox("Color Material", &color_material))
+	{
+		if (color_material)
+		{
+			glEnable(GL_MATRIX_MODE);
+		}
+		else
+		{
+			glDisable(GL_MATRIX_MODE);
+		}
+	}
+
+	if (ImGui::Checkbox("Texture 2D", &texture_2D))
+	{
+		if (texture_2D)
+		{
+			glEnable(GL_TEXTURE_2D);
+		}
+		else
+		{
+			glDisable(GL_TEXTURE_2D);
+		}
+	}
+
+	if (ImGui::Checkbox("Checkers Mode", &checkers_mode))
+	{
+		ischecked = checkers_mode;
+	}
+}
+
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {
 	float4x4 Perspective;
