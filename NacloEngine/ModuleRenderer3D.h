@@ -61,7 +61,6 @@ public:
 	void AddMesh(Mesh* mesh);
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
-	void SetWireMode();
 
 	void AddTexture(const char* path);
 
@@ -71,9 +70,9 @@ public:
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
 	plane * grid;
-	bool wire_mode = false;
 
 public:
+	bool wire_mode = false;
 	std::vector<Mesh*> meshes;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;

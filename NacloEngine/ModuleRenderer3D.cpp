@@ -5,6 +5,7 @@
 #include "ModuleRenderer3D.h"
 #include "PanelInspector.h"
 #include "ModuleTextures.h"
+#include "Primitive.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -101,7 +102,6 @@ bool ModuleRenderer3D::Init()
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 		
 		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
 		lights[0].Active(true);
 		glEnable(GL_LIGHTING);
 		glEnable(GL_COLOR_MATERIAL);
@@ -129,6 +129,13 @@ bool ModuleRenderer3D::Init()
 bool ModuleRenderer3D::Start()
 {
 	bool ret = true;
+	grid = new plane(float3(0.0f, 0.0f, 0.0f), float3(10.0f, 0, 10.0f));
+	grid->axis = true;
+	grid->grid = true;
+
+	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
+	App->camera->LookAt(float3(0, 0, 0));
+
 	checkers_path = App->texture->LoadCheckersTexture();
 	return ret;
 }
@@ -159,6 +166,8 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 		DrawMesh(*iterator);
 	}
 
+	grid->Render();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
@@ -174,6 +183,10 @@ bool ModuleRenderer3D::CleanUp()
 	SDL_GL_DeleteContext(context);
 	ClearMeshes();
 
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	return true;
 }
 
@@ -185,7 +198,13 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh)
 		glBindTexture(GL_TEXTURE_2D, mesh->texture_path);
 	else
 		glBindTexture(GL_TEXTURE_2D, checkers_path);
-
+	
+	if (wire_mode)
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	
+	else
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -382,6 +401,9 @@ void ModuleRenderer3D::ShowRenderInfo()
 	{
 		ischecked = checkers_mode;
 	}
+
+	ImGui::Checkbox("Wire Mode", &wire_mode);
+
 }
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)

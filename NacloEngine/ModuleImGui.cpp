@@ -157,10 +157,6 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			{
 				configuration->active = true;
 			}
-			if (ImGui::Checkbox("Wire Mode", &wire_mode))
-			{
-				App->renderer3D->SetWireMode();
-			}
 			ImGui::EndMenu();
 		}
 
