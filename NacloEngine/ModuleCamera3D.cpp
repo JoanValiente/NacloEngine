@@ -136,7 +136,7 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 
-			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X, DeltaY);
+			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X.Normalized(), DeltaY);
 			Y = rotationMatrix * Y;
 			Z = rotationMatrix * Z;
 
