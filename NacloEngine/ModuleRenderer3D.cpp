@@ -364,7 +364,6 @@ void ModuleRenderer3D::ShowRenderInfo()
 	static bool polygon_smooth = glIsEnabled(GL_POLYGON_SMOOTH);
 	static bool color_material = glIsEnabled(GL_COLOR_MATERIAL);
 	static bool texture_2D = glIsEnabled(GL_TEXTURE_2D);
-	static bool checkers_mode = false;
 
 	if (ImGui::Checkbox("Depth Test", &depth_test))
 	{
@@ -451,9 +450,8 @@ void ModuleRenderer3D::ShowRenderInfo()
 		}
 	}
 
-	if (ImGui::Checkbox("Checkers Mode", &checkers_mode))
+	if (ImGui::Checkbox("Checkers Mode", &ischecked))
 	{
-		ischecked = checkers_mode;
 	}
 
 	ImGui::Checkbox("Wire Mode", &wire_mode);
