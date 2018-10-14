@@ -59,6 +59,8 @@ public:
 		return mouse_y_motion;
 	}
 
+	void const ShowInputInformation();
+
 private: 
 	void const LoadDraggedFile(char* path);
 

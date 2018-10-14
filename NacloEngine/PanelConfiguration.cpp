@@ -40,6 +40,7 @@ void PanelConfiguration::Draw()
 
 		if (ImGui::CollapsingHeader("Input"))
 		{
+			App->input->ShowInputInformation();
 		}
 
 		if (ImGui::CollapsingHeader("Render"))
