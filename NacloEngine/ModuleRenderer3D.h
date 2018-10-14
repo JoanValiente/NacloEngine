@@ -62,6 +62,8 @@ public:
 
 	void AddTexture(const char* path);
 
+	void ShowRenderInformation();
+
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
 
@@ -73,7 +75,6 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	bool ischecked = false;
 	uint checkers_path = 0;
-
 };
 
 #endif

@@ -45,6 +45,7 @@ void PanelConfiguration::Draw()
 
 		if (ImGui::CollapsingHeader("Render"))
 		{
+			App->renderer3D->ShowRenderInformation();
 		}
 
 		if (ImGui::CollapsingHeader("Textures"))
