@@ -47,21 +47,33 @@ update_status ModuleCamera3D::Update(float dt)
 	float3 newPos(0,0,0);
 	
 	float speed = 3.0f * dt;
-
-	// WASD movement
+	
+	//-----------------------------Speed boost-----------------------------
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 		speed = 8.0f * dt;
 
-	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
+
+	//-----------------------------ARROWS movement-----------------------------
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) newPos -= Z * speed;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) newPos += Z * speed;
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) newPos -= X * speed;
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) newPos += X * speed;
+
+
+	//-----------------------------WASD movement-----------------------------
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
-
-
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 	}
 	
-	// Wheel mouse zoom
+	//-----------------------------Focus mesh-----------------------------
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
+		LookAtMeshBox();
+	}
+
+	//-----------------------------Wheel mouse zoom-----------------------------
 	if (App->input->GetMouseZ() == 1)
 		newPos -= Z * speed * 5;
 
@@ -69,7 +81,7 @@ update_status ModuleCamera3D::Update(float dt)
 		newPos += Z * speed * 5;
 
 
-	// Wheel mouse movement
+	//-----------------------------Wheel mouse movement-----------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
 	{
 		if (App->input->GetMouseXMotion() > 0)
@@ -89,8 +101,7 @@ update_status ModuleCamera3D::Update(float dt)
 	Position += newPos;
 	Reference += newPos;
 
-	// Mouse motion ----------------
-
+	//-----------------------------Mouse motion-----------------------------
 	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
 		int dx = -App->input->GetMouseXMotion();
@@ -128,8 +139,39 @@ update_status ModuleCamera3D::Update(float dt)
 		Position = Reference + Z * Position.Length();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_UP) {
-		LookAtMeshBox();
+
+	//-----------------------------LEFT Mouse motion-----------------------------
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
+		float Sensitivity = 0.01f;
+
+		if (dx != 0)
+		{
+			float DeltaX = (float)dx * Sensitivity;
+
+			float3x3 rotationMatrix = float3x3::RotateY(DeltaX);
+			X = rotationMatrix * X;
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
+		}
+
+		if (dy != 0)
+		{
+			float DeltaY = (float)dy * Sensitivity;
+
+			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X, DeltaY);
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
+
+			if (Y.y < 0.0f)
+			{
+				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = Cross(Z, X);
+			}
+		}
 	}
 
 	// Recalculate matrix -------------
