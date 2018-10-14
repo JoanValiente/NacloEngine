@@ -36,9 +36,10 @@ public:
 	AABB* empty_meshBox = nullptr;
 
 private:
-	float speed = 3.0f;
-	float fast_speed = 8.0f;
-	float scroll_speed = 15.0f;
+	float speed;
+	float aux_speed;
+	float fast_speed;
+	float scroll_speed;
 	float4x4 ViewMatrix, ViewMatrixInverse;
 };
 

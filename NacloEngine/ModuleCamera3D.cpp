@@ -28,6 +28,11 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
+	speed = 3.0f;
+	aux_speed = 3.0f;
+	fast_speed = 8.0f;
+	scroll_speed = 8.0f;
+
 	return ret;
 }
 
@@ -50,7 +55,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	float3 newPos(0,0,0);
 	
-	speed = speed * dt;
+	speed = aux_speed * dt;
 
 	// WASD movement
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -224,6 +229,10 @@ void ModuleCamera3D::LookAtMeshBox()
 
 void ModuleCamera3D::ShowCameraInfo()
 {
+	ImGui::InputFloat("Camera Speed", &aux_speed, 1.0f);
+	ImGui::InputFloat("Fast Camera Speed", &fast_speed, 1.0f);
+	ImGui::InputFloat("Scroll Camera Speed", &scroll_speed, 1.0f);
+
 }
 
 // -----------------------------------------------------------------

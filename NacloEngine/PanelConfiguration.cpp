@@ -35,6 +35,7 @@ void PanelConfiguration::Draw()
 
 		if (ImGui::CollapsingHeader("Camera"))
 		{
+			App->camera->ShowCameraInfo();
 		}
 
 		if (ImGui::CollapsingHeader("Input"))
