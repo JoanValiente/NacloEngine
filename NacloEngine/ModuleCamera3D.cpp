@@ -16,6 +16,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Reference = float3(0.0f, 0.0f, 0.0f);
 	
 	meshBox = new AABB(float3(0.0f,0.0f,0.0f), float3(0.0f, 0.0f, 0.0f));
+	empty_meshBox = new AABB(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -35,6 +36,9 @@ bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
 
+	delete meshBox;
+	delete empty_meshBox;
+
 	return true;
 }
 
@@ -46,11 +50,11 @@ update_status ModuleCamera3D::Update(float dt)
 
 	float3 newPos(0,0,0);
 	
-	float speed = 3.0f * dt;
+	speed = speed * dt;
 
 	// WASD movement
 	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 8.0f * dt;
+		speed = fast_speed * dt;
 
 	if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT) {
 		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
@@ -63,10 +67,10 @@ update_status ModuleCamera3D::Update(float dt)
 	
 	// Wheel mouse zoom
 	if (App->input->GetMouseZ() == 1)
-		newPos -= Z * speed * 5;
+		newPos -= Z * scroll_speed;
 
 	if (App->input->GetMouseZ() == -1)
-		newPos += Z * speed * 5;
+		newPos += Z * scroll_speed;
 
 
 	// Wheel mouse movement
@@ -128,7 +132,8 @@ update_status ModuleCamera3D::Update(float dt)
 		Position = Reference + Z * Position.Length();
 	}
 
-	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_UP) {
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_UP) 
+	{
 		LookAtMeshBox();
 	}
 
@@ -166,14 +171,19 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 
 void ModuleCamera3D::LookAt( const float3 &Spot)
 {
-	Reference = Spot;
-
-	Z = (Position - Reference).Normalized();
-	X = float3(0.0f, 1.0f, 0.0f).Cross(Z);
-	X.Normalize();
-	Y = Z.Cross(X);
-
-	CalculateViewMatrix();
+	if (!Position.IsZero() && !Reference.IsZero())
+	{
+		Reference = Spot;
+		Z = (Position - Reference).Normalized();
+		X = float3(0.0f, 1.0f, 0.0f).Cross(Z);
+		X.Normalize();
+		Y = Z.Cross(X);
+		CalculateViewMatrix();
+	}
+	else
+	{
+		LOG("Error, No mesh founded");
+	}
 }
 
 
@@ -204,11 +214,17 @@ void ModuleCamera3D::CreateMeshBox(float3 minVertex, float3 maxVertex)
 
 void ModuleCamera3D::LookAtMeshBox()
 {
-	Reference = meshBox->CenterPoint();
-	Position = meshBox->CenterPoint() + meshBox->Size();
-	LookAt(Reference);
+	if (!meshBox->Equals(*empty_meshBox))
+	{
+		Reference = meshBox->CenterPoint();
+		Position = meshBox->CenterPoint() + meshBox->Size();
+		LookAt(Reference);
+	}
 }
 
+void ModuleCamera3D::ShowCameraInfo()
+{
+}
 
 // -----------------------------------------------------------------
 

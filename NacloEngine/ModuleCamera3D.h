@@ -23,6 +23,7 @@ public:
 	
 	void CreateMeshBox(float3 minVertex, float3 maxVertex);
 	void LookAtMeshBox();
+	void ShowCameraInfo();
 
 private:
 
@@ -32,9 +33,12 @@ public:
 	
 	float3 X, Y, Z, Position, Reference;
 	AABB* meshBox = nullptr;
+	AABB* empty_meshBox = nullptr;
 
 private:
-
+	float speed = 3.0f;
+	float fast_speed = 8.0f;
+	float scroll_speed = 15.0f;
 	float4x4 ViewMatrix, ViewMatrixInverse;
 };
 
