@@ -120,39 +120,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 		float Sensitivity = 0.01f;
 
-		if (dx != 0)
-		{
-			float DeltaX = (float)dx * Sensitivity;
-
-			float3x3 rotationMatrix = float3x3::RotateY(DeltaX);
-			X = rotationMatrix * X;
-			Y = rotationMatrix * Y;
-			Z = rotationMatrix * Z;
-		}
-
-		if (dy != 0)
-		{
-			float DeltaY = (float)dy * Sensitivity;
-			
-			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X.Normalized(), DeltaY);
-			Y = rotationMatrix * Y;
-			Z = rotationMatrix * Z;
-
-			if (Y.y < 0.0f)
-			{
-				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-				Y = Cross(Z, X);
-			}
-		}
-	}
-	//-----------------------------RIGHT Mouse motion-----------------------------
-	else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-	{
-		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion();
-
-		float Sensitivity = 0.01f;
-
 		Position -= Reference;
 
 		if (dx != 0)
@@ -181,6 +148,39 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 
 		Position = Reference + Z * Position.Length();
+	}
+	//-----------------------------RIGHT Mouse motion-----------------------------
+	else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
+		float Sensitivity = 0.005f;
+
+		if (dx != 0)
+		{
+			float DeltaX = (float)dx * Sensitivity;
+
+			float3x3 rotationMatrix = float3x3::RotateY(DeltaX);
+			X = rotationMatrix * X;
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
+		}
+
+		if (dy != 0)
+		{
+			float DeltaY = (float)dy * Sensitivity;
+
+			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X.Normalized(), DeltaY);
+			Y = rotationMatrix * Y;
+			Z = rotationMatrix * Z;
+
+			if (Y.y < 0.0f)
+			{
+				Z = float3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = Cross(Z, X);
+			}
+		}
 	}
 
 	// Recalculate matrix -------------
