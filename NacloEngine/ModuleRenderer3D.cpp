@@ -134,6 +134,8 @@ bool ModuleRenderer3D::Start()
 
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));
+	
+	LoadBakerHouse();
 
 	checkers_path = App->texture->LoadCheckersTexture();
 	return ret;
@@ -456,6 +458,12 @@ void ModuleRenderer3D::ShowRenderInfo()
 
 	ImGui::Checkbox("Wire Mode", &wire_mode);
 
+}
+
+void ModuleRenderer3D::LoadBakerHouse()
+{
+	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
+	App->renderer3D->AddTexture("Assets/Textures/Baker_house.png");
 }
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)

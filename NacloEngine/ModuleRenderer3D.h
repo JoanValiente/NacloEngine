@@ -67,6 +67,8 @@ public:
 
 	void ShowRenderInfo();
 
+	void LoadBakerHouse();
+
 
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);

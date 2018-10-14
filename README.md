@@ -19,6 +19,13 @@ Project GitHub repository: [NacloEngine](https://github.com/JoanValiente/NacloEn
 * F: Focus camera to the geometry.
 * Mouse wheel: zoom.
 * Mouse wheel pressed: Up, right, left and down movement.
+* ShortCuts:
+	1 - Open/Close Configuration Window.
+	2 - Open/Close Inspector.
+	3 - Open/Close Console.
+	4 - Open/Close About Window.
+	Shift + C - Enable/Disable Checkers mode.
+	Shift + M - Enable/Disable Wire mode.
 
 
 ## License
