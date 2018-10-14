@@ -15,18 +15,28 @@ PanelAbout::~PanelAbout()
 // ---------------------------------------------------------
 void PanelAbout::Draw()
 {
-	if (ImGui::Begin("About"), &active)
+	if (!ImGui::Begin(("About"), &active))
 	{
-		ImGui::InputText("Engine Name", App->engine_name, 20);
+		ImGui::End();
+	}
+	else
+	{
+	
+		if (ImGui::Button(App->engine_name))
+		{
+			ShellExecuteA(NULL, NULL, "https://github.com/JoanValiente/NacloEngine", NULL, NULL, NULL);
+		}
 		ImGui::Spacing();
 		ImGui::Spacing();
 		ImGui::Spacing();
 
 		ImGui::Text("Videogame Engine developed by 2 students from UPC CITM");
 
+		ImGui::Spacing();
+		ImGui::Spacing();
+		ImGui::Spacing();
 
 		ImGui::Text("AUTHORS");
-		ImGui::Spacing();
 		ImGui::Spacing();
 
 
@@ -44,7 +54,6 @@ void PanelAbout::Draw()
 		ImGui::Spacing();
 
 		ImGui::Text("LIBRARIES");
-		ImGui::Spacing();
 		ImGui::Spacing();
 
 		if (ImGui::Button("SDL"))
@@ -95,7 +104,7 @@ void PanelAbout::Draw()
 		{
 			ShellExecuteA(NULL, NULL, "http://openil.sourceforge.net/", NULL, NULL, NULL);
 		}
+		ImGui::End();
 	}
-	ImGui::End();
 }
 
