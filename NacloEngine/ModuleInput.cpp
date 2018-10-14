@@ -147,7 +147,7 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
-void const ModuleInput::ShowInputInformation()
+void const ModuleInput::ShowInputInfo()
 {
 	ImGui::Text("Mouse Position X %i", mouse_x);
 	ImGui::SameLine();

@@ -282,7 +282,7 @@ void ModuleRenderer3D::AddTexture(const char * path)
 	}
 }
 
-void ModuleRenderer3D::ShowRenderInformation()
+void ModuleRenderer3D::ShowRenderInfo()
 {
 	static bool depth_test = glIsEnabled(GL_DEPTH_TEST);
 	static bool cull_face = glIsEnabled(GL_CULL_FACE);

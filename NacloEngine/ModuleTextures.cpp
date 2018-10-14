@@ -12,6 +12,8 @@ ModuleTextures::~ModuleTextures()
 bool ModuleTextures::Start()
 {
 	bool ret = true;
+	texture_path = "No Texture Loaded";
+	texture_name = "No Texture Loaded";
 	return ret;
 }
 
@@ -21,8 +23,12 @@ bool ModuleTextures::CleanUp()
 	return ret;
 }
 
-uint ModuleTextures::LoadTexture(const char* path) const 
+uint ModuleTextures::LoadTexture(const char* path) 
 {
+	texture_path = path;
+	std::string path_to_name = texture_path;
+	texture_name = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
+
 		ILuint imageID;				// Create an image ID as a ULuint
 
 		uint textureID;			// Create a texture ID as a GLuint
@@ -97,6 +103,7 @@ uint ModuleTextures::LoadTexture(const char* path) const
 
 		std::cout << "Texture creation successful." << std::endl;
 
+		last_texture_loaded = textureID; 
 
 		return textureID; // Return the GLuint to the texture so you can use it!
 }
@@ -135,4 +142,14 @@ uint ModuleTextures::CreateCheckersTexture(const void* checkImage)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	return ImageName; 
+}
+
+void const ModuleTextures::ShowTextureInfo()
+{
+	ImGui::Text("Texture path:");
+	ImGui::Text("%s", texture_path.c_str());
+	ImGui::Text("Texture Name:");
+	ImGui::Text("%s", texture_name.c_str());
+	ImGui::Text("Texture");
+	ImGui::Image((ImTextureID)last_texture_loaded, { 256,256 });
 }

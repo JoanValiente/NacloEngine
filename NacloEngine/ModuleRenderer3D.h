@@ -62,7 +62,7 @@ public:
 
 	void AddTexture(const char* path);
 
-	void ShowRenderInformation();
+	void ShowRenderInfo();
 
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);

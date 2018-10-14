@@ -40,16 +40,17 @@ void PanelConfiguration::Draw()
 
 		if (ImGui::CollapsingHeader("Input"))
 		{
-			App->input->ShowInputInformation();
+			App->input->ShowInputInfo();
 		}
 
 		if (ImGui::CollapsingHeader("Render"))
 		{
-			App->renderer3D->ShowRenderInformation();
+			App->renderer3D->ShowRenderInfo();
 		}
 
 		if (ImGui::CollapsingHeader("Textures"))
 		{
+			App->texture->ShowTextureInfo();
 		}
 
 		if (ImGui::CollapsingHeader("Hardware"))
