@@ -283,6 +283,51 @@ void ModuleRenderer3D::ClearMeshes()
 	meshes.clear();
 }
 
+void ModuleRenderer3D::DeleteAllMeshes()
+{
+	if (!meshes.empty())
+	{
+		for (int i = 0; i < meshes.size(); ++i)
+		{
+			meshes[i]->path.clear();
+			meshes[i]->filename.clear();
+
+			if (meshes[i]->indices != nullptr)
+			{
+				delete[] meshes[i]->indices;
+				meshes[i]->indices = nullptr;
+			}
+
+			if (meshes[i]->vertices != nullptr)
+			{
+				delete[] meshes[i]->vertices;
+				meshes[i]->vertices = nullptr;
+			}
+
+			if (meshes[i]->texture != nullptr)
+			{
+				delete[] meshes[i]->texture;
+				meshes[i]->texture = nullptr;
+			}
+
+			if (meshes[i]->colors != nullptr)
+			{
+				delete[] meshes[i]->colors;
+				meshes[i]->colors = nullptr;
+			}
+
+			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
+			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
+			glDeleteTextures(1, (GLuint*) &(meshes[i]->texture_path));
+			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_texture));
+			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
+
+			delete meshes[i];
+		}
+	}
+	ClearMeshes();
+}
+
 void ModuleRenderer3D::AddTexture(const char * path)
 {
 	if (!meshes.empty())

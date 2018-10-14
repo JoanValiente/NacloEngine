@@ -26,7 +26,7 @@ public:
 
 	const float3 GetFbxPosition(const Mesh* mesh);
 	const float3 GetFbxScale(const Mesh* mesh);
-	const float3 GetFbxRotation(const Mesh* mesh);
+	const Quat GetFbxRotation(const Mesh* mesh);
 };
 
 #endif // !_MODULE_LOADMESHES_

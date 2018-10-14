@@ -19,7 +19,7 @@ struct Mesh
 	std::string filename = "";
 
 	float3 position = { 0,0,0 };
-	float3 rotation = { 0,0,0 };
+	Quat rotation = Quat::identity;
 	float3 scale = { 1,1,1 };
 
 	uint id_indices = 0;
@@ -61,6 +61,7 @@ public:
 	void AddMesh(Mesh* mesh);
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
+	void DeleteAllMeshes();
 
 	void AddTexture(const char* path);
 

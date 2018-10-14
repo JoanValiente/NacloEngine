@@ -64,112 +64,131 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 	std::string path_to_name = mesh->path;
 	mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-	if (scene != nullptr && scene->HasMeshes()) {
-		for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
+	if (scene != nullptr && scene->HasMeshes()) 
+	{
+		const aiNode* main_node = scene->mRootNode;
+
+		if (main_node != nullptr)
 		{
-			aiMesh* new_mesh = scene->mMeshes[num_meshes];
-			mesh->num_vertices = new_mesh->mNumVertices;
-			mesh->vertices = new float[mesh->num_vertices * 3];
-			memcpy(mesh->vertices, new_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
-			LOG("New mesh with %d vertices", mesh->num_vertices);
+			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
+			{	
+				aiVector3D scale;
+				aiQuaternion rotation;
+				aiVector3D position;
 
-			if (new_mesh->HasFaces())
-			{
-				mesh->num_indices = new_mesh->mNumFaces * 3;
-				mesh->indices = new uint[mesh->num_indices];
+				main_node->mTransformation.Decompose(scale, rotation, position);
 
-				for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
+				mesh->scale = { scale.x, scale.y, scale.z };
+				mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
+				mesh->position = { position.x,position.y, position.z };
+
+				aiMesh* new_mesh = scene->mMeshes[num_meshes];
+
+				mesh->num_vertices = new_mesh->mNumVertices;
+				mesh->vertices = new float[mesh->num_vertices * 3];
+				memcpy(mesh->vertices, new_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
+
+				LOG("Added new mesh. Vertices = %d", mesh->num_vertices);
+
+				if (new_mesh->HasFaces())
 				{
-					if (new_mesh->mFaces[num_faces].mNumIndices != 3)
+					mesh->num_indices = new_mesh->mNumFaces * 3;
+					mesh->indices = new uint[mesh->num_indices];
+
+					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
 					{
-						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
+						if (new_mesh->mFaces[num_faces].mNumIndices != 3)
+						{
+							LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
+						}
+						else {
+							memcpy(&mesh->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+						}
 					}
-					else {
-						memcpy(&mesh->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+				}
+
+				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
+				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &mesh->color) == aiReturn_FAILURE || mesh->color == aiColor4D(0, 0, 0, 1))
+				{
+					mesh->color = { 255.0f,255.0f,255.0f,255.0f };
+				}
+				aiColor4D* colors_mesh = *new_mesh->mColors;
+
+				if (colors_mesh != nullptr)
+				{
+					mesh->colors = new float[mesh->num_vertices * 3];
+					for (int num_color = 0; num_color < mesh->num_vertices; ++num_color)
+					{
+						memcpy(mesh->colors, &colors_mesh[num_color], sizeof(float)*mesh->num_vertices * 3);
 					}
 				}
-			}
 
-			aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
-			if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &mesh->color) == aiReturn_FAILURE || mesh->color == aiColor4D(0, 0, 0, 1))
-			{
-				mesh->color = { 255.0f,255.0f,255.0f,255.0f };
-			}
-			aiColor4D* colors_mesh = *new_mesh->mColors;
+				aiMaterial* tex = scene->mMaterials[0];
 
-			if (colors_mesh != nullptr)
-			{
-				mesh->colors = new float[mesh->num_vertices * 3];
-				for (int num_color = 0; num_color < mesh->num_vertices; ++num_color)
+				if (tex != nullptr)
 				{
-					memcpy(mesh->colors, &colors_mesh[num_color], sizeof(float)*mesh->num_vertices * 3);
+					aiString path;
+					tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+					if (path.length > 0)
+					{
+						std::string path_location = path.data;
+						path_location.erase(0, path_location.find_last_of("\\") + 1);
+						std::string folder = "Textures/";
+						folder += path_location;
+
+						ILuint id;
+						ilGenImages(1, &id);
+						ilBindImage(id);
+						ilLoadImage(folder.c_str());
+
+						mesh->id_texture = ilutGLBindTexImage();
+
+						folder.clear();
+						path_location.clear();
+						path.Clear();
+					}
+				}
+
+				if (new_mesh->HasTextureCoords(0))
+				{
+					mesh->num_texture = new_mesh->mNumVertices;
+					mesh->texture = new float[mesh->num_texture * 2];
+					LOG("New mesh with %d textures", mesh->num_texture);
+					for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
+					{
+						memcpy(&mesh->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
+						memcpy(&mesh->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
+					}
+
 				}
 			}
 
-			aiMaterial* tex = scene->mMaterials[0];
-			
-			if (tex != nullptr)
-			{
-				aiString path;
-				tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-				if (path.length > 0)
-				{
-					std::string path_location = path.data;
-					path_location.erase(0, path_location.find_last_of("\\") + 1);
-					std::string folder = "Textures/";
-					folder += path_location;
+			glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
 
-					ILuint id;
-					ilGenImages(1, &id);
-					ilBindImage(id);
-					ilLoadImage(folder.c_str());
+			glGenBuffers(1, (GLuint*) &(mesh->id_indices));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
 
-					mesh->id_texture = ilutGLBindTexImage();
+			glGenBuffers(1, (GLuint*) &(mesh->id_texture));
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
 
-					folder.clear();
-					path_location.clear();
-					path.Clear();
-				}
-			}
-			
-			if (new_mesh->HasTextureCoords(0))
-			{
-				mesh->num_texture = new_mesh->mNumVertices;
-				mesh->texture = new float[mesh->num_texture * 2];
-				LOG("New mesh with %d textures", mesh->num_texture);
-				for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
-				{
-					memcpy(&mesh->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
-					memcpy(&mesh->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
-				}
+			glGenBuffers(1, (GLuint*) &(mesh->id_color));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
 
-			}
+			App->renderer3D->AddMesh(mesh);
 		}
 
-		glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*) &(mesh->id_indices));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*) &(mesh->id_texture));
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
-
-		glGenBuffers(1, (GLuint*) &(mesh->id_color));
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
-		
-		App->renderer3D->AddMesh(mesh);
 	}
 }
 
 void ModuleLoadMeshes::ShowMeshInformation()
 {
-	Mesh* test = App->renderer3D->meshes.back();
-	if (test != nullptr)
+	Mesh* mesh_info = App->renderer3D->meshes.back();
+	if (mesh_info != nullptr)
 	{
 		ImGuiTreeNodeFlags flags = 0;
 
@@ -177,21 +196,21 @@ void ModuleLoadMeshes::ShowMeshInformation()
 
 		if (ImGui::Begin("Inspector", &active))
 		{
-			float3 position = GetFbxPosition(test);
-			float3 rotation = GetFbxRotation(test);
-			float3 scale = GetFbxScale(test);
+			float3 position = GetFbxPosition(mesh_info);
+			Quat rotation = GetFbxRotation(mesh_info);
+			float3 scale = GetFbxScale(mesh_info);
 
-			uint vertice = test->num_vertices;
-			uint index = test->num_indices;
-			uint uv = test->num_texture;
-			uint triangles = test->num_indices / 3;
+			uint vertice = mesh_info->num_vertices;
+			uint index = mesh_info->num_indices;
+			uint uv = mesh_info->num_texture;
+			uint triangles = mesh_info->num_indices / 3;
 
-			ImTextureID texture_id = (ImTextureID)test->texture_path;
+			ImTextureID texture_id = (ImTextureID)mesh_info->texture_path;
 
 			if (ImGui::CollapsingHeader("Information"), flags)
 			{
-				ImGui::Text("File name: %s", test->filename.c_str());
-				ImGui::Text("Path: %s", test->path.c_str());
+				ImGui::Text("File name: %s", mesh_info->filename.c_str());
+				ImGui::Text("Path: %s", mesh_info->path.c_str());
 			}
 			if (ImGui::CollapsingHeader("Transformation"), flags)
 			{
@@ -257,7 +276,7 @@ const float3 ModuleLoadMeshes::GetFbxScale(const Mesh* mesh)
 	return mesh->scale;
 }
 
-const float3 ModuleLoadMeshes::GetFbxRotation(const Mesh* mesh)
+const Quat ModuleLoadMeshes::GetFbxRotation(const Mesh* mesh)
 {
 	return mesh->rotation;
 }
