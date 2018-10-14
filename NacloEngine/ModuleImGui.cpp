@@ -38,6 +38,11 @@ bool ModuleImgui::Start()
 
 	bool ret = true;
 
+	TCHAR NPath[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, NPath);
+	explorer_path = NPath;
+	explorer_path.erase(explorer_path.find_last_of("\\"), explorer_path.back());
+
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -132,8 +137,9 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 	{
 		if (ImGui::BeginMenu("Main Menu"))
 		{
-			if (ImGui::MenuItem("Open", NULL, false, true))
+			if (ImGui::MenuItem("Open in Explorer", NULL, false, true))
 			{
+				ShellExecuteA(NULL, "open", explorer_path.c_str() , NULL, NULL, SW_SHOWDEFAULT);
 			}
 			if (ImGui::MenuItem("Console", NULL, false, true))
 			{

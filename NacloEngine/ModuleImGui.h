@@ -56,7 +56,7 @@ private:
 	std::vector<Panel*> panels;
 
 	float clear_color = 0.5f;
-
+	std::string explorer_path;
 	bool close_engine = false; 
 };
 
