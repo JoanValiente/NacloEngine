@@ -57,8 +57,6 @@ private:
 
 	float clear_color = 0.5f;
 
-	bool show_demo_window = true;
-
 	bool close_engine = false; 
 };
 

@@ -82,8 +82,6 @@ update_status ModuleImgui::Update(float dt)
 		}
 	}
 
-	ImGui::ShowDemoWindow(&show_demo_window);
-
 	return ret;
 }
 
