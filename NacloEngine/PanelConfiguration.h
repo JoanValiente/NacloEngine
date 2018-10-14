@@ -45,5 +45,10 @@ private:
 
 	ImVec4 color; 
 
+	int total_memory = 0;
+	int memory_usage = 0;
+	int dedicated_memory = 0;
+	int available_memory = 0;
+
 };
 #endif

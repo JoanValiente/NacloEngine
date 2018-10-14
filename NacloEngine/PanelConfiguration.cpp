@@ -4,7 +4,11 @@
 #include "mmgr\mmgr.h"
 #include "Assimp/include/version.h"
 
-
+#define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
+#define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048
+#define GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX    0x9049
+#define GPU_MEMORY_INFO_EVICTION_COUNT_NVX				0x904A
+#define GPU_MEMORY_INFO_EVICTED_MEMORY_NVX				0x904B
 
 PanelConfiguration::PanelConfiguration() : Panel("Configuration")
 {
@@ -91,6 +95,12 @@ void PanelConfiguration::LoadHardwareInfo()
 
 	vendor = glGetString(GL_VENDOR);
 	gpu_renderer = glGetString(GL_RENDERER);
+	
+	glGetIntegerv(GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &total_memory);
+	glGetIntegerv(GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &available_memory);
+	glGetIntegerv(GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX, &dedicated_memory);
+
+	memory_usage = total_memory - available_memory;
 }
 
 void const PanelConfiguration::ShowHardwareInfo()
@@ -206,5 +216,21 @@ void const PanelConfiguration::ShowHardwareInfo()
 	ImGui::Text("Brand: ");
 	ImGui::SameLine();
 	ImGui::TextColored(color, "%s", gpu_renderer);
+
+	//-------------VRAM-------------
+
+	ImGui::Separator();
+
+	ImGui::Text("VRAM Budget: "); ImGui::SameLine();
+	ImGui::TextColored(color, "%.4f MB", (total_memory * 0.001));
+
+	ImGui::Text("VRAM Usage: "); ImGui::SameLine();
+	ImGui::TextColored(color, "%.4f MB", (memory_usage * 0.001));
+
+	ImGui::Text("VRAM Available: "); ImGui::SameLine();
+	ImGui::TextColored(color, "%.4f MB", (available_memory * 0.001));
+
+	ImGui::Text("VRAM Reserved: "); ImGui::SameLine();
+	ImGui::TextColored(color, "%.4f MB", (dedicated_memory * 0.001));
 }
 
