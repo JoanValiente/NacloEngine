@@ -8,7 +8,6 @@
 #include "Module.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
-#include "ModuleAudio.h"
 #include "ModuleImgui.h"
 #include "ModuleLoadMeshes.h"
 #include "ModuleRenderer3D.h"
@@ -25,7 +24,6 @@ class Application
 public:
 	ModuleWindow* window;
 	ModuleInput* input;
-	ModuleAudio* audio;
 	ModuleImgui* imgui;
 	ModuleLoadMeshes* meshes;
 	ModuleRenderer3D* renderer3D;
