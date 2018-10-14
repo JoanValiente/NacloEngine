@@ -12,9 +12,9 @@ Project GitHub repository: [NacloEngine](https://github.com/JoanValiente/NacloEn
 
 ## Controls
 
-* Left Alt + Mouse Right button: Look around.
+* Mouse Right button: Look around.
 * Left Alt + Mouse Left button: Look aroud target.
-* Left Alt + WASD: forward, left, backward and right movement.
+* Mouse Right (hold) + WASD: forward, left, backward and right movement.
 * Arrows: forward, left, backward and right movement.
 * F: Focus camera to the geometry.
 * Mouse wheel: zoom.
