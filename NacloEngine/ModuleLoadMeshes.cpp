@@ -58,12 +58,6 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
 
-	Mesh* mesh = new Mesh();
-
-	mesh->path = path;
-	std::string path_to_name = mesh->path;
-	mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
-
 	if (scene != nullptr && scene->HasMeshes()) 
 	{
 		const aiNode* main_node = scene->mRootNode;
@@ -72,6 +66,12 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 		{
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
 			{	
+				Mesh* mesh = new Mesh();
+
+				mesh->path = path;
+				std::string path_to_name = mesh->path;
+				mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
+
 				aiVector3D scale;
 				aiQuaternion rotation;
 				aiVector3D position;
@@ -161,25 +161,27 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 					}
 
 				}
+
+				glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
+				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
+
+				glGenBuffers(1, (GLuint*) &(mesh->id_indices));
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
+
+				glGenBuffers(1, (GLuint*) &(mesh->id_texture));
+				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
+
+				glGenBuffers(1, (GLuint*) &(mesh->id_color));
+				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
+				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
+
+				App->renderer3D->AddMesh(mesh);
+
 			}
 
-			glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
-
-			glGenBuffers(1, (GLuint*) &(mesh->id_indices));
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
-
-			glGenBuffers(1, (GLuint*) &(mesh->id_texture));
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
-
-			glGenBuffers(1, (GLuint*) &(mesh->id_color));
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
-
-			App->renderer3D->AddMesh(mesh);
 		}
 
 	}

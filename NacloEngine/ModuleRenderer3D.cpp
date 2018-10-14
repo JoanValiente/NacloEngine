@@ -161,7 +161,8 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	for (std::vector<Mesh*>::const_iterator iterator = meshes.begin(); iterator != meshes.end(); ++iterator) {
+	for (std::vector<Mesh*>::const_iterator iterator = meshes.begin(); iterator != meshes.end(); ++iterator) 
+	{
 		DrawMesh(*iterator);
 	}
 
