@@ -58,6 +58,9 @@ uint ModuleTextures::LoadTexture(const char* path)
 			// NOTE: If your image contains alpha channel you can replace IL_RGB with IL_RGBA
 			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
 
+			texture_height = ImageInfo.Height;
+			texture_width = ImageInfo.Width;
+
 			// Quit out if we failed the conversion
 			if (!success)
 			{
@@ -146,6 +149,9 @@ uint ModuleTextures::CreateCheckersTexture(const void* checkImage)
 
 void const ModuleTextures::ShowTextureInfo()
 {
+	ImGui::Text("SIZE");
+	ImGui::Text("Width: %i", texture_width); ImGui::SameLine();
+	ImGui::Text("Height: %i", texture_height);
 	ImGui::Text("Texture path:");
 	ImGui::Text("%s", texture_path.c_str());
 	ImGui::Text("Texture Name:");

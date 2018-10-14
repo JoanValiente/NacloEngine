@@ -29,7 +29,9 @@ private:
 	std::string texture_path;
 	std::string texture_name;
 	uint last_texture_loaded = 0;
-
+public:
+	uint texture_height = 0;
+	uint texture_width= 0;
 };
 
 #endif // __MODULETEXTURES_H__

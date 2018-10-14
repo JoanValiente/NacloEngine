@@ -264,6 +264,9 @@ void ModuleLoadMeshes::ShowMeshInformation()
 			}
 			if (ImGui::CollapsingHeader("Texture"), flags)
 			{
+				ImGui::Text("SIZE");
+				ImGui::Text("Width: %i", App->texture->texture_width); ImGui::SameLine();
+				ImGui::Text("Height: %i", App->texture->texture_height);
 				ImGui::Image(texture_id, { 256,256 });
 			}
 
