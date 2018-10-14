@@ -197,3 +197,24 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 	return ret;
 }
 
+void ModuleImgui::ShowImGuiInfo()
+{
+	ImGuiStyle& style = ImGui::GetStyle();
+	
+	ImGui::ShowStyleSelector("ImGui Style");
+	
+	if (ImGui::SliderFloat("FrameRounding", &style.FrameRounding, 0.0f, 12.0f))
+	{
+		style.GrabRounding = style.FrameRounding;
+	}
+
+	bool window_border = style.WindowBorderSize; 
+	if (ImGui::Checkbox("WindowBorder", &window_border)) 
+		style.WindowBorderSize = window_border; 
+	ImGui::SameLine();
+
+	bool frame_border = style.FrameBorderSize;
+	if (ImGui::Checkbox("FrameBorder", &frame_border)) 
+		style.FrameBorderSize = frame_border; 
+}
+

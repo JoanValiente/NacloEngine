@@ -34,6 +34,9 @@ public:
 
 	void Log(const char* text);
 
+	void ShowImGuiInfo();
+
+
 public:
 
 	PanelConsole* console = nullptr;
