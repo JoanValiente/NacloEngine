@@ -104,6 +104,16 @@ void PanelAbout::Draw()
 		{
 			ShellExecuteA(NULL, NULL, "http://openil.sourceforge.net/", NULL, NULL, NULL);
 		}
+		ImGui::Separator();
+		ImGui::Text("LICENSE");
+		ImGui::Text("Copyright 2018 MIT.");
+		ImGui::Text("Permission is hereby granted, free of charge, to any person obtaining\na copy of thissoftware and associated documentation files (the 'Software'),\nto deal in the Software without restriction, including without\nlimitation the rights touse, copy, modify, merge, publish, distribute, sublicense,\nand/or sell copies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:");
+		ImGui::Spacing();
+		ImGui::Text("The above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.");
+		ImGui::Spacing();
+		ImGui::Text("THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS \nOR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.IN\nNO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR\nOTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF ORIN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.");
+
+
 		ImGui::End();
 	}
 }
