@@ -16,6 +16,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	Reference = float3(0.0f, 0.0f, 0.0f);
 	
 	meshBox = new AABB(float3(0.0f,0.0f,0.0f), float3(0.0f, 0.0f, 0.0f));
+	empty_meshBox = new AABB(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -27,6 +28,11 @@ bool ModuleCamera3D::Start()
 	LOG("Setting up the camera");
 	bool ret = true;
 
+	speed = 3.0f;
+	aux_speed = 3.0f;
+	fast_speed = 8.0f;
+	scroll_speed = 8.0f;
+
 	return ret;
 }
 
@@ -34,6 +40,9 @@ bool ModuleCamera3D::Start()
 bool ModuleCamera3D::CleanUp()
 {
 	LOG("Cleaning camera");
+
+	delete meshBox;
+	delete empty_meshBox;
 
 	return true;
 }
@@ -44,13 +53,15 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
-	float3 newPos(0,0,0);
-	
+	float3 newPos(0, 0, 0);
+
+
 	float speed = 3.0f * dt;
-	
+
 	//-----------------------------Speed boost-----------------------------
-	if(App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 8.0f * dt;
+	speed = aux_speed * dt;
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed = fast_speed * dt;
 
 
 	//-----------------------------ARROWS movement-----------------------------
@@ -67,7 +78,7 @@ update_status ModuleCamera3D::Update(float dt)
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
 	}
-	
+
 	//-----------------------------Focus mesh-----------------------------
 	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
 		LookAtMeshBox();
@@ -75,10 +86,10 @@ update_status ModuleCamera3D::Update(float dt)
 
 	//-----------------------------Wheel mouse zoom-----------------------------
 	if (App->input->GetMouseZ() == 1)
-		newPos -= Z * speed * 5;
+		newPos -= Z * scroll_speed;
 
 	if (App->input->GetMouseZ() == -1)
-		newPos += Z * speed * 5;
+		newPos += Z * scroll_speed;
 
 
 	//-----------------------------Wheel mouse movement-----------------------------
@@ -102,7 +113,7 @@ update_status ModuleCamera3D::Update(float dt)
 	Reference += newPos;
 
 	//-----------------------------Mouse motion-----------------------------
-	if(App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
 		int dx = -App->input->GetMouseXMotion();
 		int dy = -App->input->GetMouseYMotion();
@@ -139,7 +150,6 @@ update_status ModuleCamera3D::Update(float dt)
 		Position = Reference + Z * Position.Length();
 	}
 
-
 	//-----------------------------LEFT Mouse motion-----------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
@@ -172,15 +182,14 @@ update_status ModuleCamera3D::Update(float dt)
 				Y = Cross(Z, X);
 			}
 		}
+
+		// Recalculate matrix -------------
+		CalculateViewMatrix();
+
+
+		return UPDATE_CONTINUE;
 	}
-
-	// Recalculate matrix -------------
-	CalculateViewMatrix();
-
-	
-	return UPDATE_CONTINUE;
 }
-
 // -----------------------------------------------------------------
 
 
@@ -208,14 +217,19 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 
 void ModuleCamera3D::LookAt( const float3 &Spot)
 {
-	Reference = Spot;
-
-	Z = (Position - Reference).Normalized();
-	X = float3(0.0f, 1.0f, 0.0f).Cross(Z);
-	X.Normalize();
-	Y = Z.Cross(X);
-
-	CalculateViewMatrix();
+	if (!Position.IsZero() && !Reference.IsZero())
+	{
+		Reference = Spot;
+		Z = (Position - Reference).Normalized();
+		X = float3(0.0f, 1.0f, 0.0f).Cross(Z);
+		X.Normalize();
+		Y = Z.Cross(X);
+		CalculateViewMatrix();
+	}
+	else
+	{
+		LOG("Error, No mesh founded");
+	}
 }
 
 
@@ -246,11 +260,21 @@ void ModuleCamera3D::CreateMeshBox(float3 minVertex, float3 maxVertex)
 
 void ModuleCamera3D::LookAtMeshBox()
 {
-	Reference = meshBox->CenterPoint();
-	Position = meshBox->CenterPoint() + meshBox->Size();
-	LookAt(Reference);
+	if (!meshBox->Equals(*empty_meshBox))
+	{
+		Reference = meshBox->CenterPoint();
+		Position = meshBox->CenterPoint() + meshBox->Size();
+		LookAt(Reference);
+	}
 }
 
+void ModuleCamera3D::ShowCameraInfo()
+{
+	ImGui::InputFloat("Camera Speed", &aux_speed, 1.0f);
+	ImGui::InputFloat("Fast Camera Speed", &fast_speed, 1.0f);
+	ImGui::InputFloat("Scroll Camera Speed", &scroll_speed, 1.0f);
+
+}
 
 // -----------------------------------------------------------------
 

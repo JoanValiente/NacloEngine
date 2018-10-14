@@ -147,6 +147,19 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+void const ModuleInput::ShowInputInformation()
+{
+	ImGui::Text("Mouse Position X %i", mouse_x);
+	ImGui::SameLine();
+	ImGui::Text("Mouse Position Y %i", mouse_y);
+	ImGui::Separator();
+	ImGui::Text("Mouse Motion X %i", mouse_x_motion);
+	ImGui::SameLine();
+	ImGui::Text("Mouse Motion Y %i", mouse_y_motion);
+	ImGui::Separator();
+
+}
+
 void const ModuleInput::LoadDraggedFile(char * path)
 {
 	std::string file_path(path);

@@ -33,6 +33,24 @@ void PanelConfiguration::Draw()
 			App->window->ShowWindowInfo();
 		}
 
+		if (ImGui::CollapsingHeader("Camera"))
+		{
+			App->camera->ShowCameraInfo();
+		}
+
+		if (ImGui::CollapsingHeader("Input"))
+		{
+			App->input->ShowInputInformation();
+		}
+
+		if (ImGui::CollapsingHeader("Render"))
+		{
+		}
+
+		if (ImGui::CollapsingHeader("Textures"))
+		{
+		}
+
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
 			ImGui::Text("SDL Version: ");
