@@ -249,8 +249,16 @@ void ModuleRenderer3D::AddMesh(Mesh * mesh)
 
 void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)
 {
-	float3 minVertex = float3(mesh->vertices[0], mesh->vertices[0], mesh->vertices[0]);
-	float3 maxVertex = float3(mesh->vertices[0], mesh->vertices[0], mesh->vertices[0]);
+	float3 minVertex;
+	float3 maxVertex;
+	if (meshes.size() == 1) {
+		minVertex = { mesh->vertices[0], mesh->vertices[0], mesh->vertices[0] };
+		maxVertex = { mesh->vertices[0], mesh->vertices[0], mesh->vertices[0] };
+	}
+	else {
+		minVertex = App->camera->meshBox->minPoint;
+		maxVertex = App->camera->meshBox->maxPoint;
+	}
 
 	for (int i = 0; i < mesh->num_vertices; i++) {
 
@@ -277,6 +285,7 @@ void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)
 	}
 
 	App->camera->CreateMeshBox(minVertex, maxVertex);
+	App->camera->LookAtMeshBox();
 }
 
 void ModuleRenderer3D::ClearMeshes()

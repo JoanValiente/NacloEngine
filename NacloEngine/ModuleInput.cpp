@@ -170,7 +170,6 @@ void const ModuleInput::LoadDraggedFile(char * path)
 		LOG("Loading FBX file");
 		App->renderer3D->DeleteAllMeshes();
 		App->meshes->LoadFBX(path);
-		App->camera->LookAtMeshBox();
 	}
 	else if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{
