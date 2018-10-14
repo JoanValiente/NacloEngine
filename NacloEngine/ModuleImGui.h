@@ -51,6 +51,7 @@ public:
 private:
 
 	bool Show_Main_Menu_Bar();
+	void const ImGuiShortCuts();
 
 private:
 	std::vector<Panel*> panels;

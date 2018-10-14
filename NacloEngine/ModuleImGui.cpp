@@ -3,6 +3,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "ModuleInput.h"
 
 #include "Panel.h"
 #include "PanelAbout.h"
@@ -67,6 +68,8 @@ update_status ModuleImgui::PreUpdate(float dt)
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+
+	ImGuiShortCuts();
 
 	return ret; 
 }
@@ -199,6 +202,33 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 	}
 
 	return ret;
+}
+
+void const ModuleImgui::ImGuiShortCuts()
+{
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		configuration->active = !configuration->active;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+	{
+		inspector->active = !inspector->active;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+	{
+		console->active = !console->active;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	{
+		about->active = !about->active;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+	{
+		if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
+			App->renderer3D->wire_mode = !App->renderer3D->wire_mode;
+		if (App->input->GetKey(SDL_SCANCODE_C) == KEY_DOWN)
+			App->renderer3D->ischecked = !App->renderer3D->ischecked;
+	}
 }
 
 void ModuleImgui::ShowImGuiInfo()

@@ -189,14 +189,18 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 void ModuleLoadMeshes::ShowMeshInformation()
 {
-	Mesh* mesh_info = App->renderer3D->meshes.back();
+	Mesh* mesh_info = *App->renderer3D->meshes.begin();
 	if (mesh_info != nullptr)
 	{
 		ImGuiTreeNodeFlags flags = 0;
 
 		flags |= ImGuiTreeNodeFlags_DefaultOpen;
 
-		if (ImGui::Begin("Inspector", &active))
+		if (!ImGui::Begin("Inspector", &active))
+		{
+			ImGui::End();
+		}
+		else
 		{
 			float3 position = GetFbxPosition(mesh_info);
 			Quat rotation = GetFbxRotation(mesh_info);
@@ -209,7 +213,7 @@ void ModuleLoadMeshes::ShowMeshInformation()
 
 			ImTextureID texture_id = (ImTextureID)mesh_info->texture_path;
 
-			if (ImGui::CollapsingHeader("Information"), flags)
+			if (ImGui::CollapsingHeader("Information"), ImGuiTreeNodeFlags_DefaultOpen)
 			{
 				ImGui::Text("File name: %s", mesh_info->filename.c_str());
 				ImGui::Text("Path: %s", mesh_info->path.c_str());
@@ -262,8 +266,9 @@ void ModuleLoadMeshes::ShowMeshInformation()
 			{
 				ImGui::Image(texture_id, { 256,256 });
 			}
-		}
-		ImGui::End();
+
+			ImGui::End();
+		}	
 	}
 }
 
