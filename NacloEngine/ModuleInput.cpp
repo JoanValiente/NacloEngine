@@ -167,15 +167,27 @@ void const ModuleInput::LoadDraggedFile(char * path)
 
 	if (file_path.find(".fbx") != end_string || file_path.find(".FBX") != end_string)
 	{
+		LOG("Loading FBX file");
 		App->meshes->LoadFBX(path);
 		App->camera->LookAtMeshBox();
 	}
-	if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
+	else if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{
+		LOG("Loading PNG file");
 		App->renderer3D->AddTexture(path);
 	}
-	if (file_path.find(".jpg") != end_string || file_path.find(".JPG") != end_string)
+	else if (file_path.find(".jpg") != end_string || file_path.find(".JPG") != end_string)
 	{
+		LOG("Loading JPG file");
 		App->renderer3D->AddTexture(path);
+	}
+	else if (file_path.find(".dds") != end_string || file_path.find(".DDS") != end_string)
+	{
+		LOG("Loading DDS file");
+		App->renderer3D->AddTexture(path);
+	}
+	else
+	{
+		LOG("ERROR, UNKNOWN FILE FORMAT")
 	}
 }

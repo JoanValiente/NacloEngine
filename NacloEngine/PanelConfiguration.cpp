@@ -50,6 +50,11 @@ void PanelConfiguration::Draw()
 			App->renderer3D->ShowRenderInfo();
 		}
 
+		if (ImGui::CollapsingHeader("ImGui"))
+		{
+			App->imgui->ShowImGuiInfo();
+		}
+
 		if (ImGui::CollapsingHeader("Textures"))
 		{
 			App->texture->ShowTextureInfo();
