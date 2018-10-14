@@ -140,7 +140,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 	{
 		if (ImGui::BeginMenu("Main Menu"))
 		{
-			if (ImGui::MenuItem("Open in Explorer", NULL, false, true))
+			if (ImGui::MenuItem("Open Explorer", NULL, false, true))
 			{
 				ShellExecuteA(NULL, "open", explorer_path.c_str() , NULL, NULL, SW_SHOWDEFAULT);
 			}
