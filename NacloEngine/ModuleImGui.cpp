@@ -55,7 +55,7 @@ bool ModuleImgui::Start()
 	ImGui_ImplOpenGL2_Init();
 
 	// Setup style
-	ImGui::StyleColorsDark();
+	ImGui::StyleColorsLight();
 
 	return ret;
 }
@@ -97,8 +97,6 @@ update_status ModuleImgui::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	if (!close_engine)
 	{

@@ -10,9 +10,6 @@
 
 #define MAX_LIGHTS 8
 
-struct plane;
-struct grid;
-
 struct Mesh
 {
 	std::string path = "";
@@ -67,12 +64,9 @@ public:
 
 	void ShowRenderInfo();
 
-	void LoadBakerHouse();
-
 
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
-	grid * Grid;
 
 public:
 	bool wire_mode = false;

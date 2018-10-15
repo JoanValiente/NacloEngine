@@ -12,6 +12,7 @@
 #include "ModuleLoadMeshes.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
+#include "ModuleScene.h"
 #include "ModuleTextures.h"
 #include "PerfTimer.h"
 
@@ -25,6 +26,7 @@ public:
 	ModuleInput* input;
 	ModuleImgui* imgui;
 	ModuleLoadMeshes* meshes;
+	ModuleScene* scene;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleTextures* texture;

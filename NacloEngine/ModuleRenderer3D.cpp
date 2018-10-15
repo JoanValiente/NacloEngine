@@ -129,13 +129,6 @@ bool ModuleRenderer3D::Init()
 bool ModuleRenderer3D::Start()
 {
 	bool ret = true;
-	Grid = new grid(0,1,0,0);
-	Grid->axis = true;
-
-	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(float3(0, 0, 0));
-	
-	LoadBakerHouse();
 
 	checkers_path = App->texture->LoadCheckersTexture();
 	return ret;
@@ -167,8 +160,6 @@ update_status ModuleRenderer3D::PostUpdate(float dt)
 	{
 		DrawMesh(*iterator);
 	}
-
-	Grid->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -458,12 +449,6 @@ void ModuleRenderer3D::ShowRenderInfo()
 
 	ImGui::Checkbox("Wire Mode", &wire_mode);
 
-}
-
-void ModuleRenderer3D::LoadBakerHouse()
-{
-	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
-	App->renderer3D->AddTexture("Assets/Textures/Baker_house.png");
 }
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
