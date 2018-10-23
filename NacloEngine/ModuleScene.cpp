@@ -3,6 +3,7 @@
 #include "Primitive.h"
 #include "Globals.h"
 #include "ModuleLoadMeshes.h"
+#include "GameObject.h"
 
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -39,6 +40,23 @@ update_status ModuleScene::PostUpdate(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	return ret;
+
+}
+
+void ModuleScene::CreateGameObject(GameObject * gameObject)
+{
+	gameObjects.push_back(gameObject);
+}
+
+void ModuleScene::DeleteGameObject(GameObject * gameObject)
+{
+	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	{
+		if ((*it) == gameObject) {
+			(*it)->CleanUp();
+			gameObjects.erase(it);
+		}
+	}
 }
 
 bool ModuleScene::CleanUp()

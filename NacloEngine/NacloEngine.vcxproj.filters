@@ -43,6 +43,9 @@
     <Filter Include="Sources\Glew">
       <UniqueIdentifier>{3c096f87-7a2f-405c-9ae9-0fbe824317e3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\GameObjects">
+      <UniqueIdentifier>{5aca42f5-ea99-4c56-ad21-22b6f3374bde}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -345,6 +348,9 @@
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Sources\GameObjects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -541,6 +547,9 @@
     </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Sources\GameObjects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

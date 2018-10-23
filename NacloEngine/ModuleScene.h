@@ -3,6 +3,7 @@
 #include "Module.h"
 
 struct grid;
+struct GameObject;
 
 class ModuleScene : public Module
 {
@@ -14,7 +15,12 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 
+	void CreateGameObject(GameObject* object);
+	void DeleteGameObject(GameObject* object);
+
 private:
 	grid * Grid;
+	std::vector<GameObject*> gameObjects;
+	GameObject* root;
 };
 #endif
