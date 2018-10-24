@@ -39,8 +39,10 @@ update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	return ret;
+	ImGui::Render();
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
+	return ret;
 }
 
 void ModuleScene::CreateGameObject(GameObject * gameObject)
@@ -61,7 +63,12 @@ void ModuleScene::DeleteGameObject(GameObject * gameObject)
 
 bool ModuleScene::CleanUp()
 {
-	LOG("Unloading Intro Scene");
+	LOG("Unloading Scene");
+
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 
 	return false;
 }
