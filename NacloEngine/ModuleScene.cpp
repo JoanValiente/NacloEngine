@@ -23,6 +23,7 @@ bool ModuleScene::Start()
 
 	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
 	App->renderer3D->AddTexture("Assets/Textures/Baker_house.png");
+
 	return true;
 }
 

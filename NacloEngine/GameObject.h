@@ -4,6 +4,8 @@
 #include <vector>
 #include "Globals.h"
 
+struct Component;
+
 class GameObject {
 	 
 public:
@@ -13,7 +15,11 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
-private:
+	void NewComponent(Component* component);
+	void DeleteComponent(Component* component);
+
+public:
+	std::vector<Component*> components;
 	bool active = false;
 	char* name;
 	GameObject* parent;

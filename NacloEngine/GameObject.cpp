@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "Component.h"
 
 GameObject::GameObject(GameObject * parent)
 {
@@ -28,4 +29,18 @@ bool GameObject::CleanUp()
 	children.clear();
 
 	return true;
+}
+
+void GameObject::NewComponent(Component * component)
+{
+	components.push_back(component);
+}
+
+void GameObject::DeleteComponent(Component * component)
+{
+	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	{
+		(*it)->CleanUp();
+		components.erase(it);
+	}
 }
