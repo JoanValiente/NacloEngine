@@ -1,9 +1,9 @@
 #include "Component.h"
 #include "GameObject.h"
 
-Component::Component(GameObject * parent)
+Component::Component(GameObject * container)
 {
-	this->parent = parent;
+	this->container = container;
 }
 
 Component::~Component()
@@ -16,6 +16,6 @@ void Component::Update(float dt)
 
 void Component::CleanUp()
 {
-	delete parent;
-	parent = nullptr;
+	delete container;
+	container = nullptr;
 }

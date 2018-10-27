@@ -21,6 +21,8 @@ bool ModuleScene::Start()
 	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
 	App->camera->LookAt(float3(0, 0, 0));	
 
+	root = new GameObject(nullptr, "root");
+
 	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
 	App->renderer3D->AddTexture("Assets/Textures/Baker_house.png");
 
@@ -31,7 +33,7 @@ update_status ModuleScene::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	Grid->Render();
+	root->Update(dt);
 
 	return ret;
 }
@@ -39,6 +41,8 @@ update_status ModuleScene::Update(float dt)
 update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
+
+	Grid->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
@@ -70,6 +74,11 @@ bool ModuleScene::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
+	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	{
+		(*it)->CleanUp();
+	}
+	gameObjects.clear();
 
 	return false;
 }

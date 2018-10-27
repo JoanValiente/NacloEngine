@@ -3,26 +3,25 @@
 
 #include <vector>
 #include "Globals.h"
-
-struct Component;
+#include "Component.h"
 
 class GameObject {
 	 
 public:
-	GameObject(GameObject* parent);
+	GameObject(GameObject* parent, const char* name);
 	~GameObject();
 	   	 
-	bool Update(float dt);
-	bool CleanUp();
+	void Update(float dt);
+	void CleanUp();
 
 	void NewComponent(Component* component);
 	void DeleteComponent(Component* component);
 
 public:
-	std::vector<Component*> components;
 	bool active = false;
-	char* name;
-	GameObject* parent;
+	std::string name;
+	GameObject* parent = nullptr;
+	std::vector<Component*> components;
 	std::vector<GameObject*> children;
 };
 

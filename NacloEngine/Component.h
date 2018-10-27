@@ -6,16 +6,18 @@
 
 struct GameObject;
 
-enum COMPONENT_TYPE {
-	COMPONENT_NONE,
-	COMPONENT_TRANSFORM,
-	COMPONENT_MESH,
-	COMPONENT, MATERIAL
-};
 class Component {
 
+public: 
+	enum COMPONENT_TYPE {
+		COMPONENT_NONE,
+		COMPONENT_TRANSFORM,
+		COMPONENT_MESH,
+		COMPONENT, MATERIAL
+	};
+
 public:
-	Component(GameObject* parent);
+	Component(GameObject* container);
 	~Component();
 
 	virtual void Update(float dt);
@@ -23,7 +25,7 @@ public:
 
 public:
 	bool active = false;
-	GameObject* parent;
+	GameObject* container;
 	COMPONENT_TYPE type;
 };
 

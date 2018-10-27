@@ -1,39 +1,45 @@
 #include "GameObject.h"
-#include "Component.h"
 
-GameObject::GameObject(GameObject * parent)
+GameObject::GameObject(GameObject * parent, const char* name)
 {
 	this->parent = parent;
+	this->name = name;
 }
 
 GameObject::~GameObject()
 {
 }
 
-bool GameObject::Update(float dt)
+void GameObject::Update(float dt)
 {
 	for (int i = 0; i < children.size(); ++i)
 	{
 		children[i]->Update(dt);
 	}
-	
-	return true;
 }
 
-bool GameObject::CleanUp()
+void GameObject::CleanUp()
 {
-	for (std::vector<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
+	for (std::vector<GameObject*>::const_iterator go_it = children.begin(); go_it != children.end(); ++go_it)
 	{
-		(*it)->CleanUp();
+		(*go_it)->CleanUp();
 	}
-	children.clear();
 
-	return true;
+	for (std::vector<Component*>::const_iterator component_it = components.begin(); component_it != components.end(); ++component_it)
+	{
+		(*component_it)->CleanUp();
+	}
+
+	children.clear();
 }
 
-void GameObject::NewComponent(Component * component)
+void GameObject::NewComponent(Component* component)
 {
-	components.push_back(component);
+	if (component != nullptr)
+	{
+		component->container = this;
+		components.push_back(component);
+	}
 }
 
 void GameObject::DeleteComponent(Component * component)

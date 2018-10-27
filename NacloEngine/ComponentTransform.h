@@ -4,12 +4,10 @@
 #include "Component.h"
 #include "MathGeoLib/MathGeoLib.h"
 
-struct GameObject;
-
 class ComponentTransform : public Component{
 
 public:
-	ComponentTransform(GameObject* parent, float3 position, float3 rotation, float3 size);
+	ComponentTransform(GameObject* container, float3 position, float3 rotation, float3 size);
 	~ComponentTransform();
 
 	void UpdateMatrix(float3 position, Quat quaternion, float3 size);
@@ -20,10 +18,10 @@ public:
 	void SetQuaternion(Quat quaternion);
 
 public:
-	float3 position = { 0,0,0 };
-	float3 rotation = { 0,0,0 };
+	float3 position = float3::zero;
+	float3 rotation = float3::zero;
 	float3 size = { 1,1,1 };
-	Quat quaternion = { 0,0,0,0 };
+	Quat quaternion = Quat::identity;
 	float4x4 matrix;
 };
 

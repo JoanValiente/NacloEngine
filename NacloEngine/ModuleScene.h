@@ -21,6 +21,6 @@ public:
 private:
 	grid * Grid;
 	std::vector<GameObject*> gameObjects;
-	GameObject* root;
+	GameObject* root = nullptr;
 };
 #endif
