@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
+#include "ComponentMaterial.h"
 
 GameObject::GameObject(GameObject * parent, const char* name)
 {
@@ -54,6 +55,7 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_MATERIAL:
+		component = new ComponentMaterial(this);
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_NONE:
