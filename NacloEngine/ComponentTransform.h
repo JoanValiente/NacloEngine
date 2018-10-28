@@ -7,7 +7,7 @@
 class ComponentTransform : public Component{
 
 public:
-	ComponentTransform(GameObject* container, float3 position, float3 rotation, float3 size);
+	ComponentTransform(GameObject* container);
 	~ComponentTransform();
 
 	void UpdateMatrix(float3 position, Quat quaternion, float3 size);

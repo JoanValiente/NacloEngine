@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Globals.h"
 
-ComponentTransform::ComponentTransform(GameObject * container, float3 position, float3 rotation, float3 size) : Component(container)
+ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
 {
 	this->position = position;
 	this->rotation = rotation;

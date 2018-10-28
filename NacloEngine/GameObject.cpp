@@ -1,5 +1,6 @@
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentTransform.h"
 
 GameObject::GameObject(GameObject * parent, const char* name)
 {
@@ -45,6 +46,7 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 	switch (type)
 	{
 	case Component::COMPONENT_TYPE::COMPONENT_TRANSFORM:
+		component = new ComponentTransform(this);
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_MESH:

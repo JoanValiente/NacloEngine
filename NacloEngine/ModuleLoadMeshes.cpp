@@ -5,6 +5,7 @@
 #include "PanelInspector.h"
 
 #include "Application.h"
+#include "Globals.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
@@ -65,6 +66,8 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 	{
 		const aiNode* main_node = scene->mRootNode;
 
+		GameObject* go = App->scene->CreateGameObject(App->scene->root, main_node->mName.data);
+
 		if (main_node != nullptr)
 		{
 			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
@@ -75,14 +78,17 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 				std::string path_to_name = mesh->path;
 				mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-				GameObject* go = App->scene->CreateGameObject(App->scene->root, "GameObject");
-
 				if (scene->mRootNode != nullptr) {
 					aiVector3D scale;
 					aiQuaternion rotation;
 					aiVector3D position;
 
 					main_node->mTransformation.Decompose(scale, rotation, position);
+
+					ComponentTransform* transformComponent = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+					transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
+					transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
+					transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
 
 					mesh->scale = { scale.x, scale.y, scale.z };
 					mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
