@@ -50,9 +50,11 @@ update_status ModuleScene::PostUpdate(float dt)
 	return ret;
 }
 
-void ModuleScene::CreateGameObject(GameObject * gameObject)
+GameObject* ModuleScene::CreateGameObject(GameObject * parent, const char* name)
 {
-	gameObjects.push_back(gameObject);
+	GameObject* go = new GameObject(parent, name);
+
+	return go;
 }
 
 void ModuleScene::DeleteGameObject(GameObject * gameObject)

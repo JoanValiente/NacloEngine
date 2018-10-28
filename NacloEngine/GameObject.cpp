@@ -1,9 +1,14 @@
 #include "GameObject.h"
+#include "ComponentMesh.h"
 
 GameObject::GameObject(GameObject * parent, const char* name)
 {
 	this->parent = parent;
 	this->name = name;
+
+	if (parent != nullptr) {
+		parent->children.push_back(this);
+	}
 }
 
 GameObject::~GameObject()
@@ -33,13 +38,36 @@ void GameObject::CleanUp()
 	children.clear();
 }
 
-void GameObject::NewComponent(Component* component)
+Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 {
+	Component* component = nullptr;
+
+	switch (type)
+	{
+	case Component::COMPONENT_TYPE::COMPONENT_TRANSFORM:
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_MESH:
+		component = new ComponentMesh(this);
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_MATERIAL:
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_NONE:
+		break;
+
+	default:
+		break;
+	}
+
 	if (component != nullptr)
 	{
 		component->container = this;
-		components.push_back(component);
+		this->components.push_back(component);
 	}
+
+	return component;
 }
 
 void GameObject::DeleteComponent(Component * component)

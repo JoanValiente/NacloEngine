@@ -15,12 +15,13 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 
-	void CreateGameObject(GameObject* object);
+	GameObject* CreateGameObject(GameObject* parent, const char* name);
 	void DeleteGameObject(GameObject* object);
 
+public:
+	GameObject* root = nullptr;
 private:
 	grid * Grid;
 	std::vector<GameObject*> gameObjects;
-	GameObject* root = nullptr;
 };
 #endif

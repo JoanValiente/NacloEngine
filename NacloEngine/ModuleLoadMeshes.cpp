@@ -5,6 +5,9 @@
 #include "PanelInspector.h"
 
 #include "Application.h"
+#include "GameObject.h"
+#include "ComponentMesh.h"
+#include "ComponentTransform.h"
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
@@ -72,15 +75,19 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 				std::string path_to_name = mesh->path;
 				mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-				aiVector3D scale;
-				aiQuaternion rotation;
-				aiVector3D position;
+				GameObject* go = App->scene->CreateGameObject(App->scene->root, "GameObject");
 
-				main_node->mTransformation.Decompose(scale, rotation, position);
+				if (scene->mRootNode != nullptr) {
+					aiVector3D scale;
+					aiQuaternion rotation;
+					aiVector3D position;
 
-				mesh->scale = { scale.x, scale.y, scale.z };
-				mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
-				mesh->position = { position.x,position.y, position.z };
+					main_node->mTransformation.Decompose(scale, rotation, position);
+
+					mesh->scale = { scale.x, scale.y, scale.z };
+					mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
+					mesh->position = { position.x,position.y, position.z };
+				}	
 
 				aiMesh* new_mesh = scene->mMeshes[num_meshes];
 
@@ -106,6 +113,10 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 						}
 					}
 				}
+
+				//Component Mesh
+				ComponentMesh* meshComponent = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+				meshComponent->AssignMesh(mesh);
 
 				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
 				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &mesh->color) == aiReturn_FAILURE || mesh->color == aiColor4D(0, 0, 0, 1))

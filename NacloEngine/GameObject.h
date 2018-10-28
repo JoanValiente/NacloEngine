@@ -14,7 +14,7 @@ public:
 	void Update(float dt);
 	void CleanUp();
 
-	void NewComponent(Component* component);
+	Component* NewComponent(Component::COMPONENT_TYPE type);
 	void DeleteComponent(Component* component);
 
 public:
