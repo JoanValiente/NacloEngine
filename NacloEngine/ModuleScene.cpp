@@ -80,7 +80,12 @@ bool ModuleScene::CleanUp()
 	{
 		(*it)->CleanUp();
 	}
+
 	gameObjects.clear();
+
+	if (root != nullptr) {
+		delete root;
+	}
 
 	return false;
 }

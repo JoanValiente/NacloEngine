@@ -11,7 +11,7 @@
 #include "PanelConsole.h"
 #include "PanelRandomNumberGenerator.h"
 #include "PanelInspector.h"
-
+#include "PanelHierarchy.h"
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,6 +29,7 @@ bool ModuleImgui::Init()
 	panels.push_back(randomNumberGenerator = new PanelRandomNumberGenerator());
 	panels.push_back(about = new PanelAbout());
 	panels.push_back(inspector = new PanelInspector());
+	panels.push_back(hierarchy = new PanelHierarchy());
 	return ret;
 }
 

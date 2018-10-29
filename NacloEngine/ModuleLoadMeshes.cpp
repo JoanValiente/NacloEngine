@@ -66,7 +66,9 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 	{
 		const aiNode* main_node = scene->mRootNode;
 
-		GameObject* go = App->scene->CreateGameObject(App->scene->root, main_node->mName.data);
+		std::string tmp = path;		
+
+		GameObject* go = App->scene->CreateGameObject(App->scene->root, tmp.c_str());
 
 		if (main_node != nullptr)
 		{

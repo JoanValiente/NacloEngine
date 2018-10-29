@@ -17,6 +17,7 @@ class PanelConfiguration;
 class PanelAbout;
 class PanelRandomNumberGenerator;
 class PanelInspector;
+class PanelHierarchy;
 
 class ModuleImgui : public Module
 {
@@ -44,6 +45,7 @@ public:
 	PanelAbout* about = nullptr;
 	PanelRandomNumberGenerator* randomNumberGenerator = nullptr;
 	PanelInspector* inspector = nullptr;
+	PanelHierarchy* hierarchy = nullptr;
 
 
 	bool wire_mode = false;
