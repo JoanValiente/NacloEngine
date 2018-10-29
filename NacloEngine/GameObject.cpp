@@ -7,6 +7,7 @@ GameObject::GameObject(GameObject * parent, const char* name)
 {
 	this->parent = parent;
 	this->name = name;
+	this->active = true;
 
 	if (parent != nullptr) {
 		parent->children.push_back(this);
@@ -15,13 +16,15 @@ GameObject::GameObject(GameObject * parent, const char* name)
 
 GameObject::~GameObject()
 {
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++) {
-		delete (*it);
-	}
-
+	
 	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++) {
 		delete (*it);
 	}
+
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++) {
+		delete (*it);
+	}
+	
 }
 
 void GameObject::Update(float dt)
@@ -34,14 +37,14 @@ void GameObject::Update(float dt)
 
 void GameObject::CleanUp()
 {
-	for (std::vector<GameObject*>::const_iterator go_it = children.begin(); go_it != children.end(); ++go_it)
-	{
-		(*go_it)->CleanUp();
-	}
-
 	for (std::vector<Component*>::const_iterator component_it = components.begin(); component_it != components.end(); ++component_it)
 	{
 		(*component_it)->CleanUp();
+	}
+
+	for (std::vector<GameObject*>::const_iterator go_it = children.begin(); go_it != children.end(); ++go_it)
+	{
+		(*go_it)->CleanUp();
 	}
 
 	children.clear();

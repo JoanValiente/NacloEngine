@@ -16,6 +16,6 @@ void Component::Update(float dt)
 
 void Component::CleanUp()
 {
-	delete container;
-	container = nullptr;
+	//delete container;
+	//container = nullptr;
 }

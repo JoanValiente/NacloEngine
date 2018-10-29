@@ -89,6 +89,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 					main_node->mTransformation.Decompose(scale, rotation, position);
 
+					//Component Transform
 					ComponentTransform* transformComponent = (ComponentTransform*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 					transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
 					transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
@@ -123,7 +124,6 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 						}
 					}
 				}
-
 				//Component Mesh
 				ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
 				meshComponent->AssignMesh(mesh);
