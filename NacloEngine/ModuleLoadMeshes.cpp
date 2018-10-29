@@ -80,6 +80,8 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 				std::string path_to_name = mesh->path;
 				mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
+				GameObject* children = App->scene->CreateGameObject(go, mesh->filename.c_str());
+
 				if (scene->mRootNode != nullptr) {
 					aiVector3D scale;
 					aiQuaternion rotation;
@@ -87,7 +89,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 					main_node->mTransformation.Decompose(scale, rotation, position);
 
-					ComponentTransform* transformComponent = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+					ComponentTransform* transformComponent = (ComponentTransform*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 					transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
 					transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
 					transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
@@ -123,7 +125,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 				}
 
 				//Component Mesh
-				ComponentMesh* meshComponent = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+				ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
 				meshComponent->AssignMesh(mesh);
 
 				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];

@@ -54,6 +54,8 @@ GameObject* ModuleScene::CreateGameObject(GameObject * parent, const char* name)
 {
 	GameObject* go = new GameObject(parent, name);
 
+	gameObjects.push_back(go);
+
 	return go;
 }
 
