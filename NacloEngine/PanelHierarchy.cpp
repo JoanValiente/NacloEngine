@@ -14,14 +14,20 @@ PanelHierarchy::~PanelHierarchy()
 
 void PanelHierarchy::Draw()
 {
-	if(ImGui::Begin("Game Objects", &active)) {
-
+	if(ImGui::Begin("Game Objects", &active)) 
+	{
 		GameObject* root = App->scene->root;
 
 		for (std::vector<GameObject*>::const_iterator it = root->children.begin(); it < root->children.end(); it++) {
-			ShowGameObjectHierarchy(*it);
+			if ((*it)->active) {
+				ShowGameObjectHierarchy(*it);
+			}
 		}
 
+		ImGui::End();
+	}
+	else
+	{
 		ImGui::End();
 	}
 }

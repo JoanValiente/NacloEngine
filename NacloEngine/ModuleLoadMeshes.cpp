@@ -204,7 +204,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 			}
 
 		}
-
+		App->scene->selected = go;
 	}
 }
 

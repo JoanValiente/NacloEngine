@@ -162,15 +162,17 @@ update_status ModuleRenderer3D::Update(float dt)
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
-		for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
-		{
-			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
-				ComponentMesh* m = (ComponentMesh*)(*it);
-				DrawMesh(m->mesh);
+		if ((*iterator)->active) {
+			for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
+			{
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
+					ComponentMesh* m = (ComponentMesh*)(*it);
+					DrawMesh(m->mesh);
+				}
 			}
 		}
 	}
-
+	
 	return ret;
 }
 
