@@ -20,8 +20,8 @@ public:
 
 public:
 	GameObject* root = nullptr;
+	std::vector<GameObject*> gameObjects;
 private:
 	grid * Grid;
-	std::vector<GameObject*> gameObjects;
 };
 #endif

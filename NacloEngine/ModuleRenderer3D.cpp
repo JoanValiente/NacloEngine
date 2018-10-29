@@ -6,6 +6,9 @@
 #include "PanelInspector.h"
 #include "ModuleTextures.h"
 #include "Primitive.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "ComponentMesh.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -157,9 +160,15 @@ update_status ModuleRenderer3D::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	for (std::vector<Mesh*>::const_iterator iterator = meshes.begin(); iterator != meshes.end(); ++iterator)
+	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
-		DrawMesh(*iterator);
+		for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
+		{
+			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
+				ComponentMesh* m = (ComponentMesh*)(*it);
+				DrawMesh(m->mesh);
+			}
+		}
 	}
 
 	return ret;
