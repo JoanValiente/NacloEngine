@@ -28,16 +28,19 @@ struct Mesh
 	uint num_vertices = 0;
 	float* vertices = nullptr;
 
+	uint id_color = 0;
+	uint num_color = 0;
+	float* colors = nullptr;
+	aiColor4D color;
+};
+
+struct Texture
+{
 	uint id_texture = 0;
 	uint num_texture = 0;
 	float* texture = nullptr;
 
 	uint texture_path = 0;
-
-	uint id_color = 0;
-	uint num_color = 0;
-	float* colors = nullptr;
-	aiColor4D color;
 };
 
 class ModuleRenderer3D : public Module
@@ -53,11 +56,13 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void DrawMesh(Mesh* meshes);
+	void DrawMesh(Mesh* meshes, Texture* texture);
 
 	void OnResize(int width, int height);
 
 	void AddMesh(Mesh* mesh);
+	void AddTexture(Texture* tex);
+
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
 	void DeleteAllMeshes();
@@ -73,6 +78,7 @@ private:
 public:
 	bool wire_mode = false;
 	std::vector<Mesh*> meshes;
+	std::vector<Texture*> textures;
 	Light lights[MAX_LIGHTS];
 	SDL_GLContext context;
 	float3x3 NormalMatrix;

@@ -1,5 +1,5 @@
 #include "ComponentMaterial.h"
-#include "ModuleTextures.h"
+#include "OpenGL.h"
 #include "GameObject.h"
 
 

@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -160,14 +161,22 @@ update_status ModuleRenderer3D::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
+	ComponentMesh* m = nullptr;
+	ComponentMaterial* t = nullptr;
+
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
 		if ((*iterator)->active) {
 			for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
 			{
 				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
-					ComponentMesh* m = (ComponentMesh*)(*it);
-					DrawMesh(m->mesh);
+					m = (ComponentMesh*)(*it);
+				}
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MATERIAL) {
+					t = (ComponentMaterial*)(*it);
+				}
+				if (m != nullptr && t != nullptr) {
+					DrawMesh(m->mesh, t->texture);
 				}
 			}
 		}
@@ -194,12 +203,12 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-void ModuleRenderer3D::DrawMesh(Mesh* mesh)
+void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture)
 {
 	glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
 	if (!ischecked)
-		glBindTexture(GL_TEXTURE_2D, mesh->texture_path);
+		glBindTexture(GL_TEXTURE_2D, texture->texture_path);
 	else
 		glBindTexture(GL_TEXTURE_2D, checkers_path);
 	
@@ -214,7 +223,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh)
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+	glBindBuffer(GL_ARRAY_BUFFER, texture->id_texture);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
@@ -249,6 +258,12 @@ void ModuleRenderer3D::AddMesh(Mesh * mesh)
 	meshes.push_back(mesh);
 
 	GetMeshMinMaxVertices(mesh);
+}
+
+void ModuleRenderer3D::AddTexture(Texture * tex)
+{
+	textures.push_back(tex);
+
 }
 
 void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)
@@ -318,10 +333,10 @@ void ModuleRenderer3D::DeleteAllMeshes()
 				meshes[i]->vertices = nullptr;
 			}
 
-			if (meshes[i]->texture != nullptr)
+			if (textures[i]->texture != nullptr)
 			{
-				delete[] meshes[i]->texture;
-				meshes[i]->texture = nullptr;
+				delete[] textures[i]->texture;
+				textures[i]->texture = nullptr;
 			}
 
 			if (meshes[i]->colors != nullptr)
@@ -332,8 +347,8 @@ void ModuleRenderer3D::DeleteAllMeshes()
 
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
-			glDeleteTextures(1, (GLuint*) &(meshes[i]->texture_path));
-			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_texture));
+			glDeleteTextures(1, (GLuint*) &(textures[i]->texture_path));
+			glDeleteBuffers(1, (GLuint*) &(textures[i]->id_texture));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
 			delete meshes[i];
@@ -344,11 +359,11 @@ void ModuleRenderer3D::DeleteAllMeshes()
 
 void ModuleRenderer3D::AddTexture(const char * path)
 {
-	if (!meshes.empty())
+	if (!textures.empty())
 	{
-		for (std::vector<Mesh*>::const_iterator iterator = meshes.begin(); iterator != meshes.end(); ++iterator) 
+		for (std::vector<Texture*>::const_iterator iterator = textures.begin(); iterator != textures.end(); ++iterator)
 		{
-			Mesh* texture_add = *iterator;
+			Texture* texture_add = *iterator;
 			texture_add->texture_path = App->texture->LoadTexture(path);
 		}
 	}

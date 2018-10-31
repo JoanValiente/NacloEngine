@@ -8,6 +8,7 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
@@ -145,6 +146,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 				}
 
 				aiMaterial* tex = scene->mMaterials[0];
+				Texture* texture = new Texture();
 
 				if (tex != nullptr)
 				{
@@ -162,7 +164,7 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 						ilBindImage(id);
 						ilLoadImage(folder.c_str());
 
-						mesh->id_texture = ilutGLBindTexImage();
+						texture->id_texture = ilutGLBindTexImage();
 
 						folder.clear();
 						path_location.clear();
@@ -172,16 +174,20 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 				if (new_mesh->HasTextureCoords(0))
 				{
-					mesh->num_texture = new_mesh->mNumVertices;
-					mesh->texture = new float[mesh->num_texture * 2];
-					LOG("New mesh with %d textures", mesh->num_texture);
+					texture->num_texture = new_mesh->mNumVertices;
+					texture->texture = new float[texture->num_texture * 2];
+					LOG("New mesh with %d textures", texture->num_texture);
 					for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
 					{
-						memcpy(&mesh->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
-						memcpy(&mesh->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
+						memcpy(&texture->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
+						memcpy(&texture->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
 					}
 
 				}
+
+				//Component Mesh
+				ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+				materialComponent->AssignTexture(texture);
 
 				glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
 				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
@@ -191,16 +197,17 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
 
-				glGenBuffers(1, (GLuint*) &(mesh->id_texture));
-				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
+				glGenBuffers(1, (GLuint*) &(texture->id_texture));
+				glBindBuffer(GL_ARRAY_BUFFER, texture->id_texture);
+				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * texture->num_texture, texture->texture, GL_STATIC_DRAW);
 
 				glGenBuffers(1, (GLuint*) &(mesh->id_color));
 				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
 				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
 
+				
 				App->renderer3D->AddMesh(mesh);
-
+				App->renderer3D->AddTexture(texture);
 			}
 
 		}
@@ -211,6 +218,8 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 void ModuleLoadMeshes::ShowMeshInformation()
 {
 	Mesh* mesh_info = *App->renderer3D->meshes.begin();
+	Texture* tex_info = *App->renderer3D->textures.begin();
+
 	if (mesh_info != nullptr)
 	{
 		ImGuiTreeNodeFlags flags = 0;
@@ -229,10 +238,10 @@ void ModuleLoadMeshes::ShowMeshInformation()
 
 			uint vertice = mesh_info->num_vertices;
 			uint index = mesh_info->num_indices;
-			uint uv = mesh_info->num_texture;
+			uint uv = tex_info->num_texture;
 			uint triangles = mesh_info->num_indices / 3;
 
-			ImTextureID texture_id = (ImTextureID)mesh_info->texture_path;
+			ImTextureID texture_id = (ImTextureID)tex_info->texture_path;
 
 			if (ImGui::CollapsingHeader("Information"), ImGuiTreeNodeFlags_DefaultOpen)
 			{
