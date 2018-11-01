@@ -45,9 +45,9 @@ bool ModuleFileSystem::CleanUp()
 
 bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint size, const char * path, const char * prefix, const char * extension)
 {
-	char result[LONG_LONG_STRING];
+	char result[250];
 
-	sprintf_s(result, strlen(result), "%s%s.%s", path, prefix, extension);
+	sprintf_s(result, 250, "%s%s.%s", path, prefix, extension);
 
 	if (SaveFile(result, buffer, size, false) > 0)
 	{
@@ -91,13 +91,14 @@ uint ModuleFileSystem::Load(const char* file, char** buffer) const
 
 void ModuleFileSystem::NormalizePath(std::string & path) const
 {
-	char* game_path = "Game/";
 	for (string::iterator iterator = path.begin(); iterator != path.end(); iterator++)
 	{
 		if (*iterator == '\\')
 			*iterator = '/';
 	}
-	path = path.erase(0, path.find(game_path) + strlen(game_path) + 1);
+
+	path = path.erase(0, path.find("Game") + 5);
+
 }
 
 
