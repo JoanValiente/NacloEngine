@@ -25,7 +25,9 @@ bool ModuleTextures::CleanUp()
 
 uint ModuleTextures::LoadTexture(const char* path) 
 {
-	texture_path = path;
+	std::string new_path = path;
+	App->fs->NormalizePath(new_path);
+	texture_path = new_path;
 	std::string path_to_name = texture_path;
 	texture_name = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
@@ -43,11 +45,13 @@ uint ModuleTextures::LoadTexture(const char* path)
 
 		success = ilLoadImage(path); 	// Load the image file
 
-										// If we managed to load the image, then we can start to do things with it...
+		ILinfo ImageInfo; // If we managed to load the image, then we can start to do things with it...
+
 		if (success)
 		{
+
 			// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
-			ILinfo ImageInfo;
+			
 			iluGetImageInfo(&ImageInfo);
 			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 			{
@@ -93,6 +97,7 @@ uint ModuleTextures::LoadTexture(const char* path)
 				ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
 				GL_UNSIGNED_BYTE,		// Image data type
 				ilGetData());			// The actual image data itself
+
 		}
 		else // If we failed to open the image file in the first place...
 		{
@@ -100,7 +105,11 @@ uint ModuleTextures::LoadTexture(const char* path)
 			std::cout << "Image load failed - IL reports error: " << error << " - " << iluErrorString(error) << std::endl;
 			exit(-1);
 		}
-
+		
+		std::string output_file;
+		char* buffer = nullptr;
+		uint size = App->fs->Load(new_path.c_str(), &buffer);
+		Import(buffer, size, output_file);
 
 		ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 
@@ -109,7 +118,47 @@ uint ModuleTextures::LoadTexture(const char* path)
 		last_texture_loaded = textureID; 
 
 		return textureID; // Return the GLuint to the texture so you can use it!
+		
+
 }
+
+bool ModuleTextures::Import(const void * buffer, uint size, string& output_file)
+{
+	bool ret = false;
+
+	if (buffer)
+	{
+		ILuint ImageName;
+		ilGenImages(1, &ImageName);
+		ilBindImage(ImageName);
+
+		if (ilLoadL(IL_TYPE_UNKNOWN, buffer, size))
+		{
+			ilEnable(IL_FILE_OVERWRITE);
+
+			ILuint   size;
+			ILubyte *data;
+			// To pick a specific DXT compression use 
+			ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);
+			size = ilSaveL(IL_DDS, NULL, 0); // Get the size of the data buffer
+			if (size > 0)
+			{
+				data = new ILubyte[size]; // allocate data buffer
+				if (ilSaveL(IL_DDS, data, size) > 0) // Save with the ilSaveIL function
+					ret = App->fs->SavePath(output_file, data, size, LIBRARY_TEXTURES_FOLDER, "texture", "dds");
+
+				RELEASE_ARRAY(data);
+			}
+			ilDeleteImages(1, &ImageName);
+		}
+	}
+
+	if (ret == false)
+		LOG("Cannot load texture from buffer of size %u", size);
+
+	return ret;
+}
+
 
 uint const ModuleTextures::LoadCheckersTexture()
 {

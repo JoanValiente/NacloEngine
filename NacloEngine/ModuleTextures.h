@@ -24,6 +24,8 @@ public:
 
 	void const ShowTextureInfo();
 
+	bool ModuleTextures::Import(const void* buffer, uint size, std::string& output_file);
+
 
 private:
 	std::string texture_path;

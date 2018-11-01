@@ -158,7 +158,6 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 						path_location.erase(0, path_location.find_last_of("\\") + 1);
 						std::string folder = "Textures/";
 						folder += path_location;
-
 						ILuint id;
 						ilGenImages(1, &id);
 						ilBindImage(id);

@@ -14,6 +14,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
 #include "ModuleTextures.h"
+#include "ModuleFileSystem.h"
 #include "PerfTimer.h"
 
 
@@ -30,6 +31,8 @@ public:
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleTextures* texture;
+	ModuleFileSystem* fs;
+
 
 	int		FPS_cap = 60;
 	bool	vsync = false;
