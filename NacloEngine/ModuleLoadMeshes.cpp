@@ -65,159 +65,189 @@ void ModuleLoadMeshes::LoadFBX(const char * path)
 
 	if (scene != nullptr && scene->HasMeshes()) 
 	{
-		const aiNode* main_node = scene->mRootNode;
+		aiNode* main_node = scene->mRootNode;
 
 		std::string tmp = path;		
 
 		GameObject* go = App->scene->CreateGameObject(App->scene->root, tmp.c_str());
 
-		if (main_node != nullptr)
+		LoadChildren(scene, main_node, path, go);
+
+		App->scene->selected = go;
+	}
+}
+
+void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const char * path, GameObject * obj)
+{
+	if (node != nullptr)
+	{
+		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
-			for (int num_meshes = 0; num_meshes < scene->mNumMeshes; ++num_meshes)
-			{	
-				Mesh* mesh = new Mesh();
+			Mesh* mesh = new Mesh();
 
-				mesh->path = path;
-				std::string path_to_name = mesh->path;
-				mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
+			mesh->path = path;
+			std::string path_to_name = mesh->path;
+			mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-				GameObject* children = App->scene->CreateGameObject(go, mesh->filename.c_str());
+			GameObject* children = App->scene->CreateGameObject(obj, node->mName.C_Str());
 
-				if (scene->mRootNode != nullptr) {
-					aiVector3D scale;
-					aiQuaternion rotation;
-					aiVector3D position;
+			if (scene->mRootNode != nullptr) {
+				aiVector3D scale;
+				aiQuaternion rotation;
+				aiVector3D position;
 
-					main_node->mTransformation.Decompose(scale, rotation, position);
+				node->mTransformation.Decompose(scale, rotation, position);
 
-					//Component Transform
-					ComponentTransform* transformComponent = (ComponentTransform*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-					transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
-					transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
-					transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
+				//Component Transform
+				ComponentTransform* transformComponent = (ComponentTransform*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+				transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
+				transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
+				transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
 
-					mesh->scale = { scale.x, scale.y, scale.z };
-					mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
-					mesh->position = { position.x,position.y, position.z };
-				}	
-
-				aiMesh* new_mesh = scene->mMeshes[num_meshes];
-
-				mesh->num_vertices = new_mesh->mNumVertices;
-				mesh->vertices = new float[mesh->num_vertices * 3];
-				memcpy(mesh->vertices, new_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
-
-				LOG("Added new mesh. Vertices = %d", mesh->num_vertices);
-
-				if (new_mesh->HasFaces())
-				{
-					mesh->num_indices = new_mesh->mNumFaces * 3;
-					mesh->indices = new uint[mesh->num_indices];
-
-					for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
-					{
-						if (new_mesh->mFaces[num_faces].mNumIndices != 3)
-						{
-							LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
-						}
-						else {
-							memcpy(&mesh->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
-						}
-					}
-				}
-				//Component Mesh
-				ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
-				meshComponent->AssignMesh(mesh);
-
-				aiMaterial* color_material = scene->mMaterials[new_mesh->mMaterialIndex];
-				if (aiGetMaterialColor(color_material, AI_MATKEY_COLOR_AMBIENT, &mesh->color) == aiReturn_FAILURE || mesh->color == aiColor4D(0, 0, 0, 1))
-				{
-					mesh->color = { 255.0f,255.0f,255.0f,255.0f };
-				}
-				aiColor4D* colors_mesh = *new_mesh->mColors;
-
-				if (colors_mesh != nullptr)
-				{
-					mesh->colors = new float[mesh->num_vertices * 3];
-					for (int num_color = 0; num_color < mesh->num_vertices; ++num_color)
-					{
-						memcpy(mesh->colors, &colors_mesh[num_color], sizeof(float)*mesh->num_vertices * 3);
-					}
-				}
-
-				aiMaterial* tex = scene->mMaterials[0];
-				Texture* texture = new Texture();
-
-				if (tex != nullptr)
-				{
-					aiString path;
-					tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-					if (path.length > 0)
-					{
-						std::string path_location = path.data;
-						path_location.erase(0, path_location.find_last_of("\\") + 1);
-						std::string folder = "Textures/";
-						folder += path_location;
-						ILuint id;
-						ilGenImages(1, &id);
-						ilBindImage(id);
-						ilLoadImage(folder.c_str());
-
-						texture->id_texture = ilutGLBindTexImage();
-
-						folder.clear();
-						path_location.clear();
-						path.Clear();
-					}
-				}
-
-				if (new_mesh->HasTextureCoords(0))
-				{
-					texture->num_texture = new_mesh->mNumVertices;
-					texture->texture = new float[texture->num_texture * 2];
-					LOG("New mesh with %d textures", texture->num_texture);
-					for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
-					{
-						memcpy(&texture->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
-						memcpy(&texture->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
-					}
-
-				}
-
-				//Component Mesh
-				ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
-				materialComponent->AssignTexture(texture);
-
-				glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
-				glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
-
-				glGenBuffers(1, (GLuint*) &(mesh->id_indices));
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
-
-				glGenBuffers(1, (GLuint*) &(texture->id_texture));
-				glBindBuffer(GL_ARRAY_BUFFER, texture->id_texture);
-				glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * texture->num_texture, texture->texture, GL_STATIC_DRAW);
-
-				glGenBuffers(1, (GLuint*) &(mesh->id_color));
-				glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
-				glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
-
-				
-				App->renderer3D->AddMesh(mesh);
-				App->renderer3D->AddTexture(texture);
+				mesh->scale = { scale.x, scale.y, scale.z };
+				mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
+				mesh->position = { position.x,position.y, position.z };
 			}
 
+			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
+
+			mesh->num_vertices = new_mesh->mNumVertices;
+			mesh->vertices = new float[mesh->num_vertices * 3];
+			memcpy(mesh->vertices, new_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
+
+			LOG("Added new mesh. Vertices = %d", mesh->num_vertices);
+
+			if (new_mesh->HasFaces())
+			{
+				mesh->num_indices = new_mesh->mNumFaces * 3;
+				mesh->indices = new uint[mesh->num_indices];
+
+				for (uint num_faces = 0; num_faces < new_mesh->mNumFaces; ++num_faces)
+				{
+					if (new_mesh->mFaces[num_faces].mNumIndices != 3)
+					{
+						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
+					}
+					else {
+						memcpy(&mesh->indices[num_faces * 3], new_mesh->mFaces[num_faces].mIndices, 3 * sizeof(uint));
+					}
+				}
+			}
+			//Component Mesh
+			ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+			meshComponent->AssignMesh(mesh);
+
+			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
+			if (aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &mesh->color) == aiReturn_FAILURE || mesh->color == aiColor4D(0, 0, 0, 1))
+			{
+				mesh->color = { 255.0f,255.0f,255.0f,255.0f };
+			}
+			aiColor4D* colors_mesh = *new_mesh->mColors;
+
+			if (colors_mesh != nullptr)
+			{
+				mesh->colors = new float[mesh->num_vertices * 3];
+				for (int num_color = 0; num_color < mesh->num_vertices; ++num_color)
+				{
+					memcpy(mesh->colors, &colors_mesh[num_color], sizeof(float)*mesh->num_vertices * 3);
+				}
+			}
+
+			aiMaterial* tex = scene->mMaterials[new_mesh->mMaterialIndex];
+			Texture* texture = new Texture();
+
+			if (tex != nullptr)
+			{
+				aiString path;
+				tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+				if (path.length > 0)
+				{
+					std::string path_location = path.data;
+					path_location.erase(0, path_location.find_last_of("\\") + 1);
+					std::string folder = "Textures/";
+					folder += path_location;
+					ILuint id;
+					ilGenImages(1, &id);
+					ilBindImage(id);
+					ilLoadImage(folder.c_str());
+
+					texture->id_texture = ilutGLBindTexImage();
+
+					folder.clear();
+					path_location.clear();
+					path.Clear();
+				}
+			}
+
+			if (new_mesh->HasTextureCoords(0))
+			{
+				texture->num_texture = new_mesh->mNumVertices;
+				texture->texture = new float[texture->num_texture * 2];
+				LOG("New mesh with %d textures", texture->num_texture);
+				for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
+				{
+					memcpy(&texture->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
+					memcpy(&texture->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
+				}
+
+			}
+
+			//Component Mesh
+			ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+			materialComponent->AssignTexture(texture);
+
+			glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
+
+			glGenBuffers(1, (GLuint*) &(mesh->id_indices));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
+
+			glGenBuffers(1, (GLuint*) &(texture->id_texture));
+			glBindBuffer(GL_ARRAY_BUFFER, texture->id_texture);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * texture->num_texture, texture->texture, GL_STATIC_DRAW);
+
+			glGenBuffers(1, (GLuint*) &(mesh->id_color));
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
+
+
+			App->renderer3D->AddMesh(mesh);
+			App->renderer3D->AddTexture(texture);
 		}
-		App->scene->selected = go;
+
+	}
+	for (uint i = 0; i < node->mNumChildren; ++i)
+	{
+		LoadChildren(scene, node->mChildren[i], path, obj);
 	}
 }
 
 void ModuleLoadMeshes::ShowMeshInformation()
 {
-	Mesh* mesh_info = *App->renderer3D->meshes.begin();
-	Texture* tex_info = *App->renderer3D->textures.begin();
+	ComponentMesh* m = nullptr;
+	ComponentMaterial* t = nullptr;
+
+	Mesh* mesh_info = nullptr;
+	Texture* tex_info = nullptr;
+
+	for (std::vector<GameObject*>::const_iterator iterator = App->scene->selected->children.begin(); iterator != App->scene->selected->children.end(); ++iterator)
+	{
+		for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
+		{
+			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
+				m = (ComponentMesh*)(*it);
+			}
+			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MATERIAL) {
+				t = (ComponentMaterial*)(*it);
+			}
+			if (m != nullptr && t != nullptr) {
+				mesh_info = m->mesh;
+				tex_info = t->texture;
+			}
+		}
+	}
 
 	if (mesh_info != nullptr)
 	{

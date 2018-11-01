@@ -9,6 +9,7 @@ ComponentTransform::ComponentTransform(GameObject * container) : Component(conta
 	this->size = size;
 
 	type = COMPONENT_TRANSFORM;
+	active = true;
 
 	quaternion = Quat::FromEulerXYZ(rotation.x * DEGTORAD, rotation.y * DEGTORAD, rotation.z * DEGTORAD);
 

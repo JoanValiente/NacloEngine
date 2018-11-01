@@ -6,6 +6,7 @@
 ComponentMesh::ComponentMesh(GameObject * container) : Component(container)
 {
 	type = COMPONENT_MESH;
+	active = true;
 }
 
 ComponentMesh::~ComponentMesh()

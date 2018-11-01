@@ -10,6 +10,9 @@
 #include "MathGeoLib/MathGeoLib.h"
 
 struct Mesh;
+struct GameObject;
+struct aiScene;
+struct aiNode;
 
 class ModuleLoadMeshes : public Module
 {
@@ -21,6 +24,8 @@ public:
 	bool CleanUp();
 
 	void LoadFBX(const char* path);
+
+	void LoadChildren(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 
 	void ShowMeshInformation();
 

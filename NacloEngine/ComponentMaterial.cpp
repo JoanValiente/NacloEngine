@@ -6,6 +6,7 @@
 ComponentMaterial::ComponentMaterial(GameObject * container) : Component(container)
 {
 	type = COMPONENT_MATERIAL;
+	active = true;
 }
 
 ComponentMaterial::~ComponentMaterial()
