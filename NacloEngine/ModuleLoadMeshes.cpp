@@ -228,6 +228,7 @@ void ModuleLoadMeshes::ShowMeshInformation()
 {
 	ComponentMesh* m = nullptr;
 	ComponentMaterial* t = nullptr;
+	ComponentTransform* transf = nullptr;
 
 	Mesh* mesh_info = nullptr;
 	Texture* tex_info = nullptr;
@@ -241,6 +242,9 @@ void ModuleLoadMeshes::ShowMeshInformation()
 			}
 			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MATERIAL) {
 				t = (ComponentMaterial*)(*it);
+			}
+			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_TRANSFORM) {
+				transf = (ComponentTransform*)(*it);
 			}
 			if (m != nullptr && t != nullptr) {
 				mesh_info = m->mesh;
@@ -261,9 +265,9 @@ void ModuleLoadMeshes::ShowMeshInformation()
 		}
 		else
 		{
-			float3 position = GetFbxPosition(mesh_info);
-			Quat rotation = GetFbxRotation(mesh_info);
-			float3 scale = GetFbxScale(mesh_info);
+			float3 position = transf->position;
+			Quat rotation = transf->quaternion;
+			float3 scale = transf->size;
 
 			uint vertice = mesh_info->num_vertices;
 			uint index = mesh_info->num_indices;
