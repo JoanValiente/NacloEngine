@@ -7,7 +7,7 @@
 #include "GameObject.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
-{	
+{
 	Position = float3(0.0f, 0.0f, 5.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
 	
@@ -15,7 +15,7 @@ ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(ap
 	empty_meshBox = new AABB(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
 
 	camera = new ComponentCamera(nullptr);
-	
+
 	CalculateViewMatrix();
 }
 
@@ -33,7 +33,10 @@ bool ModuleCamera3D::Start()
 	fast_speed = 8.0f;
 	scroll_speed = 8.0f;
 
-	camera->frustum.pos = { 0.0f,1.0f,-5.0f };
+	// Rotating the frustrum to look at the scene correctly
+	float3x3 rotationMatrix = float3x3::RotateAxisAngle(camera->frustum.WorldRight().Normalized(), 131 * DEGTORAD);
+	camera->frustum.up = rotationMatrix * camera->frustum.up;
+	camera->frustum.front = rotationMatrix * camera->frustum.front;
 
 	return ret;
 }
@@ -112,7 +115,6 @@ update_status ModuleCamera3D::Update(float dt)
 
 	Position += newPos;
 	Reference += newPos;
-
 	
 
 	//-----------------------------Focus mesh-----------------------------
@@ -236,15 +238,6 @@ void ModuleCamera3D::LookAt( const float3 &Spot)
 	{
 		LOG("Error, No mesh founded");
 	}
-	
-	/*
-	float3 dir = Spot - camera->frustum.pos;
-
-	float3x3 matrix = float3x3::LookAt(camera->frustum.front, dir.Normalized(), camera->frustum.up, float3(0, 1, 0));
-
-	camera->frustum.front = matrix.MulDir(camera->frustum.front).Normalized();
-	camera->frustum.up = matrix.MulDir(camera->frustum.up).Normalized();
-	*/
 }
 
 
@@ -300,5 +293,5 @@ void ModuleCamera3D::CalculateViewMatrix()
 						  camera->frustum.WorldRight().z, camera->frustum.up.z, camera->frustum.front.z, 0.0f,
 						  -Dot(camera->frustum.WorldRight(), Position), -Dot(camera->frustum.up, Position), -Dot(camera->frustum.front, Position), 1.0f);
 
-	ViewMatrixInverse = ViewMatrix.Inverted();;
+	ViewMatrixInverse = ViewMatrix.Inverted();
 }
