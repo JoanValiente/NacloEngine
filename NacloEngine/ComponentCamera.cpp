@@ -28,6 +28,6 @@ void ComponentCamera::Update(float dt)
 	math::float4x4 transformMatrix = go_transform->matrix;
 
 	frustum.pos = transformMatrix.TranslatePart();
-	frustum.front = transformMatrix.WorldZ().Normalized();
-	frustum.up = transformMatrix.WorldY().Normalized();
+	frustum.front = transformMatrix.WorldZ();
+	frustum.up = transformMatrix.WorldY();
 }
