@@ -33,7 +33,7 @@ private:
 
 public:
 	
-	float3 X, Y, Z, Position, Reference;
+	float3 Position, Reference;
 	AABB* meshBox = nullptr;
 	AABB* empty_meshBox = nullptr;
 

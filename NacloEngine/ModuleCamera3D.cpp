@@ -8,10 +8,6 @@
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {	
-	X = float3(1.0f, 0.0f, 0.0f);
-	Y = float3(0.0f, 1.0f, 0.0f);
-	Z = float3(0.0f, 0.0f, 1.0f);
-
 	Position = float3(0.0f, 0.0f, 5.0f);
 	Reference = float3(0.0f, 0.0f, 0.0f);
 	
@@ -127,8 +123,8 @@ update_status ModuleCamera3D::Update(float dt)
 	//-----------------------------LEFT Mouse motion-----------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
 	{
-		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion();
+		int dx = App->input->GetMouseXMotion();
+		int dy = App->input->GetMouseYMotion();
 
 		float Sensitivity = 0.01f;
 
@@ -148,11 +144,11 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			float DeltaY = (float)dy * Sensitivity;
 
-			float3x3 rotationMatrix = float3x3::RotateAxisAngle(X.Normalized(), DeltaY);
+			float3x3 rotationMatrix = float3x3::RotateAxisAngle(camera->frustum.WorldRight().Normalized(), DeltaY);
 			camera->frustum.up = rotationMatrix * camera->frustum.up;
 			camera->frustum.front = rotationMatrix * camera->frustum.front;
 
-			if (Y.y < 0.0f)
+			if (camera->frustum.up.y < 0.0f)
 			{
 				camera->frustum.front = float3(0.0f, camera->frustum.front.y > 0.0f ? 1.0f : -1.0f, 0.0f);
 				camera->frustum.up = Cross(camera->frustum.front, camera->frustum.WorldRight());
@@ -164,8 +160,8 @@ update_status ModuleCamera3D::Update(float dt)
 	//-----------------------------RIGHT Mouse motion-----------------------------
 	else if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
 	{
-		int dx = -App->input->GetMouseXMotion();
-		int dy = -App->input->GetMouseYMotion();
+		int dx = App->input->GetMouseXMotion();
+		int dy = App->input->GetMouseYMotion();
 
 		float Sensitivity = 0.005f;
 
