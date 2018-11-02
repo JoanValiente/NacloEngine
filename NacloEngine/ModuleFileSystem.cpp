@@ -45,11 +45,14 @@ bool ModuleFileSystem::CleanUp()
 
 bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint size, const char * path, const char * prefix, const char * extension)
 {
+	static int patata = 0;
 	char result[250];
 
-	sprintf_s(result, 250, "%s%s.%s", path, prefix, extension);
+	sprintf_s(result, 250, "%s%s_%i.%s", path, prefix, patata, extension);
 
-	if (SaveFile(result, buffer, size, false) > 0)
+	patata++;
+
+	if (SaveFile(result, buffer, size) > 0)
 	{
 		output = result;
 		return true;
@@ -60,8 +63,10 @@ bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint 
 uint ModuleFileSystem::Load(const char* file, char** buffer) const
 {
 	uint ret = 0;
+	std::string name = file;
+	NormalizePath(name);
 
-	PHYSFS_file* fs_file = PHYSFS_openRead(file);
+	PHYSFS_file* fs_file = PHYSFS_openRead(name.c_str());
 
 	if (fs_file != nullptr)
 	{
@@ -102,13 +107,11 @@ void ModuleFileSystem::NormalizePath(std::string & path) const
 }
 
 
-uint ModuleFileSystem::SaveFile(const char* file, const void* buffer, unsigned int size, bool append) const
+uint ModuleFileSystem::SaveFile(const char* file, const void* buffer, unsigned int size) const
 {
 	unsigned int ret = 0;
 
-	bool overwrite = PHYSFS_exists(file) != 0;
-
-	PHYSFS_file* fs_file = (append) ? PHYSFS_openAppend(file) : PHYSFS_openWrite(file);
+	PHYSFS_file* fs_file = PHYSFS_openWrite(file);
 
 	if (fs_file != nullptr)
 	{
@@ -119,19 +122,7 @@ uint ModuleFileSystem::SaveFile(const char* file, const void* buffer, unsigned i
 		}
 		else
 		{
-			if (append == true)
-			{
-				LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), file);
-			}
-			else if (overwrite == true)
-			{
-				LOG("File [%s%s] overwritten with %u bytes", PHYSFS_getWriteDir(), file, size);
-			}
-			else
-			{
-				LOG("New file created [%s%s] of %u bytes", PHYSFS_getWriteDir(), file, size);
-			}
-
+			LOG("New file created [%s%s] of %u bytes", PHYSFS_getWriteDir(), file, size);
 			ret = written;
 		}
 

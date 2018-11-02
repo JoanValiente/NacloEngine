@@ -13,7 +13,7 @@ public:
 	bool CleanUp();
 
 	bool SavePath(std::string& output, const void* buffer, uint size, const char* path, const char* prefix, const char* extension);
-	uint SaveFile(const char* file, const void* buffer, unsigned int size, bool append) const;
+	uint SaveFile(const char* file, const void* buffer, unsigned int size) const;
 	uint Load(const char* file, char** buffer) const;
 	void NormalizePath(std::string &path) const;
 

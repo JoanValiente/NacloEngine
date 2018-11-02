@@ -57,8 +57,5 @@ enum update_status
 #define LIBRARY_TEXTURES_FOLDER "/Library/Textures/"
 #define LIBRARY_MESH_FOLDER "/Library/Meshes/"
 #define LIBRARY_SCENE_FOLDER "/Library/Scenes/"
-#define SHORT_STRING 10
-#define LONG_STRING 100
-#define LONG_LONG_STRING 250
 
 #endif

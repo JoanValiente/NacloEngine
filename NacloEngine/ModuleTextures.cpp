@@ -26,33 +26,23 @@ bool ModuleTextures::CleanUp()
 uint ModuleTextures::LoadTexture(const char* path) 
 {
 	std::string new_path = path;
-	App->fs->NormalizePath(new_path);
-	texture_path = new_path;
-	std::string path_to_name = texture_path;
-	texture_name = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
+	char* buffer = nullptr;
+	uint size = App->fs->Load(path, &buffer);
 
-		ILuint imageID;				// Create an image ID as a ULuint
+	if (buffer != nullptr && size > 0)
+	{
+		ILuint imageID;		
+		ilGenImages(1, &imageID);
+		ilBindImage(imageID); 			
 
-		uint textureID;			// Create a texture ID as a GLuint
+		uint textureID;					
 
-		ILboolean success;			// Create a flag to keep track of success/failure
-
-		ILenum error;				// Create a flag to keep track of the IL error state
-
-		ilGenImages(1, &imageID); 		// Generate the image ID
-
-		ilBindImage(imageID); 			// Bind the image
-
-		success = ilLoadImage(path); 	// Load the image file
-
-		ILinfo ImageInfo; // If we managed to load the image, then we can start to do things with it...
-
-		if (success)
+		if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, size))
 		{
+			ILinfo ImageInfo; 
 
-			// If the image is flipped (i.e. upside-down and mirrored, flip it the right way up!)
-			
 			iluGetImageInfo(&ImageInfo);
+
 			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 			{
 				iluFlipImage();
@@ -60,18 +50,10 @@ uint ModuleTextures::LoadTexture(const char* path)
 
 			// Convert the image into a suitable format to work with
 			// NOTE: If your image contains alpha channel you can replace IL_RGB with IL_RGBA
-			success = ilConvertImage(IL_RGB, IL_UNSIGNED_BYTE);
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 			texture_height = ImageInfo.Height;
 			texture_width = ImageInfo.Width;
-
-			// Quit out if we failed the conversion
-			if (!success)
-			{
-				error = ilGetError();
-				std::cout << "Image conversion failed - IL reports error: " << error << " - " << iluErrorString(error) << std::endl;
-				exit(-1);
-			}
 
 			// Generate a new texture
 			glGenTextures(1, &textureID);
@@ -79,46 +61,27 @@ uint ModuleTextures::LoadTexture(const char* path)
 			// Bind the texture to a name
 			glBindTexture(GL_TEXTURE_2D, textureID);
 
-			// Set texture clamping method
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			SetTexture();
 
-			// Set texture interpolation method to use linear interpolation (no MIPMAPS)
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
+			LOG("Texture creation successful.");
+			last_texture_loaded = textureID;
 
-			// Specify the texture specification
-			glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
-				0,				// Pyramid level (for mip-mapping) - 0 is the top level
-				ilGetInteger(IL_IMAGE_FORMAT),	// Internal pixel format to use. Can be a generic type like GL_RGB or GL_RGBA, or a sized type
-				ilGetInteger(IL_IMAGE_WIDTH),	// Image width
-				ilGetInteger(IL_IMAGE_HEIGHT),	// Image height
-				0,				// Border width in pixels (can either be 1 or 0)
-				ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
-				GL_UNSIGNED_BYTE,		// Image data type
-				ilGetData());			// The actual image data itself
+			Import(buffer, size, new_path); //Import texture in our own format
 
+			return textureID; // Return the GLuint to the texture so you can use it!
 		}
 		else // If we failed to open the image file in the first place...
 		{
-			error = ilGetError();
-			std::cout << "Image load failed - IL reports error: " << error << " - " << iluErrorString(error) << std::endl;
-			exit(-1);
+			LOG("ERROR Trying to load a buffer of size %i", size);
+			return 0;
 		}
-		
-		std::string output_file;
-		char* buffer = nullptr;
-		uint size = App->fs->Load(new_path.c_str(), &buffer);
-		Import(buffer, size, output_file);
-
-		ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
-
-		std::cout << "Texture creation successful." << std::endl;
-
-		last_texture_loaded = textureID; 
-
-		return textureID; // Return the GLuint to the texture so you can use it!
-		
+	}
+	else
+	{
+		LOG("ERROR LOADING TEXTURES");
+		return 0;
+	}
 
 }
 
@@ -157,6 +120,28 @@ bool ModuleTextures::Import(const void * buffer, uint size, string& output_file)
 		LOG("Cannot load texture from buffer of size %u", size);
 
 	return ret;
+}
+
+void ModuleTextures::SetTexture()
+{
+	// Set texture clamping method
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+
+	// Set texture interpolation method to use linear interpolation (no MIPMAPS)
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+	// Specify the texture specification
+	glTexImage2D(GL_TEXTURE_2D, 				// Type of texture
+		0,				// Pyramid level (for mip-mapping) - 0 is the top level
+		ilGetInteger(IL_IMAGE_FORMAT),	// Internal pixel format to use. Can be a generic type like GL_RGB or GL_RGBA, or a sized type
+		ilGetInteger(IL_IMAGE_WIDTH),	// Image width
+		ilGetInteger(IL_IMAGE_HEIGHT),	// Image height
+		0,				// Border width in pixels (can either be 1 or 0)
+		ilGetInteger(IL_IMAGE_FORMAT),	// Format of image pixel data
+		GL_UNSIGNED_BYTE,		// Image data type
+		ilGetData());			// The actual image data itself
 }
 
 
