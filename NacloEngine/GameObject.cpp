@@ -2,6 +2,7 @@
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
+#include "ComponentCamera.h"
 
 GameObject::GameObject(GameObject * parent, const char* name)
 {
@@ -68,6 +69,10 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 		component = new ComponentMaterial(this);
 		break;
 
+	case Component::COMPONENT_TYPE::COMPONENT_CAMERA:
+		component = new ComponentCamera(this);
+		break;
+
 	case Component::COMPONENT_TYPE::COMPONENT_NONE:
 		break;
 
@@ -91,4 +96,17 @@ void GameObject::DeleteComponent(Component * component)
 		(*it)->CleanUp();
 		components.erase(it);
 	}
+}
+
+Component * GameObject::GetComponentByType(Component::COMPONENT_TYPE type)
+{
+	Component* component = nullptr;
+
+	for (int i = 0; i < components.size(); i++)
+	{
+		if (components[i]->type == type)
+			component = components[i];
+	}
+
+	return component;
 }

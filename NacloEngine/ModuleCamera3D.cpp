@@ -2,6 +2,9 @@
 #include "Application.h"
 //#include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
+#include "ComponentCamera.h"
+#include "ComponentTransform.h"
+#include "GameObject.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

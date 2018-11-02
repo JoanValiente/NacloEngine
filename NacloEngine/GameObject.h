@@ -5,6 +5,8 @@
 #include "Globals.h"
 #include "Component.h"
 
+enum COMPONENT_TYPE;
+
 class GameObject {
 	 
 public:
@@ -16,6 +18,8 @@ public:
 
 	Component* NewComponent(Component::COMPONENT_TYPE type);
 	void DeleteComponent(Component* component);
+
+	Component* GetComponentByType(Component::COMPONENT_TYPE type);
 
 public:
 	bool active = false;

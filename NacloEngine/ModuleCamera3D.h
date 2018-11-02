@@ -5,6 +5,8 @@
 #include "MathGeoLib/MathGeoLib.h"
 //#include "glmath.h"
 
+struct ComponentCamera;
+
 class ModuleCamera3D : public Module
 {
 public:
@@ -34,6 +36,8 @@ public:
 	float3 X, Y, Z, Position, Reference;
 	AABB* meshBox = nullptr;
 	AABB* empty_meshBox = nullptr;
+
+	ComponentCamera* camera;
 
 private:
 	float speed;

@@ -4,10 +4,6 @@
 
 ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
 {
-	this->position = position;
-	this->rotation = rotation;
-	this->size = size;
-
 	type = COMPONENT_TRANSFORM;
 	active = true;
 
