@@ -49,7 +49,6 @@ uint ModuleTextures::LoadTexture(const char* path)
 			}
 
 			// Convert the image into a suitable format to work with
-			// NOTE: If your image contains alpha channel you can replace IL_RGB with IL_RGBA
 			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 			texture_height = ImageInfo.Height;

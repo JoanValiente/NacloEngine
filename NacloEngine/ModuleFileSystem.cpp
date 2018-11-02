@@ -11,7 +11,6 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Modu
 	SDL_free(base_path);
 
 	PHYSFS_init(nullptr);
-
 	if (PHYSFS_setWriteDir(".") == 0) // create a directory (if it's point it take game as base directory)
 		LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
@@ -46,6 +45,10 @@ bool ModuleFileSystem::CleanUp()
 bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint size, const char * path, const char * prefix, const char * extension)
 {
 	static int patata = 0;
+
+	//TOCHECK-> Always creating folder?
+	PHYSFS_mkdir("Library/Textures");
+
 	char result[250];
 
 	sprintf_s(result, 250, "%s%s_%i.%s", path, prefix, patata, extension);
@@ -65,7 +68,7 @@ uint ModuleFileSystem::Load(const char* file, char** buffer) const
 	uint ret = 0;
 	std::string name = file;
 	NormalizePath(name);
-
+	
 	PHYSFS_file* fs_file = PHYSFS_openRead(name.c_str());
 
 	if (fs_file != nullptr)
