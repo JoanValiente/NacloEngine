@@ -81,6 +81,7 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 {
 	if (node != nullptr)
 	{
+		std::string new_path = path;
 		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
 		{
 			Mesh* mesh = new Mesh();
@@ -190,29 +191,13 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 					memcpy(&mesh->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
 				}
 
-			}
-
+			}	
 			//Component Mesh
 			ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
 			materialComponent->AssignTexture(texture);
 
-			glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
-
-			glGenBuffers(1, (GLuint*) &(mesh->id_indices));
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
-
-			glGenBuffers(1, (GLuint*) &(mesh->id_texture));
-			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
-
-			glGenBuffers(1, (GLuint*) &(mesh->id_color));
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
-
-
+			SetBuffers(mesh);
+			Import(new_path.c_str(), mesh);
 			App->renderer3D->AddMesh(mesh);
 			App->renderer3D->AddTexture(texture);
 		}
@@ -222,6 +207,56 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 	{
 		LoadChildren(scene, node->mChildren[i], path, obj);
 	}
+}
+
+void ModuleLoadMeshes::SetBuffers(Mesh * mesh)
+{
+	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 3 * mesh->num_vertices, mesh->vertices, GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(mesh->id_indices));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(mesh->id_texture));
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(mesh->id_color));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_color, mesh->colors, GL_STATIC_DRAW);
+
+}
+
+bool ModuleLoadMeshes::Import(const char* path, Mesh * mesh)
+{
+	// amount of indices / vertices / colors / normals / texture_coords / AABB 
+	uint ranges[2] = { mesh->num_indices, mesh->num_vertices };
+	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3;
+	char* data = new char[size]; // Allocate 
+	char* cursor = data;
+
+	uint bytes = sizeof(ranges); // First store ranges 
+	memcpy(cursor, ranges, bytes);
+	 
+	cursor += bytes; // Store indices
+	bytes = sizeof(uint) * mesh->num_indices; memcpy(cursor, mesh->indices, bytes);
+
+	cursor += bytes; // Store vertices
+	bytes = sizeof(uint) * mesh->num_vertices; memcpy(cursor, mesh->vertices, bytes);
+
+	cursor += bytes; // Store colors
+	bytes = sizeof(uint) * mesh->num_color; memcpy(cursor, mesh->colors, bytes);
+
+	cursor += bytes; // Store uv's
+	bytes = sizeof(uint) * mesh->num_texture; memcpy(cursor, mesh->texture, bytes);
+
+	cursor += bytes;
+
+	std::string output;
+	return App->fs->SavePath(output, cursor, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+
 }
 
 void ModuleLoadMeshes::ShowMeshInformation()

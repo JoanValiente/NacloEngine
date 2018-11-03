@@ -26,6 +26,9 @@ public:
 	void LoadFBX(const char* path);
 
 	void LoadChildren(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
+	void SetBuffers(Mesh* mesh);
+
+	bool Import(const char* path, Mesh* mesh);
 
 	void ShowMeshInformation();
 
