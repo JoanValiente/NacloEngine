@@ -171,7 +171,7 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 					ilBindImage(id);
 					ilLoadImage(folder.c_str());
 
-					texture->id_texture = ilutGLBindTexImage();
+					mesh->id_texture = ilutGLBindTexImage();
 
 					folder.clear();
 					path_location.clear();
@@ -181,13 +181,13 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 
 			if (new_mesh->HasTextureCoords(0))
 			{
-				texture->num_texture = new_mesh->mNumVertices;
-				texture->texture = new float[texture->num_texture * 2];
-				LOG("New mesh with %d textures", texture->num_texture);
+				mesh->num_texture = new_mesh->mNumVertices;
+				mesh->texture = new float[mesh->num_texture * 2];
+				LOG("New mesh with %d textures", mesh->num_texture);
 				for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
 				{
-					memcpy(&texture->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
-					memcpy(&texture->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
+					memcpy(&mesh->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
+					memcpy(&mesh->texture[(texCoord * 2) + 1], &new_mesh->mTextureCoords[0][texCoord].y, sizeof(float));
 				}
 
 			}
@@ -204,9 +204,9 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
 			glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint) * mesh->num_indices, mesh->indices, GL_STATIC_DRAW);
 
-			glGenBuffers(1, (GLuint*) &(texture->id_texture));
-			glBindBuffer(GL_ARRAY_BUFFER, texture->id_texture);
-			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * texture->num_texture, texture->texture, GL_STATIC_DRAW);
+			glGenBuffers(1, (GLuint*) &(mesh->id_texture));
+			glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+			glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 2 * mesh->num_texture, mesh->texture, GL_STATIC_DRAW);
 
 			glGenBuffers(1, (GLuint*) &(mesh->id_color));
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_color);
@@ -271,7 +271,7 @@ void ModuleLoadMeshes::ShowMeshInformation()
 
 			uint vertice = mesh_info->num_vertices;
 			uint index = mesh_info->num_indices;
-			uint uv = tex_info->num_texture;
+			uint uv = mesh_info->num_texture;
 			uint triangles = mesh_info->num_indices / 3;
 
 			ImTextureID texture_id = (ImTextureID)tex_info->texture_path;

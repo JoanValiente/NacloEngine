@@ -223,7 +223,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture)
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, texture->id_texture);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
@@ -333,10 +333,10 @@ void ModuleRenderer3D::DeleteAllMeshes()
 				meshes[i]->vertices = nullptr;
 			}
 
-			if (textures[i]->texture != nullptr)
+			if (meshes[i]->texture != nullptr)
 			{
-				delete[] textures[i]->texture;
-				textures[i]->texture = nullptr;
+				delete[] meshes[i]->texture;
+				meshes[i]->texture = nullptr;
 			}
 
 			if (meshes[i]->colors != nullptr)
@@ -348,7 +348,7 @@ void ModuleRenderer3D::DeleteAllMeshes()
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
 			glDeleteTextures(1, (GLuint*) &(textures[i]->texture_path));
-			glDeleteBuffers(1, (GLuint*) &(textures[i]->id_texture));
+			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_texture));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
 			delete meshes[i];

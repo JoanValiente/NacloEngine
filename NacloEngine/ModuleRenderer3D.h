@@ -32,14 +32,14 @@ struct Mesh
 	uint num_color = 0;
 	float* colors = nullptr;
 	aiColor4D color;
+
+	uint id_texture = 0;
+	uint num_texture = 0;
+	float* texture = nullptr;
 };
 
 struct Texture
 {
-	uint id_texture = 0;
-	uint num_texture = 0;
-	float* texture = nullptr;
-
 	uint texture_path = 0;
 };
 
