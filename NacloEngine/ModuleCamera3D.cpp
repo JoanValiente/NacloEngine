@@ -1,6 +1,5 @@
 #include "Globals.h"
 #include "Application.h"
-//#include "PhysBody3D.h"
 #include "ModuleCamera3D.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
@@ -35,11 +34,13 @@ bool ModuleCamera3D::Start()
 	camera->frustum.up = rotationMatrix * camera->frustum.up;
 	camera->frustum.front = rotationMatrix * camera->frustum.front;
 	*/
-	goCamera = new GameObject(App->scene->root, "Main Camera");
+	//goCamera = new GameObject(App->scene->root, "Main Camera");
 
-	camera = new ComponentCamera(goCamera);
-	camera->frustum.Translate(float3(5, 0, 5));
-	LookAt(float3::zero);
+	camera = new ComponentCamera(nullptr);
+	
+	//camera->frustum.Translate(float3(3.0f, 5.0f, 3.0f));
+	Move(float3(3.0f, 5.0f, 3.0f));
+	LookAt(float3(0.0f, 0.0f, 0.0f));
 
 	CalculateViewMatrix();
 
@@ -230,26 +231,21 @@ void ModuleCamera3D::Look(const float3 &Position, const float3 &Reference, bool 
 
 void ModuleCamera3D::LookAt( const float3 &Spot)
 {
-	/*
+
 	if (!Position.IsZero() && !Reference.IsZero())
 	{
 		Reference = Spot;
 		camera->frustum.front = (Position - Reference).Normalized();
 		camera->frustum.WorldRight() = float3(0.0f, 1.0f, 0.0f).Cross(camera->frustum.front);
 		camera->frustum.WorldRight().Normalize();
-		camera->frustum.up = camera->frustum.front.Cross(camera->frustum.WorldRight());
+		camera->frustum.up = camera->frustum.front.Cross(-camera->frustum.WorldRight());
 		CalculateViewMatrix();
 	}
 	else
 	{
 		LOG("Error, No mesh founded");
 	}
-	*/
-	float3 direction = Spot - camera->frustum.pos;
-	float3x3 matrix = float3x3::LookAt(camera->frustum.front, direction.Normalized(), camera->frustum.up, float3(0, 1, 0));
 
-	camera->frustum.front = matrix.MulDir(camera->frustum.front).Normalized();
-	camera->frustum.up = matrix.MulDir(camera->frustum.up).Normalized();
 }
 
 

@@ -20,10 +20,10 @@ Application::Application()
 	// Main Modules
 	AddModule(window);
 	AddModule(fs);
-	AddModule(camera);
 	AddModule(input);
 	AddModule(texture);
 	AddModule(scene);
+	AddModule(camera);
 	AddModule(meshes);
 	AddModule(imgui);
 

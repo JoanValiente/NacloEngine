@@ -5,8 +5,6 @@
 #include "Globals.h"
 #include "MathGeoLib/Geometry/Frustum.h"
 
-struct GameObject;
-
 class ComponentCamera : public Component {
 
 public:

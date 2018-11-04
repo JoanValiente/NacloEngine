@@ -5,7 +5,6 @@
 #include "MathGeoLib/MathGeoLib.h"
 //#include "glmath.h"
 
-struct GameObject;
 struct ComponentCamera;
 
 class ModuleCamera3D : public Module
@@ -38,7 +37,6 @@ public:
 	AABB* meshBox = nullptr;
 	AABB* empty_meshBox = nullptr;
 
-	GameObject* goCamera;
 	ComponentCamera* camera;
 
 private:

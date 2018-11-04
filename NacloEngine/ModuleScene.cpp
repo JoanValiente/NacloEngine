@@ -18,9 +18,6 @@ bool ModuleScene::Start()
 	Grid = new grid(0, 1, 0, 0);
 	Grid->axis = true;
 
-	App->camera->Move(float3(1.0f, 1.0f, 0.0f));
-	App->camera->LookAt(float3(0, 0, 0));	
-
 	root = new GameObject(nullptr, "root");
 
 	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
