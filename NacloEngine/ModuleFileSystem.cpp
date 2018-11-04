@@ -23,7 +23,11 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Modu
 	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+	}
 
+	if (PHYSFS_mount("./Assets/Models/", "Models", 1) == 0) { //Add paths to physfs to search throught
+
+		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
 	}
 
 }
@@ -46,10 +50,9 @@ bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint 
 {
 	static int patata = 0;
 
-	//TOCHECK-> Always creating folder?
-	PHYSFS_mkdir("Library/Textures");
-
 	char result[250];
+
+	CreateNewDirectory(path);
 
 	sprintf_s(result, 250, "%s%s_%i.%s", path, prefix, patata, extension);
 
@@ -63,13 +66,21 @@ bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint 
 	return false;
 }
 
-uint ModuleFileSystem::Load(const char* file, char** buffer) const
+uint ModuleFileSystem::Load(const char* file, char** buffer)
 {
 	uint ret = 0;
 	std::string name = file;
 	NormalizePath(name);
-	
+
 	PHYSFS_file* fs_file = PHYSFS_openRead(name.c_str());
+
+	if (fs_file == nullptr)
+	{
+		LOG("Creating a copy of the file on Assets folder");
+		CopyFileToAssets(file, name);
+		NormalizePath(name);
+		fs_file = PHYSFS_openRead(name.c_str());
+	}
 
 	if (fs_file != nullptr)
 	{
@@ -87,26 +98,67 @@ uint ModuleFileSystem::Load(const char* file, char** buffer) const
 			else
 				ret = readed;
 		}
-		
+
 		if (PHYSFS_close(fs_file) == 0)
 			LOG("File System error while closing file %s: %s\n", file, PHYSFS_getLastError());
 	}
 	else
-		LOG("File System error while opening file %s: %s\n", file, PHYSFS_getLastError());
+	{
+		LOG("ERROR LOADING FILE %s", file);
+	}
 
 	return ret;
 }
-
-void ModuleFileSystem::NormalizePath(std::string & path) const
+void ModuleFileSystem::NormalizePath(std::string &file)
 {
-	for (string::iterator iterator = path.begin(); iterator != path.end(); iterator++)
+	for (string::iterator iterator = file.begin(); iterator != file.end(); iterator++)
 	{
 		if (*iterator == '\\')
 			*iterator = '/';
 	}
 
-	path = path.erase(0, path.find("Game") + 5);
+	file = file.erase(0, file.find("Game") + 5);
+}
 
+void ModuleFileSystem::CreateNewDirectory(const char * path) const
+{
+	PHYSFS_mkdir(path);
+}
+
+void ModuleFileSystem::CopyFileToAssets(const char * path, std::string &output_file)
+{
+	output_file = CreateNewFile(path);
+	CopyFile(path, output_file.c_str(), 0);
+}
+
+std::string ModuleFileSystem::CreateNewFile(const char* path)
+{
+	std::string new_path = path;
+	char* name = (char*)new_path.erase(0, new_path.find_last_of("\\") + 1).c_str();
+	std::string extension_path = path;
+	extension_path.erase(0, extension_path.find_last_of(".")).c_str();
+	char* directory = nullptr;
+
+	if (extension_path == ".fbx")
+	{
+		directory = "Assets\\Models";
+		CreateNewDirectory(ASSETS_MESH_FOLDER);
+	}
+	else
+	{
+		directory = "Assets\\Textures";
+		CreateNewDirectory(ASSETS_TEXTURES_FOLDER);
+
+	}
+
+	TCHAR NPath[MAX_PATH];
+	GetCurrentDirectory(MAX_PATH, NPath);
+
+	char final_path[250];
+
+	sprintf_s(final_path, 250, "%s\\%s\\%s", NPath, directory, name);
+
+	return final_path;
 }
 
 
@@ -115,6 +167,7 @@ uint ModuleFileSystem::SaveFile(const char* file, const void* buffer, unsigned i
 	unsigned int ret = 0;
 
 	PHYSFS_file* fs_file = PHYSFS_openWrite(file);
+
 
 	if (fs_file != nullptr)
 	{

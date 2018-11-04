@@ -24,7 +24,7 @@ bool ModuleScene::Start()
 	root = new GameObject(nullptr, "root");
 
 	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
-	App->renderer3D->AddTexture("Assets/Textures/Baker_house.png");
+	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
 
 	return true;
 }

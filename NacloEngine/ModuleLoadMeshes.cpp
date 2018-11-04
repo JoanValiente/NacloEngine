@@ -233,31 +233,42 @@ void ModuleLoadMeshes::SetBuffers(Mesh * mesh)
 
 bool ModuleLoadMeshes::Import(const char* path, Mesh * mesh)
 {
-	// amount of indices / vertices / colors / normals / texture_coords / AABB 
-	uint ranges[2] = { mesh->num_indices, mesh->num_vertices };
-	uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3;
-	char* data = new char[size]; // Allocate 
-	char* cursor = data;
+	char* buffer;
+	App->fs->Load(path, &buffer);
 
-	uint bytes = sizeof(ranges); // First store ranges 
-	memcpy(cursor, ranges, bytes);
-	 
-	cursor += bytes; // Store indices
-	bytes = sizeof(uint) * mesh->num_indices; memcpy(cursor, mesh->indices, bytes);
+	if (buffer != nullptr)
+	{
+		// amount of indices / vertices / colors / normals / texture_coords / AABB 
+		uint ranges[2] = { mesh->num_indices, mesh->num_vertices };
+		uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3;
+		char* data = new char[size]; // Allocate 
+		char* cursor = data;
 
-	cursor += bytes; // Store vertices
-	bytes = sizeof(uint) * mesh->num_vertices; memcpy(cursor, mesh->vertices, bytes);
+		uint bytes = sizeof(ranges); // First store ranges 
+		memcpy(cursor, ranges, bytes);
 
-	cursor += bytes; // Store colors
-	bytes = sizeof(uint) * mesh->num_color; memcpy(cursor, mesh->colors, bytes);
+		cursor += bytes; // Store indices
+		bytes = sizeof(uint) * mesh->num_indices; memcpy(cursor, mesh->indices, bytes);
 
-	cursor += bytes; // Store uv's
-	bytes = sizeof(uint) * mesh->num_texture; memcpy(cursor, mesh->texture, bytes);
+		cursor += bytes; // Store vertices
+		bytes = sizeof(uint) * mesh->num_vertices; memcpy(cursor, mesh->vertices, bytes);
 
-	cursor += bytes;
+		cursor += bytes; // Store colors
+		bytes = sizeof(uint) * mesh->num_color; memcpy(cursor, mesh->colors, bytes);
 
-	std::string output;
-	return App->fs->SavePath(output, cursor, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+		cursor += bytes; // Store uv's
+		bytes = sizeof(uint) * mesh->num_texture; memcpy(cursor, mesh->texture, bytes);
+
+		cursor += bytes;
+
+		std::string output;
+		return App->fs->SavePath(output, cursor, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+	}
+	else
+	{
+		LOG("ERROR LOADING MESH %s", path)
+		return false;
+	}
 
 }
 
