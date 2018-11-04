@@ -135,6 +135,7 @@ bool ModuleRenderer3D::Start()
 	bool ret = true;
 
 	checkers_path = App->texture->LoadCheckersTexture();
+
 	return ret;
 }
 
