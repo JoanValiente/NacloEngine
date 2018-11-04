@@ -304,7 +304,7 @@ void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)
 	}
 
 	App->camera->CreateMeshBox(minVertex, maxVertex);
-	App->camera->LookAtMeshBox();
+	//App->camera->LookAtMeshBox();
 }
 
 void ModuleRenderer3D::ClearMeshes()

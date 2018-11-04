@@ -7,7 +7,7 @@ ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 {
 	type = COMPONENT_CAMERA;
 
-	frustum.type = FrustumType::PerspectiveFrustum;
+	frustum.type = PerspectiveFrustum;
 	frustum.pos = float3::zero;
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;

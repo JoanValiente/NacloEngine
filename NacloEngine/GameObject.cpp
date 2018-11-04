@@ -155,7 +155,7 @@ void GameObject::UpdateBoundingBox()
 void GameObject::BoundingBoxDebugDraw()
 {
 	glBegin(GL_LINES);
-	glLineWidth(3.0f);
+	glLineWidth(2.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
 	for (uint i = 0; i < 12; i++)
