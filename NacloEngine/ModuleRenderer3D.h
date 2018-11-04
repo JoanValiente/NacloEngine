@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Light.h"
+#include "SDL/include/SDL_video.h"
 #include "Globals.h"
 #include "ModuleLoadMeshes.h"
 
@@ -76,11 +77,13 @@ private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
 
 public:
+	SDL_GLContext context;
+
+public:
 	bool wire_mode = false;
 	std::vector<Mesh*> meshes;
 	std::vector<Texture*> textures;
 	Light lights[MAX_LIGHTS];
-	SDL_GLContext context;
 	float3x3 NormalMatrix;
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	bool ischecked = false;

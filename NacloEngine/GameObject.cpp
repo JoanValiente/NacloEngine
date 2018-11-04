@@ -1,4 +1,7 @@
 #include "GameObject.h"
+#include "Glew/include/glew.h"
+
+#include "ModuleRenderer3D.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
@@ -13,6 +16,8 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	if (parent != nullptr) {
 		parent->children.push_back(this);
 	}
+	
+	boundingBox.SetNegativeInfinity();
 }
 
 GameObject::~GameObject()
@@ -34,6 +39,13 @@ void GameObject::Update(float dt)
 	{
 		children[i]->Update(dt);
 	}
+
+	for (int i = 0; i < components.size(); ++i)
+	{
+		components[i]->Update(dt);
+	}
+
+	BoundingBoxDebugDraw();
 }
 
 void GameObject::CleanUp()
@@ -109,4 +121,49 @@ Component * GameObject::GetComponentByType(Component::COMPONENT_TYPE type)
 	}
 
 	return component;
+}
+
+void GameObject::CreateBoundingBox(Mesh * mesh)
+{
+	boundingBox.SetNegativeInfinity();
+	boundingBox.Enclose((const float3*)mesh->vertices, mesh->num_vertices);
+}
+
+void GameObject::UpdateBoundingBox()
+{
+	boundingBox.SetNegativeInfinity();
+
+	ComponentTransform* transform = (ComponentTransform*)GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+	ComponentMesh* mesh = (ComponentMesh*)GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_MESH);
+
+	if (mesh != nullptr)
+		boundingBox.Enclose((const float3*)mesh->mesh->vertices, mesh->mesh->num_vertices);
+
+	if (transform != nullptr)
+	{
+		math::OBB obb = boundingBox.Transform(transform->matrix);
+
+		if (obb.IsFinite())
+			boundingBox = obb.MinimalEnclosingAABB();
+	}
+
+	for (uint i = 0; i < children.size(); ++i) {
+		children[i]->UpdateBoundingBox();
+	}
+}
+
+void GameObject::BoundingBoxDebugDraw()
+{
+	glBegin(GL_LINES);
+	glLineWidth(3.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	for (uint i = 0; i < 12; i++)
+	{
+		glVertex3f(boundingBox.Edge(i).a.x, boundingBox.Edge(i).a.y, boundingBox.Edge(i).a.z);
+		glVertex3f(boundingBox.Edge(i).b.x, boundingBox.Edge(i).b.y, boundingBox.Edge(i).b.z);
+	}
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	   
 }

@@ -3,9 +3,10 @@
 
 #include <vector>
 #include "Globals.h"
+#include "MathGeoLib/MathGeoLib.h"
 #include "Component.h"
 
-enum COMPONENT_TYPE;
+struct Mesh;
 
 class GameObject {
 	 
@@ -19,9 +20,14 @@ public:
 	Component* NewComponent(Component::COMPONENT_TYPE type);
 	void DeleteComponent(Component* component);
 
-	Component* GetComponentByType(Component::COMPONENT_TYPE type);
+	Component* GetComponentByType(Component::COMPONENT_TYPE type);	
+
+	void CreateBoundingBox(Mesh* mesh);
+	void UpdateBoundingBox();
+	void BoundingBoxDebugDraw();
 
 public:
+	AABB boundingBox;
 	bool active = false;
 	std::string name;
 	GameObject* parent = nullptr;

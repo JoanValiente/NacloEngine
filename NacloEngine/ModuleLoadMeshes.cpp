@@ -200,6 +200,8 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 			Import(new_path.c_str(), mesh);
 			App->renderer3D->AddMesh(mesh);
 			App->renderer3D->AddTexture(texture);
+
+			children->CreateBoundingBox(mesh);
 		}
 
 	}

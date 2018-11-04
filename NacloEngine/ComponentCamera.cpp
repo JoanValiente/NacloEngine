@@ -1,6 +1,7 @@
 #include "ComponentCamera.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
+#include "Component.h"
 
 ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 {
