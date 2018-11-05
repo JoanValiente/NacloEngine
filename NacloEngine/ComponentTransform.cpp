@@ -18,12 +18,15 @@ ComponentTransform::~ComponentTransform()
 
 void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 size)
 {
+	float4x4 prevGlobal = globalMatrix;
+
 	matrix = float4x4::FromTRS(position, quaternion, size);
-	if (container != nullptr) {
+
+	if (container != nullptr && container->parent != nullptr) {
 
 		ComponentTransform* contParentTransform = (ComponentTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 		
-		if (contParentTransform != nullptr && contParentTransform->container->name != "root") {
+		if (contParentTransform != nullptr) {
 
 			float4x4 parentTransformMatrix = contParentTransform->matrix;
 
@@ -32,6 +35,10 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 		else
 			globalMatrix = matrix;
 	}
+
+	if (!globalMatrix.Equals(prevGlobal))
+		if (container != nullptr)
+			container->UpdateBoundingBox();
 }
 
 void ComponentTransform::SetPosition(float3 position)

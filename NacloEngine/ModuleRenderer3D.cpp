@@ -10,6 +10,7 @@
 #include "Component.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
+#include "ComponentTransform.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -164,6 +165,7 @@ update_status ModuleRenderer3D::Update(float dt)
 
 	ComponentMesh* m = nullptr;
 	ComponentMaterial* t = nullptr;
+	ComponentTransform* transform = nullptr;
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
@@ -176,8 +178,11 @@ update_status ModuleRenderer3D::Update(float dt)
 				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MATERIAL) {
 					t = (ComponentMaterial*)(*it);
 				}
-				if (m != nullptr && t != nullptr) {
-					DrawMesh(m->mesh, t->texture);
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_TRANSFORM) {
+					transform = (ComponentTransform*)(*it);
+				}
+				if (m != nullptr && t != nullptr && transform != nullptr) {
+					DrawMesh(m->mesh, t->texture, transform);
 				}
 			}
 		}
@@ -204,8 +209,12 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture)
+void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture, ComponentTransform* transform)
 {
+	float4x4 matrix = transform->globalMatrix;
+
+	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+
 	glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
 	if (!ischecked)

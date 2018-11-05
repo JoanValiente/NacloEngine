@@ -12,6 +12,8 @@
 
 #define MAX_LIGHTS 8
 
+struct ComponentTransform;
+
 struct Mesh
 {
 	std::string path = "";
@@ -57,7 +59,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void DrawMesh(Mesh* meshes, Texture* texture);
+	void DrawMesh(Mesh* meshes, Texture* texture, ComponentTransform* transform);
 
 	void OnResize(int width, int height);
 

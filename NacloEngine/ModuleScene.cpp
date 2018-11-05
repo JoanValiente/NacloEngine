@@ -22,6 +22,7 @@ bool ModuleScene::Start()
 	Grid->axis = true;
 
 	root = new GameObject(nullptr, "root");
+	ComponentTransform* root_transform = (ComponentTransform*)root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 	
 	main_camera = new GameObject(root, "Main Camera");
 	ComponentTransform* camera_transform = (ComponentTransform*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
