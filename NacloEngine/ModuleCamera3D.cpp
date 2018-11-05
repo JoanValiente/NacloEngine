@@ -1,8 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleScene.h"
+#include "MathGeoLib/MathGeoLib.h"
 #include "ModuleCamera3D.h"
 #include "ComponentCamera.h"
 #include "ComponentTransform.h"
+#include "ComponentMesh.h"
 #include "GameObject.h"
 
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -197,6 +200,24 @@ update_status ModuleCamera3D::Update(float dt)
 			}
 		}
 	}
+	
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (!ImGui::IsMouseHoveringAnyWindow())
+		{
+			float winWidth = (float)App->window->screen_surface->w;
+			float winHeight = (float)App->window->screen_surface->h;
+
+			int mouse_x = App->input->GetMouseX();
+			int mouse_y = App->input->GetMouseY();
+
+			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
+			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
+
+			LineSegment ray = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+			MousePick(ray);
+		}
+	}
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
@@ -303,6 +324,53 @@ void ModuleCamera3D::CullingGameObjects(GameObject * go)
 	for (uint i = 0; i < go->children.size(); ++i)
 	{
 		CullingGameObjects(go->children[i]);
+	}
+}
+
+void ModuleCamera3D::MousePick(LineSegment ray)
+{
+	Mesh* mesh = nullptr;
+
+	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
+	{
+		if ((*it)->active) {
+
+			bool hit = ray.Intersects((*it)->boundingBox);
+
+			if (hit) {
+				Triangle tri;
+				LineSegment localRay(ray);
+				ComponentTransform* transform = (*it)->transform;
+				ComponentMesh* cMesh = (*it)->mesh;
+
+				if (transform != nullptr && cMesh != nullptr) {
+					localRay.Transform(transform->matrix.Inverted());
+					mesh = cMesh->mesh;
+
+					int i = 0;
+
+					while (i < mesh->num_indices)
+					{
+						float3 x = { mesh->vertices[mesh->indices[i] * 3],mesh->vertices[mesh->indices[i] * 3 + 1] ,mesh->vertices[mesh->indices[i] * 3 + 2] };
+						i++;
+						float3 y = { mesh->vertices[mesh->indices[i] * 3],mesh->vertices[mesh->indices[i] * 3 + 1] ,mesh->vertices[mesh->indices[i] * 3 + 2] };
+						i++;
+						float3 z = { mesh->vertices[mesh->indices[i] * 3],mesh->vertices[mesh->indices[i] * 3 + 1] ,mesh->vertices[mesh->indices[i] * 3 + 2] };
+						i++;
+
+						tri = { x,y,z };
+						float3 hitPoint;
+						float d = 0.0F;
+				
+						if (localRay.Intersects(tri, &d, &hitPoint))
+						{
+							App->scene->selected = (*it);
+						}
+
+					}
+				}
+			}
+		}
 	}
 }
 
