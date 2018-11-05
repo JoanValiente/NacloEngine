@@ -25,7 +25,7 @@ bool ModuleScene::Start()
 	
 	main_camera = new GameObject(root, "Main Camera");
 	ComponentTransform* camera_transform = (ComponentTransform*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-	camera_transform->SetPosition(float3(5.0f, 5.0f, -5.0f));
+	camera_transform->SetPosition(float3(5.0f, 5.0f, -25.0f));
 	ComponentCamera* camera_component = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 
 	std::string otuput_file;

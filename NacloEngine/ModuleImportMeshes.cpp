@@ -260,36 +260,40 @@ void ModuleImportMeshes ::SetBuffers(Mesh * mesh)
 
 }
 
-void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* &mesh)
+void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* mesh)
 {
 	if (buffer != nullptr)
 	{
-		// amount of indices / vertices / colors / normals / texture_coords / AABB 
-		uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_color, mesh->num_texture };
-		uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3;
-		char* data = new char[size]; // Allocate 
+		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture };
+
+		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;// *3;
+
+		char* data = new char[size]; // Allocate
 		char* cursor = data;
 
-		uint bytes = sizeof(ranges); // First store ranges 
+		// First store ranges
+		uint bytes = sizeof(ranges);
 		memcpy(cursor, ranges, bytes);
-
-		cursor += bytes; // Store indices
-		bytes = sizeof(uint) * mesh->num_indices; memcpy(cursor, mesh->indices, bytes);
-
-		cursor += bytes; // Store vertices
-		bytes = sizeof(uint) * mesh->num_vertices; memcpy(cursor, mesh->vertices, bytes);
-
-		cursor += bytes; // Store colors
-		bytes = sizeof(uint) * mesh->num_color; memcpy(cursor, mesh->colors, bytes);
-
-		cursor += bytes; // Store uv's
-		bytes = sizeof(uint) * mesh->num_texture; memcpy(cursor, mesh->texture, bytes);
 
 		cursor += bytes;
 
-		std::string output;
+		//Store vertices
+		bytes = sizeof(float) * mesh->num_vertices;
+		memcpy(cursor, mesh->vertices, bytes);
 
-		App->fs->SavePath(output, cursor, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+		cursor += bytes;
+
+		//Store indices
+		bytes = sizeof(uint) * mesh->num_indices;
+		memcpy(cursor, mesh->indices, bytes);
+
+		cursor += bytes;
+
+		bytes = sizeof(float)* mesh->num_texture;
+		memcpy(cursor, mesh->texture, bytes);
+
+		std::string output;
+		App->fs->SavePath(output, data, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
 	}
 	else
 	{
@@ -301,7 +305,7 @@ void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* &mesh)
 Mesh * ModuleImportMeshes::ImportNCL(const char * path)
 {
 	Mesh* ret = nullptr;
-
+	GameObject* go = App->scene->CreateGameObject(App->scene->root, "patata");
 	char* buffer;
 	uint size = App->fs->Load(path, &buffer);
 
@@ -309,7 +313,8 @@ Mesh * ModuleImportMeshes::ImportNCL(const char * path)
 	{
 		LOG("LOADING OWN MESH %s", path);
 		ret = LoadNCL(buffer);
-		RELEASE_ARRAY(buffer);
+		ComponentMesh* meshComponent = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+		meshComponent->AssignMesh(ret);
 	}
 
 	else
@@ -326,12 +331,15 @@ Mesh * ModuleImportMeshes::LoadNCL(const void * buffer)
 	char* cursor = (char*)buffer;
 
 	// amount of indices / vertices / colors / normals / texture_coords
-	uint ranges[5];
+	uint ranges[3];
 	uint bytes = sizeof(ranges);
 	memcpy(ranges, cursor, bytes);
+
 	cursor += bytes;
-	ret->num_indices = ranges[0];
-	ret->num_vertices = ranges[1];
+	
+	ret->num_vertices	= ranges[0];
+	ret->num_indices	= ranges[1];
+	ret->num_texture	= ranges[2];
 
 	// Load indices
 	cursor += bytes;
@@ -341,9 +349,15 @@ Mesh * ModuleImportMeshes::LoadNCL(const void * buffer)
 
 	//Load Vertices
 	cursor += bytes;
-	bytes = sizeof(uint) * ret->num_vertices;
-	ret->indices = new uint[ret->num_vertices];
+	bytes = sizeof(float) * ret->num_vertices;
+	ret->vertices = new float[ret->num_vertices];
 	memcpy(ret->vertices, cursor, bytes);
+
+	//Load UV
+	cursor += bytes;
+	bytes = sizeof(uint) * ret->num_texture;
+	ret->texture = new float[ret->num_texture];
+	memcpy(ret->texture, cursor, bytes);
 
 	return ret;
 }

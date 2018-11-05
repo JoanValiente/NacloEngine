@@ -1,6 +1,5 @@
 #include "Globals.h"
 #include "Application.h"
-#include "ModuleInput.h"
 
 #define MAX_KEYS 300
 
@@ -176,7 +175,7 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	if (file_path.find(".ncl") != end_string)
 	{
 		LOG("Loading NCL file");
-		App->meshes->ImportNCL(path);
+		App->meshes->ImportNCL(path);		
 	}
 
 	else if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)

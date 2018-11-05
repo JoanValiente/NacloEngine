@@ -26,7 +26,7 @@ public:
 	void LoadChildren(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 
 	void SetBuffers(Mesh* mesh);
-	void ExportNCL(const void* buffer, Mesh* &mesh);
+	void ExportNCL(const void* buffer, Mesh* mesh);
 	Mesh* ImportNCL(const char* path);
 	Mesh* LoadNCL(const void* buffer);
 
