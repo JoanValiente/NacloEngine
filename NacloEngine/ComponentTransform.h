@@ -23,6 +23,7 @@ public:
 	float3 size = { 1,1,1 };
 	Quat quaternion = Quat::identity;
 	float4x4 matrix;
+	float4x4 globalMatrix;
 };
 
 #endif
