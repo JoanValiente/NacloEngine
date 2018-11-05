@@ -29,6 +29,7 @@ public:
 
 	void CullingGameObjects(GameObject* go);
 	void MousePick(LineSegment ray);
+	void RaycastDebugDraw();
 
 private:
 
@@ -39,6 +40,7 @@ public:
 	float3 Position, Reference;
 	AABB* meshBox = nullptr;
 	AABB* empty_meshBox = nullptr;
+	LineSegment debugRay;
 
 	ComponentCamera* camera;
 

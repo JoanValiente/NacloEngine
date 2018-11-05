@@ -138,7 +138,7 @@ void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, con
 			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
 
 			mesh->num_vertices = new_mesh->mNumVertices;
-			mesh->vertices = new float[mesh->num_vertices * 3];
+			mesh->vertices = new float3[mesh->num_vertices];
 			memcpy(mesh->vertices, new_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
 
 			LOG("Added new mesh. Vertices = %d", mesh->num_vertices);
