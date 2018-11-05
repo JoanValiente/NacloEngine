@@ -28,6 +28,7 @@ public:
 	void ShowCameraInfo();
 
 	void CullingGameObjects(GameObject* go);
+	void MousePick(LineSegment ray);
 
 private:
 
