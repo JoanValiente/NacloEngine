@@ -28,7 +28,7 @@ public:
 	void SetBuffers(Mesh* mesh);
 	void ExportNCL(const void* buffer, Mesh* mesh);
 	Mesh* ImportNCL(const char* path);
-	Mesh* LoadNCL(const void* buffer);
+	Mesh* LoadNCL(const void* buffer, uint size);
 
 	virtual bool Import(const char* path, std::string& output_file);
 	virtual bool Import(const void* buffer, uint size, std::string& output_file, const char* path);

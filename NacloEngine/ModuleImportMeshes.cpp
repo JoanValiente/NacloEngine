@@ -159,6 +159,7 @@ void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, con
 					}
 				}
 			}
+
 			//Component Mesh
 			ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
 			meshComponent->AssignMesh(mesh);
@@ -240,7 +241,7 @@ void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, con
 	}
 }
 
-void ModuleImportMeshes ::SetBuffers(Mesh * mesh)
+void ModuleImportMeshes::SetBuffers(Mesh * mesh)
 {
 	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
@@ -266,7 +267,7 @@ void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* mesh)
 	{
 		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture };
 
-		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;// *3;
+		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -312,20 +313,23 @@ Mesh * ModuleImportMeshes::ImportNCL(const char * path)
 	if (size > 0)
 	{
 		LOG("LOADING OWN MESH %s", path);
-		ret = LoadNCL(buffer);
-		ComponentMesh* meshComponent = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
-		meshComponent->AssignMesh(ret);
+		ret = LoadNCL(buffer, size);
 	}
-
 	else
 	{
 		LOG("ERROR LOADING OWN MESH %s", path);
 	}
 
+	ComponentTransform* transform = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+	ComponentMesh* meshComponent = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+	meshComponent->AssignMesh(ret);
+
+	App->scene->selected = go;
+
 	return ret;
 }
 
-Mesh * ModuleImportMeshes::LoadNCL(const void * buffer)
+Mesh * ModuleImportMeshes::LoadNCL(const void * buffer, uint size)
 {
 	Mesh* ret = new Mesh;
 	char* cursor = (char*)buffer;
@@ -336,10 +340,15 @@ Mesh * ModuleImportMeshes::LoadNCL(const void * buffer)
 	memcpy(ranges, cursor, bytes);
 
 	cursor += bytes;
-	
+
 	ret->num_vertices	= ranges[0];
 	ret->num_indices	= ranges[1];
 	ret->num_texture	= ranges[2];
+
+	//Load Vertices
+	bytes = sizeof(float) * ret->num_vertices;
+	ret->vertices = new float3[ret->num_vertices * 3];
+	memcpy(ret->vertices, cursor, bytes);
 
 	// Load indices
 	cursor += bytes;
@@ -347,17 +356,13 @@ Mesh * ModuleImportMeshes::LoadNCL(const void * buffer)
 	ret->indices = new uint[ret->num_indices];
 	memcpy(ret->indices, cursor, bytes);
 
-	//Load Vertices
-	cursor += bytes;
-	bytes = sizeof(float) * ret->num_vertices;
-	ret->vertices = new float[ret->num_vertices];
-	memcpy(ret->vertices, cursor, bytes);
-
 	//Load UV
 	cursor += bytes;
 	bytes = sizeof(uint) * ret->num_texture;
 	ret->texture = new float[ret->num_texture];
 	memcpy(ret->texture, cursor, bytes);
+
+	App->renderer3D->AddMesh(ret);
 
 	return ret;
 }

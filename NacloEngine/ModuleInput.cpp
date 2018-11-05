@@ -172,7 +172,7 @@ void const ModuleInput::LoadDraggedFile(char * path)
 		App->meshes->Import(path, output_file);
 	}
 
-	if (file_path.find(".ncl") != end_string)
+	else if (file_path.find(".ncl") != end_string)
 	{
 		LOG("Loading NCL file");
 		App->meshes->ImportNCL(path);		
