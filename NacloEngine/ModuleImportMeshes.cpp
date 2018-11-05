@@ -265,7 +265,7 @@ void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* &mesh)
 	if (buffer != nullptr)
 	{
 		// amount of indices / vertices / colors / normals / texture_coords / AABB 
-		uint ranges[2] = { mesh->num_indices, mesh->num_vertices };
+		uint ranges[4] = { mesh->num_indices, mesh->num_vertices, mesh->num_color, mesh->num_texture };
 		uint size = sizeof(ranges) + sizeof(uint) * mesh->num_indices + sizeof(float) * mesh->num_vertices * 3;
 		char* data = new char[size]; // Allocate 
 		char* cursor = data;
