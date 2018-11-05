@@ -408,10 +408,6 @@ void ModuleImportMeshes ::ShowMeshInformation()
 		}
 		else
 		{
-			float3 position = transf->position;
-			Quat rotation = transf->quaternion;
-			float3 scale = transf->size;
-
 			uint vertice = mesh_info->num_vertices;
 			uint index = mesh_info->num_indices;
 			uint uv = mesh_info->num_texture;
@@ -430,35 +426,43 @@ void ModuleImportMeshes ::ShowMeshInformation()
 				ImGui::Text("Position");
 				ImGui::Text("X:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &position.x);
+				ImGui::InputFloat("", &transf->position.x, 0.01);
 				ImGui::Text("Y:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &position.y);
+				ImGui::InputFloat("", &transf->position.y, 0.01);
 				ImGui::Text("Z:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &position.z);
+				ImGui::InputFloat("", &transf->position.z, 0.01);
+
+				transf->SetPosition(transf->position);
+
 				//ROTATION------------
 				ImGui::Text("Rotation");
 				ImGui::Text("X:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &rotation.x);
+				ImGui::InputFloat("", &transf->rotation.x, 0.01);
 				ImGui::Text("Y:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &rotation.y);
+				ImGui::InputFloat("", &transf->rotation.y, 0.01);
 				ImGui::Text("Z:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &rotation.z);
+				ImGui::InputFloat("", &transf->rotation.z, 0.01);
+
+				transf->SetRotation(transf->rotation);
+
 				//SCALE------------
 				ImGui::Text("Scale");
 				ImGui::Text("X:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &scale.x);
+				ImGui::InputFloat("", &transf->size.x, 0.01);
 				ImGui::Text("Y:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &scale.y);
+				ImGui::InputFloat("", &transf->size.y, 0.01);
 				ImGui::Text("Z:");
 				ImGui::SameLine();
-				ImGui::InputFloat("", &scale.z);
+				ImGui::InputFloat("", &transf->size.z, 0.01);
+
+				transf->SetSize(transf->size);
 
 			}
 			if (ImGui::CollapsingHeader("Mesh information"), flags)
