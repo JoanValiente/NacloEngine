@@ -27,7 +27,7 @@ struct Mesh
 
 	uint id_vertices = 0;
 	uint num_vertices = 0;
-	float* vertices = nullptr;
+	float3* vertices = nullptr;
 
 	uint id_color = 0;
 	uint num_color = 0;

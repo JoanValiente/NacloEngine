@@ -201,7 +201,7 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 	}
 	
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
 		if (!ImGui::IsMouseHoveringAnyWindow())
 		{
@@ -218,7 +218,7 @@ update_status ModuleCamera3D::Update(float dt)
 			MousePick(ray);
 		}
 	}
-
+	RaycastDebugDraw();
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
@@ -331,47 +331,57 @@ void ModuleCamera3D::MousePick(LineSegment ray)
 {
 	Mesh* mesh = nullptr;
 
-	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
+	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
-		if ((*it)->active) {
+		for (std::vector<GameObject*>::const_iterator it = (*iterator)->children.begin(); it != (*iterator)->children.end(); ++it)
+		{
+			if ((*it)->active) {
 
-			bool hit = ray.Intersects((*it)->boundingBox);
+				bool hit = ray.Intersects((*it)->parent->boundingBox);
 
-			if (hit) {
-				Triangle tri;
-				LineSegment localRay(ray);
-				ComponentTransform* transform = (*it)->transform;
-				ComponentMesh* cMesh = (*it)->mesh;
+				if (hit) {
+					ComponentTransform* transform = (*it)->transform;
+					ComponentMesh* cMesh = (*it)->mesh;
 
-				if (transform != nullptr && cMesh != nullptr) {
-					localRay.Transform(transform->matrix.Inverted());
-					mesh = cMesh->mesh;
+					if (transform != nullptr && cMesh != nullptr) {
+						Triangle tri;
+						LineSegment localRay(ray);
+						localRay.Transform(transform->globalMatrix.Inverted());
+						mesh = cMesh->mesh;
+						debugRay = localRay;
 
-					int i = 0;
-
-					while (i < mesh->num_indices)
-					{
-						float3 x = { mesh->vertices[mesh->indices[i] * 3],mesh->vertices[mesh->indices[i] * 3 + 1] ,mesh->vertices[mesh->indices[i] * 3 + 2] };
-						i++;
-						float3 y = { mesh->vertices[mesh->indices[i] * 3],mesh->vertices[mesh->indices[i] * 3 + 1] ,mesh->vertices[mesh->indices[i] * 3 + 2] };
-						i++;
-						float3 z = { mesh->vertices[mesh->indices[i] * 3],mesh->vertices[mesh->indices[i] * 3 + 1] ,mesh->vertices[mesh->indices[i] * 3 + 2] };
-						i++;
-
-						tri = { x,y,z };
-						float3 hitPoint;
-						float d = 0.0F;
-				
-						if (localRay.Intersects(tri, &d, &hitPoint))
+						for (uint i = 0; i < mesh->num_indices;)
 						{
-							App->scene->selected = (*it);
-						}
+							tri.a = mesh->vertices[mesh->indices[i++] * 3];
+							tri.b = mesh->vertices[mesh->indices[i++] * 3];
+							tri.c = mesh->vertices[mesh->indices[i++] * 3];
 
+							float distance;
+							float3 hit_point;
+							if (localRay.Intersects(tri, &distance, &hit_point))
+							{
+								App->scene->selected = (*it);
+							}
+						}
 					}
 				}
 			}
 		}
 	}
+}
+
+void ModuleCamera3D::RaycastDebugDraw()
+{
+	glBegin(GL_LINES);
+	glLineWidth(50.0f);
+	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
+
+	glVertex3f(debugRay.a.x, debugRay.a.y, debugRay.a.z);
+	glVertex3f(debugRay.b.x, debugRay.b.y, debugRay.b.z);
+
+	glEnd();
+	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
 }
 
 // -----------------------------------------------------------------
