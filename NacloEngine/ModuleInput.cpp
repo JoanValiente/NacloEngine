@@ -169,8 +169,16 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	{
 		LOG("Loading FBX file");
 		//App->renderer3D->DeleteAllMeshes();
-		App->meshes->LoadFBX(path);
+		std::string output_file;
+		App->meshes->Import(path, output_file);
 	}
+
+	if (file_path.find(".ncl"))
+	{
+		LOG("Loading NCL file");
+		App->meshes->ImportNCL(path);
+	}
+
 	else if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{
 		LOG("Loading PNG file");

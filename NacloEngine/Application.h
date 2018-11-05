@@ -9,7 +9,7 @@
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleImgui.h"
-#include "ModuleLoadMeshes.h"
+#include "ModuleImportMeshes.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
@@ -26,7 +26,7 @@ public:
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleImgui* imgui;
-	ModuleLoadMeshes* meshes;
+	ModuleImportMeshes* meshes;
 	ModuleScene* scene;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;

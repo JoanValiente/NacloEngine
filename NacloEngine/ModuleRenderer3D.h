@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "SDL/include/SDL_video.h"
 #include "Globals.h"
-#include "ModuleLoadMeshes.h"
+#include "ModuleImportMeshes.h"
 
 
 #include <list>

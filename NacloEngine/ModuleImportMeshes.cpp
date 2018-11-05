@@ -1,4 +1,4 @@
-#include "ModuleLoadMeshes.h"
+#include "ModuleImportMeshes.h"
 
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -23,17 +23,17 @@ void myCallback(const char *msg, char *userData) {
 	LOG("%s", msg);
 }
 
-ModuleLoadMeshes::ModuleLoadMeshes(Application*app, bool start_enabled) : Module(app, start_enabled)
+ModuleImportMeshes::ModuleImportMeshes (Application*app, bool start_enabled) : Module(app, start_enabled)
 {
 
 }
 
-ModuleLoadMeshes::~ModuleLoadMeshes()
+ModuleImportMeshes ::~ModuleImportMeshes ()
 {
 
 }
 
-bool ModuleLoadMeshes::Init()
+bool ModuleImportMeshes ::Init()
 {
 	bool ret = true;
 
@@ -43,7 +43,7 @@ bool ModuleLoadMeshes::Init()
 	return ret;
 }
 
-bool ModuleLoadMeshes::Start()
+bool ModuleImportMeshes ::Start()
 {
 	struct aiLogStream stream;
 	stream.callback = myCallback;
@@ -52,32 +52,57 @@ bool ModuleLoadMeshes::Start()
 	return true;
 }
 
-bool ModuleLoadMeshes::CleanUp()
+bool ModuleImportMeshes ::CleanUp()
 {
 	aiDetachAllLogStreams();
 	return true;
 }
 
-void ModuleLoadMeshes::LoadFBX(const char * path)
+bool ModuleImportMeshes::Import(const char * path, std::string & output_file)
 {
+	bool ret = false;
+	char* buffer = nullptr;
 
-	const aiScene* scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
+	uint size = App->fs->Load(path, &buffer);
 
-	if (scene != nullptr && scene->HasMeshes()) 
+
+	if (size > 0)
+	{
+		ret = Import(buffer, size, output_file, path);
+	}
+	else
+	{
+		LOG("ERROR LOADING MESH %s", path);
+		return false;
+	}
+}
+
+bool ModuleImportMeshes::Import(const void * buffer, uint size, std::string & output_file, const char* path)
+{
+	bool ret = false; 
+
+	const aiScene* scene = aiImportFileFromMemory((const char*)buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
+
+	if (scene != nullptr && scene->HasMeshes())
 	{
 		aiNode* main_node = scene->mRootNode;
 
-		std::string tmp = path;		
+		std::string tmp = path;
 
 		GameObject* go = App->scene->CreateGameObject(App->scene->root, tmp.c_str());
 
 		LoadChildren(scene, main_node, path, go);
 
 		App->scene->selected = go;
+
+		ret = true;
 	}
+
+	return ret;
 }
 
-void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const char * path, GameObject * obj)
+
+void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, const char * path, GameObject * obj)
 {
 	if (node != nullptr)
 	{
@@ -197,7 +222,11 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 			materialComponent->AssignTexture(texture);
 
 			SetBuffers(mesh);
-			Import(new_path.c_str(), mesh);
+
+			char* buffer;
+			App->fs->Load(path, &buffer);
+			ExportNCL(buffer, mesh);
+
 			App->renderer3D->AddMesh(mesh);
 			App->renderer3D->AddTexture(texture);
 
@@ -211,7 +240,7 @@ void ModuleLoadMeshes::LoadChildren(const aiScene * scene, aiNode * node, const 
 	}
 }
 
-void ModuleLoadMeshes::SetBuffers(Mesh * mesh)
+void ModuleImportMeshes ::SetBuffers(Mesh * mesh)
 {
 	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
@@ -231,11 +260,8 @@ void ModuleLoadMeshes::SetBuffers(Mesh * mesh)
 
 }
 
-bool ModuleLoadMeshes::Import(const char* path, Mesh * mesh)
+void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* &mesh)
 {
-	char* buffer;
-	App->fs->Load(path, &buffer);
-
 	if (buffer != nullptr)
 	{
 		// amount of indices / vertices / colors / normals / texture_coords / AABB 
@@ -262,17 +288,67 @@ bool ModuleLoadMeshes::Import(const char* path, Mesh * mesh)
 		cursor += bytes;
 
 		std::string output;
-		return App->fs->SavePath(output, cursor, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+
+		App->fs->SavePath(output, cursor, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
 	}
 	else
 	{
-		LOG("ERROR LOADING MESH %s", path)
-		return false;
+		LOG("ERROR LOADING MESH");
 	}
 
 }
 
-void ModuleLoadMeshes::ShowMeshInformation()
+Mesh * ModuleImportMeshes::ImportNCL(const char * path)
+{
+	Mesh* ret = nullptr;
+
+	char* buffer;
+	uint size = App->fs->Load(path, &buffer);
+
+	if (size > 0)
+	{
+		LOG("LOADING OWN MESH %s", path);
+		ret = LoadNCL(buffer);
+		RELEASE_ARRAY(buffer);
+	}
+
+	else
+	{
+		LOG("ERROR LOADING OWN MESH %s", path);
+	}
+
+	return ret;
+}
+
+Mesh * ModuleImportMeshes::LoadNCL(const void * buffer)
+{
+	Mesh* ret = new Mesh;
+	char* cursor = (char*)buffer;
+
+	// amount of indices / vertices / colors / normals / texture_coords
+	uint ranges[5];
+	uint bytes = sizeof(ranges);
+	memcpy(ranges, cursor, bytes);
+	cursor += bytes;
+	ret->num_indices = ranges[0];
+	ret->num_vertices = ranges[1];
+
+	// Load indices
+	cursor += bytes;
+	bytes = sizeof(uint) * ret->num_indices;
+	ret->indices = new uint[ret->num_indices];
+	memcpy(ret->indices, cursor, bytes);
+
+	//Load Vertices
+	cursor += bytes;
+	bytes = sizeof(uint) * ret->num_vertices;
+	ret->indices = new uint[ret->num_vertices];
+	memcpy(ret->vertices, cursor, bytes);
+
+	return ret;
+}
+
+void ModuleImportMeshes ::ShowMeshInformation()
 {
 	ComponentMesh* m = nullptr;
 	ComponentMaterial* t = nullptr;
@@ -387,17 +463,17 @@ void ModuleLoadMeshes::ShowMeshInformation()
 }
 
 
-const float3 ModuleLoadMeshes::GetFbxPosition(const Mesh* mesh)
+const float3 ModuleImportMeshes ::GetFbxPosition(const Mesh* mesh)
 {
 	return mesh->position;
 }
 
-const float3 ModuleLoadMeshes::GetFbxScale(const Mesh* mesh)
+const float3 ModuleImportMeshes ::GetFbxScale(const Mesh* mesh)
 {
 	return mesh->scale;
 }
 
-const Quat ModuleLoadMeshes::GetFbxRotation(const Mesh* mesh)
+const Quat ModuleImportMeshes ::GetFbxRotation(const Mesh* mesh)
 {
 	return mesh->rotation;
 }

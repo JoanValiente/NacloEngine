@@ -2,7 +2,7 @@
 #include "ModuleScene.h"
 #include "Primitive.h"
 #include "Globals.h"
-#include "ModuleLoadMeshes.h"
+#include "ModuleImportMeshes.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
@@ -28,7 +28,8 @@ bool ModuleScene::Start()
 	camera_transform->SetPosition(float3(5.0f, 5.0f, -5.0f));
 	ComponentCamera* camera_component = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 
-	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
+	std::string otuput_file;
+	App->meshes->Import("Assets/Models/BakerHouse.fbx", otuput_file);
 	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
 
 	return true;

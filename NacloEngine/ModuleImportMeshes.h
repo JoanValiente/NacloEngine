@@ -1,5 +1,5 @@
-#ifndef _MODULE_LOADMESHES_
-#define _MODULE_LOADMESHES_
+#ifndef _MODULE_IMPORTMESHES_
+#define _MODULE_IMPORTMESHES_
 
 
 #include "Module.h"
@@ -14,21 +14,24 @@ struct GameObject;
 struct aiScene;
 struct aiNode;
 
-class ModuleLoadMeshes : public Module
+class ModuleImportMeshes : public Module
 {
 public:
-	ModuleLoadMeshes(Application* app, bool start_enabled = true);
-	~ModuleLoadMeshes();
+	ModuleImportMeshes(Application* app, bool start_enabled = true);
+	~ModuleImportMeshes();
 	bool Init();
 	bool Start();
 	bool CleanUp();
 
-	void LoadFBX(const char* path);
-
 	void LoadChildren(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
-	void SetBuffers(Mesh* mesh);
 
-	bool Import(const char* path, Mesh* mesh);
+	void SetBuffers(Mesh* mesh);
+	void ExportNCL(const void* buffer, Mesh* &mesh);
+	Mesh* ImportNCL(const char* path);
+	Mesh* LoadNCL(const void* buffer);
+
+	virtual bool Import(const char* path, std::string& output_file);
+	virtual bool Import(const void* buffer, uint size, std::string& output_file, const char* path);
 
 	void ShowMeshInformation();
 
@@ -37,4 +40,4 @@ public:
 	const Quat GetFbxRotation(const Mesh* mesh);
 };
 
-#endif // !_MODULE_LOADMESHES_
+#endif // !_MODULE_IMPORTMESHES_
