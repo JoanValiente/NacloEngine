@@ -27,6 +27,8 @@ public:
 	void LookAtMeshBox();
 	void ShowCameraInfo();
 
+	void CullingGameObjects(GameObject* go);
+
 private:
 
 	void CalculateViewMatrix();

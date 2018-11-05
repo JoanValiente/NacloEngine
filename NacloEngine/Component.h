@@ -8,7 +8,7 @@ struct GameObject;
 
 class Component {
 
-public: 
+public:
 	enum COMPONENT_TYPE {
 		COMPONENT_NONE,
 		COMPONENT_TRANSFORM,
@@ -28,6 +28,7 @@ public:
 	bool active = false;
 	GameObject* container;
 	COMPONENT_TYPE type;
+
 };
 
 #endif

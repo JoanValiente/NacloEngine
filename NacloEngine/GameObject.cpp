@@ -71,18 +71,22 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 	{
 	case Component::COMPONENT_TYPE::COMPONENT_TRANSFORM:
 		component = new ComponentTransform(this);
+		this->transform = (ComponentTransform*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_MESH:
 		component = new ComponentMesh(this);
+		this->mesh = (ComponentMesh*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_MATERIAL:
 		component = new ComponentMaterial(this);
+		this->material = (ComponentMaterial*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_CAMERA:
 		component = new ComponentCamera(this);
+		this->camera = (ComponentCamera*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_NONE:

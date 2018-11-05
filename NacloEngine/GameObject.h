@@ -7,6 +7,10 @@
 #include "Component.h"
 
 struct Mesh;
+struct ComponentCamera;
+struct ComponentMaterial;
+struct ComponentMesh;
+struct ComponentTransform;
 
 class GameObject {
 	 
@@ -33,6 +37,11 @@ public:
 	GameObject* parent = nullptr;
 	std::vector<Component*> components;
 	std::vector<GameObject*> children;
+
+	ComponentTransform* transform = nullptr;
+	ComponentMaterial* material = nullptr;
+	ComponentMesh* mesh = nullptr;
+	ComponentCamera* camera = nullptr;
 };
 
 #endif

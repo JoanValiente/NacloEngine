@@ -4,6 +4,9 @@
 #include "Globals.h"
 #include "ModuleLoadMeshes.h"
 #include "GameObject.h"
+#include "Component.h"
+#include "ComponentTransform.h"
+#include "ComponentCamera.h"
 
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -19,11 +22,25 @@ bool ModuleScene::Start()
 	Grid->axis = true;
 
 	root = new GameObject(nullptr, "root");
+	
+	main_camera = new GameObject(root, "Main Camera");
+	ComponentTransform* camera_transform = (ComponentTransform*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+	camera_transform->SetPosition(float3(5.0f, 5.0f, -5.0f));
+	ComponentCamera* camera_component = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 
 	App->meshes->LoadFBX("Assets/Models/BakerHouse.fbx");
 	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
 
 	return true;
+}
+
+update_status ModuleScene::PreUpdate(float dt)
+{
+	update_status ret = UPDATE_CONTINUE;
+
+	App->camera->CullingGameObjects(root);
+
+	return ret;
 }
 
 update_status ModuleScene::Update(float dt)

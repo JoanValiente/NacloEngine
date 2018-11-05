@@ -13,9 +13,14 @@ public:
 
 	void Update(float dt);
 	
+	void DebugDraw();
+	
+	bool Intersects(const AABB box);
 
 public:
 	Frustum frustum;
+	bool frustumCulling = true;
+	bool debugDraw = false;
 };
 
 #endif

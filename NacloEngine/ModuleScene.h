@@ -12,6 +12,7 @@ public:
 	~ModuleScene();
 	bool CleanUp();
 	bool Start();
+	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 
@@ -21,6 +22,7 @@ public:
 public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;
+	GameObject* main_camera = nullptr;
 	GameObject* selected = nullptr;
 private:
 	grid * Grid;

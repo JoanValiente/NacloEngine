@@ -34,11 +34,10 @@ bool ModuleCamera3D::Start()
 	camera->frustum.up = rotationMatrix * camera->frustum.up;
 	camera->frustum.front = rotationMatrix * camera->frustum.front;
 	*/
-	//goCamera = new GameObject(App->scene->root, "Main Camera");
-
 	camera = new ComponentCamera(nullptr);
 	
 	//camera->frustum.Translate(float3(3.0f, 5.0f, 3.0f));
+	camera->frustumCulling = false;
 	Move(float3(3.0f, 5.0f, 3.0f));
 	LookAt(float3(0.0f, 0.0f, 0.0f));
 
@@ -290,6 +289,21 @@ void ModuleCamera3D::ShowCameraInfo()
 	ImGui::InputFloat("Fast Camera Speed", &fast_speed, 1.0f);
 	ImGui::InputFloat("Scroll Camera Speed", &scroll_speed, 1.0f);
 
+}
+
+void ModuleCamera3D::CullingGameObjects(GameObject * go)
+{
+	if (App->scene->main_camera->camera->frustumCulling) {
+		if (!App->scene->main_camera->camera->Intersects(go->boundingBox)) {
+			go->active = false;
+		}
+		else
+			go->active = true;
+	}
+	for (uint i = 0; i < go->children.size(); ++i)
+	{
+		CullingGameObjects(go->children[i]);
+	}
 }
 
 // -----------------------------------------------------------------
