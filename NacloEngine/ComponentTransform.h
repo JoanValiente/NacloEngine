@@ -22,8 +22,8 @@ public:
 	float3 rotation = float3::zero;
 	float3 size = { 1,1,1 };
 	Quat quaternion = Quat::identity;
-	float4x4 matrix;
-	float4x4 globalMatrix;
+	float4x4 matrix = float4x4::identity;
+	float4x4 globalMatrix = float4x4::identity;
 };
 
 #endif

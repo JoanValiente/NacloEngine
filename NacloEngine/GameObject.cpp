@@ -145,7 +145,7 @@ void GameObject::UpdateBoundingBox()
 
 	if (transform != nullptr)
 	{
-		math::OBB obb = boundingBox.Transform(transform->matrix);
+		math::OBB obb = boundingBox.Transform(transform->globalMatrix);
 
 		if (obb.IsFinite())
 			boundingBox = obb.MinimalEnclosingAABB();

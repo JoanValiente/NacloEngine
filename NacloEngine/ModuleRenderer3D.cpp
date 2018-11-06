@@ -211,6 +211,9 @@ bool ModuleRenderer3D::CleanUp()
 
 void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture, ComponentTransform* transform)
 {
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
 	float4x4 matrix = transform->globalMatrix;
 
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
@@ -247,6 +250,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture, ComponentTransform
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glPopMatrix();
 }
 
 

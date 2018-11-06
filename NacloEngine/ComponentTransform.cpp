@@ -9,7 +9,7 @@ ComponentTransform::ComponentTransform(GameObject * container) : Component(conta
 
 	quaternion = Quat::FromEulerXYZ(rotation.x * DEGTORAD, rotation.y * DEGTORAD, rotation.z * DEGTORAD);
 
-	matrix = float4x4::FromTRS(position, quaternion, size);
+	UpdateMatrix(position, quaternion, size);
 }
 
 ComponentTransform::~ComponentTransform()
@@ -25,16 +25,18 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 	if (container != nullptr && container->parent != nullptr) {
 
 		ComponentTransform* contParentTransform = (ComponentTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-		
+
 		if (contParentTransform != nullptr) {
 
-			float4x4 parentTransformMatrix = contParentTransform->matrix;
+			float4x4 parentTransformMatrix = contParentTransform->globalMatrix;
 
 			globalMatrix = parentTransformMatrix * matrix;
 		}
 		else
 			globalMatrix = matrix;
 	}
+	else
+		globalMatrix = matrix;
 
 	if (!globalMatrix.Equals(prevGlobal))
 		if (container != nullptr)
@@ -52,7 +54,7 @@ void ComponentTransform::SetRotation(float3 rotation)
 {
 	this->rotation = rotation;
 
-	this->quaternion = Quat::FromEulerXYZ(rotation.x * DEGTORAD, rotation.y * DEGTORAD, rotation.z * DEGTORAD);
+	this->quaternion = Quat::FromEulerXYZ(this->rotation.x * DEGTORAD, this->rotation.y * DEGTORAD, this->rotation.z * DEGTORAD);
 
 	UpdateMatrix(this->position, this->quaternion, this->size);
 }

@@ -360,7 +360,7 @@ void ModuleCamera3D::MousePick(LineSegment ray)
 							float3 hit_point;
 							if (localRay.Intersects(tri, &distance, &hit_point))
 							{
-								App->scene->selected = (*it);
+								//App->scene->selected = (*it);
 							}
 						}
 					}

@@ -31,7 +31,7 @@ void ComponentCamera::Update(float dt)
 	float4x4 transformMatrix = float4x4::identity;
 
 	if (go_transform != nullptr) {
-		transformMatrix = go_transform->matrix;
+		transformMatrix = go_transform->globalMatrix;
 	}
 	frustum.pos = transformMatrix.TranslatePart();
 	frustum.front = transformMatrix.WorldZ();
