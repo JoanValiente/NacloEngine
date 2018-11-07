@@ -1,4 +1,4 @@
-#include "ModuleImportMeshes.h"
+#include "MeshImporter.h"
 
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -23,17 +23,17 @@ void myCallback(const char *msg, char *userData) {
 	LOG("%s", msg);
 }
 
-ModuleImportMeshes::ModuleImportMeshes (Application*app, bool start_enabled) : Module(app, start_enabled)
+MeshImporter::MeshImporter() : Importer()
 {
 
 }
 
-ModuleImportMeshes ::~ModuleImportMeshes ()
+MeshImporter ::~MeshImporter()
 {
 
 }
 
-bool ModuleImportMeshes ::Init()
+bool MeshImporter::Init()
 {
 	bool ret = true;
 
@@ -43,7 +43,7 @@ bool ModuleImportMeshes ::Init()
 	return ret;
 }
 
-bool ModuleImportMeshes ::Start()
+bool MeshImporter::Start()
 {
 	struct aiLogStream stream;
 	stream.callback = myCallback;
@@ -52,13 +52,13 @@ bool ModuleImportMeshes ::Start()
 	return true;
 }
 
-bool ModuleImportMeshes ::CleanUp()
+bool MeshImporter::CleanUp()
 {
 	aiDetachAllLogStreams();
 	return true;
 }
 
-bool ModuleImportMeshes::Import(const char * path, std::string & output_file)
+bool MeshImporter::Import(const char * path, std::string & output_file)
 {
 	bool ret = false;
 	char* buffer = nullptr;
@@ -77,7 +77,7 @@ bool ModuleImportMeshes::Import(const char * path, std::string & output_file)
 	}
 }
 
-bool ModuleImportMeshes::Import(const void * buffer, uint size, std::string & output_file, const char* path)
+bool MeshImporter::Import(const void * buffer, uint size, std::string & output_file, const char* path)
 {
 	bool ret = false; 
 
@@ -103,7 +103,7 @@ bool ModuleImportMeshes::Import(const void * buffer, uint size, std::string & ou
 		transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
 		transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
 
-		LoadChildren(scene, main_node, path, go);
+		LoadMeshData(scene, main_node, path, go);
 
 		App->scene->selected = go;
 
@@ -114,7 +114,7 @@ bool ModuleImportMeshes::Import(const void * buffer, uint size, std::string & ou
 }
 
 
-void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, const char * path, GameObject * obj)
+void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char * path, GameObject * obj)
 {
 	if (node != nullptr)
 	{
@@ -181,42 +181,34 @@ void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, con
 			{
 				mesh->color = { 255.0f,255.0f,255.0f,255.0f };
 			}
-			aiColor4D* colors_mesh = *new_mesh->mColors;
 
-			if (colors_mesh != nullptr)
-			{
-				mesh->colors = new float[mesh->num_vertices * 3];
-				for (int num_color = 0; num_color < mesh->num_vertices; ++num_color)
-				{
-					memcpy(mesh->colors, &colors_mesh[num_color], sizeof(float)*mesh->num_vertices * 3);
-				}
-			}
 
 			aiMaterial* tex = scene->mMaterials[new_mesh->mMaterialIndex];
 			Texture* texture = new Texture();
 
-			if (tex != nullptr)
-			{
-				aiString path;
-				tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-				if (path.length > 0)
-				{
-					std::string path_location = path.data;
-					path_location.erase(0, path_location.find_last_of("\\") + 1);
-					std::string folder = "Textures/";
-					folder += path_location;
-					ILuint id;
-					ilGenImages(1, &id);
-					ilBindImage(id);
-					ilLoadImage(folder.c_str());
+			//TODO REVISE THIS PART OF THE CODE
+			//if (tex != nullptr)
+			//{
+			//	aiString path;
+			//	tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+			//	if (path.length > 0)
+			//	{
+			//		std::string path_location = path.data;
+			//		path_location.erase(0, path_location.find_last_of("\\") + 1);
+			//		std::string folder = "Textures/";
+			//		folder += path_location;
+			//		ILuint id;
+			//		ilGenImages(1, &id);
+			//		ilBindImage(id);
+			//		//ilLoadImage(folder.c_str());
 
-					mesh->id_texture = ilutGLBindTexImage();
+			//		mesh->id_texture = ilutGLBindTexImage();
 
-					folder.clear();
-					path_location.clear();
-					path.Clear();
-				}
-			}
+			//		folder.clear();
+			//		path_location.clear();
+			//		path.Clear();
+			//	}
+			//}
 
 			if (new_mesh->HasTextureCoords(0))
 			{
@@ -241,6 +233,7 @@ void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, con
 			ExportNCL(buffer, mesh);
 
 			App->renderer3D->AddMesh(mesh);
+
 			App->renderer3D->AddTexture(texture);
 
 			children->CreateBoundingBox(mesh);
@@ -249,11 +242,11 @@ void ModuleImportMeshes ::LoadChildren(const aiScene * scene, aiNode * node, con
 	}
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		LoadChildren(scene, node->mChildren[i], path, obj);
+		LoadMeshData(scene, node->mChildren[i], path, obj);
 	}
 }
 
-void ModuleImportMeshes::SetBuffers(Mesh * mesh)
+void MeshImporter::SetBuffers(Mesh * mesh)
 {
 	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
@@ -273,13 +266,13 @@ void ModuleImportMeshes::SetBuffers(Mesh * mesh)
 
 }
 
-void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* mesh)
+void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 {
 	if (buffer != nullptr)
 	{
-		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture };
+		uint ranges[4] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;;
+		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -287,7 +280,6 @@ void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* mesh)
 		// First store ranges
 		uint bytes = sizeof(ranges);
 		memcpy(cursor, ranges, bytes);
-
 		cursor += bytes;
 
 		//Store vertices
@@ -302,6 +294,7 @@ void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* mesh)
 
 		cursor += bytes;
 
+		//Store Uv
 		bytes = sizeof(float)* mesh->num_texture;
 		memcpy(cursor, mesh->texture, bytes);
 
@@ -315,7 +308,9 @@ void ModuleImportMeshes::ExportNCL(const void * buffer, Mesh* mesh)
 
 }
 
-Mesh * ModuleImportMeshes::ImportNCL(const char * path)
+//--------------------IMPORT OWN FORMAT--------------------
+
+Mesh * MeshImporter::ImportNCL(const char * path)
 {
 	Mesh* ret = nullptr;
 	GameObject* go = App->scene->CreateGameObject(App->scene->root, "patata");
@@ -341,7 +336,7 @@ Mesh * ModuleImportMeshes::ImportNCL(const char * path)
 	return ret;
 }
 
-Mesh * ModuleImportMeshes::LoadNCL(const void * buffer, uint size)
+Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 {
 	Mesh* ret = new Mesh;
 	char* cursor = (char*)buffer;

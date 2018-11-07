@@ -4,13 +4,14 @@ Application::Application()
 {
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
-	meshes = new ModuleImportMeshes (this);
 	scene = new ModuleScene(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	imgui = new ModuleImgui(this);
 	texture = new ModuleTextures(this);
 	fs = new ModuleFileSystem(this);
+
+	meshes = new MeshImporter();
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -24,7 +25,6 @@ Application::Application()
 	AddModule(texture);
 	AddModule(scene);
 	AddModule(camera);
-	AddModule(meshes);
 	AddModule(imgui);
 
 	// Renderer last!

@@ -2,7 +2,7 @@
 #include "ModuleScene.h"
 #include "Primitive.h"
 #include "Globals.h"
-#include "ModuleImportMeshes.h"
+#include "MeshImporter.h"
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
