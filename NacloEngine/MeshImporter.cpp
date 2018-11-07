@@ -246,6 +246,49 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 	}
 }
 
+void MeshImporter::LoadMeshNCL(const char * path, GameObject * obj, Mesh * mesh)
+{
+	std::string new_path = path;
+
+	mesh->path = path;
+	std::string path_to_name = mesh->path;
+	mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
+
+
+	aiVector3D scale = { 1.0f, 1.0f , 1.0f };
+	aiQuaternion rotation = { 0.0f,0.0f,0.0f,0.0f };
+	aiVector3D position = { 0.0f, 0.0f , 0.0f };;
+
+
+	//Component Transform
+	ComponentTransform* transformComponent = (ComponentTransform*)obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+	transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
+	transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
+	transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
+
+	mesh->scale = { scale.x, scale.y, scale.z };
+	mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
+	mesh->position = { position.x,position.y, position.z };
+
+	//Component Mesh
+	ComponentMesh* meshComponent = (ComponentMesh*)obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+	meshComponent->AssignMesh(mesh);
+
+	mesh->color = { 255.0f,255.0f,255.0f,255.0f };
+
+	Texture* texture = new Texture();
+
+	//Component Mesh
+	ComponentMaterial* materialComponent = (ComponentMaterial*)obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+	materialComponent->AssignTexture(texture);
+
+	SetBuffers(mesh);
+	App->renderer3D->AddMesh(mesh);
+	App->renderer3D->AddTexture(texture);
+	obj->CreateBoundingBox(mesh);
+}
+
+
 void MeshImporter::SetBuffers(Mesh * mesh)
 {
 	glGenBuffers(1, (GLuint*) &(mesh->id_vertices));
@@ -270,9 +313,9 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 {
 	if (buffer != nullptr)
 	{
-		uint ranges[4] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
+		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;
+		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -283,7 +326,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 		cursor += bytes;
 
 		//Store vertices
-		bytes = sizeof(float) * mesh->num_vertices;
+		bytes = sizeof(float3) * mesh->num_vertices;
 		memcpy(cursor, mesh->vertices, bytes);
 
 		cursor += bytes;
@@ -327,9 +370,7 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 		LOG("ERROR LOADING OWN MESH %s", path);
 	}
 
-	ComponentTransform* transform = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-	ComponentMesh* meshComponent = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
-	meshComponent->AssignMesh(ret);
+	LoadMeshNCL("patata1", go, ret);
 
 	App->scene->selected = go;
 
@@ -353,8 +394,8 @@ Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 	ret->num_texture	= ranges[2];
 
 	//Load Vertices
-	bytes = sizeof(float) * ret->num_vertices;
-	ret->vertices = new float3[ret->num_vertices * 3];
+	bytes = sizeof(float3) * ret->num_vertices;
+	ret->vertices = new float3[ret->num_vertices];
 	memcpy(ret->vertices, cursor, bytes);
 
 	// Load indices

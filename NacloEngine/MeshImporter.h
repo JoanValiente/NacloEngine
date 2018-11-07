@@ -24,6 +24,8 @@ public:
 	bool CleanUp();
 
 	void LoadMeshData(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
+	void LoadMeshNCL(const char* path, GameObject* obj, Mesh* mesh);
+
 
 	void SetBuffers(Mesh* mesh);
 
