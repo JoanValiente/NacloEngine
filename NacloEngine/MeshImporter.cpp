@@ -315,7 +315,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 	{
 		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture;
+		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 3;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -338,7 +338,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 		cursor += bytes;
 
 		//Store Uv
-		bytes = sizeof(float)* mesh->num_texture;
+		bytes = sizeof(float)* mesh->num_texture * 3;
 		memcpy(cursor, mesh->texture, bytes);
 
 		std::string output;
@@ -406,8 +406,8 @@ Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 
 	//Load UV
 	cursor += bytes;
-	bytes = sizeof(uint) * ret->num_texture;
-	ret->texture = new float[ret->num_texture];
+	bytes = sizeof(float) * ret->num_texture * 3;
+	ret->texture = new float[ret->num_texture * 3];
 	memcpy(ret->texture, cursor, bytes);
 
 	App->renderer3D->AddMesh(ret);
