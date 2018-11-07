@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "Component.h"
+#include "ModuleImGui.h"
 
 struct Mesh;
 struct ComponentCamera;
@@ -29,6 +30,8 @@ public:
 	void CreateBoundingBox(Mesh* mesh);
 	void UpdateBoundingBox();
 	void BoundingBoxDebugDraw();
+
+	void Inspector();
 
 public:
 	AABB boundingBox;

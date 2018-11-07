@@ -7,6 +7,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 
+
 GameObject::GameObject(GameObject * parent, const char* name)
 {
 	this->parent = parent;
@@ -170,4 +171,12 @@ void GameObject::BoundingBoxDebugDraw()
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	   
+}
+
+void GameObject::Inspector()
+{
+	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	{
+		(*it)->ShowInspector();
+	}
 }

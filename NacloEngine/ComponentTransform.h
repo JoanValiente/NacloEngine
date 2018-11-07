@@ -11,6 +11,7 @@ public:
 	~ComponentTransform();
 
 	void UpdateMatrix(float3 position, Quat quaternion, float3 size);
+	void ShowInspector();
 
 	void SetPosition(float3 position);
 	void SetRotation(float3 rotation);

@@ -14,6 +14,10 @@ void Component::Update(float dt)
 {
 }
 
+void Component::ShowInspector()
+{
+}
+
 void Component::CleanUp()
 {
 	//delete container;

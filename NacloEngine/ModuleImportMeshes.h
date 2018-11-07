@@ -32,12 +32,6 @@ public:
 
 	virtual bool Import(const char* path, std::string& output_file);
 	virtual bool Import(const void* buffer, uint size, std::string& output_file, const char* path);
-
-	void ShowMeshInformation();
-
-	const float3 GetFbxPosition(const Mesh* mesh);
-	const float3 GetFbxScale(const Mesh* mesh);
-	const Quat GetFbxRotation(const Mesh* mesh);
 };
 
 #endif // !_MODULE_IMPORTMESHES_

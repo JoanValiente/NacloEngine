@@ -1,6 +1,8 @@
 #include "PanelInspector.h"
 #include "Imgui/imgui.h"
 #include "Application.h"
+#include "GameObject.h"
+#include "ModuleScene.h"
 
 PanelInspector::PanelInspector() : Panel ("Inspector")
 {
@@ -13,10 +15,14 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::Draw()
 {
+	GameObject* go = App->scene->selected;
 
-	if (!App->renderer3D->meshes.empty())
+	if (go != nullptr)
 	{
-		App->meshes->ShowMeshInformation();
+		if (ImGui::Begin("Inspector", &active))
+		{
+			go->Inspector();
+			ImGui::End();
+		}
 	}
-
 }

@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Globals.h"
+#include "ModuleRenderer3D.h"
 
 struct Mesh;
 
@@ -12,6 +13,7 @@ public:
 	ComponentMesh(GameObject* container);
 	~ComponentMesh();
 
+	void ShowInspector();
 	void AssignMesh(Mesh* mesh);
 
 public:

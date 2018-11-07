@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Globals.h"
+#include "ModuleRenderer3D.h"
 
 struct Texture;
 
@@ -13,6 +14,7 @@ public:
 	~ComponentMaterial();
 
 	void AssignTexture(Texture* texture);
+	void ShowInspector();
 
 public:
 	Texture* texture = nullptr;

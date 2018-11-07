@@ -22,6 +22,7 @@ public:
 	~Component();
 
 	virtual void Update(float dt);
+	virtual void ShowInspector();
 	void CleanUp();
 
 public:

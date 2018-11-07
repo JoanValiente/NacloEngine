@@ -17,3 +17,14 @@ void ComponentMaterial::AssignTexture(Texture* texture)
 {
 	this->texture = texture;
 }
+
+void ComponentMaterial::ShowInspector()
+{
+	if (ImGui::CollapsingHeader("Texture"))
+	{
+		ImGui::Text("SIZE");
+		//ImGui::Text("Width: %i", texture->texture_width); ImGui::SameLine();
+		//ImGui::Text("Height: %i", texture->texture_height);
+		//ImGui::Image(texture_id, { 256,256 });
+	}
+}

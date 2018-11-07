@@ -43,11 +43,55 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 			container->UpdateBoundingBox();
 }
 
+void ComponentTransform::ShowInspector()
+{
+	if (ImGui::CollapsingHeader("Transformation"))
+	{
+		//POSITION------------
+		ImGui::Text("Position");
+		ImGui::Text("X:"); ImGui::SameLine();
+		if (ImGui::DragFloat("##pos_x", &position.x, 0.1f))
+			uint patata = 0;
+
+		ImGui::Text("Y:");	ImGui::SameLine();
+		ImGui::DragFloat("##pos_y", &position.y, 0.1f); 
+		
+		ImGui::Text("Z:"); ImGui::SameLine();
+		ImGui::DragFloat("##pos_z", &position.z, 0.1f);
+
+		SetPosition(position);
+
+		//ROTATION------------
+		ImGui::Text("Rotation");
+		ImGui::Text("X:");	ImGui::SameLine();
+		ImGui::DragFloat("##rot_x", &rotation.x, 0.1f);
+
+		ImGui::Text("Y:"); ImGui::SameLine();
+		ImGui::DragFloat("##rot_y", &rotation.y, 0.1f);
+
+		ImGui::Text("Z:"); ImGui::SameLine();
+		ImGui::DragFloat("##rot_z", &rotation.z, 0.1f);
+
+		SetRotation(rotation);
+
+		//SCALE------------
+		ImGui::Text("Scale");
+		ImGui::Text("X:");ImGui::SameLine();
+		ImGui::DragFloat("##size_x", &size.x, 0.1f);
+
+		ImGui::Text("Y:");ImGui::SameLine();
+		ImGui::DragFloat("##size_y", &size.y, 0.1f);
+
+		ImGui::Text("Z:"); ImGui::SameLine();
+		ImGui::DragFloat("##size_z", &size.z, 0.1f);
+
+		SetSize(size);
+	}
+}
+
 void ComponentTransform::SetPosition(float3 position)
 {
 	this->position = position;
-
-	UpdateMatrix(this->position, this->quaternion, this->size);
 }
 
 void ComponentTransform::SetRotation(float3 rotation)
@@ -55,15 +99,12 @@ void ComponentTransform::SetRotation(float3 rotation)
 	this->rotation = rotation;
 
 	this->quaternion = Quat::FromEulerXYZ(this->rotation.x * DEGTORAD, this->rotation.y * DEGTORAD, this->rotation.z * DEGTORAD);
-
-	UpdateMatrix(this->position, this->quaternion, this->size);
 }
 
 void ComponentTransform::SetSize(float3 size)
 {
 	this->size = size;
 
-	UpdateMatrix(this->position, this->quaternion, this->size);
 }
 
 void ComponentTransform::SetQuaternion(Quat quaternion)

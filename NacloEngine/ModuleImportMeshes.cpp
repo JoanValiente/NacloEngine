@@ -91,6 +91,18 @@ bool ModuleImportMeshes::Import(const void * buffer, uint size, std::string & ou
 
 		GameObject* go = App->scene->CreateGameObject(App->scene->root, tmp.c_str());
 
+		aiVector3D scale;
+		aiQuaternion rotation;
+		aiVector3D position;
+
+		main_node->mTransformation.Decompose(scale, rotation, position);
+
+		//Component Transform
+		ComponentTransform* transformComponent = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+		transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
+		transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
+		transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
+
 		LoadChildren(scene, main_node, path, go);
 
 		App->scene->selected = go;
@@ -365,138 +377,4 @@ Mesh * ModuleImportMeshes::LoadNCL(const void * buffer, uint size)
 	App->renderer3D->AddMesh(ret);
 
 	return ret;
-}
-
-void ModuleImportMeshes ::ShowMeshInformation()
-{
-	ComponentMesh* m = nullptr;
-	ComponentMaterial* t = nullptr;
-	ComponentTransform* transf = nullptr;
-
-	Mesh* mesh_info = nullptr;
-	Texture* tex_info = nullptr;
-
-	for (std::vector<GameObject*>::const_iterator iterator = App->scene->selected->children.begin(); iterator != App->scene->selected->children.end(); ++iterator)
-	{
-		for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
-		{
-			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
-				m = (ComponentMesh*)(*it);
-			}
-			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MATERIAL) {
-				t = (ComponentMaterial*)(*it);
-			}
-			if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_TRANSFORM) {
-				transf = (ComponentTransform*)(*it);
-			}
-			if (m != nullptr && t != nullptr) {
-				mesh_info = m->mesh;
-				tex_info = t->texture;
-			}
-		}
-	}
-
-	if (mesh_info != nullptr)
-	{
-		ImGuiTreeNodeFlags flags = 0;
-
-		flags |= ImGuiTreeNodeFlags_DefaultOpen;
-
-		if (!ImGui::Begin("Inspector", &active))
-		{
-			ImGui::End();
-		}
-		else
-		{
-			uint vertice = mesh_info->num_vertices;
-			uint index = mesh_info->num_indices;
-			uint uv = mesh_info->num_texture;
-			uint triangles = mesh_info->num_indices / 3;
-
-			ImTextureID texture_id = (ImTextureID)tex_info->texture_path;
-
-			if (ImGui::CollapsingHeader("Information"), ImGuiTreeNodeFlags_DefaultOpen)
-			{
-				ImGui::Text("File name: %s", mesh_info->filename.c_str());
-				ImGui::Text("Path: %s", mesh_info->path.c_str());
-			}
-			if (ImGui::CollapsingHeader("Transformation"), flags)
-			{
-				//POSITION------------
-				ImGui::Text("Position");
-				ImGui::Text("X:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->position.x, 0.01);
-				ImGui::Text("Y:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->position.y, 0.01);
-				ImGui::Text("Z:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->position.z, 0.01);
-
-				transf->SetPosition(transf->position);
-
-				//ROTATION------------
-				ImGui::Text("Rotation");
-				ImGui::Text("X:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->rotation.x, 0.01);
-				ImGui::Text("Y:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->rotation.y, 0.01);
-				ImGui::Text("Z:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->rotation.z, 0.01);
-
-				transf->SetRotation(transf->rotation);
-
-				//SCALE------------
-				ImGui::Text("Scale");
-				ImGui::Text("X:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->size.x, 0.01);
-				ImGui::Text("Y:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->size.y, 0.01);
-				ImGui::Text("Z:");
-				ImGui::SameLine();
-				ImGui::InputFloat("", &transf->size.z, 0.01);
-
-				transf->SetSize(transf->size);
-
-			}
-			if (ImGui::CollapsingHeader("Mesh information"), flags)
-			{
-				ImGui::Text("Vertices %i", vertice);
-				ImGui::Text("Index %i", index);
-				ImGui::Text("UV's %i", uv);
-				ImGui::Text("triangles %i", triangles);
-			}
-			if (ImGui::CollapsingHeader("Texture"), flags)
-			{
-				ImGui::Text("SIZE");
-				ImGui::Text("Width: %i", App->texture->texture_width); ImGui::SameLine();
-				ImGui::Text("Height: %i", App->texture->texture_height);
-				ImGui::Image(texture_id, { 256,256 });
-			}
-
-			ImGui::End();
-		}	
-	}
-}
-
-
-const float3 ModuleImportMeshes ::GetFbxPosition(const Mesh* mesh)
-{
-	return mesh->position;
-}
-
-const float3 ModuleImportMeshes ::GetFbxScale(const Mesh* mesh)
-{
-	return mesh->scale;
-}
-
-const Quat ModuleImportMeshes ::GetFbxRotation(const Mesh* mesh)
-{
-	return mesh->rotation;
 }
