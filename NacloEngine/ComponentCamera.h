@@ -19,7 +19,7 @@ public:
 
 public:
 	Frustum frustum;
-	bool frustumCulling = true;
+	bool frustumCulling = false;
 	bool debugDraw = false;
 };
 

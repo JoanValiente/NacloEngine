@@ -103,8 +103,8 @@ void ComponentTransform::SetRotation(float3 rotation)
 
 void ComponentTransform::SetSize(float3 size)
 {
+	
 	this->size = size;
-
 }
 
 void ComponentTransform::SetQuaternion(Quat quaternion)

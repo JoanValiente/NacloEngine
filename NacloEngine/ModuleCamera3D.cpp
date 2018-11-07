@@ -70,6 +70,29 @@ update_status ModuleCamera3D::Update(float dt)
 
 	float speed = 3.0f * dt;
 
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		if (!ImGui::IsMouseHoveringAnyWindow())
+		{
+			float winWidth = (float)App->window->screen_surface->w;
+			float winHeight = (float)App->window->screen_surface->h;
+
+			int mouse_x = App->input->GetMouseX();
+			int mouse_y = App->input->GetMouseY();
+
+			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
+			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
+
+			//LineSegment ray = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+			float3 nearCameraCenter = camera->frustum.NearPlanePos(normalized_x, normalized_y);
+			float3 farCameraCenter = camera->frustum.FarPlanePos(normalized_x, normalized_y);
+			LineSegment* ray = new LineSegment(nearCameraCenter, farCameraCenter);
+			MousePick(*ray);
+			debugRay = (*ray);
+		}
+	}
+	RaycastDebugDraw();
+
 	//-----------------------------Speed boost-----------------------------
 	speed = aux_speed * dt;
 	if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -201,24 +224,6 @@ update_status ModuleCamera3D::Update(float dt)
 		}
 	}
 	
-	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
-	{
-		if (!ImGui::IsMouseHoveringAnyWindow())
-		{
-			float winWidth = (float)App->window->screen_surface->w;
-			float winHeight = (float)App->window->screen_surface->h;
-
-			int mouse_x = App->input->GetMouseX();
-			int mouse_y = App->input->GetMouseY();
-
-			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
-			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
-
-			LineSegment ray = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
-			MousePick(ray);
-		}
-	}
-	RaycastDebugDraw();
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 
@@ -331,13 +336,13 @@ void ModuleCamera3D::MousePick(LineSegment ray)
 {
 	Mesh* mesh = nullptr;
 
-	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
+	for (std::vector<GameObject*>::const_iterator iterator = App->scene->root->children.begin(); iterator != App->scene->root->children.end(); ++iterator)
 	{
 		for (std::vector<GameObject*>::const_iterator it = (*iterator)->children.begin(); it != (*iterator)->children.end(); ++it)
 		{
 			if ((*it)->active) {
 
-				bool hit = ray.Intersects((*it)->parent->boundingBox);
+				bool hit = ray.Intersects((*it)->boundingBox);
 
 				if (hit) {
 					ComponentTransform* transform = (*it)->transform;
@@ -348,7 +353,6 @@ void ModuleCamera3D::MousePick(LineSegment ray)
 						LineSegment localRay(ray);
 						localRay.Transform(transform->globalMatrix.Inverted());
 						mesh = cMesh->mesh;
-						debugRay = localRay;
 
 						for (uint i = 0; i < mesh->num_indices;)
 						{
@@ -371,7 +375,7 @@ void ModuleCamera3D::MousePick(LineSegment ray)
 }
 
 void ModuleCamera3D::RaycastDebugDraw()
-{
+{	
 	glBegin(GL_LINES);
 	glLineWidth(50.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
@@ -381,8 +385,7 @@ void ModuleCamera3D::RaycastDebugDraw()
 
 	glEnd();
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-}
+	}
 
 // -----------------------------------------------------------------
 
