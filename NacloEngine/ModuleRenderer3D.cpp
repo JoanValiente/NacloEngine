@@ -4,7 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "PanelInspector.h"
-#include "ModuleTextures.h"
+#include "TextureImporter.h"
 #include "Primitive.h"
 #include "GameObject.h"
 #include "Component.h"

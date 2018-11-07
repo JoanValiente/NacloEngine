@@ -1,15 +1,15 @@
-#include "ModuleTextures.h"
+#include "TextureImporter.h"
 #include "Application.h"
 
-ModuleTextures::ModuleTextures(Application * app, bool start_enabled) : Module(app, start_enabled)
+TextureImporter::TextureImporter() : Importer()
 {
 }
 
-ModuleTextures::~ModuleTextures()
+TextureImporter::~TextureImporter()
 {
 }
 
-bool ModuleTextures::Start()
+bool TextureImporter::Start()
 {
 	bool ret = true;
 	texture_path = "No Texture Loaded";
@@ -17,13 +17,13 @@ bool ModuleTextures::Start()
 	return ret;
 }
 
-bool ModuleTextures::CleanUp()
+bool TextureImporter::CleanUp()
 {
 	bool ret = true;
 	return ret;
 }
 
-uint ModuleTextures::LoadTexture(const char* path) 
+uint TextureImporter::LoadTexture(const char* path)
 {
 	std::string new_path = path;
 	char* buffer = nullptr;
@@ -84,7 +84,7 @@ uint ModuleTextures::LoadTexture(const char* path)
 
 }
 
-bool ModuleTextures::Import(const void * buffer, uint size, string& output_file)
+bool TextureImporter::Import(const void * buffer, uint size, string& output_file)
 {
 	bool ret = false;
 
@@ -121,7 +121,7 @@ bool ModuleTextures::Import(const void * buffer, uint size, string& output_file)
 	return ret;
 }
 
-void ModuleTextures::SetTexture()
+void TextureImporter::SetTexture()
 {
 	// Set texture clamping method
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -144,7 +144,7 @@ void ModuleTextures::SetTexture()
 }
 
 
-uint const ModuleTextures::LoadCheckersTexture()
+uint const TextureImporter::LoadCheckersTexture()
 {
 
 	GLubyte checkImage[32][32][4];
@@ -163,7 +163,7 @@ uint const ModuleTextures::LoadCheckersTexture()
 	return textureID;
 }
 
-uint ModuleTextures::CreateCheckersTexture(const void* checkImage)
+uint TextureImporter::CreateCheckersTexture(const void* checkImage)
 {
 	uint ImageName = 0;
 
@@ -180,7 +180,7 @@ uint ModuleTextures::CreateCheckersTexture(const void* checkImage)
 	return ImageName; 
 }
 
-void const ModuleTextures::ShowTextureInfo()
+void const TextureImporter::ShowTextureInfo()
 {
 	ImGui::Text("SIZE");
 	ImGui::Text("Width: %i", texture_width); ImGui::SameLine();

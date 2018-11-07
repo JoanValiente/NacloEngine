@@ -345,9 +345,6 @@
     <ClInclude Include="PanelInspector.h">
       <Filter>Sources\Modules\Panels</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleTextures.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ModuleScene.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -379,6 +376,9 @@
       <Filter>Sources\Importers</Filter>
     </ClInclude>
     <ClInclude Include="MeshImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureImporter.h">
       <Filter>Sources\Importers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -569,9 +569,6 @@
     <ClCompile Include="PanelInspector.cpp">
       <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleTextures.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -600,6 +597,9 @@
       <Filter>Sources\GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="MeshImporter.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureImporter.cpp">
       <Filter>Sources\Importers</Filter>
     </ClCompile>
   </ItemGroup>

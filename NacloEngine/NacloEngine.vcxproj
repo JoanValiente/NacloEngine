@@ -170,7 +170,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleImGui.h" />
     <ClInclude Include="ModuleScene.h" />
-    <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="TextureImporter.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="OpenGL.h" />
     <ClInclude Include="PanelHierarchy.h" />
@@ -246,7 +246,7 @@
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
-    <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="TextureImporter.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PanelHierarchy.cpp" />
     <ClCompile Include="PanelInspector.cpp" />

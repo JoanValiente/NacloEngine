@@ -8,9 +8,9 @@ Application::Application()
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	imgui = new ModuleImgui(this);
-	texture = new ModuleTextures(this);
 	fs = new ModuleFileSystem(this);
 
+	texture = new TextureImporter();
 	meshes = new MeshImporter();
 
 	// The order of calls is very important!
@@ -22,7 +22,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(fs);
 	AddModule(input);
-	AddModule(texture);
 	AddModule(scene);
 	AddModule(camera);
 	AddModule(imgui);

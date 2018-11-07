@@ -13,7 +13,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
-#include "ModuleTextures.h"
+#include "TextureImporter.h"
 #include "ModuleFileSystem.h"
 #include "PerfTimer.h"
 
@@ -26,12 +26,13 @@ public:
 	ModuleWindow* window;
 	ModuleInput* input;
 	ModuleImgui* imgui;
-	MeshImporter* meshes;
 	ModuleScene* scene;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
-	ModuleTextures* texture;
 	ModuleFileSystem* fs;
+
+	MeshImporter* meshes;
+	TextureImporter* texture;
 
 
 	int		FPS_cap = 60;

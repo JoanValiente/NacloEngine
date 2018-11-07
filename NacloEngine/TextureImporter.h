@@ -1,23 +1,23 @@
-#ifndef __MODULETEXTURES_H__
-#define __MODULETEXTURES_H__
+#ifndef __TEXTUREIMPORTER_H__
+#define __TEXTUREIMPORTER_H__
 
-#include "Module.h"
+#include "Importer.h"
 #include <list>
 #include <string>
 
 
-class ModuleTextures : public Module
+class TextureImporter : public Importer
 {
 public:
 
-	ModuleTextures(Application* app, bool start_enabled = true);
-	~ModuleTextures();
+	TextureImporter();
+	~TextureImporter();
 
 	bool Start();
 	bool CleanUp();
 
 	uint LoadTexture(const char* path);
-	bool ModuleTextures::Import(const void* buffer, uint size, std::string& output_file);
+	bool Import(const void* buffer, uint size, std::string& output_file);
 
 	void SetTexture();
 
@@ -35,4 +35,4 @@ public:
 	uint texture_width= 0;
 };
 
-#endif // __MODULETEXTURES_H__
+#endif // __TEXTUREIMPORTER_H__
