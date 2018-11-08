@@ -38,7 +38,7 @@ void Quadtree::DebugDraw()
 {
 	glBegin(GL_LINES);
 	glLineWidth(2.0f);
-	glColor4f(0.0f, 1.0f, 0.0f, 1.0f);
+	glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
 
 	if (root != nullptr)
 		root->DebugDraw();
@@ -162,14 +162,10 @@ void QuadtreeNode::RedistributeChildren()
 		bool intersects[4];
 
 		for (int i = 0; i < 4; ++i) {
-
-			if (intersects[i] = children[i]->box.Intersects((*it)->boundingBox))
-			{
-				num_intersections++;
-			}
+			intersects[i] = children[i]->box.Intersects((*it)->boundingBox);
 		}
 
-		if (num_intersections != 4)
+		if (!intersects[0] || !intersects[1] || !intersects[2] || !intersects[3])
 		{
 			it = objects.erase(it);			
 			for (uint i = 0; i < 4; ++i)
