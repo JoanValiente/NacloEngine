@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "Quadtree.h"
 
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -29,6 +30,8 @@ bool ModuleScene::Start()
 	camera_transform->SetPosition(float3(5.0f, 5.0f, -25.0f));
 	ComponentCamera* camera_component = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 
+	quadtree = new Quadtree();
+
 	std::string otuput_file;
 	App->meshes->Import("Assets/Models/BakerHouse.fbx", otuput_file);
 	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
@@ -41,6 +44,8 @@ update_status ModuleScene::PreUpdate(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	App->camera->CullingGameObjects(root);
+
+	UpdateQuadtree();
 
 	return ret;
 }
@@ -86,9 +91,24 @@ void ModuleScene::DeleteGameObject(GameObject * gameObject)
 	}
 }
 
+void ModuleScene::UpdateQuadtree()
+{
+	quadtree->Clear();
+	quadtree->Create(AABB(AABB(float3(-50, -10, -50), float3(50, 10, 50))));
+
+	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); it++) {
+		if ((*it)->staticGO) {
+			quadtree->Insert((*it));
+		}
+	}
+}
+
 bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Scene");
+
+	RELEASE(Grid);
+	RELEASE(quadtree);
 
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();

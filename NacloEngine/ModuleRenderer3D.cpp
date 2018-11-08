@@ -11,6 +11,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "Quadtree.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -189,7 +190,7 @@ update_status ModuleRenderer3D::Update(float dt)
 		}
 	}
 
-
+	App->scene->quadtree->DebugDraw();
 	
 	return ret;
 }

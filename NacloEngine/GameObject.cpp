@@ -13,6 +13,7 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	this->parent = parent;
 	this->name = name;
 	this->active = true;
+	this->staticGO = true;
 
 	if (parent != nullptr) {
 		parent->children.push_back(this);

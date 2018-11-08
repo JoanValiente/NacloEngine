@@ -4,6 +4,7 @@
 
 struct grid;
 struct GameObject;
+struct Quadtree;
 
 class ModuleScene : public Module
 {
@@ -19,11 +20,16 @@ public:
 	GameObject* CreateGameObject(GameObject* parent, const char* name);
 	void DeleteGameObject(GameObject* object);
 
+	void UpdateQuadtree();
+
 public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;
 	GameObject* main_camera = nullptr;
 	GameObject* selected = nullptr;
+
+	Quadtree* quadtree = nullptr;
+
 private:
 	grid * Grid;
 };

@@ -36,6 +36,7 @@ public:
 public:
 	AABB boundingBox;
 	bool active = false;
+	bool staticGO = false;
 	std::string name;
 	GameObject* parent = nullptr;
 	std::vector<Component*> components;
