@@ -116,11 +116,10 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 
 void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char * path, GameObject * obj)
 {
-	if (node != nullptr)
+	GameObject* final_obj;
+
+	if (node->mNumMeshes > 0)
 	{
-		std::string new_path = path;
-		for (int num_meshes = 0; num_meshes < node->mNumMeshes; ++num_meshes)
-		{
 			Mesh* mesh = new Mesh();
 
 			mesh->path = path;
@@ -147,7 +146,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				mesh->position = { position.x,position.y, position.z };
 			}
 
-			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[num_meshes]];
+			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[0]];
 
 			mesh->num_vertices = new_mesh->mNumVertices;
 			mesh->vertices = new float3[mesh->num_vertices];
@@ -237,12 +236,19 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			App->renderer3D->AddTexture(texture);
 
 			children->CreateBoundingBox(mesh);
-		}
-
+			final_obj = children;
+	}
+	else if (node->mNumChildren > 1)
+	{
+		final_obj = App->scene->CreateGameObject(obj, node->mName.C_Str());;
+	}
+	else
+	{
+		final_obj = obj;
 	}
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
-		LoadMeshData(scene, node->mChildren[i], path, obj);
+		LoadMeshData(scene, node->mChildren[i], path, final_obj);
 	}
 }
 
