@@ -170,6 +170,10 @@ update_status ModuleRenderer3D::Update(float dt)
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
+		if ((*iterator) == App->scene->selected)
+		{
+			int patata = 0;
+		}
 		if ((*iterator)->active) {
 			for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
 			{

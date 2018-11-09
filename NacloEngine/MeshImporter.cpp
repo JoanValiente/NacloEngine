@@ -240,7 +240,8 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 	}
 	else if (node->mNumChildren > 1)
 	{
-		final_obj = App->scene->CreateGameObject(obj, node->mName.C_Str());;
+		final_obj = App->scene->CreateGameObject(obj, node->mName.C_Str());
+		final_obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 	}
 	else
 	{
