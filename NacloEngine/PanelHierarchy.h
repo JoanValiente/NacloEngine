@@ -12,7 +12,12 @@ public:
 	virtual ~PanelHierarchy();
 
 	void Draw();
-	void ShowGameObjectHierarchy(GameObject* go);
+	bool ShowGameObjectHierarchy(GameObject* go);
+
+private: 
+	bool move = false;
+	GameObject * toMove = nullptr;
+	GameObject * moving = nullptr;
 };
 
 #endif// __PANELHIERARCHY_H__

@@ -18,9 +18,10 @@ void PanelHierarchy::Draw()
 	{
 		GameObject* root = App->scene->root;
 
-		for (std::vector<GameObject*>::const_iterator it = root->children.begin(); it < root->children.end(); it++) {
-			if ((*it)->active) {
-				ShowGameObjectHierarchy(*it);
+		for (int iterator = 0; iterator < root->GetNumChildren(); ++iterator) {
+			if (root->children.at(iterator)->active) 
+			{
+				ShowGameObjectHierarchy(root->children.at(iterator));
 			}
 		}
 
@@ -30,16 +31,68 @@ void PanelHierarchy::Draw()
 	{
 		ImGui::End();
 	}
+
 }
 
-void PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)
+bool PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)
 {
-	if (ImGui::TreeNodeEx(go->name.c_str()))
+	bool ret = true;
+	if (go != nullptr)
 	{
-		for (std::vector<GameObject*>::const_iterator it = go->children.begin(); it < go->children.end(); it++) {
-			ShowGameObjectHierarchy(*it);
+		ImGuiTreeNodeFlags node_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+		bool node_open = false;
+
+		if (go == App->scene->selected)
+		{
+			node_flags |= ImGuiTreeNodeFlags_Selected;
 		}
 
-		ImGui::TreePop();
+		if (go->GetNumChildren() == 0)
+		{
+			node_flags |= ImGuiTreeNodeFlags_Leaf;
+		}
+
+		if (ImGui::TreeNodeEx(go->name.c_str(), node_flags))
+		{
+			node_open = true;
+		}
+		if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+		{
+			ImGui::SetDragDropPayload("Hierarchy_Nodes", go, sizeof(GameObject));
+			ImGui::EndDragDropSource();
+		}
+		
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Hierarchy_Nodes"))
+			{
+				IM_ASSERT(payload->DataSize == sizeof(GameObject));
+				ret = false;
+				go->ChangeHierarchy((GameObject* &)payload->Data);
+			}
+			ImGui::EndDragDropTarget();
+		}
+
+		if (ImGui::IsItemClicked())
+		{
+			App->scene->selected = go;
+		}
+
+		if (node_open)
+		{
+			if (go->GetNumChildren() != 0)
+			{
+				for (std::vector<GameObject*>::const_iterator it = go->children.begin(); it < go->children.end(); ++it)
+				{
+					ImGui::PushID(*it);
+					ShowGameObjectHierarchy(*it);
+					ImGui::PopID();
+				}
+			}
+			ImGui::TreePop();
+		}
 	}
+	return ret;
 }

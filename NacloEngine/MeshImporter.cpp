@@ -221,7 +221,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				}
 
 			}	
-			//Component Mesh
+			//Component Material
 			ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
 			materialComponent->AssignTexture(texture);
 
@@ -234,10 +234,10 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			App->renderer3D->AddMesh(mesh);
 
 			App->renderer3D->AddTexture(texture);
-
 			children->CreateBoundingBox(mesh);
 			final_obj = children;
 	}
+
 	else if (node->mNumChildren > 1)
 	{
 		final_obj = App->scene->CreateGameObject(obj, node->mName.C_Str());

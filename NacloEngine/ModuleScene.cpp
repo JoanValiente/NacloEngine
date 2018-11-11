@@ -84,9 +84,9 @@ void ModuleScene::DeleteGameObject(GameObject * gameObject)
 {
 	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
-		if ((*it) == gameObject) {
-			(*it)->CleanUp();
+		if ((*it)->name == gameObject->name) {
 			gameObjects.erase(it);
+			(*it)->CleanUp();
 		}
 	}
 }

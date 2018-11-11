@@ -1,11 +1,13 @@
 #include "GameObject.h"
 #include "Glew/include/glew.h"
 
+#include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ModuleScene.h"
 
 
 GameObject::GameObject(GameObject * parent, const char* name)
@@ -174,6 +176,31 @@ void GameObject::BoundingBoxDebugDraw()
 	   
 }
 
+void GameObject::ChangeHierarchy(GameObject* &obj)
+{
+	GameObject* aux = new GameObject(this, obj->name.c_str());
+	EqualGameObjects(obj, aux);
+
+	std::vector<GameObject*>::const_iterator test;
+
+	for (std::vector<GameObject*>::const_iterator it = obj->parent->children.begin(); it != obj->parent->children.end(); ++it)
+	{
+		if ((*it)->name == obj->name)
+		{
+			test = it;
+		}
+	}
+
+	obj->parent->children.erase(test);
+	
+}
+
+uint GameObject::GetNumChildren()
+{
+	return children.size();
+}
+
+
 void GameObject::Inspector()
 {
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
@@ -181,3 +208,18 @@ void GameObject::Inspector()
 		(*it)->ShowInspector();
 	}
 }
+
+void GameObject::EqualGameObjects(GameObject* copy, GameObject* &paste)
+{
+	paste->active		= copy->active;
+	paste->boundingBox	= copy->boundingBox;
+	paste->camera		= copy->camera;
+	paste->children		= copy->children;
+	paste->components	= copy->components;
+	paste->transform	= copy->transform;
+	paste->material		= copy->material;
+	paste->mesh			= copy->mesh;
+	paste->camera		= copy->camera;
+	paste->staticGO		= copy->staticGO;
+}
+

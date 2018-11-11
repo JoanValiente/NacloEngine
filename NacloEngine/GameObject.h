@@ -30,8 +30,16 @@ public:
 	void CreateBoundingBox(Mesh* mesh);
 	void UpdateBoundingBox();
 	void BoundingBoxDebugDraw();
+	
+	void ChangeHierarchy(GameObject* &obj);
+
+	uint GetNumChildren();
+	void AddChildren(GameObject* obj);
 
 	void Inspector();
+
+private:
+	void EqualGameObjects(GameObject* copy, GameObject* &paste);
 
 public:
 	AABB boundingBox;
