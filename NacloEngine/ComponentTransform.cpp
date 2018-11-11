@@ -20,7 +20,7 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 {
 	float4x4 prevGlobal = globalMatrix;
 
-	matrix = float4x4::FromTRS(position, quaternion, size);
+	localmatrix = float4x4::FromTRS(position, quaternion, size);
 
 	if (container != nullptr && container->parent != nullptr) {
 
@@ -30,13 +30,13 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 
 			float4x4 parentTransformMatrix = contParentTransform->globalMatrix;
 
-			globalMatrix = parentTransformMatrix * matrix;
+			globalMatrix = parentTransformMatrix * localmatrix;
 		}
 		else
-			globalMatrix = matrix;
+			globalMatrix = localmatrix;
 	}
 	else
-		globalMatrix = matrix;
+		globalMatrix = localmatrix;
 
 	if (!globalMatrix.Equals(prevGlobal))
 		if (container != nullptr)
@@ -114,6 +114,22 @@ void ComponentTransform::SetQuaternion(Quat quaternion)
 	this->quaternion = quaternion;
 
 	UpdateMatrix(this->position, this->quaternion, this->size);
+}
+
+float4x4 ComponentTransform::GetLocalMatrix()
+{
+	localmatrix = float4x4::FromTRS(position, quaternion, size);
+	return localmatrix;
+}
+
+float4x4 ComponentTransform::GetGlobalMatrix()
+{
+	return globalMatrix;
+}
+
+void ComponentTransform::SetGlobalMatrix(float4x4 matrix)
+{
+	globalMatrix = matrix;
 }
 
 

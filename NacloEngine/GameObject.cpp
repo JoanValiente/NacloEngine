@@ -178,21 +178,24 @@ void GameObject::BoundingBoxDebugDraw()
 
 void GameObject::ChangeHierarchy(GameObject* &obj)
 {
-	GameObject* aux = new GameObject(this, obj->name.c_str());
-	EqualGameObjects(obj, aux);
-
-	std::vector<GameObject*>::const_iterator test;
-
-	for (std::vector<GameObject*>::const_iterator it = obj->parent->children.begin(); it != obj->parent->children.end(); ++it)
+	if (!SearchForParent(obj, this))
 	{
-		if ((*it)->name == obj->name)
-		{
-			test = it;
-		}
-	}
+		GameObject* aux = new GameObject(this, obj->name.c_str());
+		EqualGameObjects(obj, aux);
 
-	obj->parent->children.erase(test);
-	
+		std::vector<GameObject*>::const_iterator test;
+		for (std::vector<GameObject*>::const_iterator it = obj->parent->children.begin(); it != obj->parent->children.end(); ++it)
+		{
+			if ((*it)->name == obj->name)
+			{
+				test = it;
+			}
+		}
+
+		obj->parent->children.erase(test);
+
+		
+	}
 }
 
 uint GameObject::GetNumChildren()
@@ -209,6 +212,27 @@ void GameObject::Inspector()
 	}
 }
 
+bool GameObject::SearchForParent(GameObject * parent, GameObject* child)
+{
+	bool ret = false;
+	GameObject* iterator = child;
+
+	while(iterator->name != App->scene->root->name)
+	{
+		if(iterator->parent->name == parent->name)
+		{
+			ret = true;
+			iterator = iterator->parent;
+		}
+		else
+		{
+			iterator = iterator->parent;
+		}
+	}
+
+	return ret;
+}
+
 void GameObject::EqualGameObjects(GameObject* copy, GameObject* &paste)
 {
 	paste->active		= copy->active;
@@ -217,9 +241,14 @@ void GameObject::EqualGameObjects(GameObject* copy, GameObject* &paste)
 	paste->children		= copy->children;
 	paste->components	= copy->components;
 	paste->transform	= copy->transform;
-	paste->material		= copy->material;
 	paste->mesh			= copy->mesh;
 	paste->camera		= copy->camera;
+	paste->material		= copy->material;
 	paste->staticGO		= copy->staticGO;
-}
 
+
+	for (int it = 0; it < components.size(); ++it)
+	{
+		paste->components.at(it)->container->parent = this;
+	}
+}

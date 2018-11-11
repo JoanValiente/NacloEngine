@@ -14,10 +14,10 @@ public:
 	void Draw();
 	bool ShowGameObjectHierarchy(GameObject* go);
 
-private: 
+private:
 	bool move = false;
-	GameObject * toMove = nullptr;
-	GameObject * moving = nullptr;
+	GameObject* toMove = nullptr;
+	GameObject* target = nullptr;
 };
 
 #endif// __PANELHIERARCHY_H__

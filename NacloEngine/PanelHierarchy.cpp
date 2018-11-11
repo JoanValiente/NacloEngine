@@ -32,6 +32,12 @@ void PanelHierarchy::Draw()
 		ImGui::End();
 	}
 
+	if (move)
+	{
+		target->ChangeHierarchy(toMove);
+		move = false;
+	}
+
 }
 
 bool PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)
@@ -70,7 +76,9 @@ bool PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)
 			{
 				IM_ASSERT(payload->DataSize == sizeof(GameObject));
 				ret = false;
-				go->ChangeHierarchy((GameObject* &)payload->Data);
+				move = true;
+				target = go;
+				toMove = (GameObject*)payload->Data;
 			}
 			ImGui::EndDragDropTarget();
 		}

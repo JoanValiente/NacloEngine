@@ -34,11 +34,11 @@ public:
 	void ChangeHierarchy(GameObject* &obj);
 
 	uint GetNumChildren();
-	void AddChildren(GameObject* obj);
 
 	void Inspector();
 
 private:
+	bool SearchForParent(GameObject* parent, GameObject* child);
 	void EqualGameObjects(GameObject* copy, GameObject* &paste);
 
 public:
