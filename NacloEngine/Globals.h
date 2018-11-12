@@ -36,7 +36,8 @@ void log(const char file[], int line, const char* format, ...);
        }\
     }
 
-typedef unsigned int uint;
+typedef unsigned int uint; 
+typedef unsigned long long UUID;
 
 enum update_status
 {
