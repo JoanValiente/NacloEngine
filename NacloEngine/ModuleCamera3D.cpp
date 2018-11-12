@@ -200,10 +200,10 @@ void ModuleCamera3D::Move(float dt)
 
 	//-----------------------------Wheel mouse zoom-----------------------------
 	if (App->input->GetMouseZ() == 1)
-		newPos -= forward * scroll_speed;
+		newPos += forward * scroll_speed;
 
 	if (App->input->GetMouseZ() == -1)
-		newPos += forward * scroll_speed;
+		newPos -= forward * scroll_speed;
 
 	//-----------------------------Wheel mouse movement-----------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)

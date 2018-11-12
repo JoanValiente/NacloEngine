@@ -52,6 +52,9 @@
     <Filter Include="Sources\Modules\Importers">
       <UniqueIdentifier>{69fbd74d-3508-4586-9940-019820b9e326}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\ImGuizmo">
+      <UniqueIdentifier>{17010fd7-8bdd-47ee-9da3-bdf0cf919225}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -375,6 +378,12 @@
     <ClInclude Include="Quadtree.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImSequencer.h">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -592,6 +601,12 @@
     </ClCompile>
     <ClCompile Include="Quadtree.cpp">
       <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

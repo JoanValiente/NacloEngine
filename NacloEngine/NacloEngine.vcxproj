@@ -87,6 +87,8 @@
     <ClInclude Include="GL\include\glew.h" />
     <ClInclude Include="GL\include\glxew.h" />
     <ClInclude Include="GL\include\wglew.h" />
+    <ClInclude Include="ImGuizmo\ImGuizmo.h" />
+    <ClInclude Include="ImGuizmo\ImSequencer.h" />
     <ClInclude Include="ImGui\imconfig.h" />
     <ClInclude Include="ImGui\imgui.h" />
     <ClInclude Include="ImGui\imgui_impl_opengl2.h" />
@@ -192,6 +194,8 @@
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Globals.cpp" />
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp" />
     <ClCompile Include="ImGui\imgui.cpp" />
     <ClCompile Include="ImGui\imgui_demo.cpp" />
     <ClCompile Include="ImGui\imgui_draw.cpp" />
