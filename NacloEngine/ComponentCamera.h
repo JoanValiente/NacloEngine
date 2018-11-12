@@ -12,7 +12,7 @@ public:
 	~ComponentCamera();
 
 	void Update(float dt);
-	
+	float* GetViewMatrix();
 	void DebugDraw();
 	
 	bool Intersects(const AABB box);

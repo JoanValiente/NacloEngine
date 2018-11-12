@@ -60,8 +60,8 @@ public:
 template<typename TYPE>
 inline void Quadtree::Intersect(std::vector<GameObject*>& objects, const TYPE & primitive)
 {
-	if (root_node != nullptr)
-		root_node->CollectIntersections(objects, primitive);
+	if (root != nullptr)
+		root->Intersect(objects, primitive);
 }
 
 template<typename TYPE>
@@ -75,11 +75,11 @@ inline void QuadtreeNode::Intersect(std::vector<GameObject*>& objects, const TYP
 				objects.push_back(*it);
 			}
 		}
-		if (!isLeaf())
+		if (!IsLeaf())
 		{
 			for (int i = 0; i < 4; ++i)
 			{
-				if (childrens[i] != nullptr) childrens[i]->Intersect(objects, primitive);
+				if (children[i] != nullptr) children[i]->Intersect(objects, primitive);
 			}
 		}
 	}

@@ -97,9 +97,7 @@
     <ClInclude Include="ImGui\imstb_truetype.h" />
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="MathGeoLib\Algorithm\GJK.h" />
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h" />
-    <ClInclude Include="MathGeoLib\Algorithm\SAT.h" />
     <ClInclude Include="MathGeoLib\emscripten\library_system.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB.h" />
     <ClInclude Include="MathGeoLib\Geometry\AABB2D.h" />
@@ -134,7 +132,6 @@
     <ClInclude Include="MathGeoLib\Math\float3x3.h" />
     <ClInclude Include="MathGeoLib\Math\float3x4.h" />
     <ClInclude Include="MathGeoLib\Math\float4.h" />
-    <ClInclude Include="MathGeoLib\Math\float4d.h" />
     <ClInclude Include="MathGeoLib\Math\float4x4.h" />
     <ClInclude Include="MathGeoLib\Math\float4x4_neon.h" />
     <ClInclude Include="MathGeoLib\Math\float4x4_sse.h" />
@@ -203,7 +200,6 @@
     <ClCompile Include="ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp" />
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\Geometry\AABB.cpp" />
     <ClCompile Include="MathGeoLib\Geometry\Capsule.cpp" />
@@ -227,7 +223,6 @@
     <ClCompile Include="MathGeoLib\Math\float3x3.cpp" />
     <ClCompile Include="MathGeoLib\Math\float3x4.cpp" />
     <ClCompile Include="MathGeoLib\Math\float4.cpp" />
-    <ClCompile Include="MathGeoLib\Math\float4d.cpp" />
     <ClCompile Include="MathGeoLib\Math\float4x4.cpp" />
     <ClCompile Include="MathGeoLib\Math\grisu3.c" />
     <ClCompile Include="MathGeoLib\Math\grisu3_cpp.cpp" />

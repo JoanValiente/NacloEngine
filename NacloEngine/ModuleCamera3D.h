@@ -17,27 +17,22 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	
-	void Look(const float3 &Position, const float3 &Reference, bool RotateAroundReference = false);
-	void LookAt(const float3 &Spot);
-	void Move(const float3 &Movement);
-	
-	float* GetViewMatrix();
+	void Orbit(float dx, float dy);
+	void Look(float dx, float dy);
+	void LookAt(const float3& position);
+	void Move(float dt);
 	
 	void CreateMeshBox(float3 minVertex, float3 maxVertex);
 	void LookAtMeshBox();
 	void ShowCameraInfo();
 
 	void CullingGameObjects(GameObject* go);
-	void MousePick(LineSegment ray);
+	void MousePick(std::vector<GameObject*> &candidates, LineSegment ray);
 	void RaycastDebugDraw();
-
-private:
-
-	void CalculateViewMatrix();
+	void PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate);
 
 public:
 	
-	float3 Position, Reference;
 	AABB* meshBox = nullptr;
 	AABB* empty_meshBox = nullptr;
 	LineSegment debugRay;
@@ -49,7 +44,9 @@ private:
 	float aux_speed;
 	float fast_speed;
 	float scroll_speed;
-	float4x4 ViewMatrix, ViewMatrixInverse;
+	bool looking = false;
+	float3 looking_at;
+	std::vector<GameObject*> posible_go_intersections;
 };
 
 #endif
