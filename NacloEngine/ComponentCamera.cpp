@@ -13,7 +13,7 @@ ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 	frustum.front = float3::unitZ;
 	frustum.up = float3::unitY;
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 50.0f;
+	frustum.farPlaneDistance = 1000.0f;
 	frustum.verticalFov = 60.0f * DEGTORAD;
 	frustum.horizontalFov = 2.0f * atanf(1.3 * tanf(frustum.verticalFov/2.0f));
 
@@ -40,6 +40,15 @@ void ComponentCamera::Update(float dt)
 	if (debugDraw) {
 		DebugDraw();
 	}
+}
+
+float* ComponentCamera::GetViewMatrix()
+{
+	static float4x4 m;
+	m = frustum.ViewMatrix();
+	m.Transpose();
+
+	return (float*)m.v;
 }
 
 void ComponentCamera::DebugDraw()
