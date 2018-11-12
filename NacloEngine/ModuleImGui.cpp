@@ -69,6 +69,7 @@ update_status ModuleImgui::PreUpdate(float dt)
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+	ImGuizmo::BeginFrame();
 
 	ImGuiShortCuts();
 

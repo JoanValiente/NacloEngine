@@ -8,6 +8,7 @@
 #include "ImGui/imgui_impl_sdl.h"
 #include "PCG/pcg_variants.h"
 #include "PCG/entropy.h"
+#include "ImGuizmo/ImGuizmo.h"
 
 #define MAX_SNAKE 2
 
@@ -54,6 +55,7 @@ private:
 
 	bool Show_Main_Menu_Bar();
 	void const ImGuiShortCuts();
+	ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
 
 private:
 	std::vector<Panel*> panels;

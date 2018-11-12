@@ -23,6 +23,8 @@ public:
 
 	void SetGlobalMatrix(float4x4 matrix);
 
+	void DrawGuizmos();
+
 public:
 	float3 position = float3::zero;
 	float3 rotation = float3::zero;

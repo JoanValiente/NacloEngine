@@ -1,6 +1,11 @@
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "Globals.h"
+#include "ImGuizmo/ImGuizmo.h"
+#include "ModuleInput.h"
+#include "ModuleCamera3D.h"
+#include "Application.h"
+#include "ComponentCamera.h"
 
 ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
 {
@@ -45,6 +50,8 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 
 void ComponentTransform::ShowInspector()
 {
+	DrawGuizmos();
+
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
 		//POSITION------------
@@ -131,5 +138,59 @@ void ComponentTransform::SetGlobalMatrix(float4x4 matrix)
 {
 	globalMatrix = matrix;
 }
+
+void ComponentTransform::DrawGuizmos()
+{
+	ImGuizmo::Enable(true);
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+	static ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+
+		guizmoOperation = ImGuizmo::TRANSLATE;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+
+		guizmoOperation = ImGuizmo::ROTATE;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+
+		guizmoOperation = ImGuizmo::SCALE;
+	}
+
+	math::float4x4 matrix = globalMatrix.Transposed();
+
+	float4x4 cameraProjMat;
+	cameraProjMat = App->camera->camera->frustum.ProjectionMatrix();
+	cameraProjMat.Transpose();	
+
+	ImGuizmo::Manipulate(App->camera->camera->GetViewMatrix(), (float*)cameraProjMat.v, guizmoOperation, ImGuizmo::WORLD, matrix.ptr());
+
+	matrix.Transpose();
+
+	if (ImGuizmo::IsUsing() && container->staticGO == false)
+	{
+		if (container->parent == nullptr)
+		{
+			matrix = matrix;
+		}
+		else
+		{
+
+			matrix = container->parent->transform->GetGlobalMatrix().Inverted() * matrix;//Inverse not traspose :/
+		}
+
+		matrix.Decompose(position, quaternion, size);
+		rotation = quaternion.ToEulerXYZ() * RADTODEG;
+		UpdateMatrix(position, quaternion, size);
+	}
+
+}
+
 
 

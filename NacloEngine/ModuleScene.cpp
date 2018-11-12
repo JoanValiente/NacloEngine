@@ -29,6 +29,7 @@ bool ModuleScene::Start()
 	ComponentTransform* camera_transform = (ComponentTransform*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 	camera_transform->SetPosition(float3(5.0f, 5.0f, -25.0f));
 	ComponentCamera* camera_component = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
+	main_camera->staticGO = false;
 
 	quadtree = new Quadtree();
 

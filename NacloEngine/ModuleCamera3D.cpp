@@ -185,17 +185,17 @@ void ModuleCamera3D::Move(float dt)
 
 
 	//-----------------------------ARROWS movement-----------------------------
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) newPos += forward;
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) newPos -= forward;
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) newPos -= right;
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) newPos += right;
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT) newPos += forward * speed;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) newPos -= forward * speed;
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) newPos -= right * speed;
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) newPos += right * speed;
 
 	//-----------------------------WASD movement-----------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT) {
-		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += forward;
-		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= forward;
-		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= right;
-		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += right;
+		if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos += forward * speed;
+		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos -= forward * speed;
+		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= right * speed;
+		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += right * speed;
 	}
 
 	//-----------------------------Wheel mouse zoom-----------------------------

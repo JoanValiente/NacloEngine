@@ -52,6 +52,9 @@
     <Filter Include="Sources\Modules\Importers">
       <UniqueIdentifier>{69fbd74d-3508-4586-9940-019820b9e326}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Tools\ImGuizmo">
+      <UniqueIdentifier>{8f7237b3-10bb-441d-8963-efe856a1bfbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -119,12 +122,6 @@
     </ClInclude>
     <ClInclude Include="MathGeoLib\MathBuildConfig.h">
       <Filter>Sources\MathGeoLib</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Algorithm\GJK.h">
-      <Filter>Sources\MathGeoLib\Algorithm</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Algorithm\SAT.h">
-      <Filter>Sources\MathGeoLib\Algorithm</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Algorithm\Random\LCG.h">
       <Filter>Sources\MathGeoLib\Algorithm</Filter>
@@ -250,9 +247,6 @@
       <Filter>Sources\MathGeoLib\Math</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4_sse.h">
-      <Filter>Sources\MathGeoLib\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="MathGeoLib\Math\float4d.h">
       <Filter>Sources\MathGeoLib\Math</Filter>
     </ClInclude>
     <ClInclude Include="MathGeoLib\Math\float4x4.h">
@@ -387,6 +381,12 @@
     <ClInclude Include="Configuration.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo\ImGuizmo.h">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo\ImSequencer.h">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -438,9 +438,6 @@
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Algorithm\Random\LCG.cpp">
-      <Filter>Sources\MathGeoLib\Algorithm</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Algorithm\GJK.cpp">
       <Filter>Sources\MathGeoLib\Algorithm</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Geometry\Line.cpp">
@@ -516,9 +513,6 @@
       <Filter>Sources\MathGeoLib\Math</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float4.cpp">
-      <Filter>Sources\MathGeoLib\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="MathGeoLib\Math\float4d.cpp">
       <Filter>Sources\MathGeoLib\Math</Filter>
     </ClCompile>
     <ClCompile Include="MathGeoLib\Math\float4x4.cpp">
@@ -613,6 +607,12 @@
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
       <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo\ImSequencer.cpp">
+      <Filter>Sources\Tools\ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
