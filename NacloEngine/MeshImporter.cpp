@@ -100,7 +100,7 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 		//Component Transform
 		ComponentTransform* transformComponent = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 		transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
-		transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
+		transformComponent->SetQuaternion({ rotation.x, rotation.y, rotation.z, rotation.w });
 		transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
 
 		LoadMeshData(scene, main_node, path, go);
