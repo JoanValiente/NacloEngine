@@ -171,10 +171,6 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				}
 			}
 
-			//Component Mesh
-			ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
-			meshComponent->AssignMesh(mesh);
-
 			aiMaterial* material = scene->mMaterials[new_mesh->mMaterialIndex];
 			if (aiGetMaterialColor(material, AI_MATKEY_COLOR_AMBIENT, &mesh->color) == aiReturn_FAILURE || mesh->color == aiColor4D(0, 0, 0, 1))
 			{
@@ -221,17 +217,21 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				}
 
 			}	
+
+			//Component Mesh
+			ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+			meshComponent->AssignMesh(mesh);
+
 			//Component Material
 			ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
 			materialComponent->AssignTexture(texture);
+
 
 			SetBuffers(mesh);
 
 			char* buffer;
 			App->fs->Load(path, &buffer);
 			ExportNCL(buffer, mesh);
-
-			App->renderer3D->AddMesh(mesh);
 
 			App->renderer3D->AddTexture(texture);
 			children->CreateBoundingBox(mesh);

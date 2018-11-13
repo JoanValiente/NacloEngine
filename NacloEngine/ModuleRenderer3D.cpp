@@ -188,9 +188,13 @@ update_status ModuleRenderer3D::Update(float dt)
 					transform = (ComponentTransform*)(*it);
 					transform->UpdateMatrix(transform->position, transform->quaternion, transform->size);
 				}
-				if (m != nullptr && t != nullptr && transform != nullptr) {
-					DrawMesh(m->mesh, t->texture, transform);
-				}
+			}
+			if (m != nullptr && t != nullptr && transform != nullptr) 
+			{
+				DrawMesh(m->mesh, t->texture, transform);
+				m = nullptr;
+				t = nullptr;
+				transform = nullptr;
 			}
 		}
 	}

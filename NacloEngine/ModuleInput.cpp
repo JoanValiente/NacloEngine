@@ -167,7 +167,6 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	if (file_path.find(".fbx") != end_string || file_path.find(".FBX") != end_string)
 	{
 		LOG("Loading FBX file");
-		//App->renderer3D->DeleteAllMeshes();
 		std::string output_file;
 		App->meshes->Import(path, output_file);
 	}
