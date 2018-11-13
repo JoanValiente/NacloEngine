@@ -138,12 +138,8 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				//Component Transform
 				ComponentTransform* transformComponent = (ComponentTransform*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 				transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
-				transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
+				transformComponent->SetQuaternion({rotation.x, rotation.y, rotation.z, rotation.w});
 				transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
-
-				mesh->scale = { scale.x, scale.y, scale.z };
-				mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
-				mesh->position = { position.x,position.y, position.z };
 			}
 
 			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[0]];
@@ -229,6 +225,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 
 			SetBuffers(mesh);
 
+			LOG("Exporting mesh %s", node->mName.C_Str());
 			char* buffer;
 			App->fs->Load(path, &buffer);
 			ExportNCL(buffer, mesh);
@@ -322,7 +319,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 	{
 		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 3;
+		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -332,11 +329,15 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 		memcpy(cursor, ranges, bytes);
 		cursor += bytes;
 
+		LOG("Stored ranges");
+
 		//Store vertices
 		bytes = sizeof(float3) * mesh->num_vertices;
 		memcpy(cursor, mesh->vertices, bytes);
 
 		cursor += bytes;
+
+		LOG("Stored vertices");
 
 		//Store indices
 		bytes = sizeof(uint) * mesh->num_indices;
@@ -344,9 +345,13 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 
 		cursor += bytes;
 
+		LOG("Stored indices");
+
 		//Store Uv
-		bytes = sizeof(float)* mesh->num_texture * 3;
+		bytes = sizeof(float)* mesh->num_texture * 2;
 		memcpy(cursor, mesh->texture, bytes);
+
+		LOG("Stored UV");
 
 		std::string output;
 		App->fs->SavePath(output, data, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
