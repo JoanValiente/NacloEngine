@@ -66,7 +66,7 @@ update_status ModuleCamera3D::Update(float dt)
 
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
-		if (!ImGui::IsMouseHoveringAnyWindow())
+		if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
 		{
 			float winWidth = (float)App->window->width;
 			float winHeight = (float)App->window->height;
@@ -77,10 +77,11 @@ update_status ModuleCamera3D::Update(float dt)
 			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
 			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
 
-			LineSegment ray = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);		
+			LineSegment ray = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 			MousePick(posible_go_intersections, ray);
 			debugRay = ray;
 		}
+		using_guizmos = false;
 	}
 	RaycastDebugDraw();
 	
@@ -324,19 +325,15 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 void ModuleCamera3D::PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate)
 {
-
 	if (!camera->Intersects(candidate->boundingBox))
 	{
 		pick_candidates.push_back(candidate);
 	}
 
-
 	for (uint i = 0; i < candidate->GetNumChildren(); ++i)
 	{
 		PickCandidates(pick_candidates, candidate->children[i]);
 	}
-
-
 }
 
 void ModuleCamera3D::RaycastDebugDraw()

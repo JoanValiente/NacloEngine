@@ -21,7 +21,7 @@ void PanelInspector::Draw()
 	{
 		if (ImGui::Begin("Inspector", &active))
 		{
-			go->Inspector();
+			//go->Inspector();
 			ImGui::End();
 		}
 	}

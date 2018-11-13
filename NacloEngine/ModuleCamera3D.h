@@ -38,7 +38,7 @@ public:
 	LineSegment debugRay;
 
 	ComponentCamera* camera;
-
+	bool using_guizmos = false;
 private:
 	float speed;
 	float aux_speed;

@@ -148,21 +148,12 @@ void ComponentTransform::DrawGuizmos()
 
 	static ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) guizmoOperation = ImGuizmo::TRANSLATE;
 
-		guizmoOperation = ImGuizmo::TRANSLATE;
-	}
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) guizmoOperation = ImGuizmo::ROTATE;
 
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-
-		guizmoOperation = ImGuizmo::ROTATE;
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-
-		guizmoOperation = ImGuizmo::SCALE;
-	}
-
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)	guizmoOperation = ImGuizmo::SCALE;
+	
 	math::float4x4 matrix = globalMatrix.Transposed();
 
 	float4x4 cameraProjMat;
@@ -173,8 +164,11 @@ void ComponentTransform::DrawGuizmos()
 
 	matrix.Transpose();
 
-	if (ImGuizmo::IsUsing() && container->staticGO == false)
+	if (ImGuizmo::IsUsing())
 	{
+		container->staticGO = false;
+		App->camera->using_guizmos = true;
+
 		if (container->parent == nullptr)
 		{
 			matrix = matrix;

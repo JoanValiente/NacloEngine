@@ -56,6 +56,9 @@ update_status ModuleScene::Update(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	root->Update(dt);
+	if (selected != nullptr) {
+		selected->Inspector();
+	}
 
 	return ret;
 }
