@@ -8,6 +8,7 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "Quadtree.h"
+#include "PanelInspector.h"
 
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -56,9 +57,8 @@ update_status ModuleScene::Update(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	root->Update(dt);
-	if (selected != nullptr) {
-		selected->Inspector();
-	}
+
+	App->imgui->inspector->DrawInspector();
 
 	return ret;
 }

@@ -9,7 +9,7 @@ public:
 	PanelInspector();
 	virtual ~PanelInspector();
 
-	void Draw();
+	void DrawInspector();
 
 private:
 

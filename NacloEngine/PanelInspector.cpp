@@ -13,7 +13,7 @@ PanelInspector::~PanelInspector()
 {
 }
 
-void PanelInspector::Draw()
+void PanelInspector::DrawInspector()
 {
 	GameObject* go = App->scene->selected;
 
@@ -21,7 +21,7 @@ void PanelInspector::Draw()
 	{
 		if (ImGui::Begin("Inspector", &active))
 		{
-			//go->Inspector();
+			go->Inspector();
 			ImGui::End();
 		}
 	}

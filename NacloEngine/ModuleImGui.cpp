@@ -28,7 +28,7 @@ bool ModuleImgui::Init()
 	panels.push_back(configuration = new PanelConfiguration());
 	panels.push_back(randomNumberGenerator = new PanelRandomNumberGenerator());
 	panels.push_back(about = new PanelAbout());
-	panels.push_back(inspector = new PanelInspector());
+	//panels.push_back(inspector = new PanelInspector());
 	panels.push_back(hierarchy = new PanelHierarchy());
 	return ret;
 }
