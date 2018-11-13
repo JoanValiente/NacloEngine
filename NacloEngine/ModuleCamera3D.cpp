@@ -282,18 +282,18 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 	GameObject* selected_object = nullptr;
 
-	for (std::vector<GameObject*>::const_iterator it = candidates.begin(); it != candidates.end(); ++it)
+	for (uint i = 0; i < candidates.size(); ++i)
 	{
 		Triangle tri;
 		LineSegment localRay(ray);
 
-		ComponentTransform* transform = (*it)->transform;
+		ComponentTransform* transform = candidates[i]->transform;
 
 		if (transform != nullptr) {
 
 			localRay.Transform(transform->globalMatrix.Inverted());
 
-			ComponentMesh* cMesh = (*it)->mesh;
+			ComponentMesh* cMesh = candidates[i]->mesh;
 			mesh = cMesh->mesh;
 
 			if (cMesh != nullptr) {
@@ -301,17 +301,20 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 				localRay.Transform(transform->globalMatrix.Inverted());
 				mesh = cMesh->mesh;
 
-				for (uint i = 0; i < mesh->num_indices;)
-				{
-					tri.a = mesh->vertices[mesh->indices[i++] * 3];
-					tri.b = mesh->vertices[mesh->indices[i++] * 3];
-					tri.c = mesh->vertices[mesh->indices[i++] * 3];
+				if (localRay.Intersects(candidates[i]->boundingBox)) {
 
-					float distance;
-					float3 hit_point;
-					if (localRay.Intersects(tri, &distance, &hit_point))
+					for (int j = 0; j < mesh->num_indices;)
 					{
-						selected_object = (*it);
+						tri.a = mesh->vertices[mesh->indices[j++] * 3];
+						tri.b = mesh->vertices[mesh->indices[j++] * 3];
+						tri.c = mesh->vertices[mesh->indices[j++] * 3];
+
+						float distance;
+						float3 hit_point;
+						if (localRay.Intersects(tri, &distance, &hit_point))
+						{
+							selected_object = candidates[i];
+						}
 					}
 				}
 			}
@@ -325,7 +328,7 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 void ModuleCamera3D::PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate)
 {
-	if (!camera->Intersects(candidate->boundingBox))
+	if (!camera->frustum.Intersects(candidate->boundingBox))
 	{
 		pick_candidates.push_back(candidate);
 	}

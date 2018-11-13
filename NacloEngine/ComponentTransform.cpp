@@ -144,7 +144,7 @@ void ComponentTransform::DrawGuizmos()
 	ImGuizmo::Enable(true);
 
 	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::SetRect(position.x, position.y, io.DisplaySize.x, io.DisplaySize.y);
 
 	static ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
 
@@ -171,15 +171,15 @@ void ComponentTransform::DrawGuizmos()
 
 		if (container->parent == nullptr)
 		{
-			matrix = matrix;
+			localmatrix = matrix;
 		}
 		else
 		{
 
-			matrix = container->parent->transform->GetGlobalMatrix().Inverted() * matrix;//Inverse not traspose :/
+			localmatrix = container->parent->transform->GetGlobalMatrix().Inverted() * matrix;
 		}
 
-		matrix.Decompose(position, quaternion, size);
+		localmatrix.Decompose(position, quaternion, size);
 		rotation = quaternion.ToEulerXYZ() * RADTODEG;
 		UpdateMatrix(position, quaternion, size);
 	}
