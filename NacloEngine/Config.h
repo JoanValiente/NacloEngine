@@ -20,7 +20,16 @@ public:
 	bool GetBool(const char * name) const;
 	bool AddBool(const char* name, bool value = false);
 
+	int GetInt(const char* name) const;
+	bool SetInt(const char* name, int value = 0);
+
+	int GetFloat(const char* name) const;
+	bool SetFloat(const char* name, int value = 0);
+
 	size_t Save(char** buf) const;
+
+public:
+	const char* name;
 
 private:
 	JSON_Value* json_root = nullptr;

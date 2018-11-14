@@ -4,14 +4,13 @@
 
 Config::Config()
 {
-	json_root = json_value_init_object();
-	root = json_value_get_object(json_root);
 }
 
 Config::Config(const char * data)
 {
 	if (data != nullptr)
 	{
+		name = data;
 		json_root = json_parse_file(data);
 
 		if (json_root == nullptr)
@@ -27,6 +26,8 @@ Config::~Config()
 	json_value_free(json_root);
 }
 
+//---------------- BOOLEAN ----------------
+
 bool Config::GetBool(const char * name) const
 {
 	return json_object_get_boolean(root, name);
@@ -41,6 +42,42 @@ bool Config::AddBool(const char * name, bool value)
 	}
 	return ret;
 }
+
+//---------------- INT ----------------
+
+int Config::GetInt(const char * name) const
+{
+	return (int)json_object_get_number(root, name);
+}
+
+bool Config::SetInt(const char * name, int value)
+{
+	bool ret = false;
+	if (json_object_set_number(root, name, value))
+	{
+		ret = true;
+	}
+	return ret;
+}
+
+//---------------- FLOAT ----------------
+
+int Config::GetFloat(const char * name) const
+{
+	return (float)json_object_get_number(root, name);
+}
+
+bool Config::SetFloat(const char * name, int value)
+{
+	bool ret = false;
+	if (json_object_set_number(root, name, value))
+	{
+		ret = true;
+	}
+	return ret;
+}
+
+//---------------- SAVE ----------------
 
 size_t Config::Save(char** buffer) const
 {
