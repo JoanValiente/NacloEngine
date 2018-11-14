@@ -27,7 +27,7 @@ public:
 
 	Component* GetComponentByType(Component::COMPONENT_TYPE type);	
 
-	void CreateBoundingBox(Mesh* mesh);
+	//void CreateBoundingBox(Mesh* mesh);
 	void UpdateBoundingBox();
 	void BoundingBoxDebugDraw();
 	

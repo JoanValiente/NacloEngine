@@ -42,10 +42,6 @@ void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 s
 	}
 	else
 		globalMatrix = localmatrix;
-
-	if (!globalMatrix.Equals(prevGlobal))
-		if (container != nullptr)
-			container->UpdateBoundingBox();
 }
 
 void ComponentTransform::ShowInspector()

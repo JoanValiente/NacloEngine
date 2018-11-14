@@ -231,7 +231,6 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			ExportNCL(buffer, mesh);
 
 			App->renderer3D->AddTexture(texture);
-			children->CreateBoundingBox(mesh);
 			final_obj = children;
 	}
 
@@ -289,7 +288,6 @@ void MeshImporter::LoadMeshNCL(const char * path, GameObject * obj, Mesh * mesh)
 	SetBuffers(mesh);
 	App->renderer3D->AddMesh(mesh);
 	App->renderer3D->AddTexture(texture);
-	obj->CreateBoundingBox(mesh);
 }
 
 
