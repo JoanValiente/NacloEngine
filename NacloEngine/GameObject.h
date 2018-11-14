@@ -12,6 +12,7 @@ struct ComponentCamera;
 struct ComponentMaterial;
 struct ComponentMesh;
 struct ComponentTransform;
+struct Config;
 
 class GameObject {
 	 
@@ -36,6 +37,8 @@ public:
 	uint GetNumChildren();
 
 	void Inspector();
+
+	bool SaveGO(Config* conf);
 
 private:
 	bool SearchForParent(GameObject* parent, GameObject* child);

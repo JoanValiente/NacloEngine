@@ -8,6 +8,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
 #include "ModuleScene.h"
+#include "Config.h"
 
 
 GameObject::GameObject(GameObject * parent, const char* name)
@@ -213,6 +214,11 @@ void GameObject::Inspector()
 	{
 		(*it)->ShowInspector();
 	}
+}
+
+bool GameObject::SaveGO(Config * conf)
+{
+	return false;
 }
 
 bool GameObject::SearchForParent(GameObject * parent, GameObject* child)

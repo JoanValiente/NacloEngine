@@ -1,7 +1,6 @@
 #ifndef __CONFIG_H__
 #define __CONFIG_H__
 
-#include "Parson\parson.h"
 #include "Globals.h"
 
 struct json_object_t;
@@ -26,7 +25,10 @@ public:
 	int GetFloat(const char* name) const;
 	bool SetFloat(const char* name, int value = 0);
 
-	size_t Save(char** buf) const;
+	bool Save();
+
+private:
+	size_t GetSize(char** buf) const;
 
 public:
 	const char* name;
