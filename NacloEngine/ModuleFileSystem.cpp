@@ -40,6 +40,7 @@ ModuleFileSystem::~ModuleFileSystem()
 
 bool ModuleFileSystem::Start()
 {
+	pcg32_srandom_r(&rng, time(NULL), (intptr_t)&rng);
 	return true;
 }
 
@@ -48,17 +49,13 @@ bool ModuleFileSystem::CleanUp()
 	return true;
 }
 
-bool ModuleFileSystem::SavePath(std::string & output, const void * buffer, uint size, const char * path, const char * prefix, const char * extension)
+bool ModuleFileSystem::Save(std::string & output, const void * buffer, uint size, const char * path, const char * prefix, const char * extension)
 {
-	static int patata = 0;
-
 	char result[250];
 
 	CreateNewDirectory(path);
 
-	sprintf_s(result, 250, "%s%s_%i.%s", path, prefix, patata, extension);
-
-	patata++;
+	sprintf_s(result, 250, "%s%s_%lld.%s", path, prefix, App->fs->GenerateUID(), extension);
 
 	if (SaveFile(result, buffer, size) > 0)
 	{
@@ -165,9 +162,6 @@ std::string ModuleFileSystem::CreateNewFile(const char* path)
 
 UID ModuleFileSystem::GenerateUID()
 {
-	pcg32_random_t rng;
-	pcg32_srandom_r(&rng, time(NULL), (intptr_t)&rng);
-
 	return pcg32_random_r(&rng);;
 }
 
