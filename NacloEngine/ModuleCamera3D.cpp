@@ -294,10 +294,9 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 			localRay.Transform(transform->globalMatrix.Inverted());
 
 			ComponentMesh* cMesh = candidates[i]->mesh;
-			mesh = cMesh->mesh;
 
 			if (cMesh != nullptr) {
-
+				mesh = cMesh->mesh;
 				localRay.Transform(transform->globalMatrix.Inverted());
 				mesh = cMesh->mesh;
 
@@ -328,7 +327,7 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 void ModuleCamera3D::PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate)
 {
-	if (!camera->frustum.Intersects(candidate->boundingBox))
+	if (camera->frustum.Intersects(candidate->boundingBox))
 	{
 		pick_candidates.push_back(candidate);
 	}

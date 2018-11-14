@@ -49,6 +49,7 @@ void GameObject::Update(float dt)
 		components[i]->Update(dt);
 	}
 
+	UpdateBoundingBox();
 	BoundingBoxDebugDraw();
 }
 
@@ -131,11 +132,13 @@ Component * GameObject::GetComponentByType(Component::COMPONENT_TYPE type)
 	return component;
 }
 
+/*
 void GameObject::CreateBoundingBox(Mesh * mesh)
 {
 	boundingBox.SetNegativeInfinity();
 	boundingBox.Enclose((const float3*)mesh->vertices, mesh->num_vertices);
 }
+*/
 
 void GameObject::UpdateBoundingBox()
 {
