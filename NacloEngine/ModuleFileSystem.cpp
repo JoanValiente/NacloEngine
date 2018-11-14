@@ -2,6 +2,8 @@
 #include "ModuleFileSystem.h"
 #include "physfs/include/physfs.h"
 
+#include <time.h>
+
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
 ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Module(app, start_enabled)
@@ -159,6 +161,14 @@ std::string ModuleFileSystem::CreateNewFile(const char* path)
 	sprintf_s(final_path, 250, "%s\\%s\\%s", NPath, directory, name);
 
 	return final_path;
+}
+
+UID ModuleFileSystem::GenerateUID()
+{
+	pcg32_random_t rng;
+	pcg32_srandom_r(&rng, time(NULL), (intptr_t)&rng);
+
+	return pcg32_random_r(&rng);;
 }
 
 

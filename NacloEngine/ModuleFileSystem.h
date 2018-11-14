@@ -20,6 +20,7 @@ public:
 	void CreateNewDirectory(const char* path) const;
 	void CopyFileToAssets(const char* path, std::string &output_file);
 	std::string CreateNewFile(const char* path);
+	UID GenerateUID();
 
 private:
 
