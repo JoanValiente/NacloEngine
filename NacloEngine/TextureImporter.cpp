@@ -107,7 +107,7 @@ bool TextureImporter::Import(const void * buffer, uint size, string& output_file
 			{
 				data = new ILubyte[size]; // allocate data buffer
 				if (ilSaveL(IL_DDS, data, size) > 0) // Save with the ilSaveIL function
-					ret = App->fs->SavePath(output_file, data, size, LIBRARY_TEXTURES_FOLDER, "texture", "dds");
+					ret = App->fs->Save(output_file, data, size, LIBRARY_TEXTURES_FOLDER, "texture", "dds");
 
 				RELEASE_ARRAY(data);
 			}

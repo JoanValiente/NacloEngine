@@ -354,7 +354,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 		LOG("Stored UV");
 
 		std::string output;
-		App->fs->SavePath(output, data, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+		App->fs->Save(output, data, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
 	}
 	else
 	{
