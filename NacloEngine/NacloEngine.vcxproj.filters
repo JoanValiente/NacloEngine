@@ -55,6 +55,9 @@
     <Filter Include="Sources\Tools\ImGuizmo">
       <UniqueIdentifier>{8f7237b3-10bb-441d-8963-efe856a1bfbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Parson">
+      <UniqueIdentifier>{36343e9a-05e7-4f24-baa1-7e28a8fb0550}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -378,14 +381,17 @@
     <ClInclude Include="Quadtree.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Configuration.h">
-      <Filter>Sources\Tools</Filter>
-    </ClInclude>
     <ClInclude Include="ImGuizmo\ImGuizmo.h">
       <Filter>Sources\Tools\ImGuizmo</Filter>
     </ClInclude>
     <ClInclude Include="ImGuizmo\ImSequencer.h">
       <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Parson\parson.h">
+      <Filter>Sources\Parson</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -605,14 +611,17 @@
     <ClCompile Include="Quadtree.cpp">
       <Filter>Sources\Containers</Filter>
     </ClCompile>
-    <ClCompile Include="Configuration.cpp">
-      <Filter>Sources\Tools</Filter>
-    </ClCompile>
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp">
       <Filter>Sources\Tools\ImGuizmo</Filter>
     </ClCompile>
     <ClCompile Include="ImGuizmo\ImSequencer.cpp">
       <Filter>Sources\Tools\ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="Config.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Parson\parson.c">
+      <Filter>Sources\Parson</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

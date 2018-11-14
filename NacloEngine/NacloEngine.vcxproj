@@ -81,7 +81,7 @@
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
     <ClInclude Include="ComponentTransform.h" />
-    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="Config.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="GL\include\eglew.h" />
@@ -170,6 +170,7 @@
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleImGui.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="TextureImporter.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -193,7 +194,7 @@
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
-    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="Config.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Globals.cpp" />
     <ClCompile Include="ImGuizmo\ImGuizmo.cpp" />
@@ -248,6 +249,7 @@
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="TextureImporter.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
