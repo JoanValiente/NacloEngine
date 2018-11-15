@@ -183,9 +183,9 @@ void ComponentTransform::DrawGuizmos()
 
 }
 
-void ComponentTransform::SaveComponent(Config & conf)
+void ComponentTransform::SaveComponent(Config* &conf)
 {
-	conf.SetFloat3("Position", position);
+	conf->SetFloat3("Position", position);
 }
 
 

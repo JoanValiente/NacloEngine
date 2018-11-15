@@ -15,7 +15,7 @@ public:
 
 	void AssignTexture(Texture* texture);
 	void ShowInspector();
-	void SaveComponent(Config& conf) {};
+	void SaveComponent(Config* &conf) {};
 
 public:
 	Texture* texture = nullptr;

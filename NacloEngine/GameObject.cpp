@@ -238,7 +238,7 @@ bool GameObject::SaveGO(Config* & conf)
 	{
 		Config component;
 		component.SetInt("Type", (*it)->type);
-		(*it)->SaveComponent(component);
+		(*it)->SaveComponent(conf);
 		go.NewArrayEntry(component);
 	}
 

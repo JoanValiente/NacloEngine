@@ -188,7 +188,8 @@ bool Config::SetFloatArray(const char * name, const float* values, int size)
 
 bool Config::SetFloat3(const char * name, const float3 & value)
 {
-	return SetFloatArray(name, &value.x, 3);
+	float new_float3[3] = { value.x, value.y, value.z };
+	return SetFloatArray(name, new_float3, 3);
 }
 
 
