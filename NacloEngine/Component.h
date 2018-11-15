@@ -24,7 +24,7 @@ public:
 
 	virtual void Update(float dt);
 	virtual void ShowInspector();
-	virtual void SaveComponent(Config* &conf);
+	virtual void SaveComponent(Config &conf);
 	void CleanUp();
 
 public:

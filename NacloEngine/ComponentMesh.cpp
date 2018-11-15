@@ -1,7 +1,7 @@
 #include "ComponentMesh.h"
 #include "OpenGL.h"
 #include "GameObject.h"
-
+#include "Config.h"
 
 ComponentMesh::ComponentMesh(GameObject * container) : Component(container)
 {
@@ -36,4 +36,9 @@ void ComponentMesh::ShowInspector()
 void ComponentMesh::AssignMesh(Mesh* mesh)
 {
 	this->mesh = mesh;
+}
+
+void ComponentMesh::SaveComponent(Config & conf)
+{
+	conf.SetString("Name", mesh->filename.c_str());
 }

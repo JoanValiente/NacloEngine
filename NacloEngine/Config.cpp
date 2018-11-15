@@ -6,6 +6,8 @@
 
 Config::Config()
 {
+	json_root = json_value_init_object();
+	root = json_value_get_object(json_root);
 }
 
 Config::Config(const char * data)
@@ -203,8 +205,8 @@ bool Config::Save()
 	size_t size = GetSize(&buffer);
 
 	//TODO CRETE NEW NAME Using Name, ASSETS_SCENE, ".json"
-
-	ret = App->fs->SaveFile("/Assets/Scenes/patata.json", buffer, size);
+	std::string output;
+	ret = App->fs->Save(output, buffer,size, ASSETS_SCENES_FOLDER, "patata", "json");
 
 	RELEASE_ARRAY(buffer);
 
