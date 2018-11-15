@@ -49,6 +49,7 @@ update_status ModuleScene::PreUpdate(float dt)
 	App->camera->CullingGameObjects(root);
 
 	UpdateQuadtree();
+	UpdateTransforms(root);
 
 	return ret;
 }
@@ -108,6 +109,7 @@ void ModuleScene::UpdateQuadtree()
 	}
 }
 
+
 void ModuleScene::SetSelected(GameObject * obj_to_select)
 {
 	if (selected != nullptr)
@@ -122,6 +124,18 @@ void ModuleScene::SetSelected(GameObject * obj_to_select)
 GameObject * ModuleScene::GetSelected()
 {
 	return selected;
+}
+
+void ModuleScene::UpdateTransforms(GameObject* go)
+{
+	if (go->transform != nullptr) {
+		go->transform->UpdateMatrix();
+	}
+
+	for (int i = 0; i < go->GetNumChildren(); i++)
+	{
+		UpdateTransforms(go->children[i]);
+	}
 }
 
 bool ModuleScene::CleanUp()

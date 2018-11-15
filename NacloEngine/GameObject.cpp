@@ -213,7 +213,6 @@ uint GameObject::GetNumChildren()
 	return children.size();
 }
 
-
 void GameObject::Inspector()
 {
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)

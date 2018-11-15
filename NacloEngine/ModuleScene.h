@@ -22,8 +22,12 @@ public:
 
 	void UpdateQuadtree();
 
+
 	void SetSelected(GameObject* obj_to_select);
 	GameObject* GetSelected();
+
+	void UpdateTransforms(GameObject* go);
+
 
 public:
 	GameObject* root = nullptr;

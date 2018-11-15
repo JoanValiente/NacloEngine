@@ -35,7 +35,6 @@ public:
 	void ChangeHierarchy(GameObject* &obj);
 
 	uint GetNumChildren();
-
 	void Inspector();
 
 	bool SaveGO(Config* &conf);
