@@ -30,6 +30,8 @@ GameObject::GameObject(GameObject * parent, const char* name)
 
 	
 	boundingBox.SetNegativeInfinity();
+
+	App->scene->gameObjects.push_back(this);
 }
 
 GameObject::~GameObject()

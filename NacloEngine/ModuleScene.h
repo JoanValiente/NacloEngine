@@ -17,7 +17,6 @@ public:
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
 
-	GameObject* CreateGameObject(GameObject* parent, const char* name);
 	void DeleteGameObject(GameObject* object);
 
 	void UpdateQuadtree();

@@ -34,5 +34,6 @@ bool SceneSerialization::SaveScene(const char * file_name)
 bool SceneSerialization::LoadScene(const char * file_name)
 {
 	bool ret = true;
+
 	return ret;
 }

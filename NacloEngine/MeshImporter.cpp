@@ -89,7 +89,7 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 
 		std::string tmp = path;
 
-		GameObject* go = App->scene->CreateGameObject(App->scene->root, tmp.c_str());
+		GameObject* go = new GameObject(App->scene->root, tmp.c_str());
 		aiVector3D scale;
 		aiQuaternion rotation;
 		aiVector3D position;
@@ -126,7 +126,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			std::string path_to_name = mesh->path;
 			mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-			GameObject* children = App->scene->CreateGameObject(obj, node->mName.data);
+			GameObject* children = new GameObject(obj, node->mName.data);
 
 			if (scene->mRootNode != nullptr) {
 				aiVector3D scale;
@@ -236,7 +236,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 
 	else if (node->mNumChildren > 1)
 	{
-		final_obj = App->scene->CreateGameObject(obj, node->mName.C_Str());
+		final_obj = new GameObject(obj, node->mName.C_Str());
 		final_obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 	}
 	else
@@ -366,7 +366,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 Mesh * MeshImporter::ImportNCL(const char * path)
 {
 	Mesh* ret = nullptr;
-	GameObject* go = App->scene->CreateGameObject(App->scene->root, "patata");
+	GameObject* go = new GameObject(App->scene->root, "patata");
 	char* buffer;
 	uint size = App->fs->Load(path, &buffer);
 

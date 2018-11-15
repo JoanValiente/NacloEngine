@@ -77,15 +77,6 @@ update_status ModuleScene::PostUpdate(float dt)
 	return ret;
 }
 
-GameObject* ModuleScene::CreateGameObject(GameObject * parent, const char* name)
-{
-	GameObject* go = new GameObject(parent, name);
-
-	gameObjects.push_back(go);
-
-	return go;
-}
-
 void ModuleScene::DeleteGameObject(GameObject * gameObject)
 {
 	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
@@ -148,6 +139,19 @@ bool ModuleScene::CleanUp()
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+
+	Config *file = new Config("test");
+
+	file->SetArray("GAME OBJECTS");
+
+	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
+	{
+		if (*it != root)
+			(*it)->SaveGO(file);
+	}
+
+	file->Save();
+
 
 	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{
