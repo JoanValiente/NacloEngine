@@ -108,6 +108,22 @@ void ModuleScene::UpdateQuadtree()
 	}
 }
 
+void ModuleScene::SetSelected(GameObject * obj_to_select)
+{
+	if (selected != nullptr)
+	{
+		this->selected->selected = false;
+	}
+
+	this->selected = obj_to_select;
+	obj_to_select->selected = true;
+}
+
+GameObject * ModuleScene::GetSelected()
+{
+	return selected;
+}
+
 bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Scene");
@@ -118,17 +134,6 @@ bool ModuleScene::CleanUp()
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
-	Config *file = new Config("scene");
-
-	file->SetArray("GAME OBJECTS");
-
-	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
-	{
-		(*it)->SaveGO(file); 
-	}
-
-	file->Save();
 
 	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{

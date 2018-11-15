@@ -22,15 +22,18 @@ public:
 
 	void UpdateQuadtree();
 
+	void SetSelected(GameObject* obj_to_select);
+	GameObject* GetSelected();
+
 public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;
 	GameObject* main_camera = nullptr;
-	GameObject* selected = nullptr;
 
 	Quadtree* quadtree = nullptr;
 
 private:
+	GameObject * selected = nullptr;
 	grid * Grid;
 };
 #endif

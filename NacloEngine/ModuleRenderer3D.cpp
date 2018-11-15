@@ -171,7 +171,7 @@ update_status ModuleRenderer3D::Update(float dt)
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
-		if ((*iterator) == App->scene->selected)
+		if ((*iterator) == App->scene->GetSelected())
 		{
 			int patata = 0;
 		}
@@ -240,7 +240,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture, ComponentTransform
 	
 	if (wire_mode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	
+
 	else
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	

@@ -105,7 +105,7 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 
 		LoadMeshData(scene, main_node, path, go);
 
-		App->scene->selected = go;
+		App->scene->SetSelected(go);
 
 		ret = true;
 	}
@@ -382,7 +382,7 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 
 	LoadMeshNCL("patata1", go, ret);
 
-	App->scene->selected = go;
+	App->scene->SetSelected(go);
 
 	return ret;
 }

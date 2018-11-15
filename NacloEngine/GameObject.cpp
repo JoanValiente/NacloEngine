@@ -58,7 +58,10 @@ void GameObject::Update(float dt)
 	}
 
 	UpdateBoundingBox();
-	BoundingBoxDebugDraw();
+	if (selected)
+	{
+		BoundingBoxDebugDraw();
+	}
 }
 
 void GameObject::CleanUp()
@@ -170,7 +173,7 @@ void GameObject::UpdateBoundingBox()
 void GameObject::BoundingBoxDebugDraw()
 {
 	glBegin(GL_LINES);
-	glLineWidth(2.0f);
+	glLineWidth(8.0f);
 	glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
 	for (uint i = 0; i < 12; i++)

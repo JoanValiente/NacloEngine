@@ -49,7 +49,7 @@ bool PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)
 
 		bool node_open = false;
 
-		if (go == App->scene->selected)
+		if (go == App->scene->GetSelected())
 		{
 			node_flags |= ImGuiTreeNodeFlags_Selected;
 		}
@@ -85,7 +85,7 @@ bool PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)
 
 		if (ImGui::IsItemClicked())
 		{
-			App->scene->selected = go;
+			App->scene->SetSelected(go);
 		}
 
 		if (node_open)

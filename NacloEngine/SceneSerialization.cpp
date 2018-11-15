@@ -16,15 +16,18 @@ bool SceneSerialization::SaveScene(const char * file_name)
 {
 	bool ret = true;
 
-	file = new Config(file_name);
+	Config *file = new Config(file_name);
+
+	file->SetArray("GAME OBJECTS");
 
 	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
 	{
 		(*it)->SaveGO(file);
 	}
 
-	file->Save();
+	ret = file->Save();
 
+	delete file;
 	return ret;
 }
 

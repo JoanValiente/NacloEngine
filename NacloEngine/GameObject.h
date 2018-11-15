@@ -58,6 +58,8 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentMesh* mesh = nullptr;
 	ComponentCamera* camera = nullptr;
+	bool selected = false;
+	
 };
 
 #endif

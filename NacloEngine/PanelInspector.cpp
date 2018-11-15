@@ -15,7 +15,7 @@ PanelInspector::~PanelInspector()
 
 void PanelInspector::DrawInspector()
 {
-	GameObject* go = App->scene->selected;
+	GameObject* go = App->scene->GetSelected();
 
 	if (go != nullptr)
 	{

@@ -321,7 +321,7 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 	}
 	if (selected_object != nullptr)
 	{
-		App->scene->selected = selected_object;
+		App->scene->SetSelected(selected_object);
 	}
 }
 
