@@ -6,6 +6,7 @@
 #include "ModuleCamera3D.h"
 #include "Application.h"
 #include "ComponentCamera.h"
+#include "Config.h"
 
 ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
 {
@@ -180,6 +181,11 @@ void ComponentTransform::DrawGuizmos()
 		UpdateMatrix(position, quaternion, size);
 	}
 
+}
+
+void ComponentTransform::SaveComponent(Config & conf)
+{
+	conf.SetFloat3("Position", position);
 }
 
 

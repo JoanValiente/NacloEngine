@@ -14,6 +14,7 @@ public:
 	void Update(float dt);
 	float* GetViewMatrix();
 	void DebugDraw();
+	void SaveComponent(Config& conf) {};
 	
 	bool Intersects(const AABB box);
 

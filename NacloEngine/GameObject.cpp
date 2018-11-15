@@ -18,9 +18,16 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	this->active = true;
 	this->staticGO = true;
 
-	if (parent != nullptr) {
+	if (parent != nullptr)
+	{
 		parent->children.push_back(this);
+		UID = App->fs->GenerateUID();
 	}
+	else
+	{
+		UID = 0;
+	}
+
 	
 	boundingBox.SetNegativeInfinity();
 }
@@ -216,8 +223,25 @@ void GameObject::Inspector()
 	}
 }
 
-bool GameObject::SaveGO(Config * conf)
+bool GameObject::SaveGO(Config* & conf)
 {
+	Config go = conf->AddSection(name.c_str());
+	go.SetString("Name", name.c_str());
+	go.SetUID("UID", UID);
+	go.SetUID("Parent UID", parent->UID);
+
+	int patata[3] = { 1,2,3 };
+
+	go.SetFloatArray("Position", (const float*)patata, 3);
+
+	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
+	{
+		Config component;
+		component.SetInt("Type", (*it)->type);
+		(*it)->SaveComponent(component);
+		go.NewArrayEntry(component);
+	}
+
 	return false;
 }
 

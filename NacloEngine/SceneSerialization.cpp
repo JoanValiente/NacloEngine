@@ -5,7 +5,6 @@
 
 SceneSerialization::SceneSerialization()
 {
-	file = nullptr;
 }
 
 SceneSerialization::~SceneSerialization()

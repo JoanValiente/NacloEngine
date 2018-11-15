@@ -38,13 +38,14 @@ public:
 
 	void Inspector();
 
-	bool SaveGO(Config* conf);
+	bool SaveGO(Config* &conf);
 
 private:
 	bool SearchForParent(GameObject* parent, GameObject* child);
 	void EqualGameObjects(GameObject* copy, GameObject* &paste);
 
 public:
+	UID UID = 0;
 	AABB boundingBox;
 	bool active = false;
 	bool staticGO = false;

@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 struct GameObject;
+struct Config;
 
 class Component {
 
@@ -23,6 +24,7 @@ public:
 
 	virtual void Update(float dt);
 	virtual void ShowInspector();
+	virtual void SaveComponent(Config& conf);
 	void CleanUp();
 
 public:

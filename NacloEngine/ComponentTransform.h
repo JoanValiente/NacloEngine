@@ -25,6 +25,8 @@ public:
 
 	void DrawGuizmos();
 
+	void SaveComponent(Config& conf);
+
 public:
 	float3 position = float3::zero;
 	float3 rotation = float3::zero;

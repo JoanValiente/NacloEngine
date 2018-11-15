@@ -23,9 +23,24 @@ Config::Config(const char * data)
 	}
 }
 
+Config::Config(JSON_Object* section) : root(section)
+{
+}
+
 Config::~Config()
 {
 	json_value_free(json_root);
+}
+
+Config Config::GetSection(const char * section_name) const
+{
+	return Config(json_object_get_object(root, section_name));
+}
+
+Config Config::AddSection(const char * section_name)
+{
+	json_object_set_value(root, section_name, json_value_init_object());
+	return GetSection(section_name);
 }
 
 //---------------- BOOLEAN ----------------
@@ -35,7 +50,7 @@ bool Config::GetBool(const char * name) const
 	return json_object_get_boolean(root, name);
 }
 
-bool Config::AddBool(const char * name, bool value)
+bool Config::SetBool(const char * name, bool value)
 {
 	bool ret = false;
 	if (json_object_set_boolean(root, name, value))
@@ -64,12 +79,12 @@ bool Config::SetInt(const char * name, int value)
 
 //---------------- FLOAT ----------------
 
-int Config::GetFloat(const char * name) const
+float Config::GetFloat(const char * name) const
 {
 	return (float)json_object_get_number(root, name);
 }
 
-bool Config::SetFloat(const char * name, int value)
+bool Config::SetFloat(const char * name, float value)
 {
 	bool ret = false;
 	if (json_object_set_number(root, name, value))
@@ -79,17 +94,116 @@ bool Config::SetFloat(const char * name, int value)
 	return ret;
 }
 
+//---------------- STRING ----------------
+
+const char* Config::GetString(const char * name) const
+{
+	return json_object_get_string(root, name);
+}
+
+bool Config::SetString(const char * name, const char* value)
+{
+	bool ret = false;
+	if (json_object_set_string(root, name, value))
+	{
+		ret = true;
+	}
+	return ret;
+}
+
+
+//---------------- UID ----------------
+
+UID Config::GetUID(const char * name) const
+{
+	return (UID)json_object_get_number(root, name);
+}
+
+bool Config::SetUID(const char * name, UID value)
+{
+	bool ret = false;
+	if (json_object_set_number(root, name, value))
+	{
+		ret = true;
+	}
+	return ret;
+}
+
+//---------------- ARRAY ----------------
+
+
+bool Config::SetArray(const char * name)
+{
+	JSON_Value* new_array = json_value_init_array();
+	json_array = json_value_get_array(new_array);
+
+	return json_object_set_value(root, name, new_array);
+}
+
+bool Config::NewArrayEntry(const Config & conf)
+{
+	if (json_array != nullptr)
+	{
+		return json_array_append_value(json_array, json_value_deep_copy(conf.json_root));
+	}
+
+	else
+	{
+		return false;
+	}
+}
+
+bool Config::SetIntArray(const char * name, int * values, int size)
+{
+	if (values != nullptr && size > 0)
+	{
+		JSON_Value* new_array = json_value_init_array();
+		json_array = json_value_get_array(new_array);
+		json_object_set_value(root, name, new_array);
+
+		for (int i = 0; i < size; ++i)
+			json_array_append_number(json_array, values[i]);
+
+		return true;
+	}
+	return false;
+}
+
+bool Config::SetFloatArray(const char * name, const float* values, int size)
+{
+	if (values != nullptr && size > 0)
+	{
+		JSON_Value* new_array = json_value_init_array();
+		json_array = json_value_get_array(new_array);
+		json_object_set_value(root, name, new_array);
+
+		for (int i = 0; i < size; ++i)
+			json_array_append_number(json_array, values[i]);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool Config::SetFloat3(const char * name, const float3 & value)
+{
+	return SetFloatArray(name, &value.x, 3);
+}
+
+
 //---------------- SAVE ----------------
 
 bool Config::Save()
 {
-	bool ret;
+	bool ret = false;
 
 	char* buffer;
 	size_t size = GetSize(&buffer);
 
-	std::string output;
-	ret = App->fs->Save(output, buffer, size, ASSETS_SCENES_FOLDER, name, "json");
+	//TODO CRETE NEW NAME Using Name, ASSETS_SCENE, ".json"
+
+	ret = App->fs->SaveFile("/Assets/Scenes/patata.json", buffer, size);
 
 	RELEASE_ARRAY(buffer);
 
