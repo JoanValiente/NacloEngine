@@ -22,6 +22,8 @@ public:
 
 	void UpdateQuadtree();
 
+	void UpdateTransforms(GameObject* go);
+
 public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;

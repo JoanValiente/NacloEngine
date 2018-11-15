@@ -15,14 +15,14 @@ ComponentTransform::ComponentTransform(GameObject * container) : Component(conta
 
 	quaternion = Quat::FromEulerXYZ(rotation.x * DEGTORAD, rotation.y * DEGTORAD, rotation.z * DEGTORAD);
 
-	UpdateMatrix(position, quaternion, size);
+	UpdateMatrix();
 }
 
 ComponentTransform::~ComponentTransform()
 {
 }
 
-void ComponentTransform::UpdateMatrix(float3 position, Quat quaternion, float3 size)
+void ComponentTransform::UpdateMatrix()
 {
 	float4x4 prevGlobal = globalMatrix;
 
@@ -106,8 +106,7 @@ void ComponentTransform::SetRotation(float3 rotation)
 }
 
 void ComponentTransform::SetSize(float3 size)
-{
-	
+{	
 	this->size = size;
 }
 
@@ -116,8 +115,6 @@ void ComponentTransform::SetQuaternion(Quat quaternion)
 	this->rotation = quaternion.ToEulerXYZ();
 
 	this->quaternion = quaternion;
-
-	UpdateMatrix(this->position, this->quaternion, this->size);
 }
 
 float4x4 ComponentTransform::GetLocalMatrix()
@@ -141,7 +138,7 @@ void ComponentTransform::DrawGuizmos()
 	ImGuizmo::Enable(true);
 
 	ImGuiIO& io = ImGui::GetIO();
-	ImGuizmo::SetRect(position.x, position.y, io.DisplaySize.x, io.DisplaySize.y);
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
 
 	static ImGuizmo::OPERATION guizmoOperation = ImGuizmo::TRANSLATE;
 
@@ -166,19 +163,18 @@ void ComponentTransform::DrawGuizmos()
 		container->staticGO = false;
 		App->camera->using_guizmos = true;
 
-		if (container->parent == nullptr)
-		{
-			localmatrix = matrix;
-		}
-		else
-		{
+		if (guizmoOperation == ImGuizmo::SCALE) {
 
-			localmatrix = container->parent->transform->GetGlobalMatrix().Inverted() * matrix;
+			math::Quat tmp;
+			matrix.Decompose(position, tmp, size);
+			UpdateMatrix();
 		}
 
-		localmatrix.Decompose(position, quaternion, size);
-		rotation = quaternion.ToEulerXYZ() * RADTODEG;
-		UpdateMatrix(position, quaternion, size);
+		else {
+			matrix.Decompose(position, quaternion, size);
+			rotation = quaternion.ToEulerXYZ() * RADTODEG;
+			UpdateMatrix();
+		}
 	}
 
 }

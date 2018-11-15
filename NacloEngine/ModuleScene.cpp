@@ -49,6 +49,7 @@ update_status ModuleScene::PreUpdate(float dt)
 	App->camera->CullingGameObjects(root);
 
 	UpdateQuadtree();
+	UpdateTransforms(root);
 
 	return ret;
 }
@@ -105,6 +106,18 @@ void ModuleScene::UpdateQuadtree()
 		if ((*it)->staticGO) {
 			quadtree->Insert((*it));
 		}
+	}
+}
+
+void ModuleScene::UpdateTransforms(GameObject* go)
+{
+	if (go->transform != nullptr) {
+		go->transform->UpdateMatrix();
+	}
+
+	for (int i = 0; i < go->GetNumChildren(); i++)
+	{
+		UpdateTransforms(go->children[i]);
 	}
 }
 

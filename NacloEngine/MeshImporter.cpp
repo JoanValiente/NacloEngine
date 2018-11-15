@@ -90,7 +90,6 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 		std::string tmp = path;
 
 		GameObject* go = App->scene->CreateGameObject(App->scene->root, tmp.c_str());
-
 		aiVector3D scale;
 		aiQuaternion rotation;
 		aiVector3D position;
@@ -98,6 +97,7 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 		main_node->mTransformation.Decompose(scale, rotation, position);
 
 		//Component Transform
+
 		ComponentTransform* transformComponent = (ComponentTransform*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 		transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
 		transformComponent->SetQuaternion({ rotation.x, rotation.y, rotation.z, rotation.w });
@@ -126,7 +126,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			std::string path_to_name = mesh->path;
 			mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-			GameObject* children = App->scene->CreateGameObject(obj, node->mName.C_Str());
+			GameObject* children = App->scene->CreateGameObject(obj, node->mName.data);
 
 			if (scene->mRootNode != nullptr) {
 				aiVector3D scale;
