@@ -165,10 +165,6 @@ void GameObject::UpdateBoundingBox()
 		if (obb.IsFinite())
 			boundingBox = obb.MinimalEnclosingAABB();
 	}
-
-	for (uint i = 0; i < children.size(); ++i) {
-		children[i]->UpdateBoundingBox();
-	}
 }
 
 void GameObject::BoundingBoxDebugDraw()
