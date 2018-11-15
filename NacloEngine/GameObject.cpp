@@ -221,24 +221,23 @@ void GameObject::Inspector()
 
 bool GameObject::SaveGO(Config* & conf)
 {
-	Config go = conf->AddSection(name.c_str());
+	Config go;
 	go.SetString("Name", name.c_str());
 	go.SetUID("UID", UID);
 	go.SetUID("Parent UID", parent->UID);
-
-	int patata[3] = { 1,2,3 };
-
-	go.SetFloatArray("Position", (const float*)patata, 3);
+	go.SetArray("COMPONENTS");
 
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
 	{
 		Config component;
 		component.SetInt("Type", (*it)->type);
-		(*it)->SaveComponent(conf);
+		(*it)->SaveComponent(component);
 		go.NewArrayEntry(component);
 	}
 
-	return false;
+	conf->NewArrayEntry(go);
+
+	return true;
 }
 
 bool GameObject::SearchForParent(GameObject * parent, GameObject* child)

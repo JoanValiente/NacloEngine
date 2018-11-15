@@ -19,9 +19,9 @@ void Component::ShowInspector()
 {
 }
 
-void Component::SaveComponent(Config* & conf)
+void Component::SaveComponent(Config& conf)
 {
-	conf->SetInt("TYPE", type);
+	conf.SetInt("TYPE", type);
 }
 
 void Component::CleanUp()

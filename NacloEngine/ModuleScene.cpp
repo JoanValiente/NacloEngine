@@ -121,9 +121,11 @@ bool ModuleScene::CleanUp()
 
 	Config *file = new Config("scene");
 
+	file->SetArray("GAME OBJECTS");
+
 	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
 	{
-		(*it)->SaveGO(file);
+		(*it)->SaveGO(file); 
 	}
 
 	file->Save();

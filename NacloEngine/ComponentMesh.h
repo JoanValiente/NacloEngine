@@ -16,7 +16,7 @@ public:
 	void ShowInspector();
 	void AssignMesh(Mesh* mesh);
 
-	void SaveComponent(Config* &conf) {};
+	void SaveComponent(Config &conf);
 
 public:
 	Mesh* mesh;
