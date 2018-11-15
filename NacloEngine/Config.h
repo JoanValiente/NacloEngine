@@ -3,15 +3,7 @@
 
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
-
-struct json_object_t;
-typedef struct json_object_t JSON_Object;
-
-struct json_value_t;
-typedef struct json_value_t  JSON_Value;
-
-struct json_array_t;
-typedef struct json_array_t  JSON_Array;
+#include "Parson\parson.h"
 
 class Config
 {
@@ -41,12 +33,15 @@ public:
 
 	bool SetArray(const char* name);
 	bool NewArrayEntry(const Config &conf);
+	Config GetArray(const char* name, int index = -1) const;
+	size_t GetArraySize(const char* name) const;
+
 
 	bool SetIntArray(const char* name, int* values, int size);
 	bool SetFloatArray(const char* name, const float* values, int size);
 
-	bool SetFloat3(const char* name, const float3& value);
-	float3 GetFloat3(const char* field);
+	bool SetFloat3(const char* name, const float3 value);
+	float3 GetFloat3(const char* name);
 
 
 	bool Save();

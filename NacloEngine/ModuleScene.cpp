@@ -38,6 +38,22 @@ bool ModuleScene::Start()
 	std::string otuput_file;
 	App->meshes->Import("Assets/Models/BakerHouse.fbx", otuput_file);
 	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
+	
+	char new_file[256];
+	strcpy_s(new_file, 256, "scene001");
+	strcat(new_file, ".json");
+
+	Config *file = new Config(new_file);
+
+	int size = file->GetArraySize("GAME OBJECTS");
+
+	for (int i = 0; i < size; i++)
+	{
+		GameObject* go = new GameObject(nullptr, "");
+
+		go->LoadGO(file->GetArray("GAME OBJECTS", i));
+	}
+	
 
 	return true;
 }
@@ -139,7 +155,7 @@ bool ModuleScene::CleanUp()
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
+	/*
 	Config *file = new Config("test");
 
 	file->SetArray("GAME OBJECTS");
@@ -150,8 +166,7 @@ bool ModuleScene::CleanUp()
 			(*it)->SaveGO(file);
 	}
 
-	file->Save();
-
+	file->Save();*/
 
 	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
 	{

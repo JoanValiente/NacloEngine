@@ -18,7 +18,7 @@ bool SceneSerialization::SaveScene(const char * file_name)
 
 	Config *file = new Config(file_name);
 
-	file->SetArray("GAME OBJECTS");
+	file->SetArray("Game Objects");
 
 	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
 	{
@@ -34,6 +34,18 @@ bool SceneSerialization::SaveScene(const char * file_name)
 bool SceneSerialization::LoadScene(const char * file_name)
 {
 	bool ret = true;
+
+	Config *file = new Config(file_name);
+	
+	int size = file->GetArraySize("Game Objects");
+
+	for (int i = 0; i < size; i++)
+	{
+		GameObject* go = new GameObject(nullptr, "");
+
+		go->LoadGO(file->GetArray("Game Objects", i));
+	}
+
 
 	return ret;
 }

@@ -2,7 +2,6 @@
 #include "string.h"
 #include "stdio.h"
 #include "Application.h"
-#include "Parson\parson.h"
 
 Config::Config()
 {
@@ -22,6 +21,11 @@ Config::Config(const char * data)
 			json_root = json_value_init_object();
 			root = json_value_get_object(json_root);
 		}
+		else
+		{
+			root = json_value_get_object(json_root);
+		}
+
 	}
 }
 
@@ -155,6 +159,20 @@ bool Config::NewArrayEntry(const Config & conf)
 	}
 }
 
+Config Config::GetArray(const char * name, int index) const
+{
+	JSON_Array* array = json_object_get_array(root, name);
+
+	return Config(json_array_get_object(array, index));
+}
+
+size_t Config::GetArraySize(const char * name) const
+{
+	JSON_Array* array = json_object_get_array(root, name);
+	
+	return 	json_array_get_count(array);
+}
+
 bool Config::SetIntArray(const char * name, int * values, int size)
 {
 	if (values != nullptr && size > 0)
@@ -181,17 +199,28 @@ bool Config::SetFloatArray(const char * name, const float* values, int size)
 
 		for (int i = 0; i < size; ++i)
 			json_array_append_number(json_array, values[i]);
-
 		return true;
 	}
 
 	return false;
 }
 
-bool Config::SetFloat3(const char * name, const float3 & value)
+bool Config::SetFloat3(const char * name, const float3 value)
 {
 	float new_float3[3] = { value.x, value.y, value.z };
 	return SetFloatArray(name, new_float3, 3);
+}
+
+float3 Config::GetFloat3(const char * name)
+{
+	float3 ret = float3::zero;
+
+	JSON_Array* aux = json_object_get_array(root, name);
+	ret.x = json_value_get_number(json_array_get_value(aux, 0));
+	ret.y = json_value_get_number(json_array_get_value(aux, 1));
+	ret.z = json_value_get_number(json_array_get_value(aux, 2));
+
+	return ret;
 }
 
 

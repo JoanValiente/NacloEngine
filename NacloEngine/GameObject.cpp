@@ -21,11 +21,11 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	if (parent != nullptr)
 	{
 		parent->children.push_back(this);
-		UID = App->fs->GenerateUID();
+		goUID = App->fs->GenerateUID();
 	}
 	else
 	{
-		UID = 0;
+		goUID = 0;
 	}
 
 	
@@ -227,8 +227,8 @@ bool GameObject::SaveGO(Config* & conf)
 {
 	Config go;
 	go.SetString("Name", name.c_str());
-	go.SetUID("UID", UID);
-	go.SetUID("Parent UID", parent->UID);
+	go.SetUID("UID", goUID);
+	go.SetUID("Parent UID", parent->goUID);
 	go.SetArray("COMPONENTS");
 
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
@@ -242,6 +242,15 @@ bool GameObject::SaveGO(Config* & conf)
 	conf->NewArrayEntry(go);
 
 	return true;
+}
+
+bool GameObject::LoadGO(Config& conf)
+{
+	name = conf.GetString("Name");
+	goUID = conf.GetUID("UID");
+	parent_UID = conf.GetUID("Parent UID");
+
+	return false;
 }
 
 bool GameObject::SearchForParent(GameObject * parent, GameObject* child)
