@@ -21,6 +21,11 @@ void PanelInspector::DrawInspector()
 	{
 		if (ImGui::Begin("Inspector", &active))
 		{
+			ImGui::Text(go->name.c_str());
+			bool staticGO = go->staticGO;
+			if (ImGui::Checkbox("Static", &staticGO))
+				go->staticGO = staticGO;
+
 			go->Inspector();
 			ImGui::End();
 		}
