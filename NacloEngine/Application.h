@@ -18,6 +18,7 @@
 #include "TextureImporter.h"
 #include "ModuleFileSystem.h"
 #include "PerfTimer.h"
+#include "SceneSerialization.h"
 
 
 using namespace std;
@@ -44,6 +45,7 @@ public:
 	ModuleCamera3D* camera;
 	ModuleFileSystem* fs;
 
+	SceneSerialization* sceneser;
 	MeshImporter* meshes;
 	TextureImporter* texture;
 

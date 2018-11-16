@@ -21,6 +21,8 @@ class PanelInspector;
 class PanelHierarchy;
 class PanelResources;
 
+enum TypeSave;
+
 class ModuleImgui : public Module
 {
 public:

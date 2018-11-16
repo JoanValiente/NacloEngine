@@ -51,7 +51,7 @@ bool ModuleImgui::Start()
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 
 	configuration->LoadHardwareInfo();
-	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL2_Init();
@@ -136,7 +136,9 @@ void ModuleImgui::Log(const char * text)
 bool ModuleImgui::Show_Main_Menu_Bar()
 {
 	bool ret = true;
-	
+	static bool save = false;
+	static TypeSave save_type = SAVE;
+
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Main Menu"))
@@ -144,6 +146,16 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			if (ImGui::MenuItem("Open Explorer", NULL, false, true))
 			{
 				ShellExecuteA(NULL, "open", explorer_path.c_str() , NULL, NULL, SW_SHOWDEFAULT);
+			}
+			if (ImGui::MenuItem("Save", "Ctrl+S"))
+			{
+				save_type = SAVE;
+				save = true;
+			}
+			if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+			{
+				save_type = SAVE_AS;
+				save = true;
 			}
 			if (ImGui::MenuItem("Console", NULL, false, true))
 			{
@@ -196,10 +208,14 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 
 				ImGui::EndMenu(); 
 			}
-			
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
+	}
+
+	if (save)
+	{
+		save = App->sceneser->ShowSavingOption(save_type);
 	}
 
 	return ret;
