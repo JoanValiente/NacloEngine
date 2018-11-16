@@ -22,15 +22,21 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Modu
 
 	}
 
-	if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
+	if (PHYSFS_mount("./Library/", "Library", 1) == 0) { //Add paths to physfs to search throught
 
 		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+
 	}
 
-	if (PHYSFS_mount("./Assets/Models/", "Models", 1) == 0) { //Add paths to physfs to search throught
+	//if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
 
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
-	}
+	//	LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+	//}
+
+	//if (PHYSFS_mount("./Assets/Models/", "Models", 1) == 0) { //Add paths to physfs to search throught
+
+	//	LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
+	//}
 
 }
 
@@ -116,7 +122,11 @@ void ModuleFileSystem::NormalizePath(std::string &file)
 			*iterator = '/';
 	}
 
-	file = file.erase(0, file.find("Game") + 5);
+	int erase = file.find("Game");
+	if (erase >= 0)
+	{
+		file = file.erase(0, erase + 5);
+	}
 }
 
 void ModuleFileSystem::CreateNewDirectory(const char * path) const

@@ -34,10 +34,6 @@ bool ModuleScene::Start()
 	main_camera->staticGO = false;
 
 	quadtree = new Quadtree();
-
-	std::string otuput_file;
-	App->meshes->Import("Assets/Models/BakerHouse.fbx", otuput_file);
-	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
 	
 	char new_file[256];
 	strcpy_s(new_file, 256, "test");

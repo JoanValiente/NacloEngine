@@ -60,7 +60,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void DrawMesh(Mesh* meshes, Texture* texture, ComponentTransform* transform);
+	void DrawMesh(Mesh* meshes, ComponentTransform* transform, Texture* texture = nullptr);
 
 	void OnResize(int width, int height);
 

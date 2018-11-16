@@ -17,7 +17,7 @@ public:
 	void AssignMesh(Mesh* mesh);
 
 	void SaveComponent(Config &conf);
-	void LoadComponent(Config &conf) {};
+	void LoadComponent(Config &conf);
 
 public:
 	Mesh* mesh;

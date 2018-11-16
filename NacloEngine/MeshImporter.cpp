@@ -228,7 +228,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			LOG("Exporting mesh %s", node->mName.C_Str());
 			char* buffer;
 			App->fs->Load(path, &buffer);
-			ExportNCL(buffer, mesh);
+			ExportNCL(buffer, mesh, mesh->ncl_path);
 
 			App->renderer3D->AddTexture(texture);
 			final_obj = children;
@@ -249,7 +249,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 	}
 }
 
-void MeshImporter::LoadMeshNCL(const char * path, GameObject * obj, Mesh * mesh)
+void MeshImporter::LoadMeshNCL(const char * path, Mesh * mesh)
 {
 	std::string new_path = path;
 
@@ -262,32 +262,14 @@ void MeshImporter::LoadMeshNCL(const char * path, GameObject * obj, Mesh * mesh)
 	aiQuaternion rotation = { 0.0f,0.0f,0.0f,0.0f };
 	aiVector3D position = { 0.0f, 0.0f , 0.0f };;
 
-
-	//Component Transform
-	ComponentTransform* transformComponent = (ComponentTransform*)obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-	transformComponent->SetPosition(math::float3(position.x, position.y, position.z));
-	transformComponent->SetRotation(math::float3(rotation.GetEuler().x, rotation.GetEuler().y, rotation.GetEuler().z));
-	transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
-
 	mesh->scale = { scale.x, scale.y, scale.z };
 	mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
 	mesh->position = { position.x,position.y, position.z };
 
-	//Component Mesh
-	ComponentMesh* meshComponent = (ComponentMesh*)obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
-	meshComponent->AssignMesh(mesh);
-
 	mesh->color = { 255.0f,255.0f,255.0f,255.0f };
-
-	Texture* texture = new Texture();
-
-	//Component Mesh
-	ComponentMaterial* materialComponent = (ComponentMaterial*)obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
-	materialComponent->AssignTexture(texture);
 
 	SetBuffers(mesh);
 	App->renderer3D->AddMesh(mesh);
-	App->renderer3D->AddTexture(texture);
 }
 
 
@@ -311,7 +293,7 @@ void MeshImporter::SetBuffers(Mesh * mesh)
 
 }
 
-void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
+void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& output)
 {
 	if (buffer != nullptr)
 	{
@@ -351,7 +333,6 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 
 		LOG("Stored UV");
 
-		std::string output;
 		App->fs->Save(output, data, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
 	}
 	else
@@ -366,7 +347,6 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh)
 Mesh * MeshImporter::ImportNCL(const char * path)
 {
 	Mesh* ret = nullptr;
-	GameObject* go = new GameObject(App->scene->root, "patata");
 	char* buffer;
 	uint size = App->fs->Load(path, &buffer);
 
@@ -380,9 +360,7 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 		LOG("ERROR LOADING OWN MESH %s", path);
 	}
 
-	LoadMeshNCL("patata1", go, ret);
-
-	App->scene->SetSelected(go);
+	LoadMeshNCL("patata1", ret);
 
 	return ret;
 }

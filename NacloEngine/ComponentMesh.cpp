@@ -2,6 +2,8 @@
 #include "OpenGL.h"
 #include "GameObject.h"
 #include "Config.h"
+#include "Application.h"
+#include "MeshImporter.h"
 
 ComponentMesh::ComponentMesh(GameObject * container) : Component(container)
 {
@@ -41,4 +43,11 @@ void ComponentMesh::AssignMesh(Mesh* mesh)
 void ComponentMesh::SaveComponent(Config & conf)
 {
 	conf.SetString("Name", mesh->filename.c_str());
+	conf.SetString("Path", mesh->path.c_str());
+	conf.SetString("NCL Path", mesh->ncl_path.c_str());
+}
+
+void ComponentMesh::LoadComponent(Config & conf)
+{
+	mesh = App->meshes->ImportNCL(conf.GetString("NCL Path"));
 }

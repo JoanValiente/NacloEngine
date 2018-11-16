@@ -188,9 +188,13 @@ update_status ModuleRenderer3D::Update(float dt)
 					transform = (ComponentTransform*)(*it);
 				}
 			}
-			if (m != nullptr && t != nullptr && transform != nullptr) 
+			if (m != nullptr && transform != nullptr) 
 			{
-				DrawMesh(m->mesh, t->texture, transform);
+				if (t != nullptr)
+					DrawMesh(m->mesh, transform, t->texture);
+				else
+					DrawMesh(m->mesh, transform);
+
 				m = nullptr;
 				t = nullptr;
 				transform = nullptr;
@@ -221,7 +225,7 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture, ComponentTransform* transform)
+void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Texture* texture)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
@@ -232,11 +236,14 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, Texture* texture, ComponentTransform
 
 	glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
-	if (!ischecked)
-		glBindTexture(GL_TEXTURE_2D, texture->texture_path);
-	else
-		glBindTexture(GL_TEXTURE_2D, checkers_path);
-	
+	if (texture != nullptr)
+	{
+		if (!ischecked)
+			glBindTexture(GL_TEXTURE_2D, texture->texture_path);
+		else
+			glBindTexture(GL_TEXTURE_2D, checkers_path);
+	}
+
 	if (wire_mode)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 

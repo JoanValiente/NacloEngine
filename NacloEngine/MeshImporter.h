@@ -23,20 +23,23 @@ public:
 	bool Start();
 	bool CleanUp();
 
-	void LoadMeshData(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
-	void LoadMeshNCL(const char* path, GameObject* obj, Mesh* mesh);
-
-
-	void SetBuffers(Mesh* mesh);
-
 	//Load Own Format
 	Mesh* ImportNCL(const char* path);
-	Mesh* LoadNCL(const void* buffer, uint size);
 	
 	//Import FBX - NCL
 	bool Import(const char* path, std::string& output_file);
+
+private:
+	Mesh * LoadNCL(const void* buffer, uint size);
+
 	bool Import(const void* buffer, uint size, std::string& output_file, const char* path);
-	void ExportNCL(const void* buffer, Mesh* mesh);
+	void ExportNCL(const void* buffer, Mesh* mesh, std::string& output_file);
+
+	void LoadMeshData(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
+	void LoadMeshNCL(const char* path, Mesh* mesh);
+
+	void SetBuffers(Mesh* mesh);
+
 };
 
 #endif // !_MESHIMPORTER_
