@@ -6,6 +6,12 @@
 struct GameObject;
 struct Config;
 
+enum TypeSave
+{
+	SAVE,
+	SAVE_AS,
+};
+
 class SceneSerialization
 {
 public:
@@ -15,9 +21,11 @@ public:
 	bool SaveScene(const char* file_name = "");
 	bool LoadScene(const char* file_name = "");
 
+	bool ShowSavingOption(TypeSave type);
 
 private:
 	Config* file;
+	bool saved_once = false;
 	std::vector<GameObject*> aux_go;
 };
 

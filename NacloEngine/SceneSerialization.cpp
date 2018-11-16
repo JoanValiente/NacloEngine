@@ -49,3 +49,38 @@ bool SceneSerialization::LoadScene(const char * file_name)
 
 	return ret;
 }
+
+bool SceneSerialization::ShowSavingOption(TypeSave type)
+{
+	bool ret = true;
+	
+	if (saved_once == false || type == SAVE_AS)
+	{
+		ImGui::OpenPopup("Save");
+		if (ImGui::BeginPopupModal("Save", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+		{
+			ImGui::Text("/Game/Scenes/");
+			ImGui::Separator();
+
+			static char file_name[64] = "file_name";
+			ImGui::InputText("##name", file_name, 64);
+
+			if (ImGui::Button("SAVE", ImVec2(120, 0)))
+			{
+				saved_once = true;
+				ret = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SetItemDefaultFocus();
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel", ImVec2(120, 0)))
+			{
+				ret = false;
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::EndPopup();
+		}
+	}
+
+	return ret;
+}

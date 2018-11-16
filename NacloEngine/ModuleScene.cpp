@@ -76,6 +76,8 @@ update_status ModuleScene::Update(float dt)
 
 	root->Update(dt);
 
+	ImGui::ShowDemoWindow();
+
 	App->imgui->inspector->DrawInspector();
 
 	return ret;
