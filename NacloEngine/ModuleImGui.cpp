@@ -4,7 +4,6 @@
 #include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleInput.h"
-
 #include "Panel.h"
 #include "PanelAbout.h"
 #include "PanelConfiguration.h"
@@ -12,6 +11,7 @@
 #include "PanelRandomNumberGenerator.h"
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
+#include "PanelResources.h"
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -30,6 +30,7 @@ bool ModuleImgui::Init()
 	panels.push_back(about = new PanelAbout());
 	//panels.push_back(inspector = new PanelInspector());
 	panels.push_back(hierarchy = new PanelHierarchy());
+	panels.push_back(resources = new PanelResources());
 	return ret;
 }
 

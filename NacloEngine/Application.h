@@ -13,6 +13,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
+#include "ModuleResources.h"
 #include "TextureImporter.h"
 #include "ModuleFileSystem.h"
 #include "PerfTimer.h"
@@ -27,6 +28,7 @@ public:
 	ModuleInput* input;
 	ModuleImgui* imgui;
 	ModuleScene* scene;
+	ModuleResources* resources;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleFileSystem* fs;

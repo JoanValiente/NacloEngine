@@ -169,9 +169,12 @@
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleImGui.h" />
+    <ClInclude Include="ModuleResources.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="PanelResources.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="SceneSerialization.h" />
     <ClInclude Include="TextureImporter.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -249,9 +252,12 @@
     <ClCompile Include="MeshImporter.cpp" />
     <ClCompile Include="ModuleRenderer3D.cpp" />
     <ClCompile Include="ModuleImGui.cpp" />
+    <ClCompile Include="ModuleResources.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="PanelResources.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="Resource.cpp" />
     <ClCompile Include="SceneSerialization.cpp" />
     <ClCompile Include="TextureImporter.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />

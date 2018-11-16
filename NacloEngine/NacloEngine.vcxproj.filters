@@ -58,6 +58,9 @@
     <Filter Include="Sources\Parson">
       <UniqueIdentifier>{36343e9a-05e7-4f24-baa1-7e28a8fb0550}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\Resources">
+      <UniqueIdentifier>{8dbe8fcf-3069-4222-9a5d-824d2e7834d2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -396,6 +399,15 @@
     <ClInclude Include="SceneSerialization.h">
       <Filter>Sources\Modules\Importers</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleResources.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Sources\Modules\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelResources.h">
+      <Filter>Sources\Modules\Panels</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -628,6 +640,15 @@
     </ClCompile>
     <ClCompile Include="SceneSerialization.cpp">
       <Filter>Sources\Modules\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleResources.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Sources\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelResources.cpp">
+      <Filter>Sources\Modules\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
