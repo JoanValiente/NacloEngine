@@ -14,12 +14,22 @@
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
 #include "ModuleResources.h"
+#include "ModuleTimer.h"
 #include "TextureImporter.h"
 #include "ModuleFileSystem.h"
 #include "PerfTimer.h"
 
 
 using namespace std;
+
+enum ENGINE_STATE
+{
+	PLAY,
+	PAUSE,
+	STOP,
+	TICK,
+	EDITOR
+};
 
 class Application
 {
@@ -29,6 +39,7 @@ public:
 	ModuleImgui* imgui;
 	ModuleScene* scene;
 	ModuleResources* resources;
+	ModuleTimer* timer;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleFileSystem* fs;
@@ -40,9 +51,10 @@ public:
 	int		FPS_cap = 60;
 	bool	vsync = false;
 
-private:
-
+	ENGINE_STATE engineState = ENGINE_STATE::EDITOR;
 	PerfTimer	ms_timer;
+
+private:	
 	double		last_FPS = 0.0f;
 	double		last_ms = 0.0f;
 	float		dt = 0.0f;
@@ -66,6 +78,7 @@ public:
 	void Log(const char* text);
 
 	void const ShowApplicationInfo();
+	float GetDt() const;
 
 private:
 

@@ -6,6 +6,7 @@ Application::Application()
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
 	resources = new ModuleResources(this);
+	timer = new ModuleTimer(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	imgui = new ModuleImgui(this);
@@ -23,6 +24,7 @@ Application::Application()
 	AddModule(window);
 	AddModule(fs);
 	AddModule(resources);
+	AddModule(timer);
 	AddModule(input);
 	AddModule(scene);
 	AddModule(camera);
@@ -213,6 +215,11 @@ void const Application::ShowApplicationInfo()
 
 	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
 	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
+}
+
+float Application::GetDt() const
+{
+	return dt;
 }
 
 void Application::AddModule(Module* mod)
