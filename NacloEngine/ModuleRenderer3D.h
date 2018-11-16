@@ -18,6 +18,7 @@ struct Mesh
 {
 	std::string path = "";
 	std::string filename = "";
+	std::string ncl_path = "";
 
 	float3 position = { 0,0,0 };
 	Quat rotation = Quat::identity;

@@ -26,6 +26,7 @@ public:
 	virtual void ShowInspector();
 	virtual void SaveComponent(Config &conf);
 	virtual void LoadComponent(Config &conf);
+
 	void CleanUp();
 
 public:

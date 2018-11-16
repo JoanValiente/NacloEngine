@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ComponentTransform.h"
 #include "Component.h"
+#include "Config.h"
 
 ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 {
@@ -67,6 +68,32 @@ void ComponentCamera::DebugDraw()
 
 	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
 
+}
+
+void ComponentCamera::SaveComponent(Config & conf)
+{
+	conf.SetInt("Frustrum Type", frustum.type);
+	conf.SetFloat3("Position", frustum.pos);
+	conf.SetFloat3("Front", frustum.front);
+	conf.SetFloat3("Up", frustum.up);
+	conf.SetFloat("Near Plane", frustum.nearPlaneDistance);
+	conf.SetFloat("Far Plane", frustum.farPlaneDistance);
+	conf.SetFloat("Vertical Fov", frustum.verticalFov);
+	conf.SetFloat("Horizontal Fov", frustum.horizontalFov);
+	conf.SetBool("DebugDraw", debugDraw);
+}
+
+void ComponentCamera::LoadComponent(Config & conf)
+{
+	frustum.type				 = (FrustumType)conf.GetInt("Frustrum Type");
+	frustum.pos					 = conf.GetFloat3("Position");
+	frustum.front				 = conf.GetFloat3("Front");
+	frustum.up					 = conf.GetFloat3("Up");
+	frustum.nearPlaneDistance	 = conf.GetFloat("Near Plane");
+	frustum.farPlaneDistance	 = conf.GetFloat("Far Plane");
+	frustum.verticalFov			 = conf.GetFloat("Vertical Fov");
+	frustum.horizontalFov		 = conf.GetFloat("Horizontal Fov");
+	debugDraw					 = conf.GetBool("DebugDraw");
 }
 
 bool ComponentCamera::Intersects(const AABB box)

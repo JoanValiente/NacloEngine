@@ -250,11 +250,23 @@ bool GameObject::SaveGO(Config* & conf)
 }
 
 bool GameObject::LoadGO(Config& conf)
-{
+{	
 	name = conf.GetString("Name");
 	goUID = conf.GetUID("UID");
 	parent_UID = conf.GetUID("Parent UID");
 
+	int size = conf.GetArraySize("COMPONENTS");
+
+	for (int i = 0; i < size; i++)
+	{
+		Component::COMPONENT_TYPE type = (Component::COMPONENT_TYPE)conf.GetArray("COMPONENTS", i).GetInt("Type");
+
+		if (type != Component::COMPONENT_TYPE::COMPONENT_NONE)
+		{
+			Component* component = NewComponent(type);
+			component->LoadComponent(conf.GetArray("COMPONENTS", i));
+		}
+	}
 	return false;
 }
 

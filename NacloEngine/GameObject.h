@@ -14,6 +14,7 @@ struct ComponentMesh;
 struct ComponentTransform;
 struct Config;
 
+
 class GameObject {
 	 
 public:
