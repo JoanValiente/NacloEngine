@@ -37,6 +37,8 @@ public:
 	uint GetNumChildren();
 	void Inspector();
 
+	void AddChildren(GameObject* children);
+
 	bool SaveGO(Config* &conf);
 	bool LoadGO(Config &conf);
 

@@ -223,6 +223,11 @@ void GameObject::Inspector()
 	}
 }
 
+void GameObject::AddChildren(GameObject* children)
+{
+	this->children.push_back(children);
+}
+
 bool GameObject::SaveGO(Config* & conf)
 {
 	Config go;

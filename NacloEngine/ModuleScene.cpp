@@ -40,20 +40,8 @@ bool ModuleScene::Start()
 	App->renderer3D->AddTexture("E:\\GitHub\\NacloEngine\\NacloEngine\\Game\\Assets\\Textures\\Baker_house.png");
 	
 	char new_file[256];
-	strcpy_s(new_file, 256, "scene001");
+	strcpy_s(new_file, 256, "test");
 	strcat(new_file, ".json");
-
-	Config *file = new Config(new_file);
-
-	int size = file->GetArraySize("GAME OBJECTS");
-
-	for (int i = 0; i < size; i++)
-	{
-		GameObject* go = new GameObject(nullptr, "");
-
-		go->LoadGO(file->GetArray("GAME OBJECTS", i));
-	}
-	
 
 	return true;
 }
@@ -145,6 +133,16 @@ void ModuleScene::UpdateTransforms(GameObject* go)
 	{
 		UpdateTransforms(go->children[i]);
 	}
+}
+
+void ModuleScene::DeleteAllGameObject()
+{
+	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	{
+		(*it)->CleanUp();
+	}
+
+	gameObjects.clear();
 }
 
 bool ModuleScene::CleanUp()

@@ -22,8 +22,12 @@ public:
 	bool LoadScene(const char* file_name = "");
 
 	bool ShowSavingOption(TypeSave type);
+	bool ShowLoadingOption();
 
 private:
+
+	void SetGameObjectHierarchy(GameObject* go);
+
 	Config* file;
 	bool saved_once = false;
 	std::vector<GameObject*> aux_go;

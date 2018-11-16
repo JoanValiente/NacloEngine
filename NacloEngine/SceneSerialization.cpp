@@ -35,6 +35,10 @@ bool SceneSerialization::LoadScene(const char * file_name)
 {
 	bool ret = true;
 
+	App->scene->DeleteAllGameObject();
+	App->scene->root = new GameObject(nullptr, "root");
+	ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+
 	Config *file = new Config(file_name);
 	
 	int size = file->GetArraySize("Game Objects");
@@ -46,6 +50,12 @@ bool SceneSerialization::LoadScene(const char * file_name)
 		go->LoadGO(file->GetArray("Game Objects", i));
 	}
 
+	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
+	{
+		SetGameObjectHierarchy((*it));
+	}
+
+	delete file;
 
 	return ret;
 }
@@ -53,7 +63,7 @@ bool SceneSerialization::LoadScene(const char * file_name)
 bool SceneSerialization::ShowSavingOption(TypeSave type)
 {
 	bool ret = true;
-	
+
 	if (saved_once == false || type == SAVE_AS)
 	{
 		ImGui::OpenPopup("Save");
@@ -86,4 +96,51 @@ bool SceneSerialization::ShowSavingOption(TypeSave type)
 	}
 
 	return ret;
+}
+
+bool SceneSerialization::ShowLoadingOption()
+{
+	bool ret = true; 
+
+	ImGui::OpenPopup("Load");
+
+	if (ImGui::BeginPopupModal("Load", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	{
+		ImGui::Text("Folder:"); ImGui::SameLine();
+		ImGui::Text("/Game/Scenes/");
+		ImGui::Separator();
+
+
+		static char file_name[64] = "file_name";
+		ImGui::InputText("##name", file_name, 64);
+
+		if (ImGui::Button("LOAD", ImVec2(120, 0)))
+		{
+			ret = false;
+			LoadScene(file_name);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SetItemDefaultFocus();
+		ImGui::SameLine();
+		if (ImGui::Button("Cancel", ImVec2(120, 0)))
+		{
+			ret = false;
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::EndPopup();
+	}
+	return ret;
+}
+
+
+void SceneSerialization::SetGameObjectHierarchy(GameObject* go)
+{
+	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin() + 1; it != App->scene->gameObjects.end(); ++it)
+	{
+		if ((*it)->parent_UID == go->goUID)
+		{
+			(*it)->parent = go;
+			go->AddChildren((*it));
+		}
+	}
 }

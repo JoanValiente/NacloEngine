@@ -137,6 +137,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 {
 	bool ret = true;
 	static bool save = false;
+	static bool load = false;
 	static TypeSave save_type = SAVE;
 
 	if (ImGui::BeginMainMenuBar())
@@ -156,6 +157,10 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			{
 				save_type = SAVE_AS;
 				save = true;
+			}
+			if (ImGui::MenuItem("Load", "Ctrl+O"))
+			{
+				load = true;
 			}
 			if (ImGui::MenuItem("Console", NULL, false, true))
 			{
@@ -216,6 +221,11 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 	if (save)
 	{
 		save = App->sceneser->ShowSavingOption(save_type);
+	}
+
+	if (load)
+	{
+		load = App->sceneser->ShowLoadingOption();
 	}
 
 	return ret;
