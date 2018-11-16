@@ -39,7 +39,7 @@ bool ModuleCamera3D::Start()
 	camera = new ComponentCamera(nullptr);
 	
 	//camera->frustum.Translate(float3(3.0f, 5.0f, 3.0f));
-	camera->frustumCulling = false;
+	camera->frustumCulling = true;
 	camera->frustum.Translate(float3(5, 10, 5));
 	LookAt(float3(0.0f, 0.0f, 0.0f));
 
@@ -259,6 +259,15 @@ void ModuleCamera3D::CullingGameObjects(GameObject * go)
 		else
 			go->active = true;
 	}
+
+	if (camera->frustumCulling) {
+		if (!camera->Intersects(go->boundingBox)) {
+			go->active = false;
+		}
+		else
+			go->active = true;
+	}
+
 	for (uint i = 0; i < go->children.size(); ++i)
 	{
 		CullingGameObjects(go->children[i]);
