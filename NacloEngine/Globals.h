@@ -61,6 +61,7 @@ enum update_status
 #define ASSETS_MESH_FOLDER "/Assets/Models/"
 #define ASSETS_TEXTURES_FOLDER "/Assets/Textures/"
 #define ASSETS_SCENES_FOLDER "/Assets/Scenes/"
+#define SETTINGS_FOLDER "/Settings/"
 
 
 #endif

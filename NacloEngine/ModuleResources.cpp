@@ -1,6 +1,7 @@
 #include "ModuleResources.h"
 #include "Application.h"
 #include "Resource.h"
+#include "Config.h"
 
 ModuleResources::ModuleResources(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -32,6 +33,53 @@ bool ModuleResources::CleanUp()
 	return true;
 }
 
+void ModuleResources::LoadResources()
+{
+	char* buffer = nullptr;
+	uint size = App->fs->Load(SETTINGS_FOLDER "resources.json", &buffer);
+
+	if (buffer != nullptr && size > 0)
+	{
+		Config config(buffer);
+		
+		int resourcesSize = config.GetArraySize("Resources");
+		for (int i = 0; i < resourcesSize; ++i)
+		{
+			Config resource(config.GetArray("Resources", i));
+			Resource_Type type = (Resource_Type) resource.GetInt("Type");
+			UID uid = resource.GetUID("UID");
+
+			if (Get(uid) != nullptr)
+			{
+				LOG("Skipping duplicated resource id %llu", uid);
+				continue;
+			}
+
+			Resource* res = CreateNewResource(type, uid);
+			res->Load(config.GetArray("Resources", i));
+		}
+		RELEASE_ARRAY(buffer);
+	}
+}
+
+void ModuleResources::SaveResources() const
+{
+	bool ret = true;
+
+	Config save;
+	save.SetArray("Resources");
+
+	for (map<UID, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
+	{
+		Config resource;
+		it->second->Save(resource);
+		save.NewArrayEntry(resource);		
+	}
+
+	//TODO David: The resource should save the UID of whatever it's referencing 
+	save.Save();
+}
+
 uint ModuleResources::Find(const char * file_in_assets) const
 {
 	for (std::map<UID, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
@@ -45,7 +93,6 @@ UID ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 {
 	UID ret = 0;
 
-	// Check is that file has been already exported
 	if (force == true)
 	{
 		ret = Find(new_file_in_assets);
@@ -78,7 +125,8 @@ UID ModuleResources::ImportFile(const char * new_file_in_assets, bool force)
 	}
 	
 
-	return ret;
+	return ret;
+
 }
 
 UID ModuleResources::GenerateNewUID()
@@ -132,7 +180,9 @@ Resource * ModuleResources::CreateNewResource(Resource_Type type, UID force_uid)
 	}
 
 	if (ret != nullptr)
-		resources[uid] = ret;		return ret;
+		resources[uid] = ret;	
+
+	return ret;
 }
 
 void ModuleResources::CollectResourcesByType(std::vector<const Resource*>& resources, Resource_Type type) const

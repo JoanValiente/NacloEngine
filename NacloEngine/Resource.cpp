@@ -1,4 +1,5 @@
 #include "Resource.h"
+#include "Config.h"
 
 Resource::Resource(UID uid, Resource_Type type)
 {
@@ -47,3 +48,22 @@ uint Resource::CountReferences() const
 {
 	return loaded;
 }
+
+// ---------------------------------------------------------
+void Resource::Save(Config & config) const
+{
+	config.SetUID("UID", uid);
+	config.SetInt("Type", type);
+	config.SetString("File", file.c_str());
+	config.SetString("Exported", exported_file.c_str());
+}
+
+// ---------------------------------------------------------
+void Resource::Load(const Config & config)
+{
+	uid = config.GetUID("UID");
+	type = (Resource_Type)config.GetInt("Type");
+	file = config.GetString("File");
+	exported_file = config.GetString("Exported");
+}
+
