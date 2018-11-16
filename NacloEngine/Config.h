@@ -47,6 +47,7 @@ public:
 	bool Save();
 
 private:
+	std::string GenerateSceneName(const char* folder, const char* file_name);
 	size_t GetSize(char** buf) const;
 
 private:

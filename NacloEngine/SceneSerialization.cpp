@@ -20,7 +20,7 @@ bool SceneSerialization::SaveScene(const char * file_name)
 
 	file->SetArray("Game Objects");
 
-	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
+	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin() + 1; it != App->scene->gameObjects.end(); ++it)
 	{
 		(*it)->SaveGO(file);
 	}
@@ -59,8 +59,10 @@ bool SceneSerialization::ShowSavingOption(TypeSave type)
 		ImGui::OpenPopup("Save");
 		if (ImGui::BeginPopupModal("Save", NULL, ImGuiWindowFlags_AlwaysAutoResize))
 		{
+			ImGui::Text("Folder:"); ImGui::SameLine();
 			ImGui::Text("/Game/Scenes/");
 			ImGui::Separator();
+
 
 			static char file_name[64] = "file_name";
 			ImGui::InputText("##name", file_name, 64);
@@ -68,6 +70,7 @@ bool SceneSerialization::ShowSavingOption(TypeSave type)
 			if (ImGui::Button("SAVE", ImVec2(120, 0)))
 			{
 				saved_once = true;
+				SaveScene(file_name);
 				ret = false;
 				ImGui::CloseCurrentPopup();
 			}

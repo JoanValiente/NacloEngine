@@ -234,12 +234,24 @@ bool Config::Save()
 	size_t size = GetSize(&buffer);
 
 	//TODO CRETE NEW NAME Using Name, ASSETS_SCENE, ".json"
-	std::string output;
-	ret = App->fs->Save(output, buffer,size, ASSETS_SCENES_FOLDER, "patata", "json");
+
+	ret = App->fs->SaveFile(GenerateSceneName(ASSETS_SCENES_FOLDER, name).c_str(), buffer, size);
 
 	RELEASE_ARRAY(buffer);
 
 	return ret;
+}
+
+std::string Config::GenerateSceneName(const char * folder, const char * file_name)
+{
+	App->fs->CreateNewDirectory(folder);
+
+	std::string final_path = folder;
+
+	final_path.append(file_name);
+	final_path.append(".json");
+
+	return final_path;
 }
 
 size_t Config::GetSize(char ** buffer) const
