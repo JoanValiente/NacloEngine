@@ -5,11 +5,14 @@
 
 #include <string>
 
+struct Config;
+
 enum Resource_Type {
 	RESOURCE_MATERIAL,
 	RESOURCE_MESH,
 	RESOURCE_UNKNOWN
-};
+};
+
 
 class Resource
 {
@@ -25,14 +28,17 @@ public:
 	bool LoadToMemory();
 	uint CountReferences() const;
 
-	//virtual void Save(Config& config) const;
-	//virtual void Load(const Config& config);
-	virtual bool LoadInMemory() = 0;public:
+	virtual void Save(Config& config) const;
+	virtual void Load(const Config& config);
+	virtual bool LoadInMemory() = 0;
+
+public:
 	UID uid = 0;
 	std::string file;
 	std::string exported_file;
 	Resource_Type type = RESOURCE_UNKNOWN;
 	uint loaded = 0;
-};
+};
+
 
 #endif // __RESOURCE_H__

@@ -21,6 +21,9 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
+	void LoadResources();
+	void SaveResources() const;
+
 	uint Find(const char* file_in_assets) const;
 	UID ImportFile(const char* new_file_in_assets, bool force = false);
 	UID GenerateNewUID();
