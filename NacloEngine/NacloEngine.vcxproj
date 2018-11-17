@@ -177,6 +177,8 @@
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ResourceMaterial.h" />
+    <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="SceneSerialization.h" />
     <ClInclude Include="TextureImporter.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -262,6 +264,8 @@
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="ResourceMaterial.cpp" />
+    <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="SceneSerialization.cpp" />
     <ClCompile Include="TextureImporter.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />

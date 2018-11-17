@@ -36,7 +36,7 @@ bool Resource::IsLoadedToMemory() const
 	return loaded == 0;
 }
 
-bool Resource::LoadToMemory()
+uint Resource::LoadToMemory()
 {
 	if (IsLoadedToMemory())
 		LoadInMemory();
@@ -49,7 +49,6 @@ uint Resource::CountReferences() const
 	return loaded;
 }
 
-// ---------------------------------------------------------
 void Resource::Save(Config & config) const
 {
 	config.SetUID("UID", uid);
@@ -58,7 +57,6 @@ void Resource::Save(Config & config) const
 	config.SetString("Exported", exported_file.c_str());
 }
 
-// ---------------------------------------------------------
 void Resource::Load(const Config & config)
 {
 	uid = config.GetUID("UID");

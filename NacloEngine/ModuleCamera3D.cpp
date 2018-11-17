@@ -313,9 +313,14 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 					for (int j = 0; j < mesh->num_indices;)
 					{
-						tri.a = mesh->vertices[mesh->indices[j++] * 3];
-						tri.b = mesh->vertices[mesh->indices[j++] * 3];
-						tri.c = mesh->vertices[mesh->indices[j++] * 3];
+						math::float3 x = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+						j++;
+						math::float3 y = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+						j++;
+						math::float3 z = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+						j++;
+
+						tri = { x,y,z };
 
 						float distance;
 						float3 hit_point;

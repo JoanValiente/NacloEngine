@@ -216,6 +216,11 @@ void Application::Play()
 		engineState = ENGINE_STATE::PLAY;
 		break;
 
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::EDITOR;
+		break;
+
 	default:
 		break;
 	}

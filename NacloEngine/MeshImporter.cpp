@@ -145,7 +145,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			aiMesh* new_mesh = scene->mMeshes[node->mMeshes[0]];
 
 			mesh->num_vertices = new_mesh->mNumVertices;
-			mesh->vertices = new float3[mesh->num_vertices];
+			mesh->vertices = new float[mesh->num_vertices * 3];
 			memcpy(mesh->vertices, new_mesh->mVertices, sizeof(float)*mesh->num_vertices * 3);
 
 			LOG("Added new mesh. Vertices = %d", mesh->num_vertices);
@@ -299,7 +299,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 	{
 		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
+		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices * 3 + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -312,7 +312,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 		LOG("Stored ranges");
 
 		//Store vertices
-		bytes = sizeof(float3) * mesh->num_vertices;
+		bytes = sizeof(float) * mesh->num_vertices * 3;
 		memcpy(cursor, mesh->vertices, bytes);
 
 		cursor += bytes;
@@ -382,8 +382,8 @@ Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 	ret->num_texture	= ranges[2];
 
 	//Load Vertices
-	bytes = sizeof(float3) * ret->num_vertices;
-	ret->vertices = new float3[ret->num_vertices];
+	bytes = sizeof(float) * ret->num_vertices * 3;
+	ret->vertices = new float[ret->num_vertices * 3];
 	memcpy(ret->vertices, cursor, bytes);
 
 	// Load indices
