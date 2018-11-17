@@ -1,15 +1,30 @@
 #include "Application.h"
+#include "ModuleWindow.h"
+#include "ModuleInput.h"
+#include "ModuleImgui.h"
+#include "MeshImporter.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleCamera3D.h"
+#include "ModuleScene.h"
+#include "ModuleResources.h"
+#include "ModuleTimer.h"
+#include "TextureImporter.h"
+#include "ModuleFileSystem.h"
+#include "SceneSerialization.h"
 
 Application::Application()
 {
+
+#ifndef GAME_MODE
+	imgui = new ModuleImgui(this);
+	timer = new ModuleTimer(this);
+#endif
+	resources = new ModuleResources(this);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
-	resources = new ModuleResources(this);
-	timer = new ModuleTimer(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
-	imgui = new ModuleImgui(this);
 	fs = new ModuleFileSystem(this);
 
 	texture = new TextureImporter();
@@ -25,11 +40,14 @@ Application::Application()
 	AddModule(window);
 	AddModule(fs);
 	AddModule(resources);
-	AddModule(timer);
 	AddModule(input);
 	AddModule(scene);
 	AddModule(camera);
+
+#ifndef GAME_MODE
+	AddModule(timer);
 	AddModule(imgui);
+#endif
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -114,7 +132,9 @@ void Application::PrepareUpdate()
 		break;
 	}
 
+#ifndef GAME_MODE
 	timer->PreUpdate();
+#endif
 }
 
 // ---------------------------------------------
@@ -288,6 +308,7 @@ void Application::Tick()
 	}
 }
 
+#ifndef GAME_MODE
 void Application::Log(const char * text)
 {
 	imgui->Log(text);
@@ -328,6 +349,7 @@ void const Application::ShowApplicationInfo()
 	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
 	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 }
+#endif
 
 float Application::GetDt() const
 {

@@ -3,6 +3,7 @@
 #include "ModuleImGui.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleWindow.h"
+#include "SceneSerialization.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleInput.h"
 #include "Panel.h"

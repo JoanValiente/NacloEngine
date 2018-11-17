@@ -2,6 +2,7 @@
 #define __MODULEFILESYSTEM_H__
 
 #include "Module.h"
+#include "PCG/pcg_variants.h"
 
 class ModuleFileSystem : public Module
 {

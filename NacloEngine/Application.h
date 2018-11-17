@@ -3,23 +3,25 @@
 
 
 #include <list>
+#include <vector>
 #include "Globals.h"
 #include "Timer.h"
 #include "Module.h"
-#include "ModuleWindow.h"
-#include "ModuleInput.h"
-#include "ModuleImgui.h"
-#include "MeshImporter.h"
-#include "ModuleRenderer3D.h"
-#include "ModuleCamera3D.h"
-#include "ModuleScene.h"
-#include "ModuleResources.h"
-#include "ModuleTimer.h"
-#include "TextureImporter.h"
-#include "ModuleFileSystem.h"
 #include "PerfTimer.h"
-#include "SceneSerialization.h"
 
+struct ModuleWindow;
+struct ModuleInput;
+struct ModuleImgui;
+struct ModuleScene;
+struct ModuleResources;
+struct ModuleTimer;
+struct ModuleRenderer3D;
+struct ModuleCamera3D;
+struct ModuleFileSystem;
+
+struct SceneSerialization;
+struct MeshImporter;
+struct TextureImporter;
 
 using namespace std;
 

@@ -1,6 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleInput.h"
+#include "ModuleWindow.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleCamera3D.h"
 #include "ComponentCamera.h"
@@ -64,6 +66,7 @@ update_status ModuleCamera3D::Update(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
+#ifndef GAME_MODE
 	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
 		if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
@@ -84,7 +87,8 @@ update_status ModuleCamera3D::Update(float dt)
 		using_guizmos = false;
 	}
 	RaycastDebugDraw();
-	
+#endif
+
 	Move(dt);
 
 	//-----------------------------Focus mesh-----------------------------
@@ -301,17 +305,15 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 			if (cMesh != nullptr) {
 
-				Mesh* mesh = cMesh->mesh;
-
-				
+				Mesh* mesh = cMesh->mesh;				
 
 				for (int j = 0; j < mesh->num_indices;)
 				{
-					math::float3 x = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+					float3 x = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
 					j++;
-					math::float3 y = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+					float3 y = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
 					j++;
-					math::float3 z = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+					float3 z = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
 					j++;
 
 					tri = { x,y,z };

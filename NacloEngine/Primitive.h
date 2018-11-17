@@ -1,5 +1,6 @@
 #pragma once
 #include "Color.h"
+#include "Glew/include/glew.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 enum PrimitiveTypes

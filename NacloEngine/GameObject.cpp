@@ -3,6 +3,7 @@
 
 #include "Application.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleFileSystem.h"
 #include "ComponentMesh.h"
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"

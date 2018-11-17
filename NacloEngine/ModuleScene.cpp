@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
+#include "ModuleCamera3D.h"
 #include "Primitive.h"
 #include "Globals.h"
 #include "MeshImporter.h"
@@ -71,11 +72,12 @@ update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
+#ifndef GAME_MODE
 	Grid->Render();
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-
+#endif
 	return ret;
 }
 
@@ -148,9 +150,11 @@ bool ModuleScene::CleanUp()
 	RELEASE(Grid);
 	RELEASE(quadtree);
 
+#ifndef GAME_MODE
 	ImGui_ImplOpenGL2_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
+#endif
 	/*
 	Config *file = new Config("test");
 

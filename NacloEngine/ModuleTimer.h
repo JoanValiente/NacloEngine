@@ -1,6 +1,7 @@
 #ifndef __MODULETIMER_H__
 #define __MODULETIMER_H__
 
+#ifndef GAME_MODE
 #include "Module.h"
 
 class ModuleTimer : public Module
@@ -29,3 +30,5 @@ private:
 };
 
 #endif // __MODULETIMER_H__
+
+#endif

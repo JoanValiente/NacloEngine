@@ -2,6 +2,7 @@
 #include "string.h"
 #include "stdio.h"
 #include "Application.h"
+#include "ModuleFileSystem.h"
 
 Config::Config()
 {

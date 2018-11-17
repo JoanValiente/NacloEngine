@@ -1,6 +1,10 @@
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleInput.h"
+#include "MeshImporter.h"
+#include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
+#include "ImGui/imgui_impl_sdl.h"
 
 #define MAX_KEYS 300
 
@@ -88,7 +92,9 @@ update_status ModuleInput::PreUpdate(float dt)
 	SDL_Event e;
 	while(SDL_PollEvent(&e))
 	{
+#ifndef GAME_MODE
 		ImGui_ImplSDL2_ProcessEvent(&e);
+#endif
 
 		switch(e.type)
 		{
@@ -121,7 +127,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				break;
 			}
 			
-
+#ifndef GAME_MODE
 			case SDL_DROPFILE: 
 			{     
 				char* dropped_filedir = nullptr;
@@ -131,6 +137,7 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				break;
 			}
+#endif
 		
 		}
 	}
@@ -149,6 +156,7 @@ bool ModuleInput::CleanUp()
 	return true;
 }
 
+#ifndef GAME_MODE
 void const ModuleInput::ShowInputInfo()
 {
 	ImGui::Text("Mouse Position X %i", mouse_x);
@@ -159,8 +167,8 @@ void const ModuleInput::ShowInputInfo()
 	ImGui::SameLine();
 	ImGui::Text("Mouse Motion Y %i", mouse_y_motion);
 	ImGui::Separator();
-
 }
+#endif
 
 void const ModuleInput::LoadDraggedFile(char * path)
 {

@@ -1,5 +1,6 @@
 #include "SceneSerialization.h"
 #include "Application.h"
+#include "ModuleScene.h"
 #include "GameObject.h"
 #include "Config.h"
 

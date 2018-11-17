@@ -2,6 +2,7 @@
 #include "ModuleResources.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "Imgui/imgui.h"
 
 PanelResources::PanelResources() : Panel("Resources")
 {

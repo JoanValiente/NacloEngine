@@ -6,6 +6,8 @@
 
 #include "Application.h"
 #include "Globals.h"
+#include "ModuleFileSystem.h"
+#include "ModuleScene.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"

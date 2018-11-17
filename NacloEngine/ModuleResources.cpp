@@ -1,5 +1,6 @@
 #include "ModuleResources.h"
 #include "Application.h"
+#include "ModuleFileSystem.h"
 #include "Resource.h"
 #include "Config.h"
 #include "ResourceMaterial.h"

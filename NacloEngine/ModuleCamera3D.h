@@ -6,6 +6,7 @@
 //#include "glmath.h"
 
 struct ComponentCamera;
+struct GameObject;
 
 class ModuleCamera3D : public Module
 {

@@ -1,5 +1,8 @@
 #include "TextureImporter.h"
 #include "Application.h"
+#include "ModuleFileSystem.h"
+#include "Devil\include\ilut.h"
+#include "ImGui/imgui.h"
 
 TextureImporter::TextureImporter() : Importer()
 {

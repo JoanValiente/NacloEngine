@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleScene.h"
+#include "ModuleCamera3D.h"
 #include "PanelInspector.h"
 #include "TextureImporter.h"
 #include "Primitive.h"
@@ -202,7 +204,9 @@ update_status ModuleRenderer3D::Update(float dt)
 		}
 	}
 
+#ifndef GAME_MODE
 	App->scene->quadtree->DebugDraw();
+#endif
 	
 	return ret;
 }
@@ -220,6 +224,7 @@ bool ModuleRenderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
+
 	ClearMeshes();
 
 	return true;
@@ -408,6 +413,7 @@ void ModuleRenderer3D::AddTexture(const char * path)
 	}
 }
 
+#ifndef GAME_MODE
 void ModuleRenderer3D::ShowRenderInfo()
 {
 	static bool depth_test = glIsEnabled(GL_DEPTH_TEST);
@@ -510,6 +516,7 @@ void ModuleRenderer3D::ShowRenderInfo()
 	ImGui::Checkbox("Wire Mode", &wire_mode);
 
 }
+#endif
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {
