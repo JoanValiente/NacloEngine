@@ -40,12 +40,14 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	App->scene->root = new GameObject(nullptr, "root");
 	ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 
-	std::string final_path = ASSETS_SCENES_FOLDER;
-	final_path.append(file_name);
+	//TODO Destroy the scene if file is correct
+	//TODO Revise Loading Scenes, we can't load scenes inside Assets Directory :/
+
+	std::string final_path = file_name;
 	final_path.append(".json");
 
 
-	Config *file = new Config(file_name);
+	Config *file = new Config(final_path.c_str());
 	
 	int size = file->GetArraySize("Game Objects");
 
