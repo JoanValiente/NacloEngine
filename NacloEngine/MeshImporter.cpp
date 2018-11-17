@@ -1,4 +1,5 @@
 #include "MeshImporter.h"
+#include "TextureImporter.h"
 
 #include "Assimp/include/scene.h"
 #include "Assimp/include/postprocess.h"
@@ -70,8 +71,12 @@ bool MeshImporter::Import(const char * path, std::string & output_file)
 	else
 	{
 		LOG("ERROR LOADING MESH %s", path);
+	
 		return false;
 	}
+
+	RELEASE_ARRAY(buffer);
+
 }
 
 bool MeshImporter::Import(const void * buffer, uint size, std::string & output_file, const char* path)
