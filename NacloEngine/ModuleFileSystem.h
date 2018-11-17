@@ -18,9 +18,15 @@ public:
 	uint Load(const char* file, char** buffer);
 	void NormalizePath(std::string &file);
 	void CreateNewDirectory(const char* path) const;
-	void CopyFileToAssets(const char* path, std::string &output_file);
-	std::string CreateNewFile(const char* path);
 	UID GenerateUID();
+
+	void GetFiles(const char* path);
+
+	int Phys_DeleteFile(const char* filename);
+
+private:
+	std::string CreateNewFilePath(const char* path);
+	void CopyFileToAssets(const char* path, std::string &output_file);
 
 private:
 	pcg32_random_t rng;

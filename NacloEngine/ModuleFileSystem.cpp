@@ -28,16 +28,6 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Modu
 
 	}
 
-	//if (PHYSFS_mount("./Assets/Textures/", "Textures", 1) == 0) { //Add paths to physfs to search throught
-
-	//	LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
-	//}
-
-	//if (PHYSFS_mount("./Assets/Models/", "Models", 1) == 0) { //Add paths to physfs to search throught
-
-	//	LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
-	//}
-
 }
 
 ModuleFileSystem::~ModuleFileSystem()
@@ -136,11 +126,11 @@ void ModuleFileSystem::CreateNewDirectory(const char * path) const
 
 void ModuleFileSystem::CopyFileToAssets(const char * path, std::string &output_file)
 {
-	output_file = CreateNewFile(path);
+	output_file = CreateNewFilePath(path);
 	CopyFile(path, output_file.c_str(), 0);
 }
 
-std::string ModuleFileSystem::CreateNewFile(const char* path)
+std::string ModuleFileSystem::CreateNewFilePath(const char* path)
 {
 	std::string new_path = path;
 	char* name = (char*)new_path.erase(0, new_path.find_last_of("\\") + 1).c_str();
@@ -173,6 +163,35 @@ std::string ModuleFileSystem::CreateNewFile(const char* path)
 UID ModuleFileSystem::GenerateUID()
 {
 	return pcg32_random_r(&rng);;
+}
+
+void ModuleFileSystem::GetFiles(const char * path)
+{
+	char** tmp = PHYSFS_enumerateFiles("Assets");
+
+	if (tmp == NULL)
+	{
+		LOG("CAN'T GET FILES IN DIRECTORY");
+	}
+
+	else
+	{
+
+	}
+
+	PHYSFS_freeList(tmp);
+
+}
+
+int ModuleFileSystem::Phys_DeleteFile(const char * filename)
+{
+	int ret = PHYSFS_delete(filename);
+
+	if (ret == 0)
+	{
+		LOG("ERROR DELETING FILE OR DIRECTORY %s", PHYSFS_getLastError());
+	}
+	return ret;
 }
 
 

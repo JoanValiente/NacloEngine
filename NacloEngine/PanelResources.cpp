@@ -1,6 +1,7 @@
 #include "PanelResources.h"
 #include "ModuleResources.h"
 #include "Application.h"
+#include "ModuleFileSystem.h"
 
 PanelResources::PanelResources() : Panel("Resources")
 {
@@ -27,6 +28,8 @@ void PanelResources::Draw()
 			ImGui::EndPopup();
 		}
 	}
+
+	App->fs->GetFiles("Assets");
 
 	DrawResourceType(RESOURCE_MATERIAL);
 	DrawResourceType(RESOURCE_MESH);

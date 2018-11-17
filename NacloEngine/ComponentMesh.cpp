@@ -50,4 +50,6 @@ void ComponentMesh::SaveComponent(Config & conf)
 void ComponentMesh::LoadComponent(Config & conf)
 {
 	mesh = App->meshes->ImportNCL(conf.GetString("NCL Path"));
+	mesh->filename = conf.GetString("Name");
+	mesh->path = conf.GetString("Path");
 }
