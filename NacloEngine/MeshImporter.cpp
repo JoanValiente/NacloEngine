@@ -14,11 +14,6 @@
 #include "ComponentTransform.h"
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
-#pragma comment (lib, "Devil/libx86/DevIL.lib")
-#pragma comment (lib, "Devil/libx86/ILU.lib")
-#pragma comment (lib, "Devil/libx86/ILUT.lib")
-
-#include <iostream>
 
 void myCallback(const char *msg, char *userData) {
 
@@ -39,8 +34,8 @@ bool MeshImporter::Init()
 {
 	bool ret = true;
 
-	ilInit();
-	ilutRenderer(ILUT_OPENGL);
+	//ilInit();
+	//ilutRenderer(ILUT_OPENGL);
 
 	return ret;
 }
@@ -175,39 +170,20 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				mesh->color = { 255.0f,255.0f,255.0f,255.0f };
 			}
 
-
 			aiMaterial* tex = scene->mMaterials[new_mesh->mMaterialIndex];
 			Texture* texture = new Texture();
 
-			//TODO REVISE THIS PART OF THE CODE
-			//if (tex != nullptr)
-			//{
-			//	aiString path;
-			//	tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-			//	if (path.length > 0)
-			//	{
-			//		std::string path_location = path.data;
-			//		path_location.erase(0, path_location.find_last_of("\\") + 1);
-			//		std::string folder = "Textures/";
-			//		folder += path_location;
-			//		ILuint id;
-			//		ilGenImages(1, &id);
-			//		ilBindImage(id);
-			//		//ilLoadImage(folder.c_str());
-
-			//		mesh->id_texture = ilutGLBindTexImage();
-
-			//		folder.clear();
-			//		path_location.clear();
-			//		path.Clear();
-			//	}
-			//}
-
+			
+			if (tex != nullptr)
+			{
+				texture->texture_id = GetTexturePath(tex, path);
+			}
+			
 			if (new_mesh->HasTextureCoords(0))
 			{
 				mesh->num_texture = new_mesh->mNumVertices;
 				mesh->texture = new float[mesh->num_texture * 2];
-				LOG("New mesh with %d textures", mesh->num_texture);
+				LOG("New mesh with %d uv", mesh->num_texture);
 				for (uint texCoord = 0; texCoord < new_mesh->mNumVertices; ++texCoord)
 				{
 					memcpy(&mesh->texture[texCoord * 2], &new_mesh->mTextureCoords[0][texCoord].x, sizeof(float));
@@ -221,8 +197,11 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			meshComponent->AssignMesh(mesh);
 
 			//Component Material
-			ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
-			materialComponent->AssignTexture(texture);
+			if (texture != nullptr)
+			{
+				ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+				materialComponent->AssignTexture(texture);
+			}
 
 
 			SetBuffers(mesh);
@@ -271,7 +250,36 @@ void MeshImporter::LoadMeshNCL(const char * path, Mesh * mesh)
 	mesh->color = { 255.0f,255.0f,255.0f,255.0f };
 
 	SetBuffers(mesh);
-	App->renderer3D->AddMesh(mesh);
+}
+
+
+int MeshImporter::GetTexturePath(aiMaterial* tex, const char* path)
+{
+	uint ret = 0;
+
+	std::string new_path = path;
+	new_path.erase(new_path.find_last_of("\\") + 1, new_path.back());
+	aiString file_name;
+	tex->GetTexture(aiTextureType_DIFFUSE, 0, &file_name);
+	if (file_name.length > 0)
+	{
+		std::string path_location = file_name.data;
+		path_location.erase(0, path_location.find_last_of("\\") + 1);
+		new_path.append(path_location.c_str());
+
+		ret = App->texture->LoadTexture(path_location.c_str());
+
+		if (ret == 0)
+		{
+			ret = App->texture->LoadTexture(new_path.c_str());
+		}
+
+		new_path.clear();
+		path_location.clear();
+	}
+	file_name.Clear();
+
+	return ret;
 }
 
 
@@ -301,7 +309,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 	{
 		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(float3) * mesh->num_vertices * 3 + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
+		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices * 3 + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
 
 		char* data = new char[size]; // Allocate
 		char* cursor = data;
@@ -362,7 +370,7 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 		LOG("ERROR LOADING OWN MESH %s", path);
 	}
 
-	LoadMeshNCL("patata1", ret);
+	LoadMeshNCL(path, ret);
 
 	return ret;
 }
@@ -396,11 +404,9 @@ Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 
 	//Load UV
 	cursor += bytes;
-	bytes = sizeof(float) * ret->num_texture * 3;
-	ret->texture = new float[ret->num_texture * 3];
+	bytes = sizeof(float) * ret->num_texture * 2;
+	ret->texture = new float[ret->num_texture * 2];
 	memcpy(ret->texture, cursor, bytes);
-
-	App->renderer3D->AddMesh(ret);
 
 	return ret;
 }

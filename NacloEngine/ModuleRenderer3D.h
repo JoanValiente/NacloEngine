@@ -44,7 +44,7 @@ struct Mesh
 
 struct Texture
 {
-	uint texture_path = 0;
+	uint texture_id = 0;
 };
 
 class ModuleRenderer3D : public Module

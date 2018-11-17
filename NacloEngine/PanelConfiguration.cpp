@@ -8,6 +8,7 @@
 #include "ModuleImGui.h"
 #include "mmgr\mmgr.h"
 #include "Assimp/include/version.h"
+#include "Devil\include\il.h"
 
 #define GPU_MEMORY_INFO_DEDICATED_VIDMEM_NVX			0x9047
 #define GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX		0x9048

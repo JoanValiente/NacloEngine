@@ -12,6 +12,7 @@
 #include "PanelInspector.h"
 #include "Config.h"
 
+
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -181,5 +182,5 @@ bool ModuleScene::CleanUp()
 
 
 
-	return false;
+	return true;
 }

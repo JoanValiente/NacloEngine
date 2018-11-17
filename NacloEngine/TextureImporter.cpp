@@ -4,6 +4,13 @@
 #include "Devil\include\ilut.h"
 #include "ImGui/imgui.h"
 
+#include "Devil/include/ilut.h"
+#include "Devil/include/il.h"
+
+#pragma comment (lib, "Devil/libx86/DevIL.lib")
+#pragma comment (lib, "Devil/libx86/ILU.lib")
+#pragma comment (lib, "Devil/libx86/ILUT.lib")
+
 TextureImporter::TextureImporter() : Importer()
 {
 }

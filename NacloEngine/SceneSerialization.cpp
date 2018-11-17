@@ -43,6 +43,7 @@ bool SceneSerialization::LoadScene(const char * file_name)
 
 	//TODO Destroy the scene if file is correct
 	//TODO Revise Loading Scenes, we can't load scenes inside Assets Directory :/
+	//TODO LOAD .json using physfs
 
 	std::string final_path = file_name;
 	final_path.append(".json");
