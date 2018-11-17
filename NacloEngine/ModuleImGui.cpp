@@ -1,3 +1,4 @@
+#ifndef GAME_MODE
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleRenderer3D.h"
@@ -13,7 +14,10 @@
 #include "PanelHierarchy.h"
 #include "PanelResources.h"
 #include "PanelTime.h"
+#endif
 
+
+#ifndef GAME_MODE
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -282,3 +286,4 @@ void ModuleImgui::ShowImGuiInfo()
 		style.FrameBorderSize = frame_border; 
 }
 
+#endif

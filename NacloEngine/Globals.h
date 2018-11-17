@@ -47,7 +47,7 @@ enum update_status
 };
 // GAME_MODE ---------------
 #ifndef _GAME_MODE_
-#define GAME_MODE
+// GAME_MODE
 #endif GAME_MODE
 
 // Configuration -----------

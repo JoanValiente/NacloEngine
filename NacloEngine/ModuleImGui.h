@@ -1,6 +1,7 @@
 #ifndef __MODULEIMGUI_H__
 #define __MODULEIMGUI_H__
 
+#ifndef GAME_MODE
 #include "Module.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "ImGui/imgui.h"
@@ -70,5 +71,6 @@ private:
 	std::string explorer_path;
 	bool close_engine = false; 
 };
+#endif
 
 #endif
