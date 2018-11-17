@@ -284,11 +284,6 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 	{
 		PickCandidates(candidates, App->scene->root->children[i]);
 	}
-
-	float hit_distance = 0.0F;
-
-	Mesh* mesh = nullptr;
-
 	GameObject* selected_object = nullptr;
 
 	for (uint i = 0; i < candidates.size(); ++i)
@@ -305,9 +300,8 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 			ComponentMesh* cMesh = candidates[i]->mesh;
 
 			if (cMesh != nullptr) {
-				mesh = cMesh->mesh;
-				localRay.Transform(transform->globalMatrix.Inverted());
-				mesh = cMesh->mesh;
+
+				Mesh* mesh = cMesh->mesh;
 
 				if (localRay.Intersects(candidates[i]->boundingBox)) {
 
