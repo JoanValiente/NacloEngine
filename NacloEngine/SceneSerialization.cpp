@@ -35,9 +35,15 @@ bool SceneSerialization::LoadScene(const char * file_name)
 {
 	bool ret = true;
 
+
 	App->scene->DeleteAllGameObject();
 	App->scene->root = new GameObject(nullptr, "root");
 	ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+
+	std::string final_path = ASSETS_SCENES_FOLDER;
+	final_path.append(file_name);
+	final_path.append(".json");
+
 
 	Config *file = new Config(file_name);
 	
@@ -56,7 +62,6 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	}
 
 	delete file;
-
 	return ret;
 }
 
