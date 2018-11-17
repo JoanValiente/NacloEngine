@@ -77,6 +77,11 @@ public:
 	char* author_2_name;
 	char* organization_name;
 
+	void Play();
+	void Pause();
+	void Stop();
+	void Tick();
+
 	void Log(const char* text);
 
 	void const ShowApplicationInfo();

@@ -20,6 +20,7 @@ class PanelRandomNumberGenerator;
 class PanelInspector;
 class PanelHierarchy;
 class PanelResources;
+class PanelTime;
 
 enum TypeSave;
 
@@ -51,6 +52,7 @@ public:
 	PanelInspector* inspector = nullptr;
 	PanelHierarchy* hierarchy = nullptr;
 	PanelResources* resources = nullptr;
+	PanelTime* time = nullptr;
 
 
 	bool wire_mode = false;

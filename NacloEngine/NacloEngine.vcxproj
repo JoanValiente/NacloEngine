@@ -173,6 +173,7 @@
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleTimer.h" />
     <ClInclude Include="PanelResources.h" />
+    <ClInclude Include="PanelTime.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Resource.h" />
@@ -257,6 +258,7 @@
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
     <ClCompile Include="PanelResources.cpp" />
+    <ClCompile Include="PanelTime.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Resource.cpp" />

@@ -50,6 +50,10 @@ public:
 		return true; 
 	}
 
+	virtual bool GameMode() { return true; };
+
+	virtual bool EditorMode() { return true; };
+
 	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
 	{}
 

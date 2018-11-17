@@ -12,6 +12,7 @@
 #include "PanelInspector.h"
 #include "PanelHierarchy.h"
 #include "PanelResources.h"
+#include "PanelTime.h"
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -31,6 +32,8 @@ bool ModuleImgui::Init()
 	//panels.push_back(inspector = new PanelInspector());
 	panels.push_back(hierarchy = new PanelHierarchy());
 	panels.push_back(resources = new PanelResources());
+	panels.push_back(time = new PanelTime());
+
 	return ret;
 }
 

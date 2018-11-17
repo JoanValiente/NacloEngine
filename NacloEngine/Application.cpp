@@ -90,6 +90,31 @@ bool Application::Init()
 void Application::PrepareUpdate()
 {
 	ms_timer.Start();
+
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+	{
+		break;
+	}
+	case ENGINE_STATE::PAUSE:
+	{
+		break;
+	}
+	case ENGINE_STATE::EDITOR:
+	{
+		break;
+	}
+	case ENGINE_STATE::TICK:
+	{
+		break;
+	}
+
+	default:
+		break;
+	}
+
+	timer->PreUpdate();
 }
 
 // ---------------------------------------------
@@ -175,6 +200,87 @@ bool Application::CleanUp()
 		item++;
 	}
 	return ret;
+}
+
+void Application::Play()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::PLAY;
+		break;
+
+	case ENGINE_STATE::EDITOR:
+
+		engineState = ENGINE_STATE::PLAY;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Application::Pause()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::PAUSE;
+		break;
+
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::PLAY;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Application::Stop()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::STOP;
+		break;
+
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::STOP;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Application::Tick()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::TICK;
+		break;
+
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::TICK;
+		break;
+
+	case ENGINE_STATE::STOP:
+
+		engineState = ENGINE_STATE::TICK;
+		break;
+
+	default:
+		break;
+	}
 }
 
 void Application::Log(const char * text)
