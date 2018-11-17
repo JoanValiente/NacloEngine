@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "Resource.h"
 #include "Config.h"
+#include "ResourceMaterial.h"
+#include "ResourceMesh.h"
 
 ModuleResources::ModuleResources(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -170,10 +172,10 @@ Resource * ModuleResources::CreateNewResource(Resource_Type type, UID force_uid)
 	switch (type)
 	{
 	case Resource_Type::RESOURCE_MESH:
-		//ret = (Resource*) new ResourceMesh(uid, RESOURCE_MESH);
+		ret = (Resource*) new ResourceMesh(uid, RESOURCE_MESH);
 		break;
 	case Resource_Type::RESOURCE_MATERIAL:
-		//ret = (Resource*) new ResourceMaterial(uid, RESOURCE_MATERIAL);
+		ret = (Resource*) new ResourceMaterial(uid, RESOURCE_MATERIAL);
 		break;
 	default:
 		break;
