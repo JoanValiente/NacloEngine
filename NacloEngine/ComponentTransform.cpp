@@ -24,8 +24,6 @@ ComponentTransform::~ComponentTransform()
 
 void ComponentTransform::UpdateMatrix()
 {
-	float4x4 prevGlobal = globalMatrix;
-
 	localmatrix = float4x4::FromTRS(position, quaternion, size);
 
 	if (container != nullptr && container->parent != nullptr) {

@@ -138,8 +138,10 @@ Component * GameObject::GetComponentByType(Component::COMPONENT_TYPE type)
 
 	for (int i = 0; i < components.size(); i++)
 	{
-		if (components[i]->type == type)
+		if (components[i]->type == type) {
 			component = components[i];
+			break;
+		}
 	}
 
 	return component;

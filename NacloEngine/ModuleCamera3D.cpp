@@ -303,27 +303,27 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 				Mesh* mesh = cMesh->mesh;
 
-				if (localRay.Intersects(candidates[i]->boundingBox)) {
+				
 
-					for (int j = 0; j < mesh->num_indices;)
+				for (int j = 0; j < mesh->num_indices;)
+				{
+					math::float3 x = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+					j++;
+					math::float3 y = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+					j++;
+					math::float3 z = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
+					j++;
+
+					tri = { x,y,z };
+
+					float distance;
+					float3 hit_point;
+					if (localRay.Intersects(tri, &distance, &hit_point))
 					{
-						math::float3 x = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
-						j++;
-						math::float3 y = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
-						j++;
-						math::float3 z = { mesh->vertices[mesh->indices[j] * 3],mesh->vertices[mesh->indices[j] * 3 + 1] ,mesh->vertices[mesh->indices[j] * 3 + 2] };
-						j++;
-
-						tri = { x,y,z };
-
-						float distance;
-						float3 hit_point;
-						if (localRay.Intersects(tri, &distance, &hit_point))
-						{
-							selected_object = candidates[i];
-						}
+						selected_object = candidates[i];
 					}
 				}
+			
 			}
 		}
 	}
