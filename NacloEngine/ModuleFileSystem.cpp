@@ -3,6 +3,8 @@
 #include "physfs/include/physfs.h"
 
 #include <time.h>
+#include <list>
+
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
@@ -165,7 +167,7 @@ UID ModuleFileSystem::GenerateUID()
 	return pcg32_random_r(&rng);;
 }
 
-void ModuleFileSystem::GetFiles(const char * path)
+char** ModuleFileSystem::GetFiles(const char * path)
 {
 	char** tmp = PHYSFS_enumerateFiles("Assets");
 
@@ -174,13 +176,8 @@ void ModuleFileSystem::GetFiles(const char * path)
 		LOG("CAN'T GET FILES IN DIRECTORY");
 	}
 
-	else
-	{
-
-	}
-
+	return tmp;
 	PHYSFS_freeList(tmp);
-
 }
 
 int ModuleFileSystem::Phys_DeleteFile(const char * filename)

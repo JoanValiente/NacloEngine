@@ -233,8 +233,6 @@ bool Config::Save()
 	char* buffer;
 	size_t size = GetSize(&buffer);
 
-	//TODO CRETE NEW NAME Using Name, ASSETS_SCENE, ".json"
-
 	ret = App->fs->SaveFile(GenerateSceneName(ASSETS_SCENES_FOLDER, name).c_str(), buffer, size);
 
 	RELEASE_ARRAY(buffer);

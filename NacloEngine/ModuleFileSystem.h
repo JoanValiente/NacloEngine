@@ -20,7 +20,7 @@ public:
 	void CreateNewDirectory(const char* path) const;
 	UID GenerateUID();
 
-	void GetFiles(const char* path);
+	char** GetFiles(const char* path);
 
 	int Phys_DeleteFile(const char* filename);
 
