@@ -23,6 +23,7 @@
 #ifndef GAME_MODE
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "ImGui";
 }
 
 ModuleImgui::~ModuleImgui()

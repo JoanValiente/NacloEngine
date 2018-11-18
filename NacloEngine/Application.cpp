@@ -12,6 +12,8 @@
 #include "ModuleFileSystem.h"
 #include "SceneSerialization.h"
 
+#include "Config.h"
+
 #include "mmgr/mmgr.h"
 
 Application::Application()

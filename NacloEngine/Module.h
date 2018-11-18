@@ -11,6 +11,9 @@ class Module
 private :
 	bool enabled;
 
+protected:
+	const char* name = "";
+
 public:
 	Application* App;
 
@@ -53,6 +56,14 @@ public:
 	virtual bool GameMode() { return true; };
 
 	virtual bool EditorMode() { return true; };
+
+	virtual const char* GetName() const { return name; };
+
+	virtual void Save(Config* config) const
+	{}
+
+	virtual void Load(Config* config)
+	{}
 
 public:
 	bool active = true;
