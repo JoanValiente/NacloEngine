@@ -70,11 +70,14 @@ void ComponentMaterial::ShowInspector()
 
 void ComponentMaterial::SaveComponent(Config & conf)
 {
-	conf.SetString("Path", texture->path.c_str());
-	conf.SetString("Name", texture->texture_name.c_str());
-	conf.SetString("DDS Path", texture->texture_dds.c_str());
-	conf.SetInt("Width", texture->width);
-	conf.SetInt("Height", texture->height);
+	if (texture != nullptr)
+	{
+		conf.SetString("Path", texture->path.c_str());
+		conf.SetString("Name", texture->texture_name.c_str());
+		conf.SetString("DDS Path", texture->texture_dds.c_str());
+		conf.SetInt("Width", texture->width);
+		conf.SetInt("Height", texture->height);
+	}
 }
 
 void ComponentMaterial::LoadComponent(Config & conf)
@@ -82,10 +85,13 @@ void ComponentMaterial::LoadComponent(Config & conf)
 	if (conf.GetString("DDS Path") != NULL)
 	{
 		texture = App->texture->LoadTexture(conf.GetString("DDS Path"));
-		texture->texture_dds = conf.GetString("DDS Path");
-		texture->path = conf.GetString("Path");
-		texture->texture_name = conf.GetString("Name");
-		texture->width = conf.GetInt("Width");
-		texture->height = conf.GetInt("Height");
+		if (texture != nullptr)
+		{
+			texture->texture_dds = conf.GetString("DDS Path");
+			texture->path = conf.GetString("Path");
+			texture->texture_name = conf.GetString("Name");
+			texture->width = conf.GetInt("Width");
+			texture->height = conf.GetInt("Height");
+		}
 	}
 }

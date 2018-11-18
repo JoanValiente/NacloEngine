@@ -292,7 +292,7 @@ void MeshImporter::LoadMeshNCL(const char * path, Mesh * mesh)
 	mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
 	mesh->position = { position.x,position.y, position.z };
 
-	mesh->color = { mesh->colors[0],mesh->colors[1],mesh->colors[2],mesh->colors[3] };
+	mesh->color = { 255.0f,255.0f,255.0f,255.0f };
 
 	SetBuffers(mesh);
 	App->renderer3D->AddMesh(mesh);

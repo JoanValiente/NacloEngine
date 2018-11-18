@@ -42,6 +42,7 @@ Texture* TextureImporter::LoadTexture(const char* path)
 		if ((*item)->path == ret->path)
 		{
 			load_texture = false;
+			ret->texture_dds = (*item)->texture_dds;
 		}
 		item++;
 	}

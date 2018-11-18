@@ -260,10 +260,14 @@ bool GameObject::SaveGO(Config* & conf)
 
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
 	{
+		if ((*it != nullptr))
+		{
 		Config component;
-		component.SetInt("Type", (*it)->type);
+		component.SetInt("Type", (*it)->type);		
 		(*it)->SaveComponent(component);
 		go.NewArrayEntry(component);
+		}
+
 	}
 
 	conf->NewArrayEntry(go);
