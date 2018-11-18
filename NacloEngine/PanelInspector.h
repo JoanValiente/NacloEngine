@@ -3,6 +3,8 @@
 
 #include "Panel.h"
 
+struct GameObject;
+
 class PanelInspector : public Panel
 {
 public:

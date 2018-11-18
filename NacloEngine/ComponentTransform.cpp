@@ -51,78 +51,37 @@ void ComponentTransform::ShowInspector()
 		DrawGuizmos();
 	}
 
-	static bool changed_position = false;
-	static bool changed_rotation = false;
-	static bool changed_size = false;
-
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
+		float3 newPosition = position;
+		float3 newRotation = rotation;
+		float3 newSize = size;
+
 		//POSITION------------
 		ImGui::Text("Position");
-		ImGui::Text("X:"); ImGui::SameLine();
-		if (ImGui::DragFloat("##pos_x", &position.x, 0.1f))
-			changed_position = true;
-
-		ImGui::Text("Y:");	ImGui::SameLine();
-		if(ImGui::DragFloat("##pos_y", &position.y, 0.1f))
-			changed_position = true;
-
-		
-		ImGui::Text("Z:"); ImGui::SameLine();
-		if(ImGui::DragFloat("##pos_z", &position.z, 0.1f))
-			changed_position = true;
-
+		ImGui::SameLine();
+		if (ImGui::DragFloat3("##pos", &newPosition[0], 0.1f)) {
+			if (!container->staticGO)
+				SetPosition(newPosition);
+		}
 
 		//ROTATION------------
 		ImGui::Text("Rotation");
-		ImGui::Text("X:");	ImGui::SameLine();
-		if(ImGui::DragFloat("##rot_x", &rotation.x, 0.1f))
-			changed_rotation = true;
-
-
-		ImGui::Text("Y:"); ImGui::SameLine();
-		if(ImGui::DragFloat("##rot_y", &rotation.y, 0.1f))
-			changed_rotation = true;
-
-		ImGui::Text("Z:"); ImGui::SameLine();
-		if(ImGui::DragFloat("##rot_z", &rotation.z, 0.1f))
-			changed_rotation = true;
-
-
-		//SCALE------------
-		ImGui::Text("Scale");
-		ImGui::Text("X:");ImGui::SameLine();
-		if (ImGui::DragFloat("##size_x", &size.x, 0.1f))
-			changed_size = true;
-
-		ImGui::Text("Y:");ImGui::SameLine();
-		if(ImGui::DragFloat("##size_y", &size.y, 0.1f))
-			changed_size = true;
-
-		ImGui::Text("Z:"); ImGui::SameLine();
-		if(ImGui::DragFloat("##size_z", &size.z, 0.1f))
-			changed_size = true;
-
-		SetSize(size);
-
-		if (changed_position)
-		{
-			SetPosition(position);
-			App->scene->quadtreeUpdate = true;
-			changed_position = false;
+		ImGui::SameLine();
+		if (ImGui::DragFloat3("##rot", &newRotation[0], 0.1f)) {
+			if (!container->staticGO)
+				SetRotation(newRotation);
 		}
-		if (changed_rotation)
-		{
-			SetRotation(rotation);
-			App->scene->quadtreeUpdate = true;
-			changed_rotation = false;
+
+		//ROTATION------------
+		ImGui::Text("Size");
+		ImGui::SameLine();
+		if (ImGui::DragFloat3("##size", &newSize[0], 0.1f)) {
+			if (!container->staticGO)
+				SetSize(newSize);
 		}
-		if (changed_size)
-		{
-			SetSize(size);
-			App->scene->quadtreeUpdate = true;
-			changed_size = false;
-		}
+	
+
 	}
 }
 
@@ -189,12 +148,11 @@ void ComponentTransform::DrawGuizmos()
 
 	ImGuizmo::Manipulate(App->camera->camera->GetViewMatrix(), (float*)cameraProjMat.v, guizmoOperation, ImGuizmo::WORLD, matrix.ptr());
 
-	if (ImGuizmo::IsUsing())
+	if (ImGuizmo::IsUsing() && !container->staticGO)
 	{
 		matrix.Transpose();
 
 		App->camera->using_guizmos = true;
-		App->scene->quadtreeUpdate = true;
 
 		if (guizmoOperation == ImGuizmo::SCALE) {
 

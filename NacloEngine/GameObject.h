@@ -34,6 +34,7 @@ public:
 	void BoundingBoxDebugDraw();
 	
 	void ChangeHierarchy(GameObject* &obj);
+	void ChangeStaticChildren(GameObject* go, bool isStatic);
 
 	uint GetNumChildren();
 	void Inspector();
