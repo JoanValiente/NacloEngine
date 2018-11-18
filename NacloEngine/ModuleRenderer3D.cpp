@@ -20,6 +20,8 @@
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
+
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -130,7 +132,6 @@ bool ModuleRenderer3D::Init()
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	// Projection matrix for
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	return ret;
 }
@@ -138,6 +139,11 @@ bool ModuleRenderer3D::Init()
 bool ModuleRenderer3D::Start()
 {
 	bool ret = true;
+
+	CurrentCamera = App->camera->activeCamera;
+
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
 
 	checkers_path = App->texture->LoadCheckersTexture();
 
@@ -151,10 +157,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->activeCamera->GetViewMatrix());
+	glLoadMatrixf(CurrentCamera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->activeCamera->frustum.pos.x, App->camera->activeCamera->frustum.pos.y, App->camera->activeCamera->frustum.pos.z);
+	lights[0].SetPos(CurrentCamera->frustum.pos.x, CurrentCamera->frustum.pos.y, CurrentCamera->frustum.pos.z);
 
 	for (uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -234,6 +240,8 @@ bool ModuleRenderer3D::CleanUp()
 
 	SDL_GL_DeleteContext(context);
 
+	textures.clear();
+
 	ClearMeshes();
 
 	return true;
@@ -289,15 +297,16 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	glViewport(0, 0, width, height);
+		glViewport(0, 0, width, height);
+		CurrentCamera->SetAspectRatio((float)width / (float)height);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
-	glLoadMatrixf((GLfloat*)ProjectionMatrix.ptr());
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+		glLoadMatrixf(CurrentCamera->GetProjectionMatrix().ptr());
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
 }
 
 void ModuleRenderer3D::AddMesh(Mesh * mesh)
@@ -310,7 +319,6 @@ void ModuleRenderer3D::AddMesh(Mesh * mesh)
 void ModuleRenderer3D::AddTexture(Texture * tex)
 {
 	textures.push_back(tex);
-
 }
 
 void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)

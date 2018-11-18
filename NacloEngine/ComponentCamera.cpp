@@ -5,6 +5,7 @@
 #include "ComponentTransform.h"
 #include "Component.h"
 #include "Config.h"
+#include "ModuleWindow.h"
 
 ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 {
@@ -24,6 +25,72 @@ ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 
 ComponentCamera::~ComponentCamera()
 {
+}
+
+void ComponentCamera::ShowInspector()
+{
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::Checkbox("Culling", &frustumCulling);
+
+		float frustum_far = frustum.farPlaneDistance;
+
+		if (ImGui::DragFloat("Far", &frustum_far, 1.0f))
+		{ 
+			SetFar(frustum_far);
+		}
+
+		float frustum_near = frustum.nearPlaneDistance;
+
+		if (ImGui::DragFloat("Near", &frustum_near, 1.0f))
+		{
+			SetNear(frustum_near);
+		}
+
+		float frustum_fov = GetFov();
+
+		if (ImGui::DragFloat("Fov", &frustum_fov, 1.0f))
+		{
+			SetFov(frustum_fov);
+		}
+	}
+}
+
+void ComponentCamera::SetFar(float frustum_far)
+{
+	if (frustum_far >= 0)
+	{
+		frustum.farPlaneDistance = frustum_far;
+	}
+}
+
+void ComponentCamera::SetNear(float frustum_near)
+{
+	if (frustum_near >= 0)
+	{
+		frustum.nearPlaneDistance = frustum_near;
+	}
+}
+
+float ComponentCamera::GetFov() const
+{
+	return math::RadToDeg(frustum.verticalFov);
+}
+
+void ComponentCamera::SetFov(float frustum_fov)
+{
+	frustum.verticalFov = DEGTORAD * frustum_fov;
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * App->window->width / App->window->height);
+}
+
+void ComponentCamera::SetAspectRatio(float aspect_ratio)
+{
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
+}
+
+math::float4x4& ComponentCamera::GetProjectionMatrix() const
+{
+	return frustum.ProjectionMatrix().Transposed();
 }
 
 void ComponentCamera::Update(float dt)

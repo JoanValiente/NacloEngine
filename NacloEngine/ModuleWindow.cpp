@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "ModuleRenderer3D.h"
 
 #ifndef GAME_MODE
 #include "ImGui/imgui.h"
@@ -113,6 +114,7 @@ void ModuleWindow::SetWindowSize(SDL_Window * window, int width, int height)
 {
 	SDL_SetWindowSize(window, width, height);
 	SDL_UpdateWindowSurface(window);
+	App->renderer3D->OnResize(width, height);
 }
 
 void ModuleWindow::SetWindowFullscreen(SDL_Window * window)

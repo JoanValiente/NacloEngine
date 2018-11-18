@@ -12,6 +12,7 @@
 #include "ModuleScene.h"
 #include "Quadtree.h"
 
+
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	meshBox = new AABB(float3(0.0f,0.0f,0.0f), float3(0.0f, 0.0f, 0.0f));

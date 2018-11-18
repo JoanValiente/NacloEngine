@@ -12,6 +12,8 @@
 #include "PanelInspector.h"
 #include "Config.h"
 
+
+
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -161,27 +163,11 @@ bool ModuleScene::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 #endif
-	/*
-	Config *file = new Config("test");
-
-	file->SetArray("GAME OBJECTS");
-
-	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
-	{
-		if (*it != root)
-			(*it)->SaveGO(file);
-	}
-
-	file->Save();*/
-
-	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
-	{
-		(*it)->CleanUp();
-	}
 
 	gameObjects.clear();
 
-	if (root != nullptr) {
+	if (root != nullptr) 
+	{
 		delete root;
 	}
 
