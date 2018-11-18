@@ -141,17 +141,8 @@ std::string ModuleFileSystem::CreateNewFilePath(const char* path)
 	extension_path.erase(0, extension_path.find_last_of(".")).c_str();
 	char* directory = nullptr;
 
-	if (extension_path == ".fbx")
-	{
-		directory = "Assets\\Models";
-		CreateNewDirectory(ASSETS_MESH_FOLDER);
-	}
-	else
-	{
-		directory = "Assets\\Textures";
-		CreateNewDirectory(ASSETS_TEXTURES_FOLDER);
-
-	}
+	directory = "Assets";
+	CreateNewDirectory(ASSETS);
 
 	TCHAR NPath[MAX_PATH];
 	GetCurrentDirectory(MAX_PATH, NPath);
