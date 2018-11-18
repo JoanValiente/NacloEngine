@@ -24,9 +24,8 @@ void PanelInspector::DrawInspector()
 		int height;
 		SDL_GetWindowSize(App->window->window, &width, &height);
 
-		ImGui::SetNextWindowPos(ImVec2(width / 2 + width / 4 + 43, 19));
-		ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + 210));
-		
+		ImGui::SetNextWindowPos(ImVec2(width / 2 + width / 4 + 43, height/55));
+		ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height/5));		
 
 		if (ImGui::Begin("Inspector", &active))
 		{

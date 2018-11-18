@@ -26,6 +26,13 @@ PanelConfiguration::~PanelConfiguration()
 
 void PanelConfiguration::Draw()
 {
+	int width;
+	int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(0, height / 55));
+	ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5));
+
 	if (!ImGui::Begin("Configuration", &active))
 	{
 		ImGui::End();

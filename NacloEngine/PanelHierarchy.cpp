@@ -1,5 +1,6 @@
 #include "PanelHierarchy.h"
 #include "Application.h"
+#include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
 
@@ -14,6 +15,13 @@ PanelHierarchy::~PanelHierarchy()
 
 void PanelHierarchy::Draw()
 {
+	int width;
+	int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(0, height / 28));
+	ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5.5));
+
 	if(ImGui::Begin("Game Objects", &active)) 
 	{
 		GameObject* root = App->scene->root;
