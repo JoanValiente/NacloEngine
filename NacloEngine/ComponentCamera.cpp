@@ -188,7 +188,9 @@ void ComponentCamera::CullingGameObjects()
 
 	for (uint i = 0; i < App->scene->root->GetNumChildren(); ++i)
 	{
-		CullingDynamicGO(App->scene->root->children[i]);
+		if (!App->scene->root->children[i]->staticGO) {
+			CullingDynamicGO(App->scene->root->children[i]);
+		}
 	}
 }
 
