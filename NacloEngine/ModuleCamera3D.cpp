@@ -361,5 +361,9 @@ void ModuleCamera3D::RaycastDebugDraw()
 	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
-// -----------------------------------------------------------------
-
+void ModuleCamera3D::Save(Config* conf) const
+{
+	conf->SetFloat("Speed", speed);
+	conf->SetFloat("Fast Speed", fast_speed);
+	conf->SetFloat("Scroll Speed", scroll_speed);
+}

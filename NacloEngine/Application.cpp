@@ -238,7 +238,7 @@ bool Application::CleanUp()
 		ret = (*item)->CleanUp();
 		item++;
 	}
-	settings.Save();
+	settings.Save("");
 
 	delete texture;
 	delete meshes;

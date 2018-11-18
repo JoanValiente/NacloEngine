@@ -196,7 +196,7 @@ void const ModuleWindow::ShowWindowInfo()
 
 }
 
-void ModuleWindow::Save(Config * conf)
+void ModuleWindow::Save(Config * conf) const
 {
 	conf->SetBool("Fullscreen", fullscreen);
 	conf->SetBool("Resizable", resizable);

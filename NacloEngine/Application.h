@@ -94,7 +94,6 @@ public:
 private:
 	void SetSettings();
 	void GetSettings(Config &config);
-
 	void AddModule(Module* mod);
 	void PrepareUpdate();
 	void FinishUpdate();

@@ -27,7 +27,7 @@ public:
 	void SetWindowBorderless(SDL_Window* window);
 	void const ShowWindowInfo();
 
-	void Save(Config* conf);
+	void Save(Config* conf) const;
 
 
 public:
