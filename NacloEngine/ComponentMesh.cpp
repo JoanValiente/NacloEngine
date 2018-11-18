@@ -13,6 +13,9 @@ ComponentMesh::ComponentMesh(GameObject * container) : Component(container)
 
 ComponentMesh::~ComponentMesh()
 {
+	RELEASE_ARRAY(mesh->vertices);
+	RELEASE_ARRAY(mesh->indices);
+	RELEASE_ARRAY(mesh->texture);
 	delete mesh;
 }
 

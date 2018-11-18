@@ -2,6 +2,7 @@
 #include "Glew/include/glew.h"
 #include "GameObject.h"
 
+
 #define BUCKET_SIZE 4
 
 Quadtree::Quadtree()

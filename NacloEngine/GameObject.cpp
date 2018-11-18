@@ -32,6 +32,8 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	
 	boundingBox.SetNegativeInfinity();
 
+	if (App->scene->quadtree != nullptr)
+		App->scene->UpdateQuadtree();
 	App->scene->gameObjects.push_back(this);
 }
 
