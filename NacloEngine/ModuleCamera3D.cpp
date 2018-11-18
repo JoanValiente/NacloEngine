@@ -11,6 +11,7 @@
 #include "GameObject.h"
 #include "ModuleScene.h"
 #include "Quadtree.h"
+#include "Config.h"
 
 #include "mmgr/mmgr.h"
 
@@ -30,10 +31,10 @@ bool ModuleCamera3D::Start(Config* conf)
 	LOG("Setting up the camera");
 	bool ret = true;
 
-	speed = 3.0f;
-	aux_speed = 3.0f;
-	fast_speed = 8.0f;
-	scroll_speed = 8.0f;
+	speed = conf->GetFloat("Speed");
+	aux_speed = speed;
+	fast_speed = conf->GetFloat("Fast Speed");;
+	scroll_speed = conf->GetFloat("Scrool Speed");;
 
 	// Rotating the frustrum to look at the scene correctly
 	/*

@@ -81,10 +81,10 @@ public:
 	update_status Update();
 	bool CleanUp();
 
-	char* engine_name;
-	char* author_1_name;
-	char* author_2_name;
-	char* organization_name;
+	const char* engine_name;
+	const char* author_1_name;
+	const char* author_2_name;
+	const char* organization_name;
 
 	void Log(const char* text);
 
