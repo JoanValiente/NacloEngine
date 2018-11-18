@@ -17,7 +17,7 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	this->parent = parent;
 	this->name = name;
 	this->active = true;
-	this->staticGO = true;
+	this->staticGO = false;
 
 	if (parent != nullptr)
 	{
@@ -32,8 +32,6 @@ GameObject::GameObject(GameObject * parent, const char* name)
 	
 	boundingBox.SetNegativeInfinity();
 
-	if (App->scene->quadtree != nullptr)
-		App->scene->UpdateQuadtree();
 	App->scene->gameObjects.push_back(this);
 }
 
@@ -223,6 +221,15 @@ void GameObject::ChangeHierarchy(GameObject* &obj)
 
 		
 	}
+}
+
+void GameObject::ChangeStaticChildren(GameObject * go, bool isStatic)
+{
+	for (int i = 0; i < go->children.size(); ++i)
+	{
+		go->children[i]->staticGO = isStatic;
+		go->children[i]->ChangeStaticChildren(go->children[i], isStatic);
+	}	
 }
 
 uint GameObject::GetNumChildren()
