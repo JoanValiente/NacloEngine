@@ -7,7 +7,7 @@
 #include "Globals.h"
 #include "MeshImporter.h"
 
-
+#include <string>
 #include <list>
 
 #define MAX_LIGHTS 8
@@ -44,8 +44,11 @@ struct Mesh
 
 struct Texture
 {
-	const char* texture_name;
-	const char* path;
+	uint width = 0;
+	uint height = 0;
+	std::string texture_name;
+	std::string path;
+	std::string texture_dds;
 	uint texture_id = 0;
 };
 
@@ -72,8 +75,6 @@ public:
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
 	void DeleteAllMeshes();
-
-	void AddTexture(const char* path);
 
 	void ShowRenderInfo();
 

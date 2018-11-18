@@ -155,12 +155,12 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			}
 
 			aiMaterial* tex = scene->mMaterials[new_mesh->mMaterialIndex];
-			Texture* texture = new Texture();
+			Texture* texture;
 
 			
 			if (tex != nullptr)
 			{
-				texture->texture_id = GetTexturePath(tex, path);
+				texture = GetTexture(tex, path);
 			}
 			
 			if (new_mesh->HasTextureCoords(0))
@@ -242,9 +242,9 @@ void MeshImporter::LoadMeshNCL(const char * path, Mesh * mesh)
 }
 
 
-int MeshImporter::GetTexturePath(aiMaterial* tex, const char* path)
+Texture* MeshImporter::GetTexture(aiMaterial* tex, const char* path)
 {
-	uint ret = 0;
+	Texture* ret = nullptr;
 
 	std::string new_path = path;
 	new_path.erase(new_path.find_last_of("\\") + 1, new_path.back());

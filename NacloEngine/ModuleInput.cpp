@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "MeshImporter.h"
+#include "TextureImporter.h"
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
@@ -193,17 +194,22 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	else if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{
 		LOG("Loading PNG file");
-		App->renderer3D->AddTexture(path);
+		App->texture->LoadTexture(path);
 	}
 	else if (file_path.find(".jpg") != end_string || file_path.find(".JPG") != end_string)
 	{
 		LOG("Loading JPG file");
-		App->renderer3D->AddTexture(path);
+		App->texture->LoadTexture(path);
+	}
+	else if (file_path.find(".tga") != end_string || file_path.find(".TGA") != end_string)
+	{
+		LOG("Loading TGA file");
+		App->texture->LoadTexture(path);
 	}
 	else if (file_path.find(".dds") != end_string || file_path.find(".DDS") != end_string)
 	{
 		LOG("Loading DDS file");
-		App->renderer3D->AddTexture(path);
+		App->texture->LoadTexture(path);
 	}
 	else
 	{

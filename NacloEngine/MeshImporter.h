@@ -8,6 +8,7 @@
 #include "MathGeoLib/MathGeoLib.h"
 
 struct Mesh;
+struct Texture;
 struct GameObject;
 struct aiScene;
 struct aiNode;
@@ -35,7 +36,7 @@ private:
 	void LoadMeshNCL(const char* path, Mesh* mesh);
 
 	//This Function search texture on the path specified by the .fbx and at the same folder as the .fbx is
-	int GetTexturePath(aiMaterial* tex, const char* path);
+	Texture* GetTexture(aiMaterial* tex, const char* path);
 
 
 	void SetBuffers(Mesh* mesh);

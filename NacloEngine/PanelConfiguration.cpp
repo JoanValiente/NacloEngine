@@ -65,11 +65,6 @@ void PanelConfiguration::Draw()
 			App->imgui->ShowImGuiInfo();
 		}
 
-		if (ImGui::CollapsingHeader("Textures"))
-		{
-			App->texture->ShowTextureInfo();
-		}
-
 		if (ImGui::CollapsingHeader("Hardware"))
 		{
 			ShowHardwareInfo();

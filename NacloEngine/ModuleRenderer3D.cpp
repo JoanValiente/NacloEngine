@@ -400,23 +400,6 @@ void ModuleRenderer3D::DeleteAllMeshes()
 	ClearMeshes();
 }
 
-void ModuleRenderer3D::AddTexture(const char * path)
-{
-	if (!textures.empty())
-	{
-		for (std::vector<Texture*>::const_iterator iterator = textures.begin(); iterator != textures.end(); ++iterator)
-		{
-			Texture* texture_add = *iterator;
-			texture_add->texture_id = App->texture->LoadTexture(path);
-		}
-	}
-	
-	else
-	{
-		LOG("ERROR LOADING TEXTURE, NO MESH LOADED");
-	}
-}
-
 #ifndef GAME_MODE
 void ModuleRenderer3D::ShowRenderInfo()
 {
