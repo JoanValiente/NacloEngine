@@ -383,14 +383,14 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 	{
 		LOG("LOADING OWN MESH %s", path);
 		ret = LoadNCL(buffer, size);
+		RELEASE_ARRAY(buffer);
 	}
 	else
 	{
 		LOG("ERROR LOADING OWN MESH %s", path);
 	}
 
-	LoadMeshNCL("patata1", ret);
-	RELEASE_ARRAY(buffer);
+
 	return ret;
 }
 

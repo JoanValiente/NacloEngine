@@ -148,17 +148,17 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			{
 				ShellExecuteA(NULL, "open", explorer_path.c_str() , NULL, NULL, SW_SHOWDEFAULT);
 			}
-			if (ImGui::MenuItem("Save", "Ctrl+S"))
+			if (ImGui::MenuItem("Save"))
 			{
 				save_type = SAVE;
 				save = true;
 			}
-			if (ImGui::MenuItem("Save As", "Ctrl+Shift+S"))
+			if (ImGui::MenuItem("Save As"))
 			{
 				save_type = SAVE_AS;
 				save = true;
 			}
-			if (ImGui::MenuItem("Load", "Ctrl+O"))
+			if (ImGui::MenuItem("Load"))
 			{
 				load = true;
 			}

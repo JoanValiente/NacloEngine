@@ -256,6 +256,8 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
+	if (mesh != nullptr)
+	{
 		glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
 		if (texture != nullptr)
@@ -292,6 +294,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glPopMatrix();
+	}
 }
 
 

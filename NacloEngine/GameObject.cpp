@@ -174,7 +174,8 @@ void GameObject::UpdateBoundingBox()
 	ComponentMesh* mesh = (ComponentMesh*)GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_MESH);
 
 	if (mesh != nullptr)
-		boundingBox.Enclose((const float3*)mesh->mesh->vertices, mesh->mesh->num_vertices);
+		if (mesh->mesh != nullptr)
+			boundingBox.Enclose((const float3*)mesh->mesh->vertices, mesh->mesh->num_vertices);
 
 	if (transform != nullptr)
 	{

@@ -38,10 +38,6 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	bool ret = true;
 
 
-	App->scene->DestroyAllGameObjects();
-	App->scene->root = new GameObject(nullptr, "root");
-	ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-
 
 	std::string final_path = ASSETS_SCENES_FOLDER;
 	final_path.append(file_name);
@@ -50,6 +46,13 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	Config file(final_path.c_str());
 
 	int size = file.GetArraySize("Game Objects");
+
+	if (size > 0)
+	{
+		App->scene->DestroyAllGameObjects();
+		App->scene->root = new GameObject(nullptr, "root");
+		ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+	}
 
 	for (int i = 0; i < size; i++)
 	{
@@ -104,6 +107,7 @@ bool SceneSerialization::ShowSavingOption(TypeSave type)
 	else
 	{
 		SaveScene(last_saved);
+		ret = false;
 	}
 
 	return ret;

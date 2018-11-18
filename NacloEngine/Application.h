@@ -36,8 +36,7 @@ enum GAME_STATE
 	NONE,
 	PLAY,
 	PAUSE,
-	STOP,
-	TICK
+	STOP
 };
 
 class Application

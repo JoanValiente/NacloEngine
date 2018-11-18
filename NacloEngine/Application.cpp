@@ -123,8 +123,6 @@ void Application::PrepareUpdate()
 			break;
 		case STOP:
 			break;
-		case TICK:
-			break;
 		default:
 			break;
 		}
@@ -143,8 +141,6 @@ void Application::PrepareUpdate()
 			camera->activeCamera = camera->camera;
 			break;
 		case PAUSE:
-			break;
-		case TICK:
 			break;
 		default:
 			break;

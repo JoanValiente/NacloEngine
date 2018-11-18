@@ -6,6 +6,7 @@
 #include "ModuleTimer.h"
 #include "GameObject.h"
 #include "ModuleRenderer3D.h"
+#include "SceneSerialization.h"
 #include "Imgui/imgui.h"
 
 PanelTime::PanelTime() : Panel("Time")
@@ -39,6 +40,7 @@ void PanelTime::Draw()
 	{
 		App->gameState = GAME_STATE::PLAY;
 		App->engineState = ENGINE_STATE::GAME;
+		App->sceneser->SaveScene("tmp");
 		App->camera->activeCamera = App->scene->mainCamera;
 		App->renderer3D->ChangeCamera();
 	}
@@ -49,6 +51,7 @@ void PanelTime::Draw()
 	{
 		App->gameState = GAME_STATE::STOP;
 		App->engineState = ENGINE_STATE::EDITOR;
+		App->sceneser->LoadScene("tmp");
 		App->camera->activeCamera = App->camera->camera;
 		App->renderer3D->ChangeCamera();
 	}
@@ -66,12 +69,6 @@ void PanelTime::Draw()
 	}
 
 	ImGui::SameLine();
-
-	if (ImGui::Button("TICK", ImVec2(60, 22)) || App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
-	{
-		App->gameState = GAME_STATE::TICK;
-		App->timer->isTick = true;
-	}
 
 	ImGui::SameLine();
 

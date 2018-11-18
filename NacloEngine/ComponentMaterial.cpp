@@ -93,5 +93,6 @@ void ComponentMaterial::LoadComponent(Config & conf)
 			texture->width = conf.GetInt("Width");
 			texture->height = conf.GetInt("Height");
 		}
+
 	}
 }
