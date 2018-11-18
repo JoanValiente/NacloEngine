@@ -16,7 +16,6 @@
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "Quadtree.h"
-#include "Config.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -58,7 +57,7 @@ bool ModuleRenderer3D::Init(Config* conf)
 	if(ret == true)
 	{
 		//Use Vsync
-		if (conf->GetBool("VSYNC") && SDL_GL_SetSwapInterval(1) < 0)
+		if(VSYNC && SDL_GL_SetSwapInterval(1) < 0)
 			LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		//Initialize Projection Matrix

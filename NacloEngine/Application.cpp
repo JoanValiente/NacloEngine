@@ -81,7 +81,9 @@ bool Application::Init()
 
 	while (item != modules.end() && ret == true)
 	{
-		ret = (*item)->Init(&settings.GetSection((*item)->GetName()));
+		if ((*item)->active)
+			ret = (*item)->Init();
+
 		item++;
 	}
 
@@ -92,7 +94,7 @@ bool Application::Init()
 	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->active)
-			ret = (*item)->Start(&settings.GetSection((*item)->GetName()));
+			ret = (*item)->Start();
 
 		item++;
 	}
@@ -230,16 +232,12 @@ bool Application::CleanUp()
 	bool ret = true;
 	list<Module*>::reverse_iterator item;
 	item = modules.rbegin();
-	Config settings("Settings/settings.json");
 
 	while(item != modules.rend() && ret == true)
 	{
-		(*item)->Save(&settings.GetSection((*item)->GetName()));
 		ret = (*item)->CleanUp();
 		item++;
 	}
-	settings.Save();
-
 	delete texture;
 	delete meshes;
 	delete sceneser;
@@ -253,8 +251,8 @@ void Application::Log(const char * text)
 
 void const Application::ShowApplicationInfo()
 {
-	ImGui::Text("%s", App->engine_name);
-	ImGui::Text("%s", App->organization_name);
+	ImGui::Text(App->engine_name);
+	ImGui::Text(App->organization_name);
 
 	if (vector_fps.size() != 100)
 	{

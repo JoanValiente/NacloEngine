@@ -1,7 +1,6 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
-#include "Config.h"
 
 #include "ImGui/imgui.h"
 
@@ -33,34 +32,33 @@ bool ModuleWindow::Init(Config* conf)
 	}
 	else
 	{
-		width = conf->GetInt("Width");
-		height = conf->GetInt("Height");
+		width = SCREEN_WIDTH * SCREEN_SIZE;
+		height = SCREEN_HEIGHT * SCREEN_SIZE;
 		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
 		//Use OpenGL 2.1
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 2);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-		if(conf->GetBool("Fullscreen"))
+		if(WIN_FULLSCREEN == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN;
 			fullscreen = true;
 		}
 
-
-		if(conf->GetBool("Resizable"))
+		if(WIN_RESIZABLE == true)
 		{
 			flags |= SDL_WINDOW_RESIZABLE;
 			resizable = true; 
 		}
 
-		if(conf->GetBool("Borderless"))
+		if(WIN_BORDERLESS == true)
 		{
 			flags |= SDL_WINDOW_BORDERLESS;
 			borderless = true;
 		}
 
-		if(conf->GetBool("Fullscreen Desktop"))
+		if(WIN_FULLSCREEN_DESKTOP == true)
 		{
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 			fullscreen_desktop = true; 
@@ -193,19 +191,6 @@ void const ModuleWindow::ShowWindowInfo()
 	{
 		App->window->SetWindowFullDesktop(window);
 	}
-
-}
-
-void ModuleWindow::Save(Config * conf)
-{
-	conf->SetBool("Fullscreen", fullscreen);
-	conf->SetBool("Resizable", resizable);
-	conf->SetBool("Borderless", borderless);
-	conf->SetBool("Fullscreen Desktop", fullscreen_desktop);
-
-	conf->SetInt("Width", width);
-	conf->SetInt("Height", height);
-
 
 }
 

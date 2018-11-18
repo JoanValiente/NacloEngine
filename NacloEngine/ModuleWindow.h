@@ -27,7 +27,6 @@ public:
 	void SetWindowBorderless(SDL_Window* window);
 	void const ShowWindowInfo();
 
-	void Save(Config* conf);
 
 
 public:
@@ -39,8 +38,8 @@ public:
 
 	float brightness = 1.0f;
 
-	int width = 0;
-	int height = 0;
+	int width = SCREEN_WIDTH * SCREEN_SIZE;
+	int height = SCREEN_HEIGHT * SCREEN_SIZE;
 
 	Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN;
 
