@@ -27,11 +27,17 @@ using namespace std;
 
 enum ENGINE_STATE
 {
+	EDITOR,
+	GAME
+};
+
+enum GAME_STATE
+{
+	NONE,
 	PLAY,
 	PAUSE,
 	STOP,
-	TICK,
-	EDITOR
+	TICK
 };
 
 class Application
@@ -56,6 +62,7 @@ public:
 	bool	vsync = false;
 
 	ENGINE_STATE engineState = ENGINE_STATE::EDITOR;
+	GAME_STATE gameState = GAME_STATE::NONE;
 	PerfTimer	ms_timer;
 
 private:	
@@ -78,11 +85,6 @@ public:
 	char* author_1_name;
 	char* author_2_name;
 	char* organization_name;
-
-	void Play();
-	void Pause();
-	void Stop();
-	void Tick();
 
 	void Log(const char* text);
 

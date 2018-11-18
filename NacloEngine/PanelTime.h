@@ -11,6 +11,8 @@ public:
 
 	void Draw();
 
+private:
+	float timeScale = 1.0f;
 };
 
 #endif

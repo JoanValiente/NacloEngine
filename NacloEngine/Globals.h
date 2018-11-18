@@ -45,10 +45,6 @@ enum update_status
 	UPDATE_STOP,
 	UPDATE_ERROR
 };
-// GAME_MODE ---------------
-#ifndef _GAME_MODE_
-// GAME_MODE
-#endif GAME_MODE
 
 // Configuration -----------
 #define SCREEN_WIDTH 1680

@@ -2,9 +2,7 @@
 #include "Application.h"
 #include "ModuleWindow.h"
 
-#ifndef GAME_MODE
 #include "ImGui/imgui.h"
-#endif
 
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
@@ -148,7 +146,6 @@ void ModuleWindow::SetWindowBorderless(SDL_Window * window)
 		SDL_SetWindowFullscreen(window, flags);
 }
 
-#ifndef GAME_MODE
 void const ModuleWindow::ShowWindowInfo()
 {
 	if (ImGui::SliderFloat("Brightness", &brightness, 0.0f, 1.0f))
@@ -193,5 +190,4 @@ void const ModuleWindow::ShowWindowInfo()
 	}
 
 }
-#endif
 
