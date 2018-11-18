@@ -21,9 +21,12 @@ public:
 	void CreateNewDirectory(const char* path) const;
 	UID GenerateUID();
 
-	char** GetFiles(const char* path);
+	const char** GetFiles(const char* path);
 
 	int Phys_DeleteFile(const char* filename);
+
+	bool FindFileIn(const char* dir, const char* file_name, std::string& path);
+	bool IsDirectory(const char* path);
 
 private:
 	std::string CreateNewFilePath(const char* path);

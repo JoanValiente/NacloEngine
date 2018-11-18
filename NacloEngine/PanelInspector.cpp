@@ -17,7 +17,6 @@ PanelInspector::~PanelInspector()
 void PanelInspector::DrawInspector()
 {
 	GameObject* go = App->scene->GetSelected();
-	static bool add_component = false;
 
 	if (go != nullptr)
 	{
