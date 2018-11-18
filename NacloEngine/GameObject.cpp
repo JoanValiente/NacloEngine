@@ -11,6 +11,7 @@
 #include "ModuleScene.h"
 #include "Config.h"
 
+#include "mmgr/mmgr.h"
 
 GameObject::GameObject(GameObject * parent, const char* name)
 {
@@ -37,15 +38,15 @@ GameObject::GameObject(GameObject * parent, const char* name)
 
 GameObject::~GameObject()
 {
-	
-	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++) {
+	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++)
+	{
 		delete (*it);
 	}
 
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++) {
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++)
+	{
 		delete (*it);
 	}
-	
 }
 
 void GameObject::Update(float dt)
@@ -267,7 +268,7 @@ bool GameObject::LoadGO(Config& conf)
 			component->LoadComponent(conf.GetArray("COMPONENTS", i));
 		}
 	}
-	return false;
+	return true;
 }
 
 bool GameObject::SearchForParent(GameObject * parent, GameObject* child)

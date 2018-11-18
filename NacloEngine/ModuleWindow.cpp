@@ -6,6 +6,7 @@
 #include "ImGui/imgui.h"
 #endif
 
+#include "mmgr/mmgr.h"
 
 ModuleWindow::ModuleWindow(Application* app, bool start_enabled) : Module(app, start_enabled)
 {

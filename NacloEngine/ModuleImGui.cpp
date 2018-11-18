@@ -15,6 +15,8 @@
 #include "PanelHierarchy.h"
 #include "PanelResources.h"
 #include "PanelTime.h"
+
+#include "mmgr/mmgr.h"
 #endif
 
 

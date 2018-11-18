@@ -44,6 +44,8 @@ struct Mesh
 
 struct Texture
 {
+	const char* texture_name;
+	const char* path;
 	uint texture_id = 0;
 };
 

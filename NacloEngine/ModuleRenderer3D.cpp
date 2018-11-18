@@ -20,6 +20,8 @@
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
+#include "mmgr/mmgr.h"
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -193,7 +195,7 @@ update_status ModuleRenderer3D::Update(float dt)
 			if (m != nullptr && transform != nullptr) 
 			{
 				if (t != nullptr)
-					DrawMesh(m->mesh, transform, t->texture);
+					DrawMesh((*iterator)->mesh->mesh, transform, t->texture);
 				else
 					DrawMesh(m->mesh, transform);
 
@@ -224,6 +226,9 @@ bool ModuleRenderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
+
+	textures.clear();
+	meshes.clear();
 
 	ClearMeshes();
 

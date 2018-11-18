@@ -12,6 +12,8 @@
 #include "ModuleScene.h"
 #include "Quadtree.h"
 
+#include "mmgr/mmgr.h"
+
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	meshBox = new AABB(float3(0.0f,0.0f,0.0f), float3(0.0f, 0.0f, 0.0f));
@@ -256,26 +258,27 @@ void ModuleCamera3D::ShowCameraInfo()
 
 void ModuleCamera3D::CullingGameObjects(GameObject * go)
 {
-	if (App->scene->main_camera->camera->frustumCulling) {
-		if (!App->scene->main_camera->camera->Intersects(go->boundingBox)) {
-			go->active = false;
+		if (App->scene->main_camera->camera->frustumCulling) {
+			if (!App->scene->main_camera->camera->Intersects(go->boundingBox)) {
+				go->active = false;
+			}
+			else
+				go->active = true;
 		}
-		else
-			go->active = true;
-	}
 
-	if (camera->frustumCulling) {
-		if (!camera->Intersects(go->boundingBox)) {
-			go->active = false;
+		if (camera->frustumCulling) {
+			if (!camera->Intersects(go->boundingBox)) {
+				go->active = false;
+			}
+			else
+				go->active = true;
 		}
-		else
-			go->active = true;
-	}
 
-	for (uint i = 0; i < go->children.size(); ++i)
-	{
-		CullingGameObjects(go->children[i]);
-	}
+		for (uint i = 0; i < go->children.size(); ++i)
+		{
+			CullingGameObjects(go->children[i]);
+		}
+	
 }
 
 void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment ray)

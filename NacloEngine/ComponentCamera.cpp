@@ -5,6 +5,8 @@
 #include "Component.h"
 #include "Config.h"
 
+#include "mmgr/mmgr.h"
+
 ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 {
 	type = COMPONENT_CAMERA;

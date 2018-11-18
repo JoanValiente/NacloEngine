@@ -25,7 +25,7 @@ public:
 	GameObject* GetSelected();
 
 	void UpdateTransforms(GameObject* go);
-	void DeleteAllGameObject();
+	void DestroyAllGameObjects();
 
 public:
 	GameObject* root = nullptr;

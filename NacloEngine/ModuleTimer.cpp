@@ -1,6 +1,8 @@
 #include "ModuleTimer.h"
 #include "Application.h"
 
+#include "mmgr/mmgr.h"
+
 ModuleTimer::ModuleTimer(Application * app, bool start_enabled) : Module (app, start_enabled)
 {
 }

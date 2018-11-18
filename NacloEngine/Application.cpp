@@ -12,6 +12,7 @@
 #include "ModuleFileSystem.h"
 #include "SceneSerialization.h"
 
+#include "mmgr/mmgr.h"
 
 Application::Application()
 {
@@ -220,6 +221,9 @@ bool Application::CleanUp()
 		ret = (*item)->CleanUp();
 		item++;
 	}
+	delete texture;
+	delete meshes;
+	delete sceneser;
 	return ret;
 }
 

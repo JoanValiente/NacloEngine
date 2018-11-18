@@ -11,6 +11,8 @@
 #pragma comment (lib, "Devil/libx86/ILU.lib")
 #pragma comment (lib, "Devil/libx86/ILUT.lib")
 
+#include "mmgr/mmgr.h"
+
 TextureImporter::TextureImporter() : Importer()
 {
 }
@@ -78,6 +80,8 @@ uint TextureImporter::LoadTexture(const char* path)
 
 			Import(buffer, size, new_path); //Import texture in our own format
 
+
+			RELEASE_ARRAY(buffer);
 			return textureID; // Return the GLuint to the texture so you can use it!
 		}
 		else // If we failed to open the image file in the first place...
@@ -91,7 +95,6 @@ uint TextureImporter::LoadTexture(const char* path)
 		LOG("ERROR LOADING TEXTURES");
 		return 0;
 	}
-
 }
 
 bool TextureImporter::Import(const void * buffer, uint size, string& output_file)

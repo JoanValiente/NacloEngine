@@ -37,7 +37,7 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	bool ret = true;
 
 
-	App->scene->DeleteAllGameObject();
+	App->scene->DestroyAllGameObjects();
 	App->scene->root = new GameObject(nullptr, "root");
 	ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 

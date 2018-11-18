@@ -8,6 +8,8 @@
 #include "ComponentCamera.h"
 #include "Config.h"
 
+#include "mmgr/mmgr.h"
+
 ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
 {
 	type = COMPONENT_TRANSFORM;
@@ -182,6 +184,14 @@ void ComponentTransform::SaveComponent(Config &conf)
 	conf.SetFloat3("Position", position);
 	conf.SetFloat3("Rotation", rotation);
 	conf.SetFloat3("Size", size);
+}
+
+void ComponentTransform::LoadComponent(Config & conf)
+{
+	SetPosition(conf.GetFloat3("Position"));
+	SetRotation(conf.GetFloat3("Rotation"));
+	SetSize(conf.GetFloat3("Size"));
+
 }
 
 

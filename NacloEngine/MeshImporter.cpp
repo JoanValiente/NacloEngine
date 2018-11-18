@@ -16,6 +16,8 @@
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 
+#include "mmgr/mmgr.h"
+
 void myCallback(const char *msg, char *userData) {
 
 	LOG("%s", msg);
@@ -31,31 +33,6 @@ MeshImporter ::~MeshImporter()
 
 }
 
-bool MeshImporter::Init()
-{
-	bool ret = true;
-
-	//ilInit();
-	//ilutRenderer(ILUT_OPENGL);
-
-	return ret;
-}
-
-bool MeshImporter::Start()
-{
-	struct aiLogStream stream;
-	stream.callback = myCallback;
-	aiAttachLogStream(&stream);
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	return true;
-}
-
-bool MeshImporter::CleanUp()
-{
-	aiDetachAllLogStreams();
-	return true;
-}
-
 bool MeshImporter::Import(const char * path, std::string & output_file)
 {
 	bool ret = false;
@@ -63,7 +40,7 @@ bool MeshImporter::Import(const char * path, std::string & output_file)
 
 	uint size = App->fs->Load(path, &buffer);
 
-
+	
 	if (size > 0)
 	{
 		ret = Import(buffer, size, output_file, path);
@@ -72,10 +49,11 @@ bool MeshImporter::Import(const char * path, std::string & output_file)
 	{
 		LOG("ERROR LOADING MESH %s", path);
 	
-		return false;
+		ret = false;
 	}
-
+	
 	RELEASE_ARRAY(buffer);
+	return ret;
 
 }
 
@@ -84,7 +62,7 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 	bool ret = false; 
 
 	const aiScene* scene = aiImportFileFromMemory((const char*)buffer, size, aiProcessPreset_TargetRealtime_MaxQuality, nullptr);
-
+	
 	if (scene != nullptr && scene->HasMeshes())
 	{
 		aiNode* main_node = scene->mRootNode;
@@ -107,7 +85,8 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 
 		LoadMeshData(scene, main_node, path, go);
 
-		App->scene->SetSelected(go);
+		//App->scene->SetSelected(go);
+		
 
 		ret = true;
 	}
@@ -208,13 +187,18 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				materialComponent->AssignTexture(texture);
 			}
 
-
 			SetBuffers(mesh);
 
 			LOG("Exporting mesh %s", node->mName.C_Str());
 			char* buffer;
 			App->fs->Load(path, &buffer);
 			ExportNCL(buffer, mesh, mesh->ncl_path);
+
+			RELEASE_ARRAY(buffer);
+
+			RELEASE_ARRAY(mesh->vertices);
+			RELEASE_ARRAY(mesh->indices);
+			RELEASE_ARRAY(mesh->texture);
 
 			App->renderer3D->AddTexture(texture);
 			final_obj = children;
@@ -349,6 +333,8 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 		LOG("Stored UV");
 
 		App->fs->Save(output, data, size, LIBRARY_MESH_FOLDER, "mesh", "ncl");
+
+		RELEASE_ARRAY(data);
 	}
 	else
 	{
@@ -376,6 +362,14 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 	}
 
 	LoadMeshNCL(path, ret);
+
+	RELEASE_ARRAY(buffer);
+
+	RELEASE_ARRAY(ret->vertices);
+	RELEASE_ARRAY(ret->indices);
+	RELEASE_ARRAY(ret->texture);
+
+
 
 	return ret;
 }

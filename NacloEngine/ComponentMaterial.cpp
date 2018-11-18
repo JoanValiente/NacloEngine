@@ -2,6 +2,7 @@
 #include "OpenGL.h"
 #include "GameObject.h"
 
+#include "mmgr/mmgr.h"
 
 ComponentMaterial::ComponentMaterial(GameObject * container) : Component(container)
 {
@@ -11,6 +12,7 @@ ComponentMaterial::ComponentMaterial(GameObject * container) : Component(contain
 
 ComponentMaterial::~ComponentMaterial()
 {
+	delete texture;
 }
 
 void ComponentMaterial::AssignTexture(Texture* texture)
@@ -25,6 +27,6 @@ void ComponentMaterial::ShowInspector()
 		ImGui::Text("SIZE");
 		//ImGui::Text("Width: %i", texture->texture_width); ImGui::SameLine();
 		//ImGui::Text("Height: %i", texture->texture_height);
-		//ImGui::Image(texture_id, { 256,256 });
+		ImGui::Image((ImTextureID)texture->texture_id, { 256,256 });
 	}
 }
