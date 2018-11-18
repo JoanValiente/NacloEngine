@@ -2,6 +2,7 @@
 #include "Imgui/imgui.h"
 #include "Application.h"
 #include "GameObject.h"
+#include "ComponentMesh.h"
 #include "ModuleScene.h"
 
 PanelInspector::PanelInspector() : Panel ("Inspector")
@@ -16,6 +17,7 @@ PanelInspector::~PanelInspector()
 void PanelInspector::DrawInspector()
 {
 	GameObject* go = App->scene->GetSelected();
+	static bool add_component = false;
 
 	if (go != nullptr)
 	{
