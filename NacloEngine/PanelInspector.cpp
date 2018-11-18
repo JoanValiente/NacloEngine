@@ -23,8 +23,12 @@ void PanelInspector::DrawInspector()
 		{
 			ImGui::Text(go->name.c_str());
 			bool staticGO = go->staticGO;
-			if (ImGui::Checkbox("Static", &staticGO))
+			if (ImGui::Checkbox("Static", &staticGO)) {
 				go->staticGO = staticGO;
+				if (staticGO) {
+					App->scene->quadtreeUpdate = true;
+				}
+			}
 
 			go->Inspector();
 			ImGui::End();

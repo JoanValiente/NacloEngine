@@ -48,6 +48,7 @@ bool MeshImporter::Import(const char * path, std::string & output_file)
 	if (size > 0)
 	{
 		ret = Import(buffer, size, output_file, path);
+		App->scene->quadtreeUpdate = true;
 	}
 	else
 	{

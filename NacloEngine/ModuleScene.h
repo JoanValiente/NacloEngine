@@ -37,6 +37,7 @@ public:
 	ComponentCamera* mainCamera = nullptr;
 
 	Quadtree* quadtree = nullptr;
+	bool quadtreeUpdate = true;
 
 private:
 	GameObject * selected = nullptr;

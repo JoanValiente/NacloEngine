@@ -1,6 +1,7 @@
 #include "ComponentTransform.h"
 #include "GameObject.h"
 #include "Globals.h"
+#include "ModuleScene.h"
 #include "ImGuizmo/ImGuizmo.h"
 #include "ModuleInput.h"
 #include "ModuleCamera3D.h"
@@ -159,7 +160,6 @@ void ComponentTransform::DrawGuizmos()
 	{
 		matrix.Transpose();
 
-		container->staticGO = false;
 		App->camera->using_guizmos = true;
 
 		if (guizmoOperation == ImGuizmo::SCALE) {

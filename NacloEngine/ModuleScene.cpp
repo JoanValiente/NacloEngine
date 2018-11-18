@@ -95,13 +95,16 @@ void ModuleScene::DeleteGameObject(GameObject * gameObject)
 
 void ModuleScene::UpdateQuadtree()
 {
-	quadtree->Clear();
-	quadtree->Create(AABB(AABB(float3(-50, -10, -50), float3(50, 10, 50))));
+	if (quadtreeUpdate) {
+		quadtree->Clear();
+		quadtree->Create(AABB(AABB(float3(-50, -10, -50), float3(50, 10, 50))));
 
-	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); it++) {
-		if ((*it)->staticGO) {
-			quadtree->Insert((*it));
+		for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); it++) {
+			if ((*it)->staticGO) {
+				quadtree->Insert((*it));
+			}
 		}
+		quadtreeUpdate = false;
 	}
 }
 
