@@ -1,6 +1,8 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleCamera3D.h"
+#include "ModuleRenderer3D.h"
+#include "ModuleWindow.h"
 #include "Primitive.h"
 #include "Globals.h"
 #include "MeshImporter.h"
@@ -21,6 +23,7 @@ ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, st
 
 ModuleScene::~ModuleScene()
 {
+	RELEASE(root);
 }
 
 bool ModuleScene::Start(Config* conf)
@@ -153,19 +156,14 @@ bool ModuleScene::CleanUp()
 
 	file->Save();*/
 
-	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
-	{
-		(*it)->CleanUp();
-	}
+	root->CleanUp();
 
 	gameObjects.clear();
 
-	if (root != nullptr)
-	{
-		delete root;
-	}
 
-
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
 
 	return true;
 }

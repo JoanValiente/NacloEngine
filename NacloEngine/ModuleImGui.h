@@ -56,7 +56,7 @@ public:
 
 
 	bool wire_mode = false;
-
+	bool close_engine = false;
 private:
 
 	bool Show_Main_Menu_Bar();
@@ -68,6 +68,6 @@ private:
 
 	float clear_color = 0.5f;
 	std::string explorer_path;
-	bool close_engine = false; 
+
 };
 #endif

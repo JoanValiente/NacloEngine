@@ -88,7 +88,7 @@ update_status ModuleImgui::PreUpdate(float dt)
 update_status ModuleImgui::Update(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
-	close_engine = Show_Main_Menu_Bar();
+	Show_Main_Menu_Bar();
 	
 	for (vector<Panel*>::iterator it = panels.begin(); it != panels.end(); ++it)
 	{
@@ -108,11 +108,6 @@ update_status ModuleImgui::PostUpdate(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 
-	if (!close_engine)
-	{
-		ret = UPDATE_STOP;
-	}
-
 	return ret;
 }
 
@@ -129,10 +124,6 @@ bool ModuleImgui::CleanUp()
 	panels.clear();
 
 	console = nullptr;
-
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
 
 	return true;
 }
@@ -179,7 +170,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			}
 			if (ImGui::MenuItem("Close", NULL, false, true))
 			{
-				ret = false;
+				close_engine = true;
 			}
 			ImGui::EndMenu();
 		}

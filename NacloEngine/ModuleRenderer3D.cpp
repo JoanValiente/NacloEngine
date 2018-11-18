@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleScene.h"
+#include "ModuleImGui.h"
 #include "ModuleCamera3D.h"
 #include "PanelInspector.h"
 #include "TextureImporter.h"
@@ -211,21 +212,23 @@ update_status ModuleRenderer3D::Update(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	update_status update_return = UPDATE_CONTINUE;
+
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 
 	SDL_GL_SwapWindow(App->window->window);
-	return UPDATE_CONTINUE;
+
+	if (App->imgui->close_engine)
+		update_return = UPDATE_STOP;
+
+	return update_return;
 }
 
 // Called before quitting
 bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
-
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
 
 	SDL_GL_DeleteContext(context);
 
