@@ -4,12 +4,15 @@
 #include "Globals.h"
 
 class Application;
-struct PhysBody3D;
+struct Config;
 
 class Module
 {
 private :
 	bool enabled;
+
+protected:
+	const char* name = "";
 
 public:
 	Application* App;
@@ -20,12 +23,12 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	virtual bool Init(Config* conf = nullptr)
 	{
 		return true; 
 	}
 
-	virtual bool Start()
+	virtual bool Start(Config* conf = nullptr)
 	{
 		return true;
 	}
@@ -54,7 +57,12 @@ public:
 
 	virtual bool EditorMode() { return true; };
 
-	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
+	virtual const char* GetName() const { return name; };
+
+	virtual void Save(Config* config) const
+	{}
+
+	virtual void Load(Config* config)
 	{}
 
 public:

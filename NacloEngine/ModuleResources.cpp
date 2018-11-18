@@ -6,15 +6,18 @@
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 
+#include "mmgr/mmgr.h"
+
 ModuleResources::ModuleResources(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Resources";
 }
 
 ModuleResources::~ModuleResources()
 {
 }
 
-bool ModuleResources::Start()
+bool ModuleResources::Start(Config* conf)
 {
 	return true;
 }

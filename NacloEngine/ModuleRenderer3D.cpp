@@ -20,8 +20,11 @@
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
+#include "mmgr/mmgr.h"
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Render";
 }
 
 // Destructor
@@ -29,7 +32,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init()
+bool ModuleRenderer3D::Init(Config* conf)
 {
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
@@ -135,7 +138,7 @@ bool ModuleRenderer3D::Init()
 	return ret;
 }
 
-bool ModuleRenderer3D::Start()
+bool ModuleRenderer3D::Start(Config* conf)
 {
 	bool ret = true;
 
@@ -173,10 +176,6 @@ update_status ModuleRenderer3D::Update(float dt)
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
-		if ((*iterator) == App->scene->GetSelected())
-		{
-			int patata = 0;
-		}
 		if ((*iterator)->active) {
 			for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
 			{
@@ -193,7 +192,7 @@ update_status ModuleRenderer3D::Update(float dt)
 			if (m != nullptr && transform != nullptr) 
 			{
 				if (t != nullptr)
-					DrawMesh(m->mesh, transform, t->texture);
+					DrawMesh((*iterator)->mesh->mesh, transform, t->texture);
 				else
 					DrawMesh(m->mesh, transform);
 
@@ -224,7 +223,14 @@ bool ModuleRenderer3D::CleanUp()
 {
 	LOG("Destroying 3D Renderer");
 
+	ImGui_ImplOpenGL2_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	SDL_GL_DeleteContext(context);
+
+	textures.clear();
+	meshes.clear();
 
 	ClearMeshes();
 
@@ -245,7 +251,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 	if (texture != nullptr)
 	{
 		if (!ischecked)
-			glBindTexture(GL_TEXTURE_2D, texture->texture_path);
+			glBindTexture(GL_TEXTURE_2D, texture->texture_id);
 		else
 			glBindTexture(GL_TEXTURE_2D, checkers_path);
 	}
@@ -302,7 +308,6 @@ void ModuleRenderer3D::AddMesh(Mesh * mesh)
 void ModuleRenderer3D::AddTexture(Texture * tex)
 {
 	textures.push_back(tex);
-
 }
 
 void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)
@@ -387,7 +392,7 @@ void ModuleRenderer3D::DeleteAllMeshes()
 
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
-			glDeleteTextures(1, (GLuint*) &(textures[i]->texture_path));
+			glDeleteTextures(1, (GLuint*) &(textures[i]->texture_id));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_texture));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
@@ -395,23 +400,6 @@ void ModuleRenderer3D::DeleteAllMeshes()
 		}
 	}
 	ClearMeshes();
-}
-
-void ModuleRenderer3D::AddTexture(const char * path)
-{
-	if (!textures.empty())
-	{
-		for (std::vector<Texture*>::const_iterator iterator = textures.begin(); iterator != textures.end(); ++iterator)
-		{
-			Texture* texture_add = *iterator;
-			texture_add->texture_path = App->texture->LoadTexture(path);
-		}
-	}
-	
-	else
-	{
-		LOG("ERROR LOADING TEXTURE, NO MESH LOADED");
-	}
 }
 
 void ModuleRenderer3D::ShowRenderInfo()

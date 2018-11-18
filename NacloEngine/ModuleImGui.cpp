@@ -14,15 +14,18 @@
 #include "PanelHierarchy.h"
 #include "PanelResources.h"
 #include "PanelTime.h"
+#include "mmgr/mmgr.h"
+
 
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "ImGui";
 }
 
 ModuleImgui::~ModuleImgui()
 {}
 
-bool ModuleImgui::Init()
+bool ModuleImgui::Init(Config* conf)
 {
 	bool ret = true;
 
@@ -39,7 +42,7 @@ bool ModuleImgui::Init()
 }
 
 // Load assets
-bool ModuleImgui::Start()
+bool ModuleImgui::Start(Config* conf)
 {	
 	LOG("Loading Intro assets");
 

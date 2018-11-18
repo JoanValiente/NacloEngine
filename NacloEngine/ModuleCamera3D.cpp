@@ -12,8 +12,11 @@
 #include "ModuleScene.h"
 #include "Quadtree.h"
 
+#include "mmgr/mmgr.h"
+
 ModuleCamera3D::ModuleCamera3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Camera";
 	meshBox = new AABB(float3(0.0f,0.0f,0.0f), float3(0.0f, 0.0f, 0.0f));
 	empty_meshBox = new AABB(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 0.0f));
 }
@@ -22,7 +25,7 @@ ModuleCamera3D::~ModuleCamera3D()
 {}
 
 // -----------------------------------------------------------------
-bool ModuleCamera3D::Start()
+bool ModuleCamera3D::Start(Config* conf)
 {
 	LOG("Setting up the camera");
 	bool ret = true;
@@ -103,7 +106,7 @@ update_status ModuleCamera3D::Update(float dt)
 			int dy = -App->input->GetMouseYMotion();
 
 			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-				Orbit(dx*dt, dy*dt);
+				MoveArroundReference(dx*dt, dy*dt);
 			else
 				Look(dx*dt, dy*dt);
 		}
@@ -114,15 +117,13 @@ update_status ModuleCamera3D::Update(float dt)
 // -----------------------------------------------------------------
 
 
-void ModuleCamera3D::Orbit(float dx, float dy)
+void ModuleCamera3D::MoveArroundReference(float dx, float dy)
 {
 	float3 point = looking_at;
 
-	// fake point should be a ray colliding with something
 	if (looking == false)
 	{
 		point = activeCamera->frustum.pos + activeCamera->frustum.front * 50.0f;
-
 		looking = true;
 		looking_at = point;
 	}
@@ -204,11 +205,13 @@ void ModuleCamera3D::Move(float dt)
 	}
 
 	//-----------------------------Wheel mouse zoom-----------------------------
-	if (App->input->GetMouseZ() == 1)
-		newPos += forward * scroll_speed;
+	if (!ImGui::IsMouseHoveringAnyWindow()) {
+		if (App->input->GetMouseZ() == 1)
+			newPos += forward * scroll_speed;
 
-	if (App->input->GetMouseZ() == -1)
-		newPos -= forward * scroll_speed;
+		if (App->input->GetMouseZ() == -1)
+			newPos -= forward * scroll_speed;
+	}
 
 	//-----------------------------Wheel mouse movement-----------------------------
 	if (App->input->GetMouseButton(SDL_BUTTON_MIDDLE) == KEY_REPEAT)
@@ -225,6 +228,7 @@ void ModuleCamera3D::Move(float dt)
 		if (App->input->GetMouseYMotion() < 0)
 			newPos += activeCamera->frustum.up * (App->input->GetMouseYMotion() * dt) * speed * 15;
 	}
+
 	   
 	if (newPos.Equals(float3::zero) == false)
 	{
@@ -256,18 +260,21 @@ void ModuleCamera3D::ShowCameraInfo()
 
 void ModuleCamera3D::CullingGameObjects(GameObject * go)
 {
+
 	if (activeCamera->frustumCulling) {
-		if (!activeCamera->Intersects(go->boundingBox)) {
+		if (!camera->Intersects(go->boundingBox)) {
 			go->active = false;
 		}
 		else
 			go->active = true;
+
 	}
 
 	for (uint i = 0; i < go->children.size(); ++i)
 	{
 		CullingGameObjects(go->children[i]);
 	}
+	
 }
 
 void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment ray)

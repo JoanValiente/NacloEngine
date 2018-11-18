@@ -14,19 +14,10 @@ Config::Config(const char * data)
 {
 	if (data != nullptr)
 	{
-		name = data;
-		json_root = json_parse_file(data);
-
-		if (json_root == nullptr)
-		{
-			json_root = json_value_init_object();
+		json_root = json_parse_string(data);
+		if (json_root != nullptr) {
 			root = json_value_get_object(json_root);
 		}
-		else
-		{
-			root = json_value_get_object(json_root);
-		}
-
 	}
 }
 

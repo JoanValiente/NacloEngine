@@ -8,6 +8,8 @@
 #include "ComponentCamera.h"
 #include "Config.h"
 
+#include "mmgr/mmgr.h"
+
 ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
 {
 	type = COMPONENT_TRANSFORM;
@@ -52,8 +54,7 @@ void ComponentTransform::ShowInspector()
 		//POSITION------------
 		ImGui::Text("Position");
 		ImGui::Text("X:"); ImGui::SameLine();
-		if (ImGui::DragFloat("##pos_x", &position.x, 0.1f))
-			uint patata = 0;
+		ImGui::DragFloat("##pos_x", &position.x, 0.1f);
 
 		ImGui::Text("Y:");	ImGui::SameLine();
 		ImGui::DragFloat("##pos_y", &position.y, 0.1f); 
@@ -182,6 +183,14 @@ void ComponentTransform::SaveComponent(Config &conf)
 	conf.SetFloat3("Position", position);
 	conf.SetFloat3("Rotation", rotation);
 	conf.SetFloat3("Size", size);
+}
+
+void ComponentTransform::LoadComponent(Config & conf)
+{
+	SetPosition(conf.GetFloat3("Position"));
+	SetRotation(conf.GetFloat3("Rotation"));
+	SetSize(conf.GetFloat3("Size"));
+
 }
 
 

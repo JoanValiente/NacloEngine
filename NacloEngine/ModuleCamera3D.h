@@ -14,11 +14,11 @@ public:
 	ModuleCamera3D(Application* app, bool start_enabled = true);
 	~ModuleCamera3D();
 
-	bool Start();
+	bool Start(Config* conf = nullptr);
 	update_status Update(float dt);
 	bool CleanUp();
 	
-	void Orbit(float dx, float dy);
+	void MoveArroundReference(float dx, float dy);
 	void Look(float dx, float dy);
 	void LookAt(const float3& position);
 	void Move(float dt);

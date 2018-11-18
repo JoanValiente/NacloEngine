@@ -15,8 +15,8 @@ public:
 
 	void AssignTexture(Texture* texture);
 	void ShowInspector();
-	void SaveComponent(Config &conf) {};
-	void LoadComponent(Config &conf) {};
+	void SaveComponent(Config &conf);
+	void LoadComponent(Config &conf);
 
 public:
 	Texture* texture = nullptr;

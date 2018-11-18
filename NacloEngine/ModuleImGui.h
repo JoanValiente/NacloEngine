@@ -30,8 +30,8 @@ public:
 	ModuleImgui(Application* app, bool start_enabled = true);
 	~ModuleImgui();
 
-	bool Init();
-	bool Start();
+	bool Init(Config* conf = nullptr);
+	bool Start(Config* conf);
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);

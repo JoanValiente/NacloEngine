@@ -11,6 +11,7 @@
 #include "ModuleScene.h"
 #include "Config.h"
 
+#include "mmgr/mmgr.h"
 
 GameObject::GameObject(GameObject * parent, const char* name)
 {
@@ -37,15 +38,15 @@ GameObject::GameObject(GameObject * parent, const char* name)
 
 GameObject::~GameObject()
 {
-	
-	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++) {
+	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++)
+	{
 		delete (*it);
 	}
 
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++) {
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++)
+	{
 		delete (*it);
 	}
-	
 }
 
 void GameObject::Update(float dt)
@@ -61,10 +62,8 @@ void GameObject::Update(float dt)
 	}
 
 	UpdateBoundingBox();
-	if (selected)
-	{
-		BoundingBoxDebugDraw();
-	}
+	BoundingBoxDebugDraw();
+	
 }
 
 void GameObject::CleanUp()
@@ -160,8 +159,6 @@ void GameObject::UpdateBoundingBox()
 {
 	boundingBox.SetNegativeInfinity();
 
-	ComponentTransform* transform = (ComponentTransform*)GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
-	ComponentMesh* mesh = (ComponentMesh*)GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_MESH);
 
 	if (mesh != nullptr)
 		boundingBox.Enclose((const float3*)mesh->mesh->vertices, mesh->mesh->num_vertices);
@@ -237,6 +234,8 @@ bool GameObject::SaveGO(Config* & conf)
 	go.SetString("Name", name.c_str());
 	go.SetUID("UID", goUID);
 	go.SetUID("Parent UID", parent->goUID);
+	go.SetBool("Active", active);
+	go.SetBool("Static", staticGO);
 	go.SetArray("COMPONENTS");
 
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
@@ -257,6 +256,9 @@ bool GameObject::LoadGO(Config& conf)
 	name = conf.GetString("Name");
 	goUID = conf.GetUID("UID");
 	parent_UID = conf.GetUID("Parent UID");
+	staticGO = conf.GetBool("Static");
+	active = conf.GetBool("Active");
+
 
 	int size = conf.GetArraySize("COMPONENTS");
 
@@ -270,7 +272,7 @@ bool GameObject::LoadGO(Config& conf)
 			component->LoadComponent(conf.GetArray("COMPONENTS", i));
 		}
 	}
-	return false;
+	return true;
 }
 
 bool GameObject::SearchForParent(GameObject * parent, GameObject* child)

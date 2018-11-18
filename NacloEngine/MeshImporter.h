@@ -5,23 +5,20 @@
 #include "Importer.h"
 #include "OpenGL.h"
 #include "Assimp/include/cimport.h"
-#include "Devil/include/ilut.h"
-#include "Devil/include/il.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 struct Mesh;
+struct Texture;
 struct GameObject;
 struct aiScene;
 struct aiNode;
+struct aiMaterial;
 
 class MeshImporter : public Importer
 {
 public:
 	MeshImporter();
 	~MeshImporter();
-	bool Init();
-	bool Start();
-	bool CleanUp();
 
 	//Load Own Format
 	Mesh* ImportNCL(const char* path);
@@ -38,7 +35,12 @@ private:
 	void LoadMeshData(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 	void LoadMeshNCL(const char* path, Mesh* mesh);
 
+	//This Function search texture on the path specified by the .fbx and at the same folder as the .fbx is
+	Texture* GetTexture(aiMaterial* tex, const char* path);
+
+
 	void SetBuffers(Mesh* mesh);
+
 
 };
 

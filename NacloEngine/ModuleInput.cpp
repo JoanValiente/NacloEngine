@@ -2,14 +2,19 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "MeshImporter.h"
+#include "TextureImporter.h"
 #include "ModuleRenderer3D.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
+
+#include "mmgr/mmgr.h"
 
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "Input";
+
 	keyboard = new KEY_STATE[MAX_KEYS];
 	memset(keyboard, KEY_IDLE, sizeof(KEY_STATE) * MAX_KEYS);
 	memset(mouse_buttons, KEY_IDLE, sizeof(KEY_STATE) * MAX_MOUSE_BUTTONS);
@@ -22,11 +27,12 @@ ModuleInput::~ModuleInput()
 }
 
 // Called before render is available
-bool ModuleInput::Init()
+bool ModuleInput::Init(Config* conf)
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
+
 
 	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
@@ -186,17 +192,22 @@ void const ModuleInput::LoadDraggedFile(char * path)
 	else if (file_path.find(".png") != end_string || file_path.find(".PNG") != end_string)
 	{
 		LOG("Loading PNG file");
-		App->renderer3D->AddTexture(path);
+		App->texture->LoadTexture(path);
 	}
 	else if (file_path.find(".jpg") != end_string || file_path.find(".JPG") != end_string)
 	{
 		LOG("Loading JPG file");
-		App->renderer3D->AddTexture(path);
+		App->texture->LoadTexture(path);
+	}
+	else if (file_path.find(".tga") != end_string || file_path.find(".TGA") != end_string)
+	{
+		LOG("Loading TGA file");
+		App->texture->LoadTexture(path);
 	}
 	else if (file_path.find(".dds") != end_string || file_path.find(".DDS") != end_string)
 	{
 		LOG("Loading DDS file");
-		App->renderer3D->AddTexture(path);
+		App->texture->LoadTexture(path);
 	}
 	else
 	{

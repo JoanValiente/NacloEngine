@@ -8,8 +8,12 @@
 
 #pragma comment( lib, "PhysFS/libx86/physfs.lib" )
 
+#include "mmgr/mmgr.h"
+
 ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
+	name = "File System";
+
 	char* base_path = SDL_GetBasePath();
 	PHYSFS_init(base_path);
 	SDL_free(base_path);
@@ -34,9 +38,10 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Modu
 
 ModuleFileSystem::~ModuleFileSystem()
 {
+	PHYSFS_deinit();
 }
 
-bool ModuleFileSystem::Start()
+bool ModuleFileSystem::Start(Config* conf)
 {
 	pcg32_srandom_r(&rng, time(NULL), (intptr_t)&rng);
 	return true;
@@ -70,7 +75,7 @@ uint ModuleFileSystem::Load(const char* file, char** buffer)
 	NormalizePath(name);
 
 	PHYSFS_file* fs_file = PHYSFS_openRead(name.c_str());
-
+	
 	if (fs_file == nullptr)
 	{
 		LOG("Creating a copy of the file on Assets folder");
@@ -90,7 +95,7 @@ uint ModuleFileSystem::Load(const char* file, char** buffer)
 			if (readed != size)
 			{
 				LOG("File System error while reading from file %s: %s\n", file, PHYSFS_getLastError());
-				RELEASE(buffer);
+				RELEASE_ARRAY(*buffer);
 			}
 			else
 				ret = readed;

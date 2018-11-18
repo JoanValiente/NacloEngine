@@ -20,7 +20,7 @@ public:
 	ModuleInput(Application* app, bool start_enabled = true);
 	~ModuleInput();
 
-	bool Init();
+	bool Init(Config * conf);
 	update_status PreUpdate(float dt);
 	bool CleanUp();
 
