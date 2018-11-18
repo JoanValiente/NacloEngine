@@ -99,18 +99,31 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 {
 	GameObject* final_obj;
 
-	bool invalid_node = false;
+	static int invalid_position = std::string::npos;
+	 
+	std::string name = node->mName.C_Str();
+	if (name.length() == 0)
+		name = "No Name";
 
-	if (node->mNumMeshes > 0)
+	static const char* invalid_node_names[5] = { "$_PreRotation", "$_Rotation", "$_PostRotation",
+		"$_Scaling", "$_Translation" };
+
+	bool invalid_node = false;
+	if (name.find(invalid_node_names[0]) != invalid_position || name.find(invalid_node_names[1]) != invalid_position || name.find(invalid_node_names[2]) != invalid_position
+		|| name.find(invalid_node_names[3]) != invalid_position || name.find(invalid_node_names[4]) != invalid_position)
+		invalid_node = true;
+
+	if (!invalid_node && node->mNumMeshes > 0)
 	{
 			Mesh* mesh = new Mesh();
 
 			mesh->path = path;
 			std::string path_to_name = mesh->path;
 			mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
+			
 
 
-			GameObject* children = new GameObject(obj, mesh->filename.c_str());
+			GameObject* children = new GameObject(obj, name.c_str());
 
 			if (scene->mRootNode != nullptr) {
 				aiVector3D scale;
@@ -211,7 +224,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			final_obj = children;
 	}
 
-	else if (node->mNumChildren > 1)
+	else if(!invalid_node)
 	{
 		final_obj = new GameObject(obj, node->mName.C_Str());
 		final_obj->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
@@ -220,6 +233,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 	{
 		final_obj = obj;
 	}
+
 	for (uint i = 0; i < node->mNumChildren; ++i)
 	{
 		LoadMeshData(scene, node->mChildren[i], path, final_obj);
