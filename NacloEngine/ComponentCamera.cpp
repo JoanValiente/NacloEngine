@@ -26,6 +26,57 @@ ComponentCamera::~ComponentCamera()
 {
 }
 
+void ComponentCamera::ShowInspector()
+{
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::Checkbox("Culling", &frustumCulling);
+
+		float frustum_far = frustum.farPlaneDistance;
+
+		if (ImGui::DragFloat("Far", &frustum_far, 1.0f))
+		{ 
+			SetFar(frustum_far);
+		}
+
+		float frustum_near = frustum.nearPlaneDistance;
+
+		if (ImGui::DragFloat("Near", &frustum_near, 1.0f))
+		{
+			SetNear(frustum_near);
+		}
+	}
+}
+
+void ComponentCamera::SetFar(float frustum_far)
+{
+	if (frustum_far >= 0)
+	{
+		frustum.farPlaneDistance = frustum_far;
+	}
+}
+
+void ComponentCamera::SetNear(float frustum_near)
+{
+	if (frustum_near >= 0)
+	{
+		frustum.nearPlaneDistance = frustum_near;
+	}
+}
+
+void ComponentCamera::SetFov(float frustum_fov)
+{
+	float aspect_ratio = frustum.AspectRatio();
+
+	frustum.verticalFov = DEGTORAD * frustum_fov;
+	SetAspectRatio(aspect_ratio);
+}
+
+void ComponentCamera::SetAspectRatio(float aspect_ratio)
+{
+	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
+}
+
 void ComponentCamera::Update(float dt)
 {
 	ComponentTransform* go_transform = (ComponentTransform*)container->GetComponentByType(COMPONENT_TYPE::COMPONENT_TRANSFORM);

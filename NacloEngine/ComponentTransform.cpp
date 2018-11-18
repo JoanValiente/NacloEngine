@@ -54,8 +54,7 @@ void ComponentTransform::ShowInspector()
 		//POSITION------------
 		ImGui::Text("Position");
 		ImGui::Text("X:"); ImGui::SameLine();
-		if (ImGui::DragFloat("##pos_x", &position.x, 0.1f))
-			uint patata = 0;
+		ImGui::DragFloat("##pos_x", &position.x, 0.1f);
 
 		ImGui::Text("Y:");	ImGui::SameLine();
 		ImGui::DragFloat("##pos_y", &position.y, 0.1f); 
