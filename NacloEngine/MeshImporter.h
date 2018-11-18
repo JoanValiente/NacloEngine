@@ -9,6 +9,8 @@
 #include "Devil/include/il.h"
 #include "MathGeoLib/MathGeoLib.h"
 
+#include <vector>
+
 struct Mesh;
 struct Texture;
 struct GameObject;
@@ -24,7 +26,7 @@ public:
 
 	//Load Own Format
 	Mesh* ImportNCL(const char* path);
-	
+
 	//Import FBX - NCL
 	bool Import(const char* path, std::string& output_file);
 
@@ -35,7 +37,7 @@ private:
 	void ExportNCL(const void* buffer, Mesh* mesh, std::string& output_file);
 
 	Texture* GetTexture(aiMaterial* tex, const char* path);
-	
+
 	void LoadMeshData(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 	void LoadMeshNCL(const char* path, Mesh* mesh);
 

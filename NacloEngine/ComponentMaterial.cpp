@@ -14,7 +14,8 @@ ComponentMaterial::ComponentMaterial(GameObject * container) : Component(contain
 
 ComponentMaterial::~ComponentMaterial()
 {
-	delete texture;
+	if (texture != nullptr)
+		delete texture;
 }
 
 void ComponentMaterial::AssignTexture(Texture* texture)

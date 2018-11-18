@@ -84,7 +84,9 @@ bool MeshImporter::Import(const void * buffer, uint size, std::string & output_f
 		transformComponent->SetQuaternion({ rotation.x, rotation.y, rotation.z, rotation.w });
 		transformComponent->SetSize(math::float3(scale.x, scale.y, scale.z));
 
+
 		LoadMeshData(scene, main_node, path, go);
+
 
 		App->scene->SetSelected(go);
 

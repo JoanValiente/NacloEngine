@@ -61,9 +61,6 @@
     <Filter Include="Sources\Modules\Resources">
       <UniqueIdentifier>{8dbe8fcf-3069-4222-9a5d-824d2e7834d2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\mmgr">
-      <UniqueIdentifier>{78df090b-f121-4742-9b67-e6020df34a95}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -423,18 +420,6 @@
     <ClInclude Include="ResourceMesh.h">
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="mmgr\mmgr.h">
-      <Filter>Sources\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\nommgr.h">
-      <Filter>Sources\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\stdafx.h">
-      <Filter>Sources\mmgr</Filter>
-    </ClInclude>
-    <ClInclude Include="mmgr\targetver.h">
-      <Filter>Sources\mmgr</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -688,12 +673,6 @@
     </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Sources\Modules\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="mmgr\mmgr.cpp">
-      <Filter>Sources\mmgr</Filter>
-    </ClCompile>
-    <ClCompile Include="mmgr\stdafx.cpp">
-      <Filter>Sources\mmgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
