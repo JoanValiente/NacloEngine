@@ -14,8 +14,15 @@ Config::Config(const char * data)
 {
 	if (data != nullptr)
 	{
-		json_root = json_parse_string(data);
-		if (json_root != nullptr) {
+		name = data;
+		json_root = json_parse_file(data);
+		if (json_root == nullptr)
+		{
+			json_root = json_value_init_object();
+			root = json_value_get_object(json_root);
+		}
+		else
+		{
 			root = json_value_get_object(json_root);
 		}
 	}
@@ -238,7 +245,7 @@ std::string Config::GenerateSceneName(const char * folder, const char * file_nam
 
 	std::string final_path = folder;
 
-	final_path.append(file_name);
+	final_path.append(name);
 	final_path.append(".json");
 
 	return final_path;
