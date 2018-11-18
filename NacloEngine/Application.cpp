@@ -254,7 +254,10 @@ void const Application::ShowApplicationInfo()
 {
 	ImGui::InputText("Engine Name", App->engine_name, 20);
 	ImGui::InputText("Organization", App->organization_name, 20);
+<<<<<<< HEAD
 
+=======
+>>>>>>> parent of 94ce1cc... Bug Fixes
 
 	if (vector_fps.size() != 100)
 	{
