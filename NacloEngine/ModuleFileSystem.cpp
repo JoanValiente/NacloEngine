@@ -39,7 +39,7 @@ ModuleFileSystem::~ModuleFileSystem()
 	PHYSFS_deinit();
 }
 
-bool ModuleFileSystem::Start()
+bool ModuleFileSystem::Start(Config* conf)
 {
 	pcg32_srandom_r(&rng, time(NULL), (intptr_t)&rng);
 	return true;

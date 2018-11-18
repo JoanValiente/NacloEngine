@@ -16,7 +16,7 @@ ModuleResources::~ModuleResources()
 {
 }
 
-bool ModuleResources::Start()
+bool ModuleResources::Start(Config* conf)
 {
 	return true;
 }

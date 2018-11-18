@@ -31,7 +31,7 @@ ModuleRenderer3D::~ModuleRenderer3D()
 {}
 
 // Called before render is available
-bool ModuleRenderer3D::Init()
+bool ModuleRenderer3D::Init(Config* conf)
 {
 	LOG("Creating 3D Renderer context");
 	bool ret = true;
@@ -137,7 +137,7 @@ bool ModuleRenderer3D::Init()
 	return ret;
 }
 
-bool ModuleRenderer3D::Start()
+bool ModuleRenderer3D::Start(Config* conf)
 {
 	bool ret = true;
 

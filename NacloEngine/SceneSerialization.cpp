@@ -45,7 +45,8 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	//TODO Revise Loading Scenes, we can't load scenes inside Assets Directory :/
 	//TODO LOAD .json using physfs
 
-	std::string final_path = file_name;
+	std::string final_path = ASSETS_SCENES_FOLDER;
+	final_path.append(file_name);
 	final_path.append(".json");
 
 

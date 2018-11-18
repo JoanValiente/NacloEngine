@@ -22,7 +22,7 @@ ModuleScene::~ModuleScene()
 {
 }
 
-bool ModuleScene::Start()
+bool ModuleScene::Start(Config* conf)
 {
 	Grid = new grid(0, 1, 0, 0);
 	Grid->axis = true;

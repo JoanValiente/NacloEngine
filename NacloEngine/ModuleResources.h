@@ -17,7 +17,7 @@ public:
 	ModuleResources(Application* app, bool start_enabled = true);
 	~ModuleResources();
 
-	bool Start();
+	bool Start(Config* conf = nullptr);
 	update_status Update(float dt);
 	bool CleanUp();
 

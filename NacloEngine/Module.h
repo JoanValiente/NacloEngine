@@ -4,7 +4,7 @@
 #include "Globals.h"
 
 class Application;
-struct PhysBody3D;
+struct Config;
 
 class Module
 {
@@ -20,12 +20,12 @@ public:
 	virtual ~Module()
 	{}
 
-	virtual bool Init() 
+	virtual bool Init(Config* conf = nullptr)
 	{
 		return true; 
 	}
 
-	virtual bool Start()
+	virtual bool Start(Config* conf = nullptr)
 	{
 		return true;
 	}
@@ -53,9 +53,6 @@ public:
 	virtual bool GameMode() { return true; };
 
 	virtual bool EditorMode() { return true; };
-
-	virtual void OnCollision(PhysBody3D* body1, PhysBody3D* body2)
-	{}
 
 public:
 	bool active = true;
