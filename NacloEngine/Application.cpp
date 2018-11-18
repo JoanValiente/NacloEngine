@@ -252,8 +252,11 @@ void Application::Log(const char * text)
 
 void const Application::ShowApplicationInfo()
 {
+<<<<<<< HEAD
 	ImGui::InputText("Engine Name", App->engine_name, 20);
 	ImGui::InputText("Organization", App->organization_name, 20);
+=======
+>>>>>>> parent of f3cc30b... ...
 
 	if (vector_fps.size() != 100)
 	{
@@ -291,6 +294,16 @@ float Application::GetDt() const
 	return dt;
 }
 
+<<<<<<< HEAD
+=======
+void Application::SetSettings()
+{
+}
+
+{
+}
+
+>>>>>>> parent of f3cc30b... ...
 void Application::AddModule(Module* mod)
 {
 	modules.push_back(mod);
