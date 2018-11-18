@@ -5,6 +5,8 @@
 #include "Globals.h"
 #include "MathGeoLib/Geometry/Frustum.h"
 
+struct GameObject;
+
 class ComponentCamera : public Component {
 
 public:
@@ -19,6 +21,8 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 	
+	void CullingGameObjects();
+	void CullingDynamicGO(GameObject* go);
 	bool Intersects(const AABB box);
 
 	void SetAspectRatio(float f_ratio);

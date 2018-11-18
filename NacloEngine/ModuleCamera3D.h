@@ -27,7 +27,7 @@ public:
 	void LookAtMeshBox();
 	void ShowCameraInfo();
 
-	void CullingGameObjects(GameObject* go);
+	//void CullingGameObjects(GameObject* go);
 	void MousePick(std::vector<GameObject*> &candidates, LineSegment ray);
 	void RaycastDebugDraw();
 	void PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate);

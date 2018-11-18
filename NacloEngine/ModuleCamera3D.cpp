@@ -255,6 +255,7 @@ void ModuleCamera3D::ShowCameraInfo()
 
 }
 
+/*
 void ModuleCamera3D::CullingGameObjects(GameObject * go)
 {
 	if (App->scene->main_camera->camera->frustumCulling) {
@@ -278,6 +279,7 @@ void ModuleCamera3D::CullingGameObjects(GameObject * go)
 		CullingGameObjects(go->children[i]);
 	}
 }
+*/
 
 void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment ray)
 {
