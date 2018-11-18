@@ -92,6 +92,8 @@ public:
 	float GetDt() const;
 
 private:
+	void SetSettings();
+	void GetSettings(Config &config);
 
 	void AddModule(Module* mod);
 	void PrepareUpdate();

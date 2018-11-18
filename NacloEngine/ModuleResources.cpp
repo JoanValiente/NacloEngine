@@ -73,7 +73,7 @@ void ModuleResources::SaveResources() const
 	bool ret = true;
 
 	Config save;
-	save.SetArray("Resources");
+	save.SetArray("Resource Manager");
 
 	for (map<UID, Resource*>::const_iterator it = resources.begin(); it != resources.end(); ++it)
 	{

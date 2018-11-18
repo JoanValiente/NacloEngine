@@ -72,15 +72,13 @@ bool Application::Init()
 
 	// Call Init() in all modules
 
-	engine_name = "Naclo Engine";
-	organization_name = "UPC CITM";
-	author_1_name = "David Lozano Sanchez";
-	author_2_name = "Joan Valiente Lorite";
+
+	GetSettings(settings.GetSection("App"));
 
 	list<Module*>::const_iterator item;
 	item = modules.begin();
 
-	while(item != modules.end() && ret == true)
+	while (item != modules.end() && ret == true)
 	{
 		if ((*item)->active)
 			ret = (*item)->Init();
@@ -99,7 +97,7 @@ bool Application::Init()
 
 		item++;
 	}
-	
+
 	ms_timer.Start();
 	return ret;
 }
@@ -252,8 +250,6 @@ void Application::Log(const char * text)
 
 void const Application::ShowApplicationInfo()
 {
-	ImGui::InputText("Engine Name", App->engine_name, 20);
-	ImGui::InputText("Organization", App->organization_name, 20);
 
 	if (vector_fps.size() != 100)
 	{
@@ -289,6 +285,13 @@ void const Application::ShowApplicationInfo()
 float Application::GetDt() const
 {
 	return dt;
+}
+
+void Application::SetSettings()
+{
+}
+
+{
 }
 
 void Application::AddModule(Module* mod)
