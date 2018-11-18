@@ -44,7 +44,7 @@ public:
 	float3 GetFloat3(const char* name);
 
 
-	bool Save();
+	bool Save(const char* folder = ASSETS_SCENES_FOLDER);
 
 private:
 	std::string GenerateSceneName(const char* folder, const char* file_name);
@@ -52,9 +52,9 @@ private:
 
 private:
 	const char* name;
-	JSON_Array*		json_array	= nullptr;
-	JSON_Value*		json_root	= nullptr;
-	JSON_Object*	root		= nullptr;
+	JSON_Array*		json_array = nullptr;
+	JSON_Value*		json_root = nullptr;
+	JSON_Object*	root = nullptr;
 
 };
 

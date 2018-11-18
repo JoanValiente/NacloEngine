@@ -12,6 +12,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "TextureImporter.h"
 
 #pragma comment (lib,"Assimp/libx86/assimp.lib")
 #pragma comment (lib, "Devil/libx86/DevIL.lib")
@@ -174,34 +175,20 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			{
 				mesh->color = { 255.0f,255.0f,255.0f,255.0f };
 			}
+			else
+			{
+				mesh->num_color = 4;
+			}
 
 
 			aiMaterial* tex = scene->mMaterials[new_mesh->mMaterialIndex];
 			Texture* texture = new Texture();
 
 			//TODO REVISE THIS PART OF THE CODE
-			//if (tex != nullptr)
-			//{
-			//	aiString path;
-			//	tex->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-			//	if (path.length > 0)
-			//	{
-			//		std::string path_location = path.data;
-			//		path_location.erase(0, path_location.find_last_of("\\") + 1);
-			//		std::string folder = "Textures/";
-			//		folder += path_location;
-			//		ILuint id;
-			//		ilGenImages(1, &id);
-			//		ilBindImage(id);
-			//		//ilLoadImage(folder.c_str());
-
-			//		mesh->id_texture = ilutGLBindTexImage();
-
-			//		folder.clear();
-			//		path_location.clear();
-			//		path.Clear();
-			//	}
-			//}
+			if (tex != nullptr)
+			{
+				texture = GetTexture(tex, path);
+			}
 
 			if (new_mesh->HasTextureCoords(0))
 			{
@@ -251,6 +238,36 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 	}
 }
 
+Texture* MeshImporter::GetTexture(aiMaterial* tex, const char* path)
+{
+	Texture* ret = nullptr;
+
+	std::string new_path = path;
+	new_path.erase(new_path.find_last_of("\\") + 1, new_path.back());
+	aiString file_name;
+	tex->GetTexture(aiTextureType_DIFFUSE, 0, &file_name);
+	if (file_name.length > 0)
+	{
+		std::string path_location = file_name.data;
+		path_location.erase(0, path_location.find_last_of("\\") + 1);
+		new_path.append(path_location.c_str());
+
+		ret = App->texture->LoadTexture(path_location.c_str());
+
+		if (ret == 0)
+		{
+			ret = App->texture->LoadTexture(new_path.c_str());
+		}
+
+		new_path.clear();
+		path_location.clear();
+	}
+	file_name.Clear();
+
+	return ret;
+}
+
+
 void MeshImporter::LoadMeshNCL(const char * path, Mesh * mesh)
 {
 	std::string new_path = path;
@@ -268,7 +285,7 @@ void MeshImporter::LoadMeshNCL(const char * path, Mesh * mesh)
 	mesh->rotation = { rotation.x, rotation.y, rotation.z, rotation.w };
 	mesh->position = { position.x,position.y, position.z };
 
-	mesh->color = { 255.0f,255.0f,255.0f,255.0f };
+	mesh->color = { mesh->colors[0],mesh->colors[1],mesh->colors[2],mesh->colors[3] };
 
 	SetBuffers(mesh);
 	App->renderer3D->AddMesh(mesh);
@@ -332,6 +349,7 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 		//Store Uv
 		bytes = sizeof(float)* mesh->num_texture * 2;
 		memcpy(cursor, mesh->texture, bytes);
+
 
 		LOG("Stored UV");
 

@@ -4,6 +4,12 @@
 #include "Application.h"
 #include "ModuleFileSystem.h"
 
+#include "Config.h"
+#include "string.h"
+#include "stdio.h"
+#include "Application.h"
+#include "ModuleFileSystem.h"
+
 Config::Config()
 {
 	json_root = json_value_init_object();
@@ -16,7 +22,6 @@ Config::Config(const char * data)
 	{
 		name = data;
 		json_root = json_parse_file(data);
-
 		if (json_root == nullptr)
 		{
 			json_root = json_value_init_object();
@@ -26,7 +31,6 @@ Config::Config(const char * data)
 		{
 			root = json_value_get_object(json_root);
 		}
-
 	}
 }
 
@@ -170,7 +174,7 @@ Config Config::GetArray(const char * name, int index) const
 size_t Config::GetArraySize(const char * name) const
 {
 	JSON_Array* array = json_object_get_array(root, name);
-	
+
 	return 	json_array_get_count(array);
 }
 
@@ -227,14 +231,14 @@ float3 Config::GetFloat3(const char * name)
 
 //---------------- SAVE ----------------
 
-bool Config::Save()
+bool Config::Save(const char* folder)
 {
 	bool ret = false;
 
 	char* buffer;
 	size_t size = GetSize(&buffer);
 
-	ret = App->fs->SaveFile(GenerateSceneName(ASSETS_SCENES_FOLDER, name).c_str(), buffer, size);
+	ret = App->fs->SaveFile(GenerateSceneName(folder, name).c_str(), buffer, size);
 
 	RELEASE_ARRAY(buffer);
 
@@ -245,10 +249,12 @@ std::string Config::GenerateSceneName(const char * folder, const char * file_nam
 {
 	App->fs->CreateNewDirectory(folder);
 
+	std::string tmp = name;
 	std::string final_path = folder;
 
-	final_path.append(file_name);
+	final_path.append(name);
 	final_path.append(".json");
+	
 
 	return final_path;
 }

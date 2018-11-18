@@ -144,6 +144,11 @@ void ModuleScene::DeleteAllGameObject()
 	gameObjects.clear();
 }
 
+void ModuleScene::DestroyAllGameObjects()
+{
+	gameObjects.clear();
+}
+
 bool ModuleScene::CleanUp()
 {
 	LOG("Unloading Scene");

@@ -26,7 +26,7 @@ public:
 	void DrawGuizmos();
 
 	void SaveComponent(Config &conf);
-	void LoadComponent(Config &conf) {};
+	void LoadComponent(Config &conf);
 
 public:
 	float3 position = float3::zero;

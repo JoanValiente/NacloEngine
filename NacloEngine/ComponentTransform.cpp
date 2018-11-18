@@ -186,5 +186,11 @@ void ComponentTransform::SaveComponent(Config &conf)
 	conf.SetFloat3("Size", size);
 }
 
+void ComponentTransform::LoadComponent(Config & conf)
+{
+	SetPosition(conf.GetFloat3("Position"));
+	SetRotation(conf.GetFloat3("Rotation"));
+	SetSize(conf.GetFloat3("Size"));
 
+}
 

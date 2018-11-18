@@ -44,7 +44,12 @@ struct Mesh
 
 struct Texture
 {
-	uint texture_path = 0;
+	uint width = 0;
+	uint height = 0;
+	std::string texture_name;
+	std::string path;
+	std::string texture_dds;
+	uint texture_id = 0;
 };
 
 class ModuleRenderer3D : public Module
@@ -70,8 +75,6 @@ public:
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
 	void DeleteAllMeshes();
-
-	void AddTexture(const char* path);
 
 	void ShowRenderInfo();
 

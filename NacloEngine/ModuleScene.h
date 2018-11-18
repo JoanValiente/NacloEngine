@@ -28,6 +28,8 @@ public:
 	void UpdateTransforms(GameObject* go);
 	void DeleteAllGameObject();
 
+	void DestroyAllGameObjects();
+
 public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;

@@ -25,6 +25,7 @@ public:
 	bool ShowLoadingOption();
 
 private:
+	const char* last_saved = nullptr;
 
 	void SetGameObjectHierarchy(GameObject* go);
 

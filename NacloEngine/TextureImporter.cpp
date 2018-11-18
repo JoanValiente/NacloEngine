@@ -1,8 +1,16 @@
 #include "TextureImporter.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
-#include "Devil\include\ilut.h"
+#include "ModuleRenderer3D.h"
+#include "Devil/include/ilut.h"
 #include "ImGui/imgui.h"
+
+#include "Devil/include/ilut.h"
+#include "Devil/include/il.h"
+
+#pragma comment (lib, "Devil/libx86/DevIL.lib")
+#pragma comment (lib, "Devil/libx86/ILU.lib")
+#pragma comment (lib, "Devil/libx86/ILUT.lib")
 
 TextureImporter::TextureImporter() : Importer()
 {
@@ -12,37 +20,30 @@ TextureImporter::~TextureImporter()
 {
 }
 
-bool TextureImporter::Start()
+Texture* TextureImporter::LoadTexture(const char* path)
 {
-	bool ret = true;
-	texture_path = "No Texture Loaded";
-	texture_name = "No Texture Loaded";
-	return ret;
-}
+	Texture* ret = new Texture();
 
-bool TextureImporter::CleanUp()
-{
-	bool ret = true;
-	return ret;
-}
-
-uint TextureImporter::LoadTexture(const char* path)
-{
+	std::string name = path;
+	ret->path = name;
+	std::string extension = name;
+	extension.erase(0, extension.find_last_of("."));
+	ret->texture_name = name.erase(0, name.find_last_of("//"));
 	std::string new_path = path;
 	char* buffer = nullptr;
 	uint size = App->fs->Load(path, &buffer);
 
 	if (buffer != nullptr && size > 0)
 	{
-		ILuint imageID;		
+		ILuint imageID;
 		ilGenImages(1, &imageID);
-		ilBindImage(imageID); 			
+		ilBindImage(imageID);
 
-		uint textureID;					
+		uint textureID;
 
 		if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, size))
 		{
-			ILinfo ImageInfo; 
+			ILinfo ImageInfo;
 
 			iluGetImageInfo(&ImageInfo);
 
@@ -54,8 +55,8 @@ uint TextureImporter::LoadTexture(const char* path)
 			// Convert the image into a suitable format to work with
 			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-			texture_height = ImageInfo.Height;
-			texture_width = ImageInfo.Width;
+			ret->width = ImageInfo.Width;
+			ret->height = ImageInfo.Height;
 
 			// Generate a new texture
 			glGenTextures(1, &textureID);
@@ -67,16 +68,21 @@ uint TextureImporter::LoadTexture(const char* path)
 
 			ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 			LOG("Texture creation successful.");
-			last_texture_loaded = textureID;
 
-			Import(buffer, size, new_path); //Import texture in our own format
+			if (extension != ".dds")
+			{
+				Import(buffer, size, ret->texture_dds); //Import texture in our own format
+			}
 
-			return textureID; // Return the GLuint to the texture so you can use it!
+			ret->texture_id = textureID;
+			RELEASE_ARRAY(buffer);
+
+			return ret;
 		}
 		else // If we failed to open the image file in the first place...
 		{
 			LOG("ERROR Trying to load a buffer of size %i", size);
-			return 0;
+			return nullptr;
 		}
 	}
 	else
@@ -84,7 +90,6 @@ uint TextureImporter::LoadTexture(const char* path)
 		LOG("ERROR LOADING TEXTURES");
 		return 0;
 	}
-
 }
 
 bool TextureImporter::Import(const void * buffer, uint size, string& output_file)
@@ -180,18 +185,5 @@ uint TextureImporter::CreateCheckersTexture(const void* checkImage)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 32, 32, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	return ImageName; 
-}
-
-void const TextureImporter::ShowTextureInfo()
-{
-	ImGui::Text("SIZE");
-	ImGui::Text("Width: %i", texture_width); ImGui::SameLine();
-	ImGui::Text("Height: %i", texture_height);
-	ImGui::Text("Texture path:");
-	ImGui::Text("%s", texture_path.c_str());
-	ImGui::Text("Texture Name:");
-	ImGui::Text("%s", texture_name.c_str());
-	ImGui::Text("Texture");
-	ImGui::Image((ImTextureID)last_texture_loaded, { 256,256 });
+	return ImageName;
 }

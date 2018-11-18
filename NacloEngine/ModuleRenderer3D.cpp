@@ -253,7 +253,7 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 	if (texture != nullptr)
 	{
 		if (!ischecked)
-			glBindTexture(GL_TEXTURE_2D, texture->texture_path);
+			glBindTexture(GL_TEXTURE_2D, texture->texture_id);
 		else
 			glBindTexture(GL_TEXTURE_2D, checkers_path);
 	}
@@ -395,7 +395,7 @@ void ModuleRenderer3D::DeleteAllMeshes()
 
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_vertices));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_indices));
-			glDeleteTextures(1, (GLuint*) &(textures[i]->texture_path));
+			glDeleteTextures(1, (GLuint*) &(textures[i]->texture_id));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_texture));
 			glDeleteBuffers(1, (GLuint*) &(meshes[i]->id_color));
 
@@ -405,22 +405,6 @@ void ModuleRenderer3D::DeleteAllMeshes()
 	ClearMeshes();
 }
 
-void ModuleRenderer3D::AddTexture(const char * path)
-{
-	if (!textures.empty())
-	{
-		for (std::vector<Texture*>::const_iterator iterator = textures.begin(); iterator != textures.end(); ++iterator)
-		{
-			Texture* texture_add = *iterator;
-			texture_add->texture_path = App->texture->LoadTexture(path);
-		}
-	}
-	
-	else
-	{
-		LOG("ERROR LOADING TEXTURE, NO MESH LOADED");
-	}
-}
 
 #ifndef GAME_MODE
 void ModuleRenderer3D::ShowRenderInfo()

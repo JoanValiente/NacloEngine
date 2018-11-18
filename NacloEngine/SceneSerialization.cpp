@@ -1,4 +1,5 @@
 #include "SceneSerialization.h"
+#include "ModuleFileSystem.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
@@ -37,30 +38,24 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	bool ret = true;
 
 
-	App->scene->DeleteAllGameObject();
+	App->scene->DestroyAllGameObjects();
 	App->scene->root = new GameObject(nullptr, "root");
 	ComponentTransform* root_transform = (ComponentTransform*)App->scene->root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 
-	//TODO Destroy the scene if file is correct
-	//TODO Revise Loading Scenes, we can't load scenes inside Assets Directory :/
-
-
 
 	std::string final_path = ASSETS_SCENES_FOLDER;
-
 	final_path.append(file_name);
 	final_path.append(".json");
 
+	Config file(final_path.c_str());
 
-	Config *file = new Config(final_path.c_str());
-	
-	int size = file->GetArraySize("Game Objects");
+	int size = file.GetArraySize("Game Objects");
 
 	for (int i = 0; i < size; i++)
 	{
 		GameObject* go = new GameObject(nullptr, "");
 
-		go->LoadGO(file->GetArray("Game Objects", i));
+		go->LoadGO(file.GetArray("Game Objects", i));
 	}
 
 	for (std::vector<GameObject*>::const_iterator it = App->scene->gameObjects.begin(); it != App->scene->gameObjects.end(); ++it)
@@ -68,7 +63,6 @@ bool SceneSerialization::LoadScene(const char * file_name)
 		SetGameObjectHierarchy((*it));
 	}
 
-	delete file;
 	return ret;
 }
 
@@ -93,6 +87,7 @@ bool SceneSerialization::ShowSavingOption(TypeSave type)
 			{
 				saved_once = true;
 				SaveScene(file_name);
+				last_saved = file_name;
 				ret = false;
 				ImGui::CloseCurrentPopup();
 			}
@@ -106,13 +101,17 @@ bool SceneSerialization::ShowSavingOption(TypeSave type)
 			ImGui::EndPopup();
 		}
 	}
+	else
+	{
+		SaveScene(last_saved);
+	}
 
 	return ret;
 }
 
 bool SceneSerialization::ShowLoadingOption()
 {
-	bool ret = true; 
+	bool ret = true;
 
 	ImGui::OpenPopup("Load");
 

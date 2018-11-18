@@ -10,9 +10,11 @@
 #include "MathGeoLib/MathGeoLib.h"
 
 struct Mesh;
+struct Texture;
 struct GameObject;
 struct aiScene;
 struct aiNode;
+struct aiMaterial;
 
 class MeshImporter : public Importer
 {
@@ -35,6 +37,8 @@ private:
 	bool Import(const void* buffer, uint size, std::string& output_file, const char* path);
 	void ExportNCL(const void* buffer, Mesh* mesh, std::string& output_file);
 
+	Texture* GetTexture(aiMaterial* tex, const char* path);
+	
 	void LoadMeshData(const aiScene* scene, aiNode* node, const char* path, GameObject* obj);
 	void LoadMeshNCL(const char* path, Mesh* mesh);
 
