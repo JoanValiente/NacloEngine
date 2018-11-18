@@ -34,12 +34,6 @@ ModuleFileSystem::ModuleFileSystem(Application * app, bool start_enabled) : Modu
 
 	}
 
-	if (PHYSFS_mount("./Settings/", "Settings", 1) == 0) { //Add paths to physfs to search throught
-
-		LOG("Physfs could not fin the path %s", PHYSFS_getLastError());
-
-	}
-
 }
 
 ModuleFileSystem::~ModuleFileSystem()

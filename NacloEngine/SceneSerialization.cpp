@@ -46,11 +46,14 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	//TODO Revise Loading Scenes, we can't load scenes inside Assets Directory :/
 	//TODO LOAD .json using physfs
 
+	char* buffer;
 	std::string final_path = ASSETS_SCENES_FOLDER;
 	final_path.append(file_name);
 	final_path.append(".json");
 
-	Config file(final_path.c_str());
+	App->fs->Load(final_path.c_str(), &buffer);
+
+	Config file(buffer);
 	
 	int size = file.GetArraySize("Game Objects");
 
@@ -65,6 +68,8 @@ bool SceneSerialization::LoadScene(const char * file_name)
 	{
 		SetGameObjectHierarchy((*it));
 	}
+
+	RELEASE_ARRAY(buffer);
 
 	return ret;
 }
