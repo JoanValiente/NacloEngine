@@ -5,6 +5,7 @@
 #include "ModuleInput.h"
 #include "ModuleTimer.h"
 #include "GameObject.h"
+#include "ModuleRenderer3D.h"
 #include "Imgui/imgui.h"
 
 PanelTime::PanelTime() : Panel("Time")
@@ -39,6 +40,7 @@ void PanelTime::Draw()
 		App->gameState = GAME_STATE::PLAY;
 		App->engineState = ENGINE_STATE::GAME;
 		App->camera->activeCamera = App->scene->mainCamera;
+		App->renderer3D->ChangeCamera();
 	}
 
 	ImGui::SameLine();
@@ -48,6 +50,7 @@ void PanelTime::Draw()
 		App->gameState = GAME_STATE::STOP;
 		App->engineState = ENGINE_STATE::EDITOR;
 		App->camera->activeCamera = App->camera->camera;
+		App->renderer3D->ChangeCamera();
 	}
 
 	ImGui::SameLine();

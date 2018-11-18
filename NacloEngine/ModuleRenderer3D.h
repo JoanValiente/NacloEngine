@@ -78,11 +78,11 @@ public:
 	void DeleteAllMeshes();
 
 	void ShowRenderInfo();
-
+	void ChangeCamera();
 
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
-
+	void RecalculateProjection();
 	ComponentCamera* CurrentCamera = nullptr;
 public:
 	SDL_GLContext context;
