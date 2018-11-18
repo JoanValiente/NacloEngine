@@ -299,14 +299,18 @@ void ModuleRenderer3D::OnResize(int width, int height)
 {
 		glViewport(0, 0, width, height);
 		CurrentCamera->SetAspectRatio((float)width / (float)height);
+		RecalculateProjection();
+}
 
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
+void ModuleRenderer3D::RecalculateProjection()
+{
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
 
-		glLoadMatrixf(CurrentCamera->GetProjectionMatrix().ptr());
+	glLoadMatrixf(CurrentCamera->GetProjectionMatrix().ptr());
 
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 void ModuleRenderer3D::AddMesh(Mesh * mesh)
@@ -413,6 +417,11 @@ void ModuleRenderer3D::DeleteAllMeshes()
 	ClearMeshes();
 }
 
+void ModuleRenderer3D::ChangeCamera()
+{
+	CurrentCamera = App->camera->activeCamera;
+	RecalculateProjection();
+}
 
 #ifndef GAME_MODE
 void ModuleRenderer3D::ShowRenderInfo()
