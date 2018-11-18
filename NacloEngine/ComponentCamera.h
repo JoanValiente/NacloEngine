@@ -21,13 +21,16 @@ public:
 	
 	bool Intersects(const AABB box);
 
+	void SetAspectRatio(float f_ratio);
+	math::float4x4& GetProjectionMatrix() const;
 
 private:
 	void SetFar(float frustum_far);
 	void SetNear(float frustum_near);
 	void SetFov(float frustum_fov);
 	float GetFov() const;
-	void SetAspectRatio(float f_ratio);
+	
+
 
 public:
 	Frustum frustum;

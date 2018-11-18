@@ -88,6 +88,11 @@ void ComponentCamera::SetAspectRatio(float aspect_ratio)
 	frustum.horizontalFov = 2.f * atanf(tanf(frustum.verticalFov * 0.5f) * aspect_ratio);
 }
 
+math::float4x4& ComponentCamera::GetProjectionMatrix() const
+{
+	return frustum.ProjectionMatrix().Transposed();
+}
+
 void ComponentCamera::Update(float dt)
 {
 	ComponentTransform* go_transform = (ComponentTransform*)container->GetComponentByType(COMPONENT_TYPE::COMPONENT_TRANSFORM);

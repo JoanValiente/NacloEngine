@@ -12,6 +12,7 @@
 
 #define MAX_LIGHTS 8
 
+struct ComponentCamera;
 struct ComponentTransform;
 
 struct Mesh
@@ -82,6 +83,7 @@ public:
 private:
 	float4x4 perspective(float fovy, float aspect, float n, float f);
 
+	ComponentCamera* CurrentCamera = nullptr;
 public:
 	SDL_GLContext context;
 

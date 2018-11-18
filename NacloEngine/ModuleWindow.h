@@ -28,7 +28,6 @@ public:
 	void const ShowWindowInfo();
 
 
-
 public:
 	//The window we'll be rendering to
 	SDL_Window* window;
