@@ -26,6 +26,7 @@ private:
 	void SetFar(float frustum_far);
 	void SetNear(float frustum_near);
 	void SetFov(float frustum_fov);
+	float GetFov() const;
 	void SetAspectRatio(float f_ratio);
 
 public:

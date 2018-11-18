@@ -5,6 +5,7 @@
 #include "ComponentTransform.h"
 #include "Component.h"
 #include "Config.h"
+#include "ModuleWindow.h"
 
 ComponentCamera::ComponentCamera(GameObject * container) : Component(container)
 {
@@ -45,6 +46,13 @@ void ComponentCamera::ShowInspector()
 		{
 			SetNear(frustum_near);
 		}
+
+		float frustum_fov = GetFov();
+
+		if (ImGui::DragFloat("Fov", &frustum_fov, 1.0f))
+		{
+			SetFov(frustum_fov);
+		}
 	}
 }
 
@@ -64,12 +72,15 @@ void ComponentCamera::SetNear(float frustum_near)
 	}
 }
 
+float ComponentCamera::GetFov() const
+{
+	return math::RadToDeg(frustum.verticalFov);
+}
+
 void ComponentCamera::SetFov(float frustum_fov)
 {
-	float aspect_ratio = frustum.AspectRatio();
-
 	frustum.verticalFov = DEGTORAD * frustum_fov;
-	SetAspectRatio(aspect_ratio);
+	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f) * App->window->width / App->window->height);
 }
 
 void ComponentCamera::SetAspectRatio(float aspect_ratio)
