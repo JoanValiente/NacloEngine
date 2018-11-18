@@ -42,71 +42,74 @@ Texture* TextureImporter::LoadTexture(const char* path)
 		if ((*item)->path == ret->path)
 		{
 			load_texture = false;
-			ret = (*item);
 		}
 		item++;
 	}
 
-	if (load_texture)
+
+	if (buffer != nullptr && size > 0)
 	{
-		if (buffer != nullptr && size > 0)
+		ILuint imageID;
+		ilGenImages(1, &imageID);
+		ilBindImage(imageID);
+
+		uint textureID;
+
+		if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, size))
 		{
-			ILuint imageID;
-			ilGenImages(1, &imageID);
-			ilBindImage(imageID);
+			ILinfo ImageInfo;
 
-			uint textureID;
+			iluGetImageInfo(&ImageInfo);
 
-			if (ilLoadL(IL_TYPE_UNKNOWN, (const void*)buffer, size))
+			if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
 			{
-				ILinfo ImageInfo;
+				iluFlipImage();
+			}
 
-				iluGetImageInfo(&ImageInfo);
+			// Convert the image into a suitable format to work with
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-				if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
-				{
-					iluFlipImage();
-				}
+			ret->width = ImageInfo.Width;
+			ret->height = ImageInfo.Height;
 
-				// Convert the image into a suitable format to work with
-				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+			// Generate a new texture
+			glGenTextures(1, &textureID);
 
-				ret->width = ImageInfo.Width;
-				ret->height = ImageInfo.Height;
+			// Bind the texture to a name
+			glBindTexture(GL_TEXTURE_2D, textureID);
 
-				// Generate a new texture
-				glGenTextures(1, &textureID);
+			SetTexture();
 
-				// Bind the texture to a name
-				glBindTexture(GL_TEXTURE_2D, textureID);
+			ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
+			LOG("Texture creation successful.");
 
-				SetTexture();
-
-				ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
-				LOG("Texture creation successful.");
-
-				if (extension != ".dds")
+			if (extension != ".dds")
+			{
+				if (load_texture)
 				{
 					Import(buffer, size, ret->texture_dds); //Import texture in our own format
 				}
-
-				ret->texture_id = textureID;
-
-				textures_loaded.push_back(ret);
-
-				RELEASE_ARRAY(buffer);
 			}
-			else // If we failed to open the image file in the first place...
+
+			ret->texture_id = textureID;
+
+			if (load_texture)
 			{
-				LOG("ERROR Trying to load a buffer of size %i", size);
-				ret = nullptr;
+				textures_loaded.push_back(ret);
 			}
+
+			RELEASE_ARRAY(buffer);
 		}
-		else
+		else // If we failed to open the image file in the first place...
 		{
-			LOG("ERROR LOADING TEXTURES");
+			LOG("ERROR Trying to load a buffer of size %i", size);
 			ret = nullptr;
 		}
+	}
+	else
+	{
+		LOG("ERROR LOADING TEXTURES");
+		ret = nullptr;
 	}
 
 	return ret;

@@ -21,9 +21,8 @@ public:
 
 	uint const LoadCheckersTexture();
 	uint CreateCheckersTexture(const void* checkImage);
-
-private:
 	std::list<Texture*>textures_loaded;
+
 };
 
 #endif // __TEXTUREIMPORTER_H_

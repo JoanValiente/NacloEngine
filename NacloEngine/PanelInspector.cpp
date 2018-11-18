@@ -2,6 +2,7 @@
 #include "Imgui/imgui.h"
 #include "Application.h"
 #include "GameObject.h"
+#include "ComponentMesh.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 
@@ -24,8 +25,8 @@ void PanelInspector::DrawInspector()
 		int height;
 		SDL_GetWindowSize(App->window->window, &width, &height);
 
-		ImGui::SetNextWindowPos(ImVec2(width / 2 + width / 4 + 43, height/55));
-		ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height/5));		
+		ImGui::SetNextWindowPos(ImVec2(width / 2 + width / 4 + 53, height/55));
+		ImGui::SetNextWindowSize(ImVec2(width / 4 - 50, height / 2 + height/5));		
 
 		if (ImGui::Begin("Inspector", &active))
 		{

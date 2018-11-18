@@ -256,42 +256,42 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
-	glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
+		glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
 
-	if (texture != nullptr)
-	{
-		if (!ischecked)
-			glBindTexture(GL_TEXTURE_2D, texture->texture_id);
+		if (texture != nullptr)
+		{
+			if (!ischecked)
+				glBindTexture(GL_TEXTURE_2D, texture->texture_id);
+			else
+				glBindTexture(GL_TEXTURE_2D, checkers_path);
+		}
+
+		if (wire_mode)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 		else
-			glBindTexture(GL_TEXTURE_2D, checkers_path);
-	}
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	if (wire_mode)
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	else
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
-	glDrawElements(GL_TRIANGLES,mesh->num_indices, GL_UNSIGNED_INT, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glPopMatrix();
+		glPopMatrix();
 }
 
 

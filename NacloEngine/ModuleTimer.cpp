@@ -28,13 +28,6 @@ void ModuleTimer::EndUpdate()
 		case GAME_STATE::PAUSE:
 			deltaTime = 0.0f;
 			break;
-		case GAME_STATE::TICK:
-			deltaTime = 0.0f;
-			if (isTick) {
-				App->gameState = GAME_STATE::NONE;
-				isTick = false;
-			}
-			break;
 		default:
 			break;
 		}

@@ -159,7 +159,7 @@ UID ModuleFileSystem::GenerateUID()
 	return pcg32_random_r(&rng);;
 }
 
-char** ModuleFileSystem::GetFiles(const char * path)
+const char** ModuleFileSystem::GetFiles(const char * path)
 {
 	char** tmp = PHYSFS_enumerateFiles("Assets");
 
@@ -168,8 +168,7 @@ char** ModuleFileSystem::GetFiles(const char * path)
 		LOG("CAN'T GET FILES IN DIRECTORY");
 	}
 
-	return tmp;
-	PHYSFS_freeList(tmp);
+	return (const char**)tmp;
 }
 
 int ModuleFileSystem::Phys_DeleteFile(const char * filename)
@@ -213,4 +212,53 @@ uint ModuleFileSystem::SaveFile(const char* file, const void* buffer, unsigned i
 	return ret;
 }
 
+bool ModuleFileSystem::FindFileIn(const char* dir, const char* file_name, std::string& path)
+{
+	bool ret = false;
+
+	//Another recursivity :/
+	if (dir != nullptr)
+	{
+		path.append(dir);
+		path += "/";
+
+		std::string tmp = path;
+		tmp.append(file_name);
+
+		if (PHYSFS_exists(tmp.c_str()))
+		{
+			path += file_name;
+			ret = true;
+		}
+		else
+		{
+			const char** files = GetFiles(dir);
+			const char** file;
+
+			for (file = files; *file != nullptr; ++file)
+			{
+				if (IsDirectory(*file))
+				{
+					if (FindFileIn(*file, file_name, path))
+					{
+						return true;
+					}
+
+					uint position = path.find(*file);
+
+					if (position != std::string::npos)
+						path.erase(position, path.size());
+
+				}
+			}
+		}
+	}
+
+	return ret;
+}
+
+bool ModuleFileSystem::IsDirectory(const char * path)
+{
+	return PHYSFS_isDirectory(path);
+}
 
