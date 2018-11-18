@@ -151,10 +151,10 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 	glLoadIdentity();
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(App->camera->activeCamera->GetViewMatrix());
+	glLoadMatrixf(App->camera->camera->GetViewMatrix());
 
 	// light 0 on cam pos
-	lights[0].SetPos(App->camera->activeCamera->frustum.pos.x, App->camera->activeCamera->frustum.pos.y, App->camera->activeCamera->frustum.pos.z);
+	lights[0].SetPos(App->camera->camera->frustum.pos.x, App->camera->camera->frustum.pos.y, App->camera->camera->frustum.pos.z);
 
 	for(uint i = 0; i < MAX_LIGHTS; ++i)
 		lights[i].Render();
@@ -204,7 +204,9 @@ update_status ModuleRenderer3D::Update(float dt)
 		}
 	}
 
+#ifndef GAME_MODE
 	App->scene->quadtree->DebugDraw();
+#endif
 	
 	return ret;
 }
@@ -212,9 +214,6 @@ update_status ModuleRenderer3D::Update(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -414,6 +413,7 @@ void ModuleRenderer3D::AddTexture(const char * path)
 	}
 }
 
+#ifndef GAME_MODE
 void ModuleRenderer3D::ShowRenderInfo()
 {
 	static bool depth_test = glIsEnabled(GL_DEPTH_TEST);
@@ -516,6 +516,7 @@ void ModuleRenderer3D::ShowRenderInfo()
 	ImGui::Checkbox("Wire Mode", &wire_mode);
 
 }
+#endif
 
 float4x4 ModuleRenderer3D::perspective(float fovy, float aspect, float n, float f)
 {

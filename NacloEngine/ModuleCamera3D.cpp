@@ -43,7 +43,6 @@ bool ModuleCamera3D::Start()
 	//camera->frustum.Translate(float3(3.0f, 5.0f, 3.0f));
 	camera->frustumCulling = true;
 	camera->frustum.Translate(float3(5, 10, 5));
-	activeCamera = camera;
 	LookAt(float3(0.0f, 0.0f, 0.0f));
 
 	return ret;
@@ -56,7 +55,7 @@ bool ModuleCamera3D::CleanUp()
 
 	delete meshBox;
 	delete empty_meshBox;
-	RELEASE(activeCamera);
+	RELEASE(camera);
 
 	return true;
 }
@@ -66,47 +65,48 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-	if (App->engineState == ENGINE_STATE::EDITOR) {
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+
+#ifndef GAME_MODE
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
 		{
-			if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
-			{
-				float winWidth = (float)App->window->width;
-				float winHeight = (float)App->window->height;
+			float winWidth = (float)App->window->width;
+			float winHeight = (float)App->window->height;
 
-				int mouse_x = App->input->GetMouseX();
-				int mouse_y = App->input->GetMouseY();
+			int mouse_x = App->input->GetMouseX();
+			int mouse_y = App->input->GetMouseY();
 
-				float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
-				float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
+			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
+			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
 
-				LineSegment ray = activeCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
-				MousePick(posible_go_intersections, ray);
-				debugRay = ray;
-			}
-			using_guizmos = false;
+			LineSegment ray = camera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+			MousePick(posible_go_intersections, ray);
+			debugRay = ray;
 		}
-		RaycastDebugDraw();
+		using_guizmos = false;
+	}
+	RaycastDebugDraw();
+#endif
 
-		Move(dt);
+	Move(dt);
 
-		//-----------------------------Focus mesh-----------------------------
-		/*
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
-			LookAtMeshBox();
-		}
-		*/
+	//-----------------------------Focus mesh-----------------------------
+	/*
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
+		LookAtMeshBox();
+	}
+	*/
 
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
 
-			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-				Orbit(dx*dt, dy*dt);
-			else
-				Look(dx*dt, dy*dt);
-		}
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+			Orbit(dx*dt, dy*dt);
+		else
+			Look(dx*dt, dy*dt);
 	}
 
 	return UPDATE_CONTINUE;
@@ -121,21 +121,21 @@ void ModuleCamera3D::Orbit(float dx, float dy)
 	// fake point should be a ray colliding with something
 	if (looking == false)
 	{
-		point = activeCamera->frustum.pos + activeCamera->frustum.front * 50.0f;
+		point = camera->frustum.pos + camera->frustum.front * 50.0f;
 
 		looking = true;
 		looking_at = point;
 	}
 
-	float3 focus = activeCamera->frustum.pos - point;
+	float3 focus = camera->frustum.pos - point;
 
-	Quat qy(activeCamera->frustum.up, dx*0.2);
-	Quat qx(activeCamera->frustum.WorldRight(), dy*0.2);
+	Quat qy(camera->frustum.up, dx*0.2);
+	Quat qx(camera->frustum.WorldRight(), dy*0.2);
 
 	focus = qx.Transform(focus);
 	focus = qy.Transform(focus);
 
-	activeCamera->frustum.pos = focus + point;
+	camera->frustum.pos = focus + point;
 
 	LookAt(point);
 }
@@ -148,30 +148,30 @@ void ModuleCamera3D::Look(float dx, float dy)
 	if (dx != 0.f)
 	{
 		Quat q = Quat::RotateY(dx*0.2);
-		activeCamera->frustum.front = q.Mul(activeCamera->frustum.front).Normalized();
-		activeCamera->frustum.up = q.Mul(activeCamera->frustum.up).Normalized();
+		camera->frustum.front = q.Mul(camera->frustum.front).Normalized();
+		camera->frustum.up = q.Mul(camera->frustum.up).Normalized();
 	}
 
 	if (dy != 0.f)
 	{
-		Quat q = Quat::RotateAxisAngle(activeCamera->frustum.WorldRight(), dy * 0.2);
-		float3 new_up = q.Mul(activeCamera->frustum.up).Normalized();
+		Quat q = Quat::RotateAxisAngle(camera->frustum.WorldRight(), dy * 0.2);
+		float3 new_up = q.Mul(camera->frustum.up).Normalized();
 		if (new_up.y > 0.0f)
 		{
-			activeCamera->frustum.up = new_up;
-			activeCamera->frustum.front = q.Mul(activeCamera->frustum.front).Normalized();
+			camera->frustum.up = new_up;
+			camera->frustum.front = q.Mul(camera->frustum.front).Normalized();
 		}
 	}
 }
 
 void ModuleCamera3D::LookAt(const float3 & position)
 {
-	float3 dir = position - activeCamera->frustum.pos;
+	float3 dir = position - camera->frustum.pos;
 
-	float3x3 m = float3x3::LookAt(activeCamera->frustum.front, dir.Normalized(), activeCamera->frustum.up, float3::unitY);
+	float3x3 m = float3x3::LookAt(camera->frustum.front, dir.Normalized(), camera->frustum.up, float3::unitY);
 
-	activeCamera->frustum.front = m.MulDir(activeCamera->frustum.front).Normalized();
-	activeCamera->frustum.up = m.MulDir(activeCamera->frustum.up).Normalized();
+	camera->frustum.front = m.MulDir(camera->frustum.front).Normalized();
+	camera->frustum.up = m.MulDir(camera->frustum.up).Normalized();
 }
 
 // -----------------------------------------------------------------
@@ -179,8 +179,8 @@ void ModuleCamera3D::LookAt(const float3 & position)
 void ModuleCamera3D::Move(float dt)
 {
 	float speed = 3.0f * dt;
-	float3 right(activeCamera->frustum.WorldRight());
-	float3 forward(activeCamera->frustum.front);
+	float3 right(camera->frustum.WorldRight());
+	float3 forward(camera->frustum.front);
 	float3 newPos = float3::zero;
 
 	//-----------------------------Speed boost-----------------------------
@@ -220,15 +220,15 @@ void ModuleCamera3D::Move(float dt)
 			newPos -= right * (App->input->GetMouseXMotion() * dt) * speed * 15;
 
 		if (App->input->GetMouseYMotion() > 0)
-			newPos += activeCamera->frustum.up * (App->input->GetMouseYMotion() * dt) * speed * 15;
+			newPos += camera->frustum.up * (App->input->GetMouseYMotion() * dt) * speed * 15;
 
 		if (App->input->GetMouseYMotion() < 0)
-			newPos += activeCamera->frustum.up * (App->input->GetMouseYMotion() * dt) * speed * 15;
+			newPos += camera->frustum.up * (App->input->GetMouseYMotion() * dt) * speed * 15;
 	}
 	   
 	if (newPos.Equals(float3::zero) == false)
 	{
-		activeCamera->frustum.Translate(newPos);
+		camera->frustum.Translate(newPos);
 		looking = false;
 	}
 }
@@ -256,8 +256,16 @@ void ModuleCamera3D::ShowCameraInfo()
 
 void ModuleCamera3D::CullingGameObjects(GameObject * go)
 {
-	if (activeCamera->frustumCulling) {
-		if (!activeCamera->Intersects(go->boundingBox)) {
+	if (App->scene->main_camera->camera->frustumCulling) {
+		if (!App->scene->main_camera->camera->Intersects(go->boundingBox)) {
+			go->active = false;
+		}
+		else
+			go->active = true;
+	}
+
+	if (camera->frustumCulling) {
+		if (!camera->Intersects(go->boundingBox)) {
 			go->active = false;
 		}
 		else
@@ -329,7 +337,7 @@ void ModuleCamera3D::MousePick(std::vector<GameObject*> &candidates, LineSegment
 
 void ModuleCamera3D::PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate)
 {
-	if (activeCamera->frustum.Intersects(candidate->boundingBox))
+	if (camera->frustum.Intersects(candidate->boundingBox))
 	{
 		pick_candidates.push_back(candidate);
 	}

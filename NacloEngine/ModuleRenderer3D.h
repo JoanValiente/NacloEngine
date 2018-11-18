@@ -13,7 +13,6 @@
 #define MAX_LIGHTS 8
 
 struct ComponentTransform;
-struct ComponentCamera;
 
 struct Mesh
 {
@@ -92,8 +91,6 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	bool ischecked = false;
 	uint checkers_path = 0;
-
-	ComponentCamera* activeCamera;
 };
 
 #endif

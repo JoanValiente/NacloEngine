@@ -4,7 +4,6 @@
 
 struct grid;
 struct GameObject;
-struct ComponentCamera;
 struct Quadtree;
 
 class ModuleScene : public Module
@@ -32,7 +31,6 @@ public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;
 	GameObject* main_camera = nullptr;
-	ComponentCamera* mainCamera = nullptr;
 
 	Quadtree* quadtree = nullptr;
 

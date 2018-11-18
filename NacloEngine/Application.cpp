@@ -15,9 +15,10 @@
 Application::Application()
 {
 
-
+#ifndef GAME_MODE
 	imgui = new ModuleImgui(this);
 	timer = new ModuleTimer(this);
+#endif
 	resources = new ModuleResources(this);
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
@@ -42,8 +43,11 @@ Application::Application()
 	AddModule(input);
 	AddModule(scene);
 	AddModule(camera);
+
+#ifndef GAME_MODE
 	AddModule(timer);
 	AddModule(imgui);
+#endif
 
 	// Renderer last!
 	AddModule(renderer3D);
@@ -107,48 +111,30 @@ void Application::PrepareUpdate()
 
 	switch (engineState)
 	{
-	case EDITOR:
-
-		switch (gameState)
-		{
-		case PLAY:
-			engineState = ENGINE_STATE::GAME;
-			gameState = GAME_STATE::NONE;
-			break;
-		case PAUSE:
-			break;
-		case STOP:
-			break;
-		case TICK:
-			break;
-		default:
-			break;
-		}
-
+	case ENGINE_STATE::PLAY:
+	{
 		break;
-
-	case GAME:
-
-		switch (gameState)
-		{
-		case PLAY:
-			gameState = GAME_STATE::NONE;
-			break;
-		case STOP:
-			engineState = ENGINE_STATE::EDITOR;
-			renderer3D->activeCamera = camera->camera;
-			break;
-		case PAUSE:
-			break;
-		case TICK:
-			break;
-		default:
-			break;
-		}
+	}
+	case ENGINE_STATE::PAUSE:
+	{
 		break;
+	}
+	case ENGINE_STATE::EDITOR:
+	{
+		break;
+	}
+	case ENGINE_STATE::TICK:
+	{
+		break;
+	}
+
 	default:
 		break;
 	}
+
+#ifndef GAME_MODE
+	timer->PreUpdate();
+#endif
 }
 
 // ---------------------------------------------
@@ -176,8 +162,6 @@ void Application::FinishUpdate()
 		}
 
 	}
-
-	timer->EndUpdate();
 
 	last_ms = ms_timer.ReadMs();
 	last_FPS = 1000.0 / last_ms;
@@ -238,6 +222,93 @@ bool Application::CleanUp()
 	return ret;
 }
 
+void Application::Play()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::PLAY;
+		break;
+
+	case ENGINE_STATE::EDITOR:
+
+		engineState = ENGINE_STATE::PLAY;
+		break;
+
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::EDITOR;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Application::Pause()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::PAUSE;
+		break;
+
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::PLAY;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Application::Stop()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::STOP;
+		break;
+
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::STOP;
+		break;
+
+	default:
+		break;
+	}
+}
+
+void Application::Tick()
+{
+	switch (engineState)
+	{
+	case ENGINE_STATE::PLAY:
+
+		engineState = ENGINE_STATE::TICK;
+		break;
+
+	case ENGINE_STATE::PAUSE:
+
+		engineState = ENGINE_STATE::TICK;
+		break;
+
+	case ENGINE_STATE::STOP:
+
+		engineState = ENGINE_STATE::TICK;
+		break;
+
+	default:
+		break;
+	}
+}
+
+#ifndef GAME_MODE
 void Application::Log(const char * text)
 {
 	imgui->Log(text);
@@ -282,6 +353,7 @@ void const Application::ShowApplicationInfo()
 	sprintf_s(title, 25, "Milliseconds %.1f", vector_ms[vector_ms.size() - 1]);
 	ImGui::PlotHistogram("##milliseconds", &vector_ms[0], vector_ms.size(), 0, title, 0.0f, 100.0f, ImVec2(310, 100));
 }
+#endif
 
 float Application::GetDt() const
 {

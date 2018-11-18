@@ -9,36 +9,29 @@ ModuleTimer::~ModuleTimer()
 {
 }
 
-void ModuleTimer::EndUpdate()
+update_status ModuleTimer::PreUpdate()
 {
 	frameCount++;
 	realTimeDeltaTime = App->GetDt();
 	realTimeSinceStartup += realTimeDeltaTime;
 
-	if (App->engineState == ENGINE_STATE::EDITOR) {
+	switch (App->engineState)
+	{
+	case ENGINE_STATE::PLAY:
+		time += realTimeDeltaTime;
+		deltaTime = realTimeDeltaTime * timeScale;
+		break;
+	case ENGINE_STATE::EDITOR:
 		time = 0.0f;
+		break;
+	case ENGINE_STATE::PAUSE:
+		deltaTime = 0.0f;
+		break;
+	default:
+		break;
 	}
-	else {
-		switch (App->gameState)
-		{
-		case GAME_STATE::NONE:
-			time += realTimeDeltaTime * timeScale;
-			deltaTime = realTimeDeltaTime * timeScale;
-			break;
-		case GAME_STATE::PAUSE:
-			deltaTime = 0.0f;
-			break;
-		case GAME_STATE::TICK:
-			deltaTime = 0.0f;
-			if (isTick) {
-				App->gameState = GAME_STATE::NONE;
-				isTick = false;
-			}
-			break;
-		default:
-			break;
-		}
-	}
+
+	return UPDATE_CONTINUE;
 }
 
 uint ModuleTimer::GetFrameCount() const

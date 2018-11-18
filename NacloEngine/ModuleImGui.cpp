@@ -1,3 +1,4 @@
+#ifndef GAME_MODE
 #include "Application.h"
 #include "ModuleImGui.h"
 #include "ModuleRenderer3D.h"
@@ -14,7 +15,10 @@
 #include "PanelHierarchy.h"
 #include "PanelResources.h"
 #include "PanelTime.h"
+#endif
 
+
+#ifndef GAME_MODE
 ModuleImgui::ModuleImgui(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -126,10 +130,6 @@ bool ModuleImgui::CleanUp()
 	panels.clear();
 
 	console = nullptr;
-
-	ImGui_ImplOpenGL2_Shutdown();
-	ImGui_ImplSDL2_Shutdown();
-	ImGui::DestroyContext();
 
 	return true;
 }
@@ -287,3 +287,4 @@ void ModuleImgui::ShowImGuiInfo()
 		style.FrameBorderSize = frame_border; 
 }
 
+#endif
