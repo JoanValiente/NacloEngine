@@ -73,6 +73,7 @@ bool Application::Init()
 	// Call Init() in all modules
 
 
+	Config settings("Settings/settings.json");
 	GetSettings(settings.GetSection("App"));
 
 	list<Module*>::const_iterator item;
@@ -250,6 +251,8 @@ void Application::Log(const char * text)
 
 void const Application::ShowApplicationInfo()
 {
+	ImGui::Text(App->engine_name);
+	ImGui::Text(App->organization_name);
 
 	if (vector_fps.size() != 100)
 	{
@@ -291,7 +294,12 @@ void Application::SetSettings()
 {
 }
 
+void Application::GetSettings(Config & config)
 {
+	engine_name = (char*)config.GetString("Name");
+	organization_name = (char*)config.GetString("Organization");
+	author_1_name = (char*)config.GetString("Author 1");
+	author_2_name = (char*)config.GetString("Author 2");
 }
 
 void Application::AddModule(Module* mod)
