@@ -7,6 +7,7 @@
 #include "ModuleCamera3D.h"
 #include "Application.h"
 #include "ComponentCamera.h"
+#include "ModuleScene.h"
 #include "Config.h"
 
 ComponentTransform::ComponentTransform(GameObject * container) : Component(container)
@@ -50,46 +51,78 @@ void ComponentTransform::ShowInspector()
 		DrawGuizmos();
 	}
 
+	static bool changed_position = false;
+	static bool changed_rotation = false;
+	static bool changed_size = false;
+
 	if (ImGui::CollapsingHeader("Transformation"))
 	{
 		//POSITION------------
 		ImGui::Text("Position");
 		ImGui::Text("X:"); ImGui::SameLine();
-		ImGui::DragFloat("##pos_x", &position.x, 0.1f);
+		if (ImGui::DragFloat("##pos_x", &position.x, 0.1f))
+			changed_position = true;
 
 		ImGui::Text("Y:");	ImGui::SameLine();
-		ImGui::DragFloat("##pos_y", &position.y, 0.1f); 
+		if(ImGui::DragFloat("##pos_y", &position.y, 0.1f))
+			changed_position = true;
+
 		
 		ImGui::Text("Z:"); ImGui::SameLine();
-		ImGui::DragFloat("##pos_z", &position.z, 0.1f);
+		if(ImGui::DragFloat("##pos_z", &position.z, 0.1f))
+			changed_position = true;
 
-		SetPosition(position);
 
 		//ROTATION------------
 		ImGui::Text("Rotation");
 		ImGui::Text("X:");	ImGui::SameLine();
-		ImGui::DragFloat("##rot_x", &rotation.x, 0.1f);
+		if(ImGui::DragFloat("##rot_x", &rotation.x, 0.1f))
+			changed_rotation = true;
+
 
 		ImGui::Text("Y:"); ImGui::SameLine();
-		ImGui::DragFloat("##rot_y", &rotation.y, 0.1f);
+		if(ImGui::DragFloat("##rot_y", &rotation.y, 0.1f))
+			changed_rotation = true;
 
 		ImGui::Text("Z:"); ImGui::SameLine();
-		ImGui::DragFloat("##rot_z", &rotation.z, 0.1f);
+		if(ImGui::DragFloat("##rot_z", &rotation.z, 0.1f))
+			changed_rotation = true;
 
-		SetRotation(rotation);
 
 		//SCALE------------
 		ImGui::Text("Scale");
 		ImGui::Text("X:");ImGui::SameLine();
-		ImGui::DragFloat("##size_x", &size.x, 0.1f);
+		if (ImGui::DragFloat("##size_x", &size.x, 0.1f))
+			changed_size = true;
 
 		ImGui::Text("Y:");ImGui::SameLine();
-		ImGui::DragFloat("##size_y", &size.y, 0.1f);
+		if(ImGui::DragFloat("##size_y", &size.y, 0.1f))
+			changed_size = true;
 
 		ImGui::Text("Z:"); ImGui::SameLine();
-		ImGui::DragFloat("##size_z", &size.z, 0.1f);
+		if(ImGui::DragFloat("##size_z", &size.z, 0.1f))
+			changed_size = true;
 
 		SetSize(size);
+
+		if (changed_position)
+		{
+			SetPosition(position);
+			App->scene->UpdateQuadtree();
+			changed_position = false;
+		}
+		if (changed_rotation)
+		{
+			SetRotation(rotation);
+			App->scene->UpdateQuadtree();
+			changed_rotation = false;
+		}
+		if (changed_size)
+		{
+			SetSize(size);
+			App->scene->UpdateQuadtree();
+			changed_size = false;
+		}
 	}
 }
 

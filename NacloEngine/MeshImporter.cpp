@@ -206,15 +206,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			char* buffer;
 			App->fs->Load(path, &buffer);
 			ExportNCL(buffer, mesh, mesh->ncl_path);
-
-
 			RELEASE_ARRAY(buffer);
-			RELEASE_ARRAY(mesh->vertices);
-			RELEASE_ARRAY(mesh->indices);
-			RELEASE_ARRAY(mesh->texture);
-
-			
-
 
 			final_obj = children;
 	}
