@@ -12,6 +12,7 @@
 #pragma comment (lib, "Devil/libx86/ILU.lib")
 #pragma comment (lib, "Devil/libx86/ILUT.lib")
 
+
 TextureImporter::TextureImporter() : Importer()
 {
 }
@@ -76,20 +77,20 @@ Texture* TextureImporter::LoadTexture(const char* path)
 
 			ret->texture_id = textureID;
 			RELEASE_ARRAY(buffer);
-
-			return ret;
 		}
 		else // If we failed to open the image file in the first place...
 		{
 			LOG("ERROR Trying to load a buffer of size %i", size);
-			return nullptr;
+			ret = nullptr;
 		}
 	}
 	else
 	{
 		LOG("ERROR LOADING TEXTURES");
-		return 0;
+		ret = nullptr;
 	}
+
+	return ret;
 }
 
 bool TextureImporter::Import(const void * buffer, uint size, string& output_file)

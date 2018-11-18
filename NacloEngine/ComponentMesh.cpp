@@ -13,6 +13,7 @@ ComponentMesh::ComponentMesh(GameObject * container) : Component(container)
 
 ComponentMesh::~ComponentMesh()
 {
+	delete mesh;
 }
 
 void ComponentMesh::ShowInspector()

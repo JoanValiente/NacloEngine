@@ -21,9 +21,6 @@ class MeshImporter : public Importer
 public:
 	MeshImporter();
 	~MeshImporter();
-	bool Init();
-	bool Start();
-	bool CleanUp();
 
 	//Load Own Format
 	Mesh* ImportNCL(const char* path);

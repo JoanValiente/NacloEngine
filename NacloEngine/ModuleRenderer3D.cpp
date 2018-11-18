@@ -20,6 +20,8 @@
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
 #pragma comment (lib, "opengl32.lib") /* link Microsoft OpenGL lib   */
 
+
+
 ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 }
@@ -234,6 +236,8 @@ bool ModuleRenderer3D::CleanUp()
 
 	SDL_GL_DeleteContext(context);
 
+	textures.clear();
+
 	ClearMeshes();
 
 	return true;
@@ -310,7 +314,6 @@ void ModuleRenderer3D::AddMesh(Mesh * mesh)
 void ModuleRenderer3D::AddTexture(Texture * tex)
 {
 	textures.push_back(tex);
-
 }
 
 void ModuleRenderer3D::GetMeshMinMaxVertices(Mesh * mesh)
