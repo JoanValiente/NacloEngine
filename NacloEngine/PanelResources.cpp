@@ -1,6 +1,7 @@
 #include "PanelResources.h"
 #include "ModuleResources.h"
 #include "Application.h"
+#include "ModuleWindow.h"
 #include "ModuleFileSystem.h"
 #include "Imgui/imgui.h"
 
@@ -15,6 +16,14 @@ PanelResources::~PanelResources()
 
 void PanelResources::Draw()
 {
+
+	int width;
+	int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(0, height / 2 + height / 4 - 17));
+	ImGui::SetNextWindowSize(ImVec2(width, height / 4 - 8));
+
 	ImGui::Begin("Resources", &active);
 
 	if (ImGui::IsItemHoveredRect() && ImGui::IsMouseClicked(1))
