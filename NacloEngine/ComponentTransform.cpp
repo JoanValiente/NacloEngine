@@ -156,10 +156,10 @@ void ComponentTransform::DrawGuizmos()
 
 	ImGuizmo::Manipulate(App->camera->camera->GetViewMatrix(), (float*)cameraProjMat.v, guizmoOperation, ImGuizmo::WORLD, matrix.ptr());
 
-	matrix.Transpose();
-
 	if (ImGuizmo::IsUsing())
 	{
+		matrix.Transpose();
+
 		container->staticGO = false;
 		App->camera->using_guizmos = true;
 
@@ -171,9 +171,15 @@ void ComponentTransform::DrawGuizmos()
 		}
 
 		else {
-			matrix.Decompose(position, quaternion, size);
-			rotation = quaternion.ToEulerXYZ() * RADTODEG;
-			UpdateMatrix();
+			if (container->parent == nullptr)
+			{
+				localmatrix = matrix;
+			}
+			else {
+				localmatrix = container->parent->transform->globalMatrix.Inverted() * matrix;
+				localmatrix.Decompose(position, quaternion, size);
+				rotation = quaternion.ToEulerXYZ() * RADTODEG;
+			}
 		}
 	}
 

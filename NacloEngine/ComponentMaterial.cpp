@@ -26,9 +26,9 @@ void ComponentMaterial::ShowInspector()
 	if (ImGui::CollapsingHeader("Texture"), ImGuiTreeNodeFlags_DefaultOpen)
 	{
 		ImGui::Text("SIZE");
-		ImGui::Text("Width: %i", texture->width); ImGui::SameLine();
-		ImGui::Text("Height: %i", texture->height);
-		ImGui::Image((ImTextureID)texture->texture_id, { 256,256 });
+		//ImGui::Text("Width: %i", texture->width); ImGui::SameLine();
+		//ImGui::Text("Height: %i", texture->height);
+		//ImGui::Image((ImTextureID)texture->texture_id, { 256,256 });
 	}
 }
 

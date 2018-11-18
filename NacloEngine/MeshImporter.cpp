@@ -121,6 +121,8 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 {
 	GameObject* final_obj;
 
+	bool invalid_node = false;
+
 	if (node->mNumMeshes > 0)
 	{
 			Mesh* mesh = new Mesh();
@@ -129,7 +131,8 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			std::string path_to_name = mesh->path;
 			mesh->filename = path_to_name.erase(0, path_to_name.find_last_of("\\") + 1);
 
-			GameObject* children = new GameObject(obj, node->mName.data);
+
+			GameObject* children = new GameObject(obj, mesh->filename.c_str());
 
 			if (scene->mRootNode != nullptr) {
 				aiVector3D scale;
@@ -162,6 +165,7 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 				{
 					if (new_mesh->mFaces[num_faces].mNumIndices != 3)
 					{
+						invalid_node = true;
 						LOG("Geometry face %i whit %i faces", num_faces, new_mesh->mFaces[num_faces].mNumIndices);
 					}
 					else {
@@ -204,12 +208,15 @@ void MeshImporter::LoadMeshData(const aiScene * scene, aiNode * node, const char
 			}	
 
 			//Component Mesh
-			ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
-			meshComponent->AssignMesh(mesh);
+			if (!invalid_node)
+			{
+				ComponentMesh* meshComponent = (ComponentMesh*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+				meshComponent->AssignMesh(mesh);
 
-			//Component Material
-			ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
-			materialComponent->AssignTexture(texture);
+				//Component Material
+				ComponentMaterial* materialComponent = (ComponentMaterial*)children->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+				materialComponent->AssignTexture(texture);
+			}
 
 
 			SetBuffers(mesh);
