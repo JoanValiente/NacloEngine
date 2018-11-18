@@ -2,8 +2,6 @@
 #include "GameObject.h"
 #include "Config.h"
 
-#include "mmgr/mmgr.h"
-
 Component::Component(GameObject * container)
 {
 	this->container = container;

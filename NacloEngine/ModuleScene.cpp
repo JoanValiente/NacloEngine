@@ -12,18 +12,15 @@
 #include "PanelInspector.h"
 #include "Config.h"
 
-#include "mmgr/mmgr.h"
-
 ModuleScene::ModuleScene(Application * app, bool start_enabled) : Module(app, start_enabled)
 {
-	name = "Scene";
 }
 
 ModuleScene::~ModuleScene()
 {
 }
 
-bool ModuleScene::Start(Config* conf)
+bool ModuleScene::Start()
 {
 	Grid = new grid(0, 1, 0, 0);
 	Grid->axis = true;
@@ -39,6 +36,10 @@ bool ModuleScene::Start(Config* conf)
 
 	quadtree = new Quadtree();
 	
+	char new_file[256];
+	strcpy_s(new_file, 256, "test");
+	strcat(new_file, ".json");
+
 	return true;
 }
 
@@ -128,8 +129,13 @@ void ModuleScene::UpdateTransforms(GameObject* go)
 	}
 }
 
-void ModuleScene::DestroyAllGameObjects()
+void ModuleScene::DeleteAllGameObject()
 {
+	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	{
+		(*it)->CleanUp();
+	}
+
 	gameObjects.clear();
 }
 
@@ -160,12 +166,11 @@ bool ModuleScene::CleanUp()
 
 	gameObjects.clear();
 
-	if (root != nullptr)
-	{
+	if (root != nullptr) {
 		delete root;
 	}
 
 
 
-	return true;
+	return false;
 }

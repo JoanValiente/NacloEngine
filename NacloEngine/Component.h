@@ -20,7 +20,7 @@ public:
 
 public:
 	Component(GameObject* container);
-	virtual ~Component();
+	~Component();
 
 	virtual void Update(float dt);
 	virtual void ShowInspector();

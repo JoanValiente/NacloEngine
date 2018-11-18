@@ -13,7 +13,7 @@ public:
 	ModuleScene(Application* app, bool start_enabled = true);
 	~ModuleScene();
 	bool CleanUp();
-	bool Start(Config* conf = nullptr);
+	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -26,7 +26,7 @@ public:
 	GameObject* GetSelected();
 
 	void UpdateTransforms(GameObject* go);
-	void DestroyAllGameObjects();
+	void DeleteAllGameObject();
 
 public:
 	GameObject* root = nullptr;

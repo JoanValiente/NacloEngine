@@ -7,7 +7,7 @@
 #include "Globals.h"
 #include "MeshImporter.h"
 
-#include <string>
+
 #include <list>
 
 #define MAX_LIGHTS 8
@@ -45,12 +45,7 @@ struct Mesh
 
 struct Texture
 {
-	uint width = 0;
-	uint height = 0;
-	std::string texture_name;
-	std::string path;
-	std::string texture_dds;
-	uint texture_id = 0;
+	uint texture_path = 0;
 };
 
 class ModuleRenderer3D : public Module
@@ -59,8 +54,8 @@ public:
 	ModuleRenderer3D(Application* app, bool start_enabled = true);
 	~ModuleRenderer3D();
 
-	bool Init(Config* conf = nullptr);
-	bool Start(Config* conf = nullptr);
+	bool Init();
+	bool Start();
 	update_status PreUpdate(float dt);
 	update_status Update(float dt);
 	update_status PostUpdate(float dt);
@@ -76,6 +71,8 @@ public:
 	void GetMeshMinMaxVertices(Mesh* mesh);
 	void ClearMeshes();
 	void DeleteAllMeshes();
+
+	void AddTexture(const char* path);
 
 	void ShowRenderInfo();
 

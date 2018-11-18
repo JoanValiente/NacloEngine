@@ -10,7 +10,7 @@ public:
 	ModuleFileSystem(Application* app, bool start_enabled = true);
 	~ModuleFileSystem();
 
-	bool Start(Config* conf = nullptr);
+	bool Start();
 	bool CleanUp();
 
 
