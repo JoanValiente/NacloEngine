@@ -37,14 +37,22 @@ GameObject::GameObject(GameObject * parent, const char* name)
 
 GameObject::~GameObject()
 {
-	
-	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++) {
-		delete (*it);
+	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++)
+	{
+		if ((*it) != nullptr)
+		{
+			delete (*it);
+		}
+	}
+	for (std::vector<GameObject*>::iterator it = children.begin(); it != children.end(); it++)
+	{
+		if ((*it) != nullptr)
+		{
+			delete (*it);
+		}
 	}
 
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); it++) {
-		delete (*it);
-	}
+
 	
 }
 
