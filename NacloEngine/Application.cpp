@@ -252,9 +252,9 @@ void Application::Log(const char * text)
 
 void const Application::ShowApplicationInfo()
 {
-
 	ImGui::InputText("Engine Name", App->engine_name, 20);
 	ImGui::InputText("Organization", App->organization_name, 20);
+
 
 	if (vector_fps.size() != 100)
 	{
@@ -291,7 +291,6 @@ float Application::GetDt() const
 {
 	return dt;
 }
-
 
 void Application::AddModule(Module* mod)
 {
