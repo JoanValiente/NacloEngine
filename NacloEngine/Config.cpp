@@ -225,14 +225,14 @@ float3 Config::GetFloat3(const char * name)
 
 //---------------- SAVE ----------------
 
-bool Config::Save(const char* folder )
+bool Config::Save()
 {
 	bool ret = false;
 
 	char* buffer;
 	size_t size = GetSize(&buffer);
 
-	ret = App->fs->SaveFile(GenerateSceneName(folder, name).c_str(), buffer, size);
+	ret = App->fs->SaveFile(GenerateSceneName(ASSETS_SCENES_FOLDER, name).c_str(), buffer, size);
 
 	RELEASE_ARRAY(buffer);
 
@@ -243,15 +243,10 @@ std::string Config::GenerateSceneName(const char * folder, const char * file_nam
 {
 	App->fs->CreateNewDirectory(folder);
 
-	std::string tmp = name;
 	std::string final_path = folder;
 
 	final_path.append(name);
-
-	if (tmp.find(".json") < 0)
-	{
-		final_path.append(".json");
-	}
+	final_path.append(".json");
 
 	return final_path;
 }

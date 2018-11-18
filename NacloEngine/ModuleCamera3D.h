@@ -32,8 +32,6 @@ public:
 	void RaycastDebugDraw();
 	void PickCandidates(std::vector<GameObject*> &pick_candidates, GameObject* candidate);
 
-	void Save(Config* conf) const;
-
 public:
 	
 	AABB* meshBox = nullptr;

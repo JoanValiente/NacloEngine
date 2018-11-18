@@ -44,7 +44,7 @@ public:
 	float3 GetFloat3(const char* name);
 
 
-	bool Save(const char* folder = ASSETS_SCENES_FOLDER);
+	bool Save();
 
 private:
 	std::string GenerateSceneName(const char* folder, const char* file_name);
