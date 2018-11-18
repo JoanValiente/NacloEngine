@@ -62,10 +62,8 @@ void GameObject::Update(float dt)
 	}
 
 	UpdateBoundingBox();
-	if (selected)
-	{
-		BoundingBoxDebugDraw();
-	}
+	BoundingBoxDebugDraw();
+	
 }
 
 void GameObject::CleanUp()
@@ -161,6 +159,7 @@ void GameObject::UpdateBoundingBox()
 {
 	boundingBox.SetNegativeInfinity();
 
+
 	if (mesh != nullptr)
 		boundingBox.Enclose((const float3*)mesh->mesh->vertices, mesh->mesh->num_vertices);
 
@@ -235,6 +234,8 @@ bool GameObject::SaveGO(Config* & conf)
 	go.SetString("Name", name.c_str());
 	go.SetUID("UID", goUID);
 	go.SetUID("Parent UID", parent->goUID);
+	go.SetBool("Active", active);
+	go.SetBool("Static", staticGO);
 	go.SetArray("COMPONENTS");
 
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
@@ -255,6 +256,9 @@ bool GameObject::LoadGO(Config& conf)
 	name = conf.GetString("Name");
 	goUID = conf.GetUID("UID");
 	parent_UID = conf.GetUID("Parent UID");
+	staticGO = conf.GetBool("Static");
+	active = conf.GetBool("Active");
+
 
 	int size = conf.GetArraySize("COMPONENTS");
 
