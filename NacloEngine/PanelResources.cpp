@@ -32,8 +32,8 @@ void PanelResources::Draw()
 
 	App->fs->GetFiles("Assets");
 
-	DrawResourceType(RESOURCE_MATERIAL);
-	DrawResourceType(RESOURCE_MESH);
+	//DrawResourceType(RESOURCE_MATERIAL);
+	//DrawResourceType(RESOURCE_MESH);
 
 	ImGui::End();
 }

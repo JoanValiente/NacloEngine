@@ -108,19 +108,19 @@ void ComponentTransform::ShowInspector()
 		if (changed_position)
 		{
 			SetPosition(position);
-			App->scene->UpdateQuadtree();
+			App->scene->quadtreeUpdate = true;
 			changed_position = false;
 		}
 		if (changed_rotation)
 		{
 			SetRotation(rotation);
-			App->scene->UpdateQuadtree();
+			App->scene->quadtreeUpdate = true;
 			changed_rotation = false;
 		}
 		if (changed_size)
 		{
 			SetSize(size);
-			App->scene->UpdateQuadtree();
+			App->scene->quadtreeUpdate = true;
 			changed_size = false;
 		}
 	}
@@ -194,6 +194,7 @@ void ComponentTransform::DrawGuizmos()
 		matrix.Transpose();
 
 		App->camera->using_guizmos = true;
+		App->scene->quadtreeUpdate = true;
 
 		if (guizmoOperation == ImGuizmo::SCALE) {
 
@@ -212,9 +213,9 @@ void ComponentTransform::DrawGuizmos()
 				localmatrix.Decompose(position, quaternion, size);
 				rotation = quaternion.ToEulerXYZ() * RADTODEG;
 			}
+			UpdateMatrix();
 		}
 	}
-
 }
 
 void ComponentTransform::SaveComponent(Config &conf)

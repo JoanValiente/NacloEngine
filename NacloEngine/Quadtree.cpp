@@ -23,7 +23,7 @@ void Quadtree::Insert(GameObject * go)
 {
 	if (root != nullptr)
 	{
-		if (go->boundingBox.Intersects(root->box)) {
+		if (go->boundingBox.Intersects(root->box) && go->staticGO) {
 			root->Insert(go);
 		}
 	}
