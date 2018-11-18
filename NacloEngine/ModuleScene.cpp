@@ -31,7 +31,7 @@ bool ModuleScene::Start()
 	main_camera = new GameObject(root, "Main Camera");
 	ComponentTransform* camera_transform = (ComponentTransform*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 	camera_transform->SetPosition(float3(5.0f, 5.0f, -25.0f));
-	ComponentCamera* camera_component = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
+	mainCamera = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 	main_camera->staticGO = false;
 
 	quadtree = new Quadtree();
@@ -72,12 +72,13 @@ update_status ModuleScene::PostUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-#ifndef GAME_MODE
-	Grid->Render();
+	if (App->engineState == ENGINE_STATE::EDITOR) {
+		Grid->Render();
+	}
 
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
-#endif
+
 	return ret;
 }
 

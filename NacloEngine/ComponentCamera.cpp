@@ -1,4 +1,5 @@
 #include "ComponentCamera.h"
+#include "Application.h"
 #include "Glew/include/glew.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
@@ -38,7 +39,7 @@ void ComponentCamera::Update(float dt)
 	frustum.front = transformMatrix.WorldZ();
 	frustum.up = transformMatrix.WorldY();
 
-	if (debugDraw) {
+	if (debugDraw && App->engineState == ENGINE_STATE::EDITOR) {
 		DebugDraw();
 	}
 }

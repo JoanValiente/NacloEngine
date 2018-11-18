@@ -45,7 +45,9 @@ void ComponentTransform::UpdateMatrix()
 
 void ComponentTransform::ShowInspector()
 {
-	DrawGuizmos();
+	if (App->engineState == ENGINE_STATE::EDITOR) {
+		DrawGuizmos();
+	}
 
 	if (ImGui::CollapsingHeader("Transformation"))
 	{

@@ -18,7 +18,7 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 	
-	void Orbit(float dx, float dy);
+	void MoveArroundReference(float dx, float dy);
 	void Look(float dx, float dy);
 	void LookAt(const float3& position);
 	void Move(float dt);
@@ -39,6 +39,8 @@ public:
 	LineSegment debugRay;
 
 	ComponentCamera* camera;
+	ComponentCamera* activeCamera;
+
 	bool using_guizmos = false;
 private:
 	float speed;

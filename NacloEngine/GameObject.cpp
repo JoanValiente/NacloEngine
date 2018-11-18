@@ -63,7 +63,9 @@ void GameObject::Update(float dt)
 	UpdateBoundingBox();
 	if (selected)
 	{
-		BoundingBoxDebugDraw();
+		if (App->engineState == ENGINE_STATE::EDITOR) {
+			BoundingBoxDebugDraw();
+		}
 	}
 }
 
