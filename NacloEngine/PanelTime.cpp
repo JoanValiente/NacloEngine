@@ -1,6 +1,7 @@
 #include "PanelTime.h"
 #include "Application.h"
 #include "ModuleCamera3D.h"
+#include "ModuleWindow.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleTimer.h"
@@ -25,6 +26,13 @@ PanelTime::~PanelTime()
 
 void PanelTime::Draw()
 {
+	int width;
+	int height;
+	SDL_GetWindowSize(App->window->window, &width, &height);
+
+	ImGui::SetNextWindowPos(ImVec2(width / 4 - width / 42, height / 55));
+	ImGui::SetNextWindowSize(ImVec2(width / 2 + width / 18, height / 29));
+
 	ImGui::Begin("Quick Bar", &active,
 		ImGuiWindowFlags_NoTitleBar |
 		//ImGuiWindowFlags_NoCollapse |
@@ -67,8 +75,6 @@ void PanelTime::Draw()
 			App->gameState = GAME_STATE::PAUSE;
 		}
 	}
-
-	ImGui::SameLine();
 
 	ImGui::SameLine();
 

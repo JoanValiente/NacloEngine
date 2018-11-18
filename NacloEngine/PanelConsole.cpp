@@ -35,7 +35,7 @@ void PanelConsole::Draw()
 	SDL_GetWindowSize(App->window->window, &width, &height);
 
 	ImGui::SetNextWindowPos(ImVec2(0, height/2 + height/4 - 35));
-	ImGui::SetNextWindowSize(ImVec2(width, height / 4 + 10));
+	ImGui::SetNextWindowSize(ImVec2(width, height / 4 + height / 100));
 
 	ImGui::Begin("Console", &active);
 	ImGui::TextUnformatted(console_logs.begin());

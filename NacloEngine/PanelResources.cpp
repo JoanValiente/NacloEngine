@@ -22,7 +22,7 @@ void PanelResources::Draw()
 	SDL_GetWindowSize(App->window->window, &width, &height);
 
 	ImGui::SetNextWindowPos(ImVec2(0, height / 2 + height / 4 - 17));
-	ImGui::SetNextWindowSize(ImVec2(width, height / 4 - 8));
+	ImGui::SetNextWindowSize(ImVec2(width, height / 4));
 
 	ImGui::Begin("Resources", &active);
 
