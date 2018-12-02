@@ -44,7 +44,7 @@ void PanelTime::Draw()
 	ENGINE_STATE state = App->engineState;
 
 
-	if (ImGui::Button("PLAY", ImVec2(60, 22)) || App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (ImGui::Button("PLAY", ImVec2(60, 22)))
 	{
 		App->gameState = GAME_STATE::PLAY;
 		App->engineState = ENGINE_STATE::GAME;
@@ -55,7 +55,7 @@ void PanelTime::Draw()
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("STOP", ImVec2(60, 22)) || App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
+	if (ImGui::Button("STOP", ImVec2(60, 22)))
 	{
 		App->gameState = GAME_STATE::STOP;
 		App->engineState = ENGINE_STATE::EDITOR;
@@ -66,7 +66,7 @@ void PanelTime::Draw()
 
 	ImGui::SameLine();
 
-	if (ImGui::Button("PAUSE", ImVec2(60, 22)) || App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+	if (ImGui::Button("PAUSE", ImVec2(60, 22)))
 	{
 		if (App->gameState == GAME_STATE::PAUSE) {
 			App->gameState = GAME_STATE::PLAY;

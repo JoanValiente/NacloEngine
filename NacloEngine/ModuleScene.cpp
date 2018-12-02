@@ -10,6 +10,7 @@
 #include "ComponentCamera.h"
 #include "Quadtree.h"
 #include "PanelInspector.h"
+#include "MeshImporter.h"
 #include "Config.h"
 
 
@@ -35,6 +36,10 @@ bool ModuleScene::Start()
 	camera_transform->SetPosition(float3(5.0f, 5.0f, -25.0f));
 	mainCamera = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 	main_camera->staticGO = false;
+
+	std::string outputfile;
+	App->meshes->Import("/Assets/Street environment_V01.FBX", outputfile);
+
 
 	quadtree = new Quadtree();
 	
