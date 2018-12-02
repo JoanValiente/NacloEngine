@@ -239,13 +239,9 @@ void const ModuleImgui::ImGuiShortCuts()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
 	{
-		inspector->active = !inspector->active;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-	{
 		console->active = !console->active;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
 	{
 		about->active = !about->active;
 	}
