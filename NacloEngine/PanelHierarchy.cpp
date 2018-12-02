@@ -26,11 +26,9 @@ void PanelHierarchy::Draw()
 	{
 		GameObject* root = App->scene->root;
 
-		for (int iterator = 0; iterator < root->GetNumChildren(); ++iterator) {
-			if (root->children.at(iterator)->active) 
-			{
+		for (int iterator = 0; iterator < root->GetNumChildren(); ++iterator)
+		{
 				ShowGameObjectHierarchy(root->children.at(iterator));
-			}
 		}
 
 		ImGui::End();
