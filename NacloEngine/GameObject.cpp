@@ -297,6 +297,22 @@ bool GameObject::LoadGO(Config& conf)
 	return false;
 }
 
+void GameObject::SetActive(GameObject *go, bool state)
+{
+	go->active = state;
+	go->activated = state;
+
+	if (go->GetNumChildren() != 0)
+	{
+		for (std::vector<GameObject*>::const_iterator it = go->children.begin(); it < go->children.end(); ++it)
+		{
+			ImGui::PushID(*it);
+			SetActive(*it, state);
+			ImGui::PopID();
+		}
+	}
+}
+
 bool GameObject::SearchForParent(GameObject * parent, GameObject* child)
 {
 	bool ret = false;

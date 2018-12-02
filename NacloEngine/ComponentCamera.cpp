@@ -175,7 +175,8 @@ void ComponentCamera::CullingGameObjects()
 	std::vector<GameObject*> tmp_go;
 
 	for (uint i = 0; i < App->scene->gameObjects.size(); ++i) {
-		if (App->scene->gameObjects[i]->staticGO) {
+		if (App->scene->gameObjects[i]->staticGO) 
+		{
 			App->scene->gameObjects[i]->active = false;
 		}
 	}
@@ -183,12 +184,16 @@ void ComponentCamera::CullingGameObjects()
 
 	for (uint i = 0; i < tmp_go.size(); ++i)
 	{
-		tmp_go[i]->active = true;
+		if (tmp_go[i]->activated)
+		{
+			tmp_go[i]->active = true;
+		}
 	}
 
 	for (uint i = 0; i < App->scene->root->GetNumChildren(); ++i)
 	{
-		if (!App->scene->root->children[i]->staticGO) {
+		if (!App->scene->root->children[i]->staticGO) 
+		{
 			CullingDynamicGO(App->scene->root->children[i]);
 		}
 	}
@@ -199,9 +204,16 @@ void ComponentCamera::CullingDynamicGO(GameObject * go)
 	if (!go->staticGO)
 	{
 		if (!Intersects(go->boundingBox))
+
+
 			go->active = false;
 		else
-			go->active = true;
+		{
+			if (go->activated)
+			{
+				go->active = true;
+			}
+		}
 	}
 
 	for (uint i = 0; i < go->GetNumChildren(); ++i)

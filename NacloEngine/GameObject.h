@@ -44,6 +44,8 @@ public:
 	bool SaveGO(Config* &conf);
 	bool LoadGO(Config &conf);
 
+	void SetActive(GameObject* go, bool state);
+
 
 private:
 	bool SearchForParent(GameObject* parent, GameObject* child);
@@ -54,6 +56,7 @@ public:
 	UID goUID = 0;
 	AABB boundingBox;
 	bool active = false;
+	bool activated = true;
 	bool staticGO = false;
 	std::string name;
 	GameObject* parent = nullptr;
