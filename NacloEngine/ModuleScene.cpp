@@ -103,7 +103,8 @@ void ModuleScene::DeleteGameObject(GameObject * gameObject)
 
 void ModuleScene::UpdateQuadtree()
 {
-	if (quadtreeUpdate) {
+	if (quadtreeUpdate && show_quadtree) 
+	{
 		quadtree->Clear();
 		quadtree->Create(AABB(AABB(float3(-50, -10, -50), float3(50, 10, 50))));
 

@@ -210,8 +210,12 @@ update_status ModuleRenderer3D::Update(float dt)
 		}
 	}
 
-	if (App->engineState == ENGINE_STATE::EDITOR) {
-		App->scene->quadtree->DebugDraw();
+	if (App->engineState == ENGINE_STATE::EDITOR) 
+	{
+		if (App->scene->show_quadtree)
+		{
+			App->scene->quadtree->DebugDraw();
+		}
 	}
 	
 	return ret;
@@ -522,9 +526,9 @@ void ModuleRenderer3D::ShowRenderInfo()
 		}
 	}
 
-	if (ImGui::Checkbox("Checkers Mode", &ischecked))
-	{
-	}
+	ImGui::Checkbox("Show Quadtree", &App->scene->show_quadtree);
+	ImGui::Checkbox("Checkers Mode", &ischecked);
+	
 
 	ImGui::Checkbox("Wire Mode", &wire_mode);
 

@@ -39,6 +39,8 @@ public:
 	Quadtree* quadtree = nullptr;
 	bool quadtreeUpdate = true;
 
+	bool show_quadtree = true;
+
 private:
 	GameObject * selected = nullptr;
 	grid * Grid;
