@@ -61,6 +61,9 @@
     <Filter Include="Sources\Modules\Resources">
       <UniqueIdentifier>{8dbe8fcf-3069-4222-9a5d-824d2e7834d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Modules\GameObjects\Components\UI">
+      <UniqueIdentifier>{3b4a8f4c-8d2b-4903-9112-8f5491f11bba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Module.h">
@@ -417,6 +420,18 @@
     <ClInclude Include="ResourceMesh.h">
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleUI.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentCanvas.h">
+      <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentImage.h">
+      <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="UIElement.h">
+      <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -667,6 +682,18 @@
     </ClCompile>
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Sources\Modules\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleUI.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentCanvas.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentImage.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="UIElement.cpp">
+      <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
