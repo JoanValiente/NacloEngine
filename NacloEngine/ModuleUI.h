@@ -4,9 +4,9 @@
 #include "Module.h"
 #include <list>
 
-class UIElement;
+class ComponentUI;
 class Label;
-class Image;
+class ComponentImage;
 class Button;
 class Slider;
 
@@ -51,17 +51,17 @@ public:
 	bool CleanUp();
 
 	/*
-	Label* AddLabel(int x, int y, char* text, uint color, uint font, int size, UIElement* parent = nullptr, Uint32 wrap = 100);
-	Image* AddImage(int x, int y, SDL_Texture* texture, UIElement* parent = nullptr);
-	Button* AddButton(int x, int y, SDL_Texture* texture, Module* callback = nullptr, UIElement* parent = nullptr);
-	Slider* AddSlider(int x, int y, SDL_Texture* texture, Module* callback = nullptr, UIElement* parent = nullptr);
+	Label* AddLabel(int x, int y, char* text, uint color, uint font, int size, ComponentUI* parent = nullptr, Uint32 wrap = 100);	
+	Button* AddButton(int x, int y, SDL_Texture* texture, Module* callback = nullptr, ComponentUI* parent = nullptr);
+	Slider* AddSlider(int x, int y, SDL_Texture* texture, Module* callback = nullptr, ComponentUI* parent = nullptr);
 	*/
+	ComponentImage* CreateImage(float x, float y, SDL_Texture* texture, ComponentUI* parent = nullptr);
 
 	SDL_Color GetColor(int color);
 	char* GetFont(uint font);
 
 public:
-	std::vector<UIElement*> elements;
+	std::vector<ComponentUI*> elements;
 };
 
 #endif

@@ -429,7 +429,7 @@
     <ClInclude Include="ComponentImage.h">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClInclude>
-    <ClInclude Include="UIElement.h">
+    <ClInclude Include="ComponentUI.h">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -692,7 +692,7 @@
     <ClCompile Include="ComponentImage.cpp">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClCompile>
-    <ClCompile Include="UIElement.cpp">
+    <ClCompile Include="ComponentUI.cpp">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClCompile>
   </ItemGroup>

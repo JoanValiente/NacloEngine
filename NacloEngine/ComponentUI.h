@@ -1,8 +1,9 @@
-#ifndef __UIElement_H__
-#define __UIElement_H__
+#ifndef __ComponentUI_H__
+#define __ComponentUI_H__
 
 #include "Globals.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "Component.h"
 #include "SDL/include/SDL.h"
 
 enum UI_TYPE
@@ -17,25 +18,28 @@ enum UI_TYPE
 enum UI_STATE;
 class Module;
 
-class UIElement
+class ComponentUI :  public Component 
 {
 public:
-	UIElement(UI_TYPE type, UIElement* parent = nullptr);
-	~UIElement();
+	ComponentUI(GameObject * container, UI_TYPE type, ComponentUI* parent = nullptr);
+	~ComponentUI();
 
 	virtual void Draw(float dt);
 	virtual void Update(float dt);
 
 	UI_TYPE GetType() const;
 
-	void AddChildren(UIElement* children);
+	void AddChildren(ComponentUI* children);
+
+	void SaveComponent(Config &conf);
+	void LoadComponent(Config &conf);
 
 public:
 	bool active = true;
-	UIElement* parent = nullptr;
+	ComponentUI* parent = nullptr;
 	Module* callback = nullptr;
 
-	std::vector<UIElement*> children;
+	std::vector<ComponentUI*> children;
 	SDL_Rect* rect;
 	float3 pos;
 	UI_STATE state;

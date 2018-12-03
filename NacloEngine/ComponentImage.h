@@ -1,17 +1,19 @@
 #ifndef _ComponentImage_H_
 #define _ComponentImage_H_
 
-#include "Component.h"
+#include "ComponentUI.h"
 #include "SDL\include\SDL.h"
 
-/*
-class ComponentImage : public UIElement
+class ComponentImage : public ComponentUI
 {
 public:
-	ComponentImage(int x, int y, uint type, SDL_Texture* texture, UIElement* parent = nullptr);
+	ComponentImage(GameObject* container, float x, float y, UI_TYPE type, SDL_Texture* texture, ComponentUI* parent = nullptr);
 
 	void ShowInspector();
+
+	void SaveComponent(Config &conf);
+	void LoadComponent(Config &conf);
 };
-*/
+
 #endif
 
