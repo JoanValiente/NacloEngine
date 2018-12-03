@@ -42,10 +42,6 @@ bool ModuleScene::Start()
 
 
 	quadtree = new Quadtree();
-	
-	char new_file[256];
-	strcpy_s(new_file, 256, "test");
-	strcat(new_file, ".json");
 
 	return true;
 }
@@ -90,14 +86,27 @@ update_status ModuleScene::PostUpdate(float dt)
 	return ret;
 }
 
-void ModuleScene::DeleteGameObject(GameObject * gameObject)
+void ModuleScene::DeleteGameObject(GameObject * go)
 {
-	for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); ++it)
+	std::vector<GameObject*>::iterator it = gameObjects.begin();
+	for (uint i = 0; i < gameObjects.size(); ++i)
 	{
-		if ((*it)->name == gameObject->name) {
+		if (gameObjects[i]->goUID == go->goUID)
+		{
+			if (gameObjects[i]->GetNumChildren() != 0)
+			{
+				for (uint i = 0; i < (*it)->children.size(); ++i)
+				{
+					DeleteGameObject((*it)->children[i]);
+					i--;
+				}
+			}
+			(*it)->parent->DeleteChildren((*it));
+			(*it)->DeleteAllComponents();
 			gameObjects.erase(it);
-			(*it)->CleanUp();
+			break;
 		}
+		it++;
 	}
 }
 
@@ -109,7 +118,8 @@ void ModuleScene::UpdateQuadtree()
 		quadtree->Create(AABB(AABB(float3(-50, -10, -50), float3(50, 10, 50))));
 
 		for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); it++) {
-			if ((*it)->staticGO) {
+			if ((*it)->staticGO)
+			{
 				quadtree->Insert((*it));
 			}
 		}

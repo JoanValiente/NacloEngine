@@ -35,6 +35,7 @@ void PanelInspector::DrawInspector()
 				go->SetActive(go, go->activated);
 			}
 			ImGui::SameLine();
+			ImGui::PushItemWidth(200);
 			ImGui::InputText("##name", (char*)go->name.c_str(), 64); ImGui::SameLine();
 			bool staticGO = go->staticGO;
 			if (ImGui::Checkbox("Static", &staticGO)) {
@@ -42,8 +43,22 @@ void PanelInspector::DrawInspector()
 				App->scene->quadtreeUpdate = true;				
 				go->ChangeStaticChildren(go, staticGO);
 			}
-
+			ImGui::SameLine();
+			if (ImGui::ArrowButton("##delete", ImGuiDir_Down))
+			{
+				ImGui::OpenPopup("Delete");
+			}
 			go->Inspector();
+
+			if (ImGui::BeginPopup("Delete"))
+			{
+				if (ImGui::Selectable("Delete GameObject"))
+				{
+					App->scene->DeleteGameObject(go);
+				}
+				ImGui::EndPopup();
+			}
+
 			ImGui::End();
 		}
 	}

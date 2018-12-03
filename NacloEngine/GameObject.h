@@ -26,6 +26,10 @@ public:
 
 	Component* NewComponent(Component::COMPONENT_TYPE type);
 	void DeleteComponent(Component* component);
+	void DeleteAllComponents();
+
+	void DeleteChildren(GameObject* go);
+	void DeleteAllChildren(GameObject* go);
 
 	Component* GetComponentByType(Component::COMPONENT_TYPE type);	
 

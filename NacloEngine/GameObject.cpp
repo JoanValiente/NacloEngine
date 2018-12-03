@@ -143,6 +143,41 @@ void GameObject::DeleteComponent(Component * component)
 	}
 }
 
+void GameObject::DeleteAllComponents()
+{
+	RELEASE(transform);
+	RELEASE(mesh);
+	RELEASE(material);
+	RELEASE(camera);
+
+	components.clear();
+}
+
+void GameObject::DeleteChildren(GameObject * go)
+{
+
+	for (std::vector<GameObject*>::const_iterator it = children.begin(); it != children.end(); ++it)
+	{
+		if ((*it)->goUID == go->goUID)
+		{
+			children.erase(it);
+			break;
+		}
+	}
+
+}
+
+void GameObject::DeleteAllChildren(GameObject * go)
+{
+	if (go->GetNumChildren() != 0)
+	{
+		for (std::vector<GameObject*>::const_iterator it = go->children.begin(); it < go->children.end(); ++it)
+		{
+			DeleteAllChildren(*it);
+		}
+	}
+}
+
 Component * GameObject::GetComponentByType(Component::COMPONENT_TYPE type)
 {
 	Component* component = nullptr;
