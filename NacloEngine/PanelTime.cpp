@@ -48,7 +48,6 @@ void PanelTime::Draw()
 	{
 		App->gameState = GAME_STATE::PLAY;
 		App->engineState = ENGINE_STATE::GAME;
-		App->sceneser->SaveScene("tmp");
 		App->camera->activeCamera = App->scene->mainCamera;
 		App->renderer3D->ChangeCamera();
 	}
@@ -59,7 +58,6 @@ void PanelTime::Draw()
 	{
 		App->gameState = GAME_STATE::STOP;
 		App->engineState = ENGINE_STATE::EDITOR;
-		App->sceneser->LoadScene("tmp");
 		App->camera->activeCamera = App->camera->camera;
 		App->renderer3D->ChangeCamera();
 	}

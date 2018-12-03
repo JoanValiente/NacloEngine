@@ -37,8 +37,6 @@ bool SceneSerialization::LoadScene(const char * file_name)
 {
 	bool ret = true;
 
-
-
 	std::string final_path = ASSETS_SCENES_FOLDER;
 	final_path.append(file_name);
 	final_path.append(".json");
