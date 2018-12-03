@@ -50,6 +50,28 @@ void PanelInspector::DrawInspector()
 			}
 			go->Inspector();
 
+			if (ImGui::Button("Add Component"))
+			{
+				ImGui::OpenPopup("Component");
+			}
+
+			if (ImGui::BeginPopup("Component"))
+			{
+				if (ImGui::Selectable("Mesh"))
+				{
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+				}
+				if (ImGui::Selectable("Material"))
+				{
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+				}
+				if (ImGui::Selectable("Camera"))
+				{
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
+				}
+				ImGui::EndPopup();
+			}
+
 			if (ImGui::BeginPopup("Delete"))
 			{
 				if (ImGui::Selectable("Delete GameObject"))
