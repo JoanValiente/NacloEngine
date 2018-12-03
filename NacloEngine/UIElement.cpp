@@ -1,4 +1,5 @@
 #include "OpenGL.h"
+#include "Module.h"
 #include "UIElement.h"
 #include "ModuleScene.h"
 #include "ModuleRenderer3D.h"

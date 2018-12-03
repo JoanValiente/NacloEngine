@@ -7,7 +7,7 @@
 
 enum UI_TYPE
 {
-	NONE,
+	UNKNOWN,
 	CANVAS,
 	IMAGE,
 	BUTTON,
@@ -15,6 +15,7 @@ enum UI_TYPE
 };
 
 enum UI_STATE;
+class Module;
 
 class UIElement
 {

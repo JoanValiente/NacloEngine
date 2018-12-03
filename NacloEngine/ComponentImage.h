@@ -4,14 +4,14 @@
 #include "Component.h"
 #include "SDL\include\SDL.h"
 
-class ComponentImage : public Component
+/*
+class ComponentImage : public UIElement
 {
 public:
-	ComponentImage(int x, int y, uint type, SDL_Texture* texture, Component* parent = nullptr);
+	ComponentImage(int x, int y, uint type, SDL_Texture* texture, UIElement* parent = nullptr);
 
 	void ShowInspector();
 };
-
+*/
 #endif
-
 
