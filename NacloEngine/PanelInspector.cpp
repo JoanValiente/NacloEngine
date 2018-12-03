@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentMesh.h"
+#include "ComponentMaterial.h"
 #include "ModuleScene.h"
 #include "ModuleWindow.h"
 
@@ -57,13 +58,21 @@ void PanelInspector::DrawInspector()
 
 			if (ImGui::BeginPopup("Component"))
 			{
-				if (ImGui::Selectable("Mesh"))
+				if (go->mesh == nullptr)
 				{
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+					if (ImGui::Selectable("Mesh"))
+					{
+						ComponentMesh* mesh = (ComponentMesh*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MESH);
+						mesh->AssignMesh(new Mesh);
+					}
 				}
-				if (ImGui::Selectable("Material"))
+				if (go->material == nullptr)
 				{
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+					if (ImGui::Selectable("Material"))
+					{
+						ComponentMaterial* material = (ComponentMaterial*)go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_MATERIAL);
+						material->AssignTexture(new Texture);
+					}
 				}
 				if (ImGui::Selectable("Camera"))
 				{
