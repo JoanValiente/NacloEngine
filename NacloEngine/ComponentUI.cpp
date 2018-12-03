@@ -1,13 +1,14 @@
 #include "OpenGL.h"
 #include "Module.h"
-#include "UIElement.h"
+#include "GameObject.h"
+#include "ComponentUI.h"
 #include "ModuleScene.h"
 #include "ModuleRenderer3D.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleUI.h"
 
-UIElement::UIElement(UI_TYPE type, UIElement * parent)
+ComponentUI::ComponentUI(GameObject * container, UI_TYPE type, ComponentUI * parent) : Component(container)
 {
 	this->type = type;
 
@@ -22,13 +23,13 @@ UIElement::UIElement(UI_TYPE type, UIElement * parent)
 	mouseHover = false;
 }
 
-UIElement::~UIElement()
+ComponentUI::~ComponentUI()
 {
 	delete rect;
 }
 
 
-void UIElement::Draw(float dt)
+void ComponentUI::Draw(float dt)
 {
 	/*
 	if (type == LABEL)
@@ -40,7 +41,7 @@ void UIElement::Draw(float dt)
 		*/
 }
 
-void UIElement::Update(float dt)
+void ComponentUI::Update(float dt)
 {
 	SDL_Rect* button_rect;	
 	button_rect = rect;
@@ -83,12 +84,12 @@ void UIElement::Update(float dt)
 
 
 
-UI_TYPE UIElement::GetType() const
+UI_TYPE ComponentUI::GetType() const
 {
 	return type;
 }
 
-void UIElement::AddChildren(UIElement * children)
+void ComponentUI::AddChildren(ComponentUI * children)
 {
 	if (children != nullptr)
 	{
@@ -98,3 +99,10 @@ void UIElement::AddChildren(UIElement * children)
 }
 
 
+void ComponentUI::SaveComponent(Config &conf)
+{
+}
+
+void ComponentUI::LoadComponent(Config & conf)
+{
+}

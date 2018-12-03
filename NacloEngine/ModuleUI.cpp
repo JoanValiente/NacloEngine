@@ -2,9 +2,11 @@
 #include "ModuleInput.h"
 #include "ModuleUI.h"
 #include "ModuleRenderer3D.h"
-#include "UIElement.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
 //#include "Button.h"
-//#include "Image.h"
+#include "ComponentUI.h"
+#include "ComponentImage.h"
 //#include "Label.h"
 //#include "Slider.h"
 
@@ -35,7 +37,7 @@ update_status ModuleUI::PreUpdate()
 update_status ModuleUI::Update(float dt)
 {
 
-	for (std::vector<UIElement*>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (std::vector<ComponentUI*>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		if ((*it) != nullptr)
 		{
@@ -57,7 +59,7 @@ bool ModuleUI::CleanUp()
 {
 	LOG("Freeing GUI");
 
-	for (std::vector<UIElement*>::iterator it = elements.begin(); it != elements.end(); it++)
+	for (std::vector<ComponentUI*>::iterator it = elements.begin(); it != elements.end(); it++)
 	{
 		if ((*it) != nullptr)
 		{
@@ -69,6 +71,8 @@ bool ModuleUI::CleanUp()
 
 	return true;
 }
+
+
 
 /*
 Label* ModuleUI::AddLabel(int x, int y, char* text, uint colors, uint fonts, int size, UIElement* parent, Uint32 wrap)
@@ -89,15 +93,6 @@ Label* ModuleUI::AddLabel(int x, int y, char* text, uint colors, uint fonts, int
 	return label;
 }
 
-
-Image* ModuleUI::AddImage(int x, int y, SDL_Texture* texture, UIElement* parent)
-{
-
-	Image* image = new Image(x, y, IMAGE, texture, parent);
-	elements.add((UIElement*)image);
-
-	return image;
-}
 
 Button* ModuleUI::AddButton(int x, int y, SDL_Texture* texture, Module* callback, UIElement* parent)
 {
@@ -123,6 +118,15 @@ void ModuleUI::DeleteUI(UIElement * element)
 }
 */
 
+
+ComponentImage * ModuleUI::CreateImage(float x, float y, SDL_Texture * texture, ComponentUI * parent)
+{
+	GameObject* go = new GameObject(App->scene->root, "Image");
+	//ComponentImage* image = new ComponentImage(go, x, y, UI_TYPE::IMAGE, texture, parent);
+	//elements.push_back((ComponentUI*)image);
+
+	return nullptr;
+}
 
 SDL_Color ModuleUI::GetColor(int color)
 {

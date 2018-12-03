@@ -1,15 +1,22 @@
 #include "OpenGL.h"
 #include "ComponentImage.h"
 #include "Globals.h"
-#include "UIElement.h"
 
 /*
-ComponentImage::ComponentImage(int x, int y, uint type, SDL_Texture * texture, UIElement* parent) : UIElement (type, parent)
+ComponentImage::ComponentImage(GameObject* container, float x, float y, UI_TYPE type, SDL_Texture * texture, ComponentUI* parent) : ComponentUI(container, type, parent)
 {
 }
 
 void ComponentImage::ShowInspector()
 {	
 
+}
+
+void ComponentImage::SaveComponent(Config &conf)
+{
+}
+
+void ComponentImage::LoadComponent(Config & conf)
+{
 }
 */
