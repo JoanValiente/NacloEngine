@@ -189,6 +189,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			{
 				if (ImGui::MenuItem("Canvas", NULL, false, true))
 				{
+					App->scene->CreateCanvas();
 				}
 				ImGui::EndMenu();
 			}

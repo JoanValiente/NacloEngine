@@ -20,6 +20,7 @@ public:
 
 	void DeleteGameObject(GameObject* object);
 	void CreateEmptyGO();
+	void CreateCanvas();
 
 	void UpdateQuadtree();
 

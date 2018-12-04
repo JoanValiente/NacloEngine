@@ -300,9 +300,9 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-		glViewport(0, 0, width, height);
-		CurrentCamera->SetAspectRatio((float)width / (float)height);
-		RecalculateProjection();
+	glViewport(0, 0, width, height);
+	CurrentCamera->SetAspectRatio((float)width / (float)height);
+	RecalculateProjection();
 }
 
 void ModuleRenderer3D::RecalculateProjection()

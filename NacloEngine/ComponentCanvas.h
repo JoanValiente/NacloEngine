@@ -6,7 +6,11 @@ class ComponentCanvas : public Component
 public:
 	ComponentCanvas(GameObject* container);
 
+	void Update(float dt);
+
 	void ShowInspector();
+
+	void DebugDraw();
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);

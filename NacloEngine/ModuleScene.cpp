@@ -115,6 +115,15 @@ void ModuleScene::CreateEmptyGO()
 	GameObject* go = new GameObject(root, "GameObject");
 }
 
+void ModuleScene::CreateCanvas()
+{
+	GameObject* go = new GameObject(App->scene->root, "Canvas");
+	go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+	go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CANVAS);
+	go->rectTransform->width = 50;
+	go->rectTransform->height = 50;
+}
+
 void ModuleScene::UpdateQuadtree()
 {
 	if (quadtreeUpdate && show_quadtree) 
