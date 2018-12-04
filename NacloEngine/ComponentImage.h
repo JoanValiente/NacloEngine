@@ -3,6 +3,7 @@
 
 #include "SDL\include\SDL.h"
 
+struct Texture;
 
 class ComponentImage : public Component
 {
@@ -10,12 +11,15 @@ public:
 	ComponentImage(GameObject* container);
 
 	void ShowInspector();
+	void AssignTexture(Texture* texture);
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
 private:
-	SDL_Texture * image;
+	Texture * tex;
+	//aiColor4D color;
+	bool preserveAspect = false;
 };
 
 #endif

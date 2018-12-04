@@ -1,6 +1,7 @@
 #include "ComponentMaterial.h"
 #include "OpenGL.h"
 #include "GameObject.h"
+#include "ModuleRenderer3D.h"
 #include "Config.h"
 #include "TextureImporter.h"
 #include "Application.h"

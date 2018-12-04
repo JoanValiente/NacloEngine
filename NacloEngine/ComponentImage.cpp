@@ -17,6 +17,11 @@ void ComponentImage::ShowInspector()
 	}
 }
 
+void ComponentImage::AssignTexture(Texture * texture)
+{
+	this->tex = texture;
+}
+
 void ComponentImage::SaveComponent(Config &conf)
 {
 }

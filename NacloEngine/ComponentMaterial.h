@@ -3,7 +3,6 @@
 
 #include "Component.h"
 #include "Globals.h"
-#include "ModuleRenderer3D.h"
 
 struct Texture;
 
