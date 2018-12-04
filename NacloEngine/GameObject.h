@@ -12,6 +12,9 @@ struct ComponentCamera;
 struct ComponentMaterial;
 struct ComponentMesh;
 struct ComponentTransform;
+struct ComponentCanvas;
+struct ComponentRectTransform;
+struct ComponentImage;
 struct Config;
 
 
@@ -71,6 +74,10 @@ public:
 	ComponentMaterial* material = nullptr;
 	ComponentMesh* mesh = nullptr;
 	ComponentCamera* camera = nullptr;
+	ComponentCanvas* canvas = nullptr;
+	ComponentRectTransform* rectTransform = nullptr;
+	ComponentImage* image = nullptr;
+
 	bool selected = false;
 	
 };

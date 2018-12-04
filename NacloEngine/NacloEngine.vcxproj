@@ -82,6 +82,7 @@
     <ClInclude Include="ComponentImage.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
+    <ClInclude Include="ComponentRectTransform.h" />
     <ClInclude Include="ComponentTransform.h" />
     <ClInclude Include="Config.h" />
     <ClInclude Include="GameObject.h" />
@@ -174,7 +175,6 @@
     <ClInclude Include="ModuleResources.h" />
     <ClInclude Include="ModuleScene.h" />
     <ClInclude Include="ModuleTimer.h" />
-    <ClInclude Include="ModuleUI.h" />
     <ClInclude Include="PanelTime.h" />
     <ClInclude Include="Parson\parson.h" />
     <ClInclude Include="Quadtree.h" />
@@ -195,7 +195,6 @@
     <ClInclude Include="PerfTimer.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="ComponentUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
@@ -206,6 +205,7 @@
     <ClCompile Include="ComponentImage.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
+    <ClCompile Include="ComponentRectTransform.cpp" />
     <ClCompile Include="ComponentTransform.cpp" />
     <ClCompile Include="Config.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -264,7 +264,6 @@
     <ClCompile Include="ModuleResources.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
     <ClCompile Include="ModuleTimer.cpp" />
-    <ClCompile Include="ModuleUI.cpp" />
     <ClCompile Include="PanelTime.cpp" />
     <ClCompile Include="Parson\parson.c" />
     <ClCompile Include="Quadtree.cpp" />
@@ -284,7 +283,6 @@
     <ClCompile Include="PerfTimer.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="ComponentUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\emscripten\library_system.js" />

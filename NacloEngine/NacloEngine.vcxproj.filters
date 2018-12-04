@@ -420,16 +420,13 @@
     <ClInclude Include="ResourceMesh.h">
       <Filter>Sources\Modules\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleUI.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="ComponentCanvas.h">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="ComponentImage.h">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentUI.h">
+    <ClInclude Include="ComponentRectTransform.h">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -683,16 +680,13 @@
     <ClCompile Include="ResourceMesh.cpp">
       <Filter>Sources\Modules\Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleUI.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="ComponentCanvas.cpp">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClCompile>
     <ClCompile Include="ComponentImage.cpp">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentUI.cpp">
+    <ClCompile Include="ComponentRectTransform.cpp">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClCompile>
   </ItemGroup>

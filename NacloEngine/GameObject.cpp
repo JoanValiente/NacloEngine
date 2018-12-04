@@ -8,6 +8,9 @@
 #include "ComponentTransform.h"
 #include "ComponentMaterial.h"
 #include "ComponentCamera.h"
+#include "ComponentCanvas.h"
+#include "ComponentRectTransform.h"
+#include "ComponentImage.h"
 #include "ModuleScene.h"
 #include "Config.h"
 
@@ -116,6 +119,29 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 	case Component::COMPONENT_TYPE::COMPONENT_CAMERA:
 		component = new ComponentCamera(this);
 		this->camera = (ComponentCamera*)component;
+		break;
+
+		//--------------------------------------------------------UI--------------------------------------------------------------------
+
+	case Component::COMPONENT_TYPE::COMPONENT_CANVAS:
+		if (this->rectTransform == nullptr) {
+			NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+		}
+		component = new ComponentCanvas(this);
+		this->canvas = (ComponentCanvas*)component;
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM:
+		component = new ComponentRectTransform(this);
+		this->rectTransform = (ComponentRectTransform*)component;
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_IMAGE:
+		if (this->rectTransform == nullptr) {
+			NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+		}
+		component = new ComponentImage(this);
+		this->image = (ComponentImage*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_NONE:
