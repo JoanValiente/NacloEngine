@@ -11,7 +11,9 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 
 void ComponentCanvas::ShowInspector()
 {
-
+	if (ImGui::CollapsingHeader("Canvas"))
+	{
+	}
 }
 
 void ComponentCanvas::SaveComponent(Config &conf)

@@ -12,7 +12,9 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 
 void ComponentImage::ShowInspector()
 {	
-
+	if (ImGui::CollapsingHeader("Image"))
+	{
+	}
 }
 
 void ComponentImage::SaveComponent(Config &conf)

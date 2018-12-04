@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "ComponentTransform.h"
+#include "ComponentRectTransform.h"
 #include "ComponentCamera.h"
 #include "Quadtree.h"
 #include "PanelInspector.h"
@@ -39,7 +40,6 @@ bool ModuleScene::Start()
 
 	std::string outputfile;
 	App->meshes->Import("/Assets/Street environment_V01.FBX", outputfile);
-
 
 	quadtree = new Quadtree();
 
@@ -108,6 +108,11 @@ void ModuleScene::DeleteGameObject(GameObject * go)
 		}
 		it++;
 	}
+}
+
+void ModuleScene::CreateEmptyGO()
+{
+	GameObject* go = new GameObject(root, "GameObject");
 }
 
 void ModuleScene::UpdateQuadtree()

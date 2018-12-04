@@ -78,6 +78,10 @@ void PanelInspector::DrawInspector()
 				{
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 				}
+				if (ImGui::Selectable("RectTransform"))
+				{
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+				}
 				ImGui::EndPopup();
 			}
 

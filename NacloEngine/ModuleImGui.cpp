@@ -6,6 +6,7 @@
 #include "SceneSerialization.h"
 #include "MathGeoLib/MathGeoLib.h"
 #include "ModuleInput.h"
+#include "ModuleScene.h"
 #include "Panel.h"
 #include "PanelAbout.h"
 #include "PanelConfiguration.h"
@@ -170,6 +171,26 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			if (ImGui::MenuItem("Close", NULL, false, true))
 			{
 				close_engine = true;
+			}
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Create"))
+		{
+			if (ImGui::BeginMenu("GameObject"))
+			{
+				if (ImGui::MenuItem("Create Empty", NULL, false, true))
+				{
+					App->scene->CreateEmptyGO();
+				}
+				ImGui::EndMenu();
+			}
+
+			if (ImGui::BeginMenu("UI"))
+			{
+				if (ImGui::MenuItem("Canvas", NULL, false, true))
+				{
+				}
+				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();
 		}

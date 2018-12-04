@@ -19,6 +19,7 @@ public:
 	update_status PostUpdate(float dt);
 
 	void DeleteGameObject(GameObject* object);
+	void CreateEmptyGO();
 
 	void UpdateQuadtree();
 
@@ -43,6 +44,7 @@ public:
 
 private:
 	GameObject * selected = nullptr;
+	GameObject * test = nullptr;
 	grid * Grid;
 };
 #endif
