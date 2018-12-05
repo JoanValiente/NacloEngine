@@ -32,7 +32,7 @@ void ComponentRectTransform::UpdateMatrix()
 
 	if (container != nullptr && container->parent != nullptr) {
 
-		ComponentTransform* contParentTransform = (ComponentTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
+		ComponentRectTransform* contParentTransform = (ComponentRectTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 
 		if (contParentTransform != nullptr) {
 
@@ -156,7 +156,7 @@ void ComponentRectTransform::DrawGuizmos()
 				localmatrix = matrix;
 			}
 			else {
-				localmatrix = container->parent->transform->globalMatrix.Inverted() * matrix;
+				localmatrix = container->parent->rectTransform->globalMatrix.Inverted() * matrix;
 				localmatrix.Decompose(position, quaternion, size);
 				rotation = quaternion.ToEulerXYZ() * RADTODEG;
 			}

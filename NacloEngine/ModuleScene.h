@@ -35,6 +35,7 @@ public:
 public:
 	GameObject* root = nullptr;
 	std::vector<GameObject*> gameObjects;
+	std::vector<GameObject*> canvas;
 	GameObject* main_camera = nullptr;
 	ComponentCamera* mainCamera = nullptr;
 

@@ -3,12 +3,16 @@
 #include "ComponentCanvas.h"
 #include "ComponentRectTransform.h"
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleScene.h"
 #include "Globals.h"
 
 
 ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 {
 	this->type = COMPONENT_CANVAS;
+
+	App->scene->canvas.push_back(container);
 }
 
 void ComponentCanvas::Update(float dt)

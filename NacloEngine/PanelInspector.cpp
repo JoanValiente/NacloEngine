@@ -82,6 +82,16 @@ void PanelInspector::DrawInspector()
 				{
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 				}
+				if (ImGui::Selectable("Canvas"))
+				{
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CANVAS);
+				}
+				if (ImGui::Selectable("Image"))
+				{
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
+				}
 				ImGui::EndPopup();
 			}
 

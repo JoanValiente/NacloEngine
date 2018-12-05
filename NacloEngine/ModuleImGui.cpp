@@ -5,6 +5,8 @@
 #include "ModuleWindow.h"
 #include "SceneSerialization.h"
 #include "MathGeoLib/MathGeoLib.h"
+#include "GameObject.h"
+#include "Component.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
 #include "Panel.h"
@@ -190,6 +192,16 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 				if (ImGui::MenuItem("Canvas", NULL, false, true))
 				{
 					App->scene->CreateCanvas();
+				}
+				if (ImGui::MenuItem("Image", NULL, false, true))
+				{
+					if (App->scene->canvas.empty()) {
+						App->scene->CreateCanvas();
+					}
+					vector<GameObject*>::iterator it = App->scene->canvas.begin();
+					GameObject* go = new GameObject((*it), "Image");
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 				}
 				ImGui::EndMenu();
 			}
