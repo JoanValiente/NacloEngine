@@ -3,11 +3,22 @@
 #include "ComponentImage.h"
 #include "GameObject.h"
 #include "Globals.h"
+#include "Primitive.h"
+#include "ComponentRectTransform.h"
 
 
 ComponentImage::ComponentImage(GameObject* container) : Component(container)
 {
 	this->type = COMPONENT_IMAGE;
+	if (container->rectTransform != nullptr)
+	{
+		image_rect = new plane(container->rectTransform->position, float3(5.0f, 5.0f, 0.0f));
+	}
+
+	else
+	{
+		LOG("Error creating Image Rect, no rect transform component created");
+	}
 }
 
 void ComponentImage::ShowInspector()

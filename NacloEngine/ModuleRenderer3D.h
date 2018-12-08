@@ -66,7 +66,7 @@ public:
 	update_status PostUpdate(float dt);
 	bool CleanUp();
 
-	void DrawMesh(Mesh* meshes, ComponentTransform* transform, Texture* texture = nullptr);
+	void DrawMesh(GameObject* go);
 
 	void OnResize(int width, int height);
 

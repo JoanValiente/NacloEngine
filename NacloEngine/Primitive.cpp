@@ -240,10 +240,10 @@ plane::plane(float3 position, float3 size) : Primitive(), size(size), position(p
 {
 	type = PrimitiveTypes::Primitive_Plane;
 	float vertex[12] = {
-		 size.x, position.y, -size.z,
-		 size.x, position.y,  size.z,
-		-size.x, position.y, -size.z,
-		-size.x, position.y,  size.z 
+		 size.x, -size.y, -size.z,
+		 size.x, size.y,  size.z,
+		-size.x, -size.y, -size.z,
+		-size.x, size.y,  size.z
 	};
 
 	for (int i = 0; i < 24; i += 3) {

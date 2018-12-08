@@ -14,6 +14,7 @@
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
+#include "ComponentImage.h"
 #include "Quadtree.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
@@ -174,34 +175,31 @@ update_status ModuleRenderer3D::Update(float dt)
 	update_status ret = UPDATE_CONTINUE;
 
 	ComponentMesh* m = nullptr;
-	ComponentMaterial* t = nullptr;
-	ComponentTransform* transform = nullptr;
+	ComponentImage* image = nullptr;
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
 		if ((*iterator)->active) {
 			for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
 			{
-				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH) {
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MESH)
+				{
 					m = (ComponentMesh*)(*it);
 				}
-				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_MATERIAL) {
-					t = (ComponentMaterial*)(*it);
-				}
-				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_TRANSFORM) {
-					transform = (ComponentTransform*)(*it);
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_IMAGE)
+				{
+					image = (ComponentImage*)(*it);
 				}
 			}
-			if (m != nullptr && transform != nullptr) 
+			if (m != nullptr)
 			{
-				if (t != nullptr)
-					DrawMesh(m->mesh, transform, t->texture);
-				else
-					DrawMesh(m->mesh, transform);
-
+				DrawMesh((*iterator));
 				m = nullptr;
-				t = nullptr;
-				transform = nullptr;
+			}
+			if (image != nullptr)
+			{
+				image->image_rect->Render();
+				image = nullptr;
 			}
 		}
 	}
@@ -247,25 +245,27 @@ bool ModuleRenderer3D::CleanUp()
 	return true;
 }
 
-void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Texture* texture)
+void ModuleRenderer3D::DrawMesh(GameObject* go)
 {
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 
-	float4x4 matrix = transform->globalMatrix;
+	float4x4 matrix = go->transform->globalMatrix;
 
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
-
-	if (mesh != nullptr)
+	if (go->mesh != nullptr)
 	{
-		glColor4f(mesh->color.r, mesh->color.g, mesh->color.b, mesh->color.a);
-
-		if (texture != nullptr)
+		glColor4f(go->mesh->mesh->color.r, go->mesh->mesh->color.g, go->mesh->mesh->color.b, go->mesh->mesh->color.a);
+		
+		if (go->material != nullptr)
 		{
-			if (!ischecked)
-				glBindTexture(GL_TEXTURE_2D, texture->texture_id);
-			else
-				glBindTexture(GL_TEXTURE_2D, checkers_path);
+			if (go->material->texture != nullptr)
+			{
+				if (!ischecked)
+					glBindTexture(GL_TEXTURE_2D, go->material->texture->texture_id);
+				else
+					glBindTexture(GL_TEXTURE_2D, checkers_path);
+			}
 		}
 
 		if (wire_mode)
@@ -275,16 +275,16 @@ void ModuleRenderer3D::DrawMesh(Mesh* mesh, ComponentTransform* transform, Textu
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 		glEnableClientState(GL_VERTEX_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, go->mesh->mesh->id_vertices);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glBindBuffer(GL_ARRAY_BUFFER, mesh->id_texture);
+		glBindBuffer(GL_ARRAY_BUFFER, go->mesh->mesh->id_texture);
 		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->id_indices);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, go->mesh->mesh->id_indices);
 
-		glDrawElements(GL_TRIANGLES, mesh->num_indices, GL_UNSIGNED_INT, NULL);
+		glDrawElements(GL_TRIANGLES, go->mesh->mesh->num_indices, GL_UNSIGNED_INT, NULL);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);

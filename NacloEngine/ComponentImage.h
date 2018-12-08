@@ -4,6 +4,7 @@
 #include "SDL\include\SDL.h"
 
 struct Texture;
+class plane;
 
 class ComponentImage : public Component
 {
@@ -15,6 +16,9 @@ public:
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
+
+public:
+	plane* image_rect;
 
 private:
 	Texture * tex;
