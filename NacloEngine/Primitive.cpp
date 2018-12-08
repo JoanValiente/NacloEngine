@@ -13,7 +13,7 @@ PrimitiveTypes Primitive::GetType() const
 }
 
 // ------------------------------------------------------------
-void Primitive::Render() const
+void Primitive::Render(uint textureid) const
 {
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.ptr());
@@ -36,7 +36,7 @@ void Primitive::Render() const
 }
 
 // ------------------------------------------------------------
-void Primitive::InnerRender() const
+void Primitive::InnerRender(uint textureid) const
 {
 	glPointSize(5.0f);
 
@@ -258,6 +258,18 @@ plane::plane(float3 position, float3 size) : Primitive(), size(size), position(p
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+	float uv[8] = {
+		0.0f, 0.0f,
+		0.0f, 1.0f,
+		1.0f, 0.0f,
+		1.0f, 1.0f
+	};
+
+	glGenBuffers(1, (GLuint*) &textureId);
+	glBindBuffer(GL_ARRAY_BUFFER, textureId);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8, uv, GL_STATIC_DRAW);
+
+
 	uint index[6]{
 		2, 1, 0,
 		3, 1, 2 
@@ -269,13 +281,19 @@ plane::plane(float3 position, float3 size) : Primitive(), size(size), position(p
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void plane::InnerRender() const
+void plane::InnerRender(uint textureid) const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, textureid);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	glBindBuffer(GL_ARRAY_BUFFER, textureId);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
 	if (grid) 
@@ -286,9 +304,14 @@ void plane::InnerRender() const
 	{
 		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 	}
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);	
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void plane::AxisRender() const
