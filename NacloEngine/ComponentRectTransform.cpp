@@ -55,6 +55,20 @@ void ComponentRectTransform::SetPosition(float3 position)
 	UpdateMatrix();
 }
 
+void ComponentRectTransform::SetPivot(float2 pivot)
+{
+	this->pivot = pivot;
+}
+
+void ComponentRectTransform::SetMinAnchor(float2 minAnchor)
+{
+	this->minAnchor = minAnchor;
+}
+
+void ComponentRectTransform::SetMaxAnchor(float2 maxAnchor)
+{
+	this->maxAnchor = maxAnchor;
+}
 
 void ComponentRectTransform::ShowInspector()
 {
@@ -65,8 +79,10 @@ void ComponentRectTransform::ShowInspector()
 	if (ImGui::CollapsingHeader("Rect Transform"))
 	{
 		float3 newPosition = position;
-		//float3 newRotation = rotation;
-		//float3 newSize = size;
+		float2 newPivot = pivot;
+		float2 newMinAnchor = minAnchor;
+		float2 newMaxAnchor = maxAnchor;
+
 
 		//POSITION------------
 		ImGui::Text("Position");
@@ -74,6 +90,24 @@ void ComponentRectTransform::ShowInspector()
 		if (ImGui::DragFloat3("##pos", &newPosition[0], 0.1f)) {
 			if (!container->staticGO)
 				SetPosition(newPosition);
+		}
+
+		ImGui::Text("Pivot");
+		ImGui::SameLine();
+		if (ImGui::DragFloat2("##pivot", &newPivot[0], 0.1f)) {
+				SetPosition(newPosition);
+		}
+
+		ImGui::Text("minAnchor");
+		ImGui::SameLine();
+		if (ImGui::DragFloat2("##minAnchor", &newMinAnchor[0], 0.1f)) {
+				SetMinAnchor(newMinAnchor);
+		}
+
+		ImGui::Text("maxAnchor");
+		ImGui::SameLine();
+		if (ImGui::DragFloat2("##maxAnchor", &newMaxAnchor[0], 0.1f)) {
+			SetMaxAnchor(newMaxAnchor);
 		}
 
 		/*
@@ -155,7 +189,7 @@ void ComponentRectTransform::DrawGuizmos()
 			{
 				localmatrix = matrix;
 			}
-			else {
+			else if (container->parent->rectTransform != nullptr) {
 				localmatrix = container->parent->rectTransform->globalMatrix.Inverted() * matrix;
 				localmatrix.Decompose(position, quaternion, size);
 				rotation = quaternion.ToEulerXYZ() * RADTODEG;

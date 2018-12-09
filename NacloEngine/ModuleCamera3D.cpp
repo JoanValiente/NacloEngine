@@ -67,48 +67,47 @@ update_status ModuleCamera3D::Update(float dt)
 {
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
-	if (App->engineState == ENGINE_STATE::EDITOR) {
-		if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
 		{
-			if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
-			{
-				float winWidth = (float)App->window->width;
-				float winHeight = (float)App->window->height;
+			float winWidth = (float)App->window->width;
+			float winHeight = (float)App->window->height;
 
-				int mouse_x = App->input->GetMouseX();
-				int mouse_y = App->input->GetMouseY();
+			int mouse_x = App->input->GetMouseX();
+			int mouse_y = App->input->GetMouseY();
 
-				float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
-				float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
+			float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
+			float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
 
-				LineSegment ray = activeCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
-				MousePick(posible_go_intersections, ray);
-				debugRay = ray;
-			}
-			using_guizmos = false;
+			LineSegment ray = activeCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
+			MousePick(posible_go_intersections, ray);
+			debugRay = ray;
 		}
-		RaycastDebugDraw();
-
-		Move(dt);
-
-		//-----------------------------Focus mesh-----------------------------
-		/*
-		if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
-			LookAtMeshBox();
-		}
-		*/
-
-		if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-		{
-			int dx = -App->input->GetMouseXMotion();
-			int dy = -App->input->GetMouseYMotion();
-
-			if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
-				MoveArroundReference(dx*dt, dy*dt);
-			else
-				Look(dx*dt, dy*dt);
-		}
+		using_guizmos = false;
 	}
+	RaycastDebugDraw();
+
+	Move(dt);
+
+	//-----------------------------Focus mesh-----------------------------
+	/*
+	if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) {
+		LookAtMeshBox();
+	}
+	*/
+
+	if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+	{
+		int dx = -App->input->GetMouseXMotion();
+		int dy = -App->input->GetMouseYMotion();
+
+		if (App->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT)
+			MoveArroundReference(dx*dt, dy*dt);
+		else
+			Look(dx*dt, dy*dt);
+	}
+
 
 	return UPDATE_CONTINUE;
 }

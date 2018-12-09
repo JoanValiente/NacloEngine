@@ -120,8 +120,8 @@ void ModuleScene::CreateCanvas()
 	GameObject* go = new GameObject(App->scene->root, "Canvas");
 	go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 	go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CANVAS);
-	go->rectTransform->width = 50;
-	go->rectTransform->height = 50;
+	go->rectTransform->width = App->scene->main_camera->camera->frustum.NearPlaneWidth();
+	go->rectTransform->height = App->scene->main_camera->camera->frustum.NearPlaneHeight();
 }
 
 void ModuleScene::UpdateQuadtree()

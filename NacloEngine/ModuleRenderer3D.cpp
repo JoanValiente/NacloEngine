@@ -186,20 +186,34 @@ update_status ModuleRenderer3D::Update(float dt)
 				{
 					m = (ComponentMesh*)(*it);
 				}
-				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_IMAGE)
-				{
-					image = (ComponentImage*)(*it);
-				}
 			}
 			if (m != nullptr)
 			{
 				DrawMesh((*iterator));
 				m = nullptr;
 			}
-			if (image != nullptr)
+			
+		}
+	}
+
+
+	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
+	{
+		if ((*iterator)->active) {
+			for (std::vector<Component*>::const_iterator it = (*iterator)->components.begin(); it != (*iterator)->components.end(); ++it)
 			{
-				image->image_rect->Render();
-				image = nullptr;
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_IMAGE)
+				{
+					//glMatrixMode(GL_PROJECTION);
+					//glLoadMatrixf(CurrentCamera->GetViewMatrix());
+					//glOrtho(0.0f, 640, 480, 0.0f, 1.0f, -1.0f);
+					image = (ComponentImage*)(*it);					
+				}
+				if (image != nullptr)
+				{
+					image->image_rect->Render();
+					image = nullptr;
+				}
 			}
 		}
 	}

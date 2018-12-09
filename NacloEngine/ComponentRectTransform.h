@@ -14,6 +14,9 @@ public:
 	void UpdateMatrix();
 
 	void SetPosition(float3 position);
+	void SetPivot(float2 pivot);
+	void SetMinAnchor(float2 minAnchor);
+	void SetMaxAnchor(float2 maxAnchor);
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
