@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ComponentCanvas.h"
 #include "ComponentRectTransform.h"
+#include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "GameObject.h"
 #include "Application.h"
@@ -19,8 +20,8 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 void ComponentCanvas::Update(float dt)
 {
 
-	container->rectTransform->SetPosition(App->scene->main_camera->camera->frustum.NearPlanePos(0.5f,0.5f));
-
+	container->rectTransform->SetPosition(App->scene->main_camera->transform->position);
+	container->rectTransform->SetQuaternion(App->scene->main_camera->transform->quaternion);
 
 	DebugDraw();
 }
