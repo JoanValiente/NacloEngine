@@ -95,18 +95,25 @@ void ComponentRectTransform::SetMaxAnchor(float2 maxAnchor)
 void ComponentRectTransform::SetWidth(float width)
 {
 	this->width = width;
-	float new_size_x = width/ default_width;
 
-	SetSize(float3(new_size_x,size.y,size.z));
+	if (default_width != 0)
+	{
+		float new_size_x = width / default_width;
+
+		SetSize(float3(new_size_x, size.y, size.z));
+	}
 }
 
 void ComponentRectTransform::SetHeight(float height)
 {
 	this->height = height;
 
-	float new_size_y = height / default_height;
+	if (default_height != 0)
+	{
+		float new_size_y = height / default_height;
 
-	SetSize(float3(size.x, new_size_y, size.z));
+		SetSize(float3(size.x, new_size_y, size.z));
+	}
 }
 
 void ComponentRectTransform::ShowInspector()

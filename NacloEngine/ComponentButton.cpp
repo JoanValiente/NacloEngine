@@ -14,7 +14,6 @@ ComponentButton::ComponentButton(GameObject * container) : Component(container)
 
 void ComponentButton::Update(float dt)
 {
-	canvas_size = SearchCanvas(container);
 	DebugDraw();
 }
 
@@ -58,23 +57,6 @@ void ComponentButton::SaveComponent(Config & conf)
 
 void ComponentButton::LoadComponent(Config & conf)
 {
-}
-
-float2 ComponentButton::SearchCanvas(GameObject * go)
-{
-	float2 ret = float2::zero;
-
-	if(go->parent->canvas != nullptr)
-	{
-		ret.x = go->parent->canvas->w;
-		ret.y = go->parent->canvas->h;
-	}
-	else
-	{
-		ret = SearchCanvas(go->parent);
-	}
-
-	return ret;
 }
 
 void ComponentButton::isHovered()
