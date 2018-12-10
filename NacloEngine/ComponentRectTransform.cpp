@@ -55,6 +55,28 @@ void ComponentRectTransform::SetPosition(float3 position)
 	UpdateMatrix();
 }
 
+void ComponentRectTransform::SetRotation(float3 rotation)
+{
+	this->rotation = rotation;
+
+	this->quaternion = Quat::FromEulerXYZ(this->rotation.x * DEGTORAD, this->rotation.y * DEGTORAD, this->rotation.z * DEGTORAD);
+	UpdateMatrix();
+}
+
+void ComponentRectTransform::SetSize(float3 size)
+{
+	this->size = size;
+	UpdateMatrix();
+}
+
+void ComponentRectTransform::SetQuaternion(Quat quaternion)
+{
+	this->rotation = quaternion.ToEulerXYZ();
+
+	this->quaternion = quaternion;
+	UpdateMatrix();
+}
+
 void ComponentRectTransform::SetPivot(float2 pivot)
 {
 	this->pivot = pivot;

@@ -14,6 +14,9 @@ public:
 	void UpdateMatrix();
 
 	void SetPosition(float3 position);
+	void SetRotation(float3 rotation);
+	void SetSize(float3 size);
+	void SetQuaternion(Quat quaternion);
 	void SetPivot(float2 pivot);
 	void SetMinAnchor(float2 minAnchor);
 	void SetMaxAnchor(float2 maxAnchor);

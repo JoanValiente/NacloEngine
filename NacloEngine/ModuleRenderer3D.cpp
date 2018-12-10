@@ -144,8 +144,7 @@ bool ModuleRenderer3D::Start()
 
 	CurrentCamera = App->camera->activeCamera;
 
-	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
+	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);                                 
 
 	checkers_path = App->texture->LoadCheckersTexture();
 
