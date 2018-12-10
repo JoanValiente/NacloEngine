@@ -30,7 +30,9 @@ void ComponentButton::DebugDraw()
 		glLineWidth(8.0f);
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-		float3 pos = container->rectTransform->position;
+		float4x4 matrix = container->rectTransform->globalMatrix;
+
+		float3 pos = { matrix[0][3], matrix[1][3], matrix[2][3] };
 		float3 v1 = float3(pos.x - size.x, pos.y - size.y, pos.z);
 		float3 v2 = float3(pos.x + size.x, pos.y - size.y, pos.z);
 		float3 v3 = float3(pos.x + size.x, pos.y + size.y, pos.z);

@@ -204,15 +204,11 @@ update_status ModuleRenderer3D::Update(float dt)
 			{
 				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_IMAGE)
 				{
-					//glMatrixMode(GL_PROJECTION);
-					//glLoadMatrixf(CurrentCamera->GetViewMatrix());
-					//glOrtho(0.0f, 640, 480, 0.0f, 1.0f, -1.0f);
 					image = (ComponentImage*)(*it);					
 				}
 				if (image != nullptr)
 				{
 					DrawUI((*iterator));
-					//image->image_rect->Render();
 					image = nullptr;
 				}
 			}
@@ -316,6 +312,7 @@ void ModuleRenderer3D::DrawUI(GameObject* go)
 {
 	if (go->rectTransform != nullptr && go->image != nullptr)
 	{
+
 		glPushMatrix();
 
 		float4x4 matrix = go->rectTransform->globalMatrix;
