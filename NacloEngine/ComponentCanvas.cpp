@@ -20,7 +20,7 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 void ComponentCanvas::Update(float dt)
 {
 
-	container->rectTransform->SetPosition(App->scene->main_camera->transform->position);
+	container->rectTransform->SetPosition(App->scene->main_camera->camera->frustum.NearPlanePos(0.0f,0.0f));
 	container->rectTransform->SetQuaternion(App->scene->main_camera->transform->quaternion);
 
 	DebugDraw();

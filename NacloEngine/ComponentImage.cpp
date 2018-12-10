@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ComponentImage.h"
 #include "GameObject.h"
+#include "Application.h"
 #include "Globals.h"
 #include "Primitive.h"
 #include "ComponentRectTransform.h"
@@ -12,7 +13,7 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 	this->type = COMPONENT_IMAGE;
 	if (container->rectTransform != nullptr)
 	{
-		image_rect = new plane(container->rectTransform->position, float3(5.0f, 5.0f, 0.0f));
+		image_rect = new plane(container->rectTransform->position, float3(0.25f, 0.25f, 0.0f));
 		container->rectTransform->UpdateMatrix();
 	}
 
