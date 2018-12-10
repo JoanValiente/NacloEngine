@@ -1,8 +1,6 @@
 #ifndef _ComponentImage_H_
 #define _ComponentImage_H_
 
-#include "SDL\include\SDL.h"
-
 struct Texture;
 class plane;
 

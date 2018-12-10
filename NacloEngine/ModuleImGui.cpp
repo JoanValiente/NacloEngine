@@ -203,6 +203,16 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 				}
+				if (ImGui::MenuItem("Button", NULL, false, true))
+				{
+					if (App->scene->canvas.empty()) {
+						App->scene->CreateCanvas();
+					}
+					vector<GameObject*>::iterator it = App->scene->canvas.begin();
+					GameObject* go = new GameObject((*it), "Button");
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_BUTTON);
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();

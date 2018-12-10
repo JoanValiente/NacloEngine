@@ -92,6 +92,17 @@ void ComponentRectTransform::SetMaxAnchor(float2 maxAnchor)
 	this->maxAnchor = maxAnchor;
 }
 
+void ComponentRectTransform::SetWidth(float width)
+{
+	this->width = width;
+	//SetSize(width,size.y,size.z);
+}
+
+void ComponentRectTransform::SetHeight(float height)
+{
+	this->height = height;
+}
+
 void ComponentRectTransform::ShowInspector()
 {
 	if (App->engineState == ENGINE_STATE::EDITOR) {
@@ -101,6 +112,7 @@ void ComponentRectTransform::ShowInspector()
 	if (ImGui::CollapsingHeader("Rect Transform"))
 	{
 		float3 newPosition = position;
+		float3 newSize = size;
 		float2 newPivot = pivot;
 		float2 newMinAnchor = minAnchor;
 		float2 newMaxAnchor = maxAnchor;
@@ -113,6 +125,14 @@ void ComponentRectTransform::ShowInspector()
 			if (!container->staticGO)
 				SetPosition(newPosition);
 		}
+
+		ImGui::Text("Size");
+		ImGui::SameLine();
+		if (ImGui::DragFloat3("##size", &newSize[0], 0.1f)) {
+			if (!container->staticGO)
+				SetSize(newSize);
+		}
+
 
 		ImGui::Text("Pivot");
 		ImGui::SameLine();
@@ -132,7 +152,7 @@ void ComponentRectTransform::ShowInspector()
 			SetMaxAnchor(newMaxAnchor);
 		}
 
-		/*
+		
 		float newWidth = width;
 		ImGui::Text("Width");
 		ImGui::SameLine();
@@ -147,7 +167,7 @@ void ComponentRectTransform::ShowInspector()
 			if (!container->staticGO)
 				SetHeight(newHeight);
 		}
-		*/
+		
 
 		/*
 		//ROTATION------------

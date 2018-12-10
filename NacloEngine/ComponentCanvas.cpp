@@ -41,8 +41,8 @@ void ComponentCanvas::DebugDraw()
 		glLineWidth(8.0f);
 		glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
-		float w = container->rectTransform->width / 2;
-		float h = container->rectTransform->height / 2;
+		w = container->rectTransform->width / 2;
+		h = container->rectTransform->height / 2;
 		float3 pos = container->rectTransform->position;
 		float3 v1 = float3(pos.x - w, pos.y - h, pos.z);
 		float3 v2 = float3(pos.x + w, pos.y - h, pos.z);

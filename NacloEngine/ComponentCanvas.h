@@ -15,6 +15,10 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
+public: 
+	float w;
+	float h;
+
 };
 
 #endif
