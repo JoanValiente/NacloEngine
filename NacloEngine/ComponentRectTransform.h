@@ -26,7 +26,7 @@ public:
 	float3 position = float3::zero;
 	float3 rotation = float3::zero;
 	Quat quaternion = Quat::identity;
-	float3 size = float3::zero;
+	float3 size = { 1,1,1 };
 
 	float width = 0;
 	float height = 0;

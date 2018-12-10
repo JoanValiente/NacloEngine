@@ -19,9 +19,9 @@ public:
 
 public:
 	plane* image_rect;
+	Texture * tex = nullptr;
 
 private:
-	Texture * tex;
 	//aiColor4D color;
 	bool preserveAspect = false;
 };

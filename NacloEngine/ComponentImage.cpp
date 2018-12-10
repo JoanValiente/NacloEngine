@@ -13,6 +13,7 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 	if (container->rectTransform != nullptr)
 	{
 		image_rect = new plane(container->rectTransform->position, float3(5.0f, 5.0f, 0.0f));
+		container->rectTransform->UpdateMatrix();
 	}
 
 	else

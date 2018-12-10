@@ -67,6 +67,7 @@ public:
 	bool CleanUp();
 
 	void DrawMesh(GameObject* go);
+	void DrawUI(GameObject* go);
 
 	void OnResize(int width, int height);
 

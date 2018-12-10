@@ -69,7 +69,6 @@ public:
 	float3 position;
 	float3 size;
 
-private:
 	uint indexId = 0;
 	uint vertexId = 0;
 	uint textureId = 0;

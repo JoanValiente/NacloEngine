@@ -160,8 +160,14 @@ GameObject * ModuleScene::GetSelected()
 
 void ModuleScene::UpdateTransforms(GameObject* go)
 {
-	if (go->transform != nullptr) {
+	if (go->transform != nullptr) 
+	{
 		go->transform->UpdateMatrix();
+	}
+
+	if (go->rectTransform != nullptr)
+	{
+		go->rectTransform->UpdateMatrix();
 	}
 
 	for (int i = 0; i < go->GetNumChildren(); i++)

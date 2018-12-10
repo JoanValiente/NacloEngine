@@ -13,6 +13,7 @@
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
 #include "ComponentTransform.h"
+#include "ComponentRectTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentImage.h"
 #include "Quadtree.h"
@@ -211,7 +212,8 @@ update_status ModuleRenderer3D::Update(float dt)
 				}
 				if (image != nullptr)
 				{
-					image->image_rect->Render();
+					DrawUI((*iterator));
+					//image->image_rect->Render();
 					image = nullptr;
 				}
 			}
@@ -308,6 +310,61 @@ void ModuleRenderer3D::DrawMesh(GameObject* go)
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glPopMatrix();
+	}
+}
+
+void ModuleRenderer3D::DrawUI(GameObject* go)
+{
+	if (go->rectTransform != nullptr && go->image != nullptr)
+	{
+		glPushMatrix();
+
+		float4x4 matrix = go->rectTransform->globalMatrix;
+
+		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+
+		glColor3f(255, 255, 255);
+
+		if (wire_mode)
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		glEnableClientState(GL_VERTEX_ARRAY);
+
+		int ID_texture = 1;
+		if (go->image->tex != nullptr)
+		{
+			ID_texture = go->image->tex->texture_id;
+		}
+
+		glBindTexture(GL_TEXTURE_2D, ID_texture);
+
+		glBindBuffer(GL_ARRAY_BUFFER, go->image->image_rect->vertexId);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, go->image->image_rect->textureId);
+		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, go->image->image_rect->indexId);
+
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		glPopMatrix();
+	}
+	else
+	{
+		LOG("ERROR RENDERING UI ELEMENT, NO RECT TRANSFORM COMPONENT");
 	}
 }
 
