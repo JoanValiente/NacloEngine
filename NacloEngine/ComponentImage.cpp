@@ -15,6 +15,11 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 	{
 		image_rect = new plane(container->rectTransform->position, float3(0.25f, 0.25f, 0.0f));
 		container->rectTransform->UpdateMatrix();
+		container->rectTransform->default_height = 0.25f;
+		container->rectTransform->default_width = 0.25f;
+
+		container->rectTransform->SetWidth(container->rectTransform->default_width);
+		container->rectTransform->SetHeight(container->rectTransform->default_height);
 	}
 
 	else

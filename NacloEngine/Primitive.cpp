@@ -13,7 +13,7 @@ PrimitiveTypes Primitive::GetType() const
 }
 
 // ------------------------------------------------------------
-void Primitive::Render(uint textureid) const
+void Primitive::Render() const
 {
 	glPushMatrix();
 	glMultMatrixf((GLfloat*)transform.ptr());
@@ -36,7 +36,7 @@ void Primitive::Render(uint textureid) const
 }
 
 // ------------------------------------------------------------
-void Primitive::InnerRender(uint textureid) const
+void Primitive::InnerRender() const
 {
 	glPointSize(5.0f);
 
@@ -281,21 +281,16 @@ plane::plane(float3 position, float3 size) : Primitive(), size(size), position(p
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void plane::InnerRender(uint textureid) const
+void plane::InnerRender() const
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, textureid);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vertexId);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, textureId);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
-
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexId);
+
 	if (grid) 
 	{
 		glDrawElements(GL_LINES, 36, GL_UNSIGNED_INT, NULL);
@@ -308,10 +303,7 @@ void plane::InnerRender(uint textureid) const
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);	
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void plane::AxisRender() const

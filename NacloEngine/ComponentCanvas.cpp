@@ -15,6 +15,12 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 	this->type = COMPONENT_CANVAS;
 
 	App->scene->canvas.push_back(container);
+
+	if (container->rectTransform != nullptr)
+	{
+		container->rectTransform->default_height = 50;
+		container->rectTransform->default_height = 60;
+	}
 }
 
 void ComponentCanvas::Update(float dt)

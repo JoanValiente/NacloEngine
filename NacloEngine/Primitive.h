@@ -19,8 +19,8 @@ public:
 
 	Primitive();
 
-	virtual void	Render(uint textureid = 0) const;
-	virtual void	InnerRender(uint textureid = 0) const;
+	virtual void	Render() const;
+	virtual void	InnerRender() const;
 	virtual void	AxisRender() const;
 	void			SetPos(float x, float y, float z);
 	void			SetRotation(float angle, const float3 &u);
@@ -62,7 +62,7 @@ class plane : public Primitive
 {
 public:
 	plane(float3 pos = float3(0.0f, 0.0f, 0.0f), float3 size = float3(200.0f, 0.0f, 200.0f));
-	void InnerRender(uint textureid = 0) const;
+	void InnerRender() const;
 	void AxisRender() const;
 public:
 	bool grid = false;

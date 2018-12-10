@@ -33,6 +33,9 @@ public:
 	Quat quaternion = Quat::identity;
 	float3 size = { 1,1,1 };
 
+	float default_width = 0;
+	float default_height = 0;
+
 	float width = 0;
 	float height = 0;
 
