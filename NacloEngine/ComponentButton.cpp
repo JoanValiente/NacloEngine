@@ -14,7 +14,6 @@ ComponentButton::ComponentButton(GameObject * container) : Component(container)
 
 void ComponentButton::Update(float dt)
 {
-	canvas_size = SearchCanvas(container);
 	DebugDraw();
 }
 
@@ -30,7 +29,9 @@ void ComponentButton::DebugDraw()
 		glLineWidth(8.0f);
 		glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 
-		float3 pos = container->rectTransform->position;
+		float4x4 matrix = container->rectTransform->globalMatrix;
+
+		float3 pos = { matrix[0][3], matrix[1][3], matrix[2][3] };
 		float3 v1 = float3(pos.x - size.x, pos.y - size.y, pos.z);
 		float3 v2 = float3(pos.x + size.x, pos.y - size.y, pos.z);
 		float3 v3 = float3(pos.x + size.x, pos.y + size.y, pos.z);
@@ -56,23 +57,6 @@ void ComponentButton::SaveComponent(Config & conf)
 
 void ComponentButton::LoadComponent(Config & conf)
 {
-}
-
-float2 ComponentButton::SearchCanvas(GameObject * go)
-{
-	float2 ret = float2::zero;
-
-	if(go->parent->canvas != nullptr)
-	{
-		ret.x = go->parent->canvas->w;
-		ret.y = go->parent->canvas->h;
-	}
-	else
-	{
-		ret = SearchCanvas(go->parent);
-	}
-
-	return ret;
 }
 
 void ComponentButton::isHovered()
