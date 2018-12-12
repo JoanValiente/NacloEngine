@@ -39,7 +39,7 @@ bool ModuleScene::Start()
 	main_camera->staticGO = false;
 
 	std::string outputfile;
-	//App->meshes->Import("/Assets/Street environment_V01.FBX", outputfile);
+	App->meshes->Import("/Assets/Street environment_V01.FBX", outputfile);
 
 	quadtree = new Quadtree();
 

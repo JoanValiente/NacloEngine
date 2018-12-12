@@ -331,7 +331,7 @@ void ModuleRenderer3D::DrawUI(GameObject* go)
 
 		glEnableClientState(GL_VERTEX_ARRAY);
 
-		int ID_texture = 1;
+		int ID_texture = 0;
 		if (go->image->tex != nullptr)
 		{
 			ID_texture = go->image->tex->texture_id;
