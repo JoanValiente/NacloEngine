@@ -98,6 +98,9 @@ public:
 	float4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 	bool ischecked = false;
 	uint checkers_path = 0;
+	uint frameBuffer;
+	int myWidth = 0;
+	int myHeight = 0;
 };
 
 #endif

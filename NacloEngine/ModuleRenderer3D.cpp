@@ -30,7 +30,9 @@ ModuleRenderer3D::ModuleRenderer3D(Application* app, bool start_enabled) : Modul
 
 // Destructor
 ModuleRenderer3D::~ModuleRenderer3D()
-{}
+{
+	glDeleteFramebuffers(1, &frameBuffer);
+}
 
 // Called before render is available
 bool ModuleRenderer3D::Init()
@@ -133,6 +135,7 @@ bool ModuleRenderer3D::Init()
 	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
+	glGenFramebuffers(1, &frameBuffer);
 	// Projection matrix for
 
 	return ret;
@@ -367,7 +370,9 @@ void ModuleRenderer3D::DrawUI(GameObject* go)
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	glViewport(width/4.5, height/3.55, width/1.8, height/1.5);
+	myWidth = width / 1.8;
+	myHeight = height / 1.5;
+	glViewport(width/4.5, height/3.55, myWidth, myHeight);
 	CurrentCamera->SetAspectRatio(((float)width / 1.8) / ((float)height / 1.5));
 	RecalculateProjection();
 }

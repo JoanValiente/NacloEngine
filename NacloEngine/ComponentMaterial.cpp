@@ -38,7 +38,7 @@ void ComponentMaterial::ShowInspector()
 			{
 				ImGui::OpenPopup("Change_Texture");
 			}
-			ImGui::Image((ImTextureID)texture->texture_id, { 256,256 });
+			ImGui::Image((ImTextureID)App->renderer3D->frameBuffer, { 256,256 });
 
 			if (ImGui::BeginPopup("Change_Texture"))
 			{

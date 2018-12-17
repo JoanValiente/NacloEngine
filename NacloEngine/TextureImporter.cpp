@@ -74,6 +74,7 @@ Texture* TextureImporter::LoadTexture(const char* path)
 			ret->height = ImageInfo.Height;
 
 			// Generate a new texture
+			glBindFramebuffer(GL_FRAMEBUFFER, App->renderer3D->frameBuffer);
 			glGenTextures(1, &textureID);
 
 			// Bind the texture to a name
@@ -81,6 +82,11 @@ Texture* TextureImporter::LoadTexture(const char* path)
 
 			SetTexture();
 
+			glFramebufferTexture2D(
+				GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0
+			);
+
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			ilDeleteImages(1, &imageID); // Because we have already copied image data into texture data we can release memory used by image.
 			LOG("Texture creation successful.");
 

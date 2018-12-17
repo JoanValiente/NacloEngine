@@ -72,8 +72,8 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
 			{
-				float winWidth = (float)App->window->width;
-				float winHeight = (float)App->window->height;
+				float winWidth = App->window->width / 3 + (float)App->renderer3D->myWidth;
+				float winHeight = App->window->height / 4 + (float)App->renderer3D->myHeight;
 
 				int mouse_x = App->input->GetMouseX();
 				int mouse_y = App->input->GetMouseY();
