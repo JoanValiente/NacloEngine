@@ -16,6 +16,7 @@ struct ComponentCanvas;
 struct ComponentRectTransform;
 struct ComponentImage;
 struct ComponentButton;
+struct ComponentLabel;
 struct Config;
 
 
@@ -79,6 +80,7 @@ public:
 	ComponentRectTransform* rectTransform = nullptr;
 	ComponentImage* image = nullptr;
 	ComponentButton* button = nullptr;
+	ComponentLabel* label = nullptr;
 
 	bool selected = false;
 	

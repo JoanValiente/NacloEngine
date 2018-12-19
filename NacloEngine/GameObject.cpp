@@ -12,6 +12,7 @@
 #include "ComponentRectTransform.h"
 #include "ComponentButton.h"
 #include "ComponentImage.h"
+#include "ComponentLabel.h"
 #include "ModuleScene.h"
 #include "Config.h"
 
@@ -151,6 +152,14 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 		}
 		component = new ComponentButton(this);
 		this->button = (ComponentButton*)component;
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_LABEL:
+		if (this->rectTransform == nullptr) {
+			NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+		}
+		component = new ComponentLabel(this);
+		this->label = (ComponentLabel*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_NONE:
