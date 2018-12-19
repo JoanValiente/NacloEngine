@@ -61,6 +61,14 @@ int ComponentLabel::GetHeight() const
 	return text_height;
 }
 
+void ComponentLabel::SaveComponent(Config & conf)
+{
+}
+
+void ComponentLabel::LoadComponent(Config & conf)
+{
+}
+
 void ComponentLabel::UpdateText()
 {
 	if (text == nullptr)
@@ -84,7 +92,7 @@ void ComponentLabel::UpdateText()
 	s_font = TTF_RenderText_Blended_Wrapped(text->font, text_str.c_str(), SDL_Color{ (Uint8)(255), (Uint8)(255),(Uint8)(255), (Uint8)(255) }, text_width);
 
 	glBindTexture(GL_TEXTURE_2D, id_font);
-	SetTextureID(id_font);
+	//SetTextureID(id_font);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, text_width, text_height, 0, GL_BGRA, GL_UNSIGNED_BYTE, s_font->pixels);

@@ -6,6 +6,7 @@ typedef struct _TTF_Font TTF_Font;
 
 #include "MathGeoLib/Math/float4.h"
 #include <string>
+#include "Component.h"
 
 struct Font
 {
@@ -25,6 +26,9 @@ public:
 	void SetString(std::string input);
 	int GetWidth()const;
 	int GetHeight()const;
+
+	void SaveComponent(Config &conf);
+	void LoadComponent(Config &conf);
 
 private:
 	void UpdateText();

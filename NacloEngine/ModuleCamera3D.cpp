@@ -72,14 +72,14 @@ update_status ModuleCamera3D::Update(float dt)
 		{
 			if (!ImGui::IsMouseHoveringAnyWindow() && !using_guizmos)
 			{
-				float winWidth = App->window->width / 3 + (float)App->renderer3D->myWidth;
-				float winHeight = App->window->height / 4 + (float)App->renderer3D->myHeight;
+				//float winWidth = App->window->width / 3 + (float)App->renderer3D->myWidth;
+				//float winHeight = App->window->height / 4 + (float)App->renderer3D->myHeight;
 
 				int mouse_x = App->input->GetMouseX();
 				int mouse_y = App->input->GetMouseY();
 
-				float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / winWidth);
-				float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / winHeight;
+				float normalized_x = -(1.0f - (float(mouse_x) * 2.0f) / App->window->width);
+				float normalized_y = 1.0f - (float(mouse_y) * 2.0f) / App->window->height;
 
 				LineSegment ray = activeCamera->frustum.UnProjectLineSegment(normalized_x, normalized_y);
 				MousePick(posible_go_intersections, ray);
