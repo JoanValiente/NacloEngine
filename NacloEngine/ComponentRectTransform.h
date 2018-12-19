@@ -20,8 +20,12 @@ public:
 	void SetPivot(float2 pivot);
 	void SetMinAnchor(float2 minAnchor);
 	void SetMaxAnchor(float2 maxAnchor);
+
 	void SetWidth(float width);
 	void SetHeight(float height);
+	float GetWidth();
+	float GetHeight();
+
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
