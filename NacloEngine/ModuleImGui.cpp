@@ -211,6 +211,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 					vector<GameObject*>::iterator it = App->scene->canvas.begin();
 					GameObject* go = new GameObject((*it), "Button");
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_BUTTON);
 				}
 				ImGui::EndMenu();

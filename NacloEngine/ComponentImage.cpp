@@ -14,8 +14,8 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->SetHeight(100.0f);
-		container->rectTransform->SetWidth(100.0f);
+		container->rectTransform->SetHeight(10.0f);
+		container->rectTransform->SetWidth(20.0f);
 
 		CreateImagePlane();
 		container->rectTransform->UpdateMatrix();
@@ -86,6 +86,7 @@ void ComponentImage::UpdateImagePlane()
 
 	glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, plane.vertex, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void ComponentImage::SaveComponent(Config &conf)

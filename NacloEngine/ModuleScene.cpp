@@ -38,9 +38,6 @@ bool ModuleScene::Start()
 	mainCamera = (ComponentCamera*)main_camera->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CAMERA);
 	main_camera->staticGO = false;
 
-	std::string outputfile;
-	App->meshes->Import("/Assets/Street environment_V01.FBX", outputfile);
-
 	quadtree = new Quadtree();
 
 	return true;
