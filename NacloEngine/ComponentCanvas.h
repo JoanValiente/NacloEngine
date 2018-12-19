@@ -19,6 +19,7 @@ private:
 	void ChangeCambasState();
 	void SetCanvasGameMode();
 	void SetCanvasEditorMode();
+	void SetCanvasPosition();
 };
 
 #endif

@@ -63,26 +63,31 @@ void ComponentButton::LoadComponent(Config & conf)
 
 void ComponentButton::isHovered()
 {
-	float x = container->rectTransform->globalMatrix.TranslatePart().x;
-	float y = container->rectTransform->globalMatrix.TranslatePart().y;
+	float width = container->rectTransform->width;
+	float height = container->rectTransform->height;
+	float x = container->rectTransform->localmatrix.TranslatePart().x;
+	float y = container->rectTransform->localmatrix.TranslatePart().y;
 
-	SetValueOneToZero(x, y);
+	float left, right, top, bottom;
+
+	left = x - width / 2;
+	right = x + width / 2;
+	top = y - height / 2;
+	bottom = y + height / 2;
+
+	SetValueOneToZero(left, top);
+	SetValueOneToZero(right, bottom);
+
 
 	float mouse_x = App->input->GetMouseX();
 	float mouse_y = App->input->GetMouseY();
 
 	SetMouseValueOneToZero(mouse_x, mouse_y);
 
-	LOG("%f, %f", mouse_x, mouse_y);
-	LOG("%f, %f", x, y);
-
-
-	if (mouse_x >= x && mouse_y >= y)
+	if (mouse_x >= left && mouse_y >= top && mouse_x <= right && mouse_y <= bottom)
 	{
 		LOG("HOVERED LMAO!!");
 	}
-
-	//	if ((App->input->GetMouseX > this->pos.x && App->input->GetMouseX < this->pos.x + button_rect.w) && (App->input->GetMouseY > this->pos.y && mouse_y < this->pos.y + button_rect.h))
 }
 
 void ComponentButton::SetValueOneToZero(float & x, float & y)
