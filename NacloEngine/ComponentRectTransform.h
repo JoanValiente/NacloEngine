@@ -26,6 +26,7 @@ public:
 	float GetWidth();
 	float GetHeight();
 
+	void SetNewSize(float width, float height);
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);

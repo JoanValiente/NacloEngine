@@ -257,3 +257,18 @@ void ComponentRectTransform::SaveComponent(Config &conf)
 void ComponentRectTransform::LoadComponent(Config & conf)
 {
 }
+
+void ComponentRectTransform::SetNewSize(float width, float height)
+{
+	if (default_height != 0)
+	{
+		float new_size_y = height / default_height;
+		SetSize(float3(size.x, new_size_y, size.z));
+	}
+
+	if (default_width != 0)
+	{
+		float new_size_x = width / default_width;
+		SetSize(float3(new_size_x, size.y, size.z));
+	}
+}

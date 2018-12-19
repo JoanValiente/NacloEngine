@@ -112,8 +112,7 @@ void ComponentCanvas::SetCanvasGameMode()
 	container->rectTransform->SetPosition(App->scene->main_camera->camera->frustum.NearPlanePos(0.0f, 0.0f));
 	container->rectTransform->SetQuaternion(App->scene->main_camera->transform->quaternion);
 
-	container->rectTransform->SetHeight(App->scene->main_camera->camera->frustum.NearPlaneHeight() / 2);
-	container->rectTransform->SetWidth(App->scene->main_camera->camera->frustum.NearPlaneWidth() / 2);
+	container->rectTransform->SetNewSize(App->scene->main_camera->camera->frustum.NearPlaneWidth() / 2, App->scene->main_camera->camera->frustum.NearPlaneHeight() / 2);
 }
 
 void ComponentCanvas::SetCanvasEditorMode()
@@ -121,6 +120,5 @@ void ComponentCanvas::SetCanvasEditorMode()
 	container->rectTransform->SetPosition(float3::zero);
 	container->rectTransform->SetQuaternion(Quat::identity);
 
-	container->rectTransform->SetHeight(container->rectTransform->default_height);
-	container->rectTransform->SetWidth(container->rectTransform->default_width);
+	container->rectTransform->SetNewSize(container->rectTransform->default_width, container->rectTransform->default_height);
 }
