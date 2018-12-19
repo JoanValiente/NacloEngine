@@ -432,6 +432,9 @@
     <ClInclude Include="ComponentButton.h">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleFonts.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleCamera3D.cpp">
@@ -694,6 +697,9 @@
     </ClCompile>
     <ClCompile Include="ComponentButton.cpp">
       <Filter>Sources\Modules\GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleFonts.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
