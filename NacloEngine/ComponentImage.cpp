@@ -79,10 +79,13 @@ void ComponentImage::Render(uint texture_id)
 
 void ComponentImage::UpdateImagePlane()
 {
-	plane.vertex[0] = float3(container->rectTransform->GetWidth(), 0, 0);
-	plane.vertex[1] = float3(container->rectTransform->GetWidth(), container->rectTransform->GetHeight(), 0);
-	plane.vertex[2] = float3(0, 0, 0);
-	plane.vertex[3] = float3(0, container->rectTransform->GetHeight(), 0);
+	float width = container->rectTransform->GetWidth();
+	float height = container->rectTransform->GetHeight();
+
+	plane.vertex[0] = float3(width  / 2, -height / 2, 0);
+	plane.vertex[1] = float3(width  / 2,  height / 2, 0);
+	plane.vertex[2] = float3(-width / 2, -height / 2, 0);
+	plane.vertex[3] = float3(-width / 2,  height / 2, 0);
 
 	glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, plane.vertex, GL_STATIC_DRAW);
@@ -99,16 +102,18 @@ void ComponentImage::LoadComponent(Config & conf)
 
 void ComponentImage::CreateImagePlane()
 {
-	plane.vertex[0] = float3(container->rectTransform->GetWidth(), 0, 0);
+	float width = container->rectTransform->GetWidth();
+	float height = container->rectTransform->GetHeight();
+	plane.vertex[0] = float3(width / 2, -height / 2, 0);
 	plane.uv[0] = float2(1, 0);
 
-	plane.vertex[1] = float3(container->rectTransform->GetWidth(), container->rectTransform->GetHeight(), 0);
+	plane.vertex[1] = float3(width / 2, height / 2, 0);
 	plane.uv[1] = float2(1, 1);
 
-	plane.vertex[2] = float3(0, 0, 0);
+	plane.vertex[2] = float3(-width / 2, -height / 2, 0);
 	plane.uv[2] = float2(0, 0);
 
-	plane.vertex[3] = float3(0, container->rectTransform->GetHeight(), 0);
+	plane.vertex[3] = float3(-width / 2, height / 2, 0);
 	plane.uv[3] = float2(0, 1);
 
 	glGenBuffers(1, (GLuint*)&plane.vertexId);
