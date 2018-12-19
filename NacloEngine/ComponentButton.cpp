@@ -6,6 +6,7 @@
 #include "Application.h"
 #include "ComponentCanvas.h"
 #include "ComponentRectTransform.h"
+#include "ModuleWindow.h"
 
 ComponentButton::ComponentButton(GameObject * container) : Component(container)
 {
@@ -15,6 +16,7 @@ ComponentButton::ComponentButton(GameObject * container) : Component(container)
 void ComponentButton::Update(float dt)
 {
 	DebugDraw();
+	isHovered();
 }
 
 void ComponentButton::ShowInspector()
@@ -61,5 +63,42 @@ void ComponentButton::LoadComponent(Config & conf)
 
 void ComponentButton::isHovered()
 {
+	float x = container->rectTransform->globalMatrix.TranslatePart().x;
+	float y = container->rectTransform->globalMatrix.TranslatePart().y;
+
+	SetValueOneToZero(x, y);
+
+	float mouse_x = App->input->GetMouseX();
+	float mouse_y = App->input->GetMouseY();
+
+	SetMouseValueOneToZero(mouse_x, mouse_y);
+
+	LOG("%f, %f", mouse_x, mouse_y);
+	LOG("%f, %f", x, y);
+
+
+	if (mouse_x >= x && mouse_y >= y)
+	{
+		LOG("HOVERED LMAO!!");
+	}
+
 	//	if ((App->input->GetMouseX > this->pos.x && App->input->GetMouseX < this->pos.x + button_rect.w) && (App->input->GetMouseY > this->pos.y && mouse_y < this->pos.y + button_rect.h))
 }
+
+void ComponentButton::SetValueOneToZero(float & x, float & y)
+{
+	x = (x / 50);
+	y = (y / 50);
+
+	x = (x + 1) / 2;
+	y = (y + 1) / 2;
+
+}
+
+void ComponentButton::SetMouseValueOneToZero(float & x, float & y)
+{
+	x = x / App->window->width;
+	y = y / App->window->height;
+}
+
+
