@@ -1,6 +1,16 @@
 #include "OpenGL.h"
 #include "ModuleFonts.h"
-#include "Glew/include/glew.h"
+
+
+// FreeType Headers
+
+/*
+#include "FreeType/include/ft2build.h"
+#include "FreeType/include/freetype/freetype.h"
+#include "FreeType/include/freetype/ftglyph.h"
+#include "FreeType/include/freetype/ftoutln.h"
+#include "FreeType/include/freetype/fttrigon.h"
+*/
 
 //#pragma comment (lib, "FreeType/win32/freetype.lib")
 
@@ -50,8 +60,8 @@ void ModuleFonts::print(const font_data & ft_font, float x, float y, const char 
 	}					                                 // Do Nothing
 	else {
 		va_start(ap, fmt);                              // Parses The String For Variables
-		vsprintf(text, fmt, ap);                            // And Converts Symbols To Actual Numbers
-		va_end(ap);                                 // Results Are Stored In Text
+		vsprintf(text, fmt, ap);                        // And Converts Symbols To Actual Numbers
+		va_end(ap);                                     // Results Are Stored In Text
 	}
 
 	// Here Is Some Code To Split The Text That We Have Been
@@ -120,10 +130,9 @@ void ModuleFonts::print(const font_data & ft_font, float x, float y, const char 
 	pop_projection_matrix();
 }
 
-}
 
 // Create A Display List Corresponding To The Given Character.
-void ModuleFonts::make_dlist(FT_Face face, char ch, GLuint list_base, GLuint * tex_base) {
+void ModuleFonts::Make_dlist(FT_Face face, char ch, GLuint list_base, GLuint * tex_base) {
 
 	// The First Thing We Do Is Get FreeType To Render Our Character
 	// Into A Bitmap.  This Actually Requires A Couple Of FreeType Commands:
@@ -149,8 +158,8 @@ void ModuleFonts::make_dlist(FT_Face face, char ch, GLuint list_base, GLuint * t
 	// Use Our Helper Function To Get The Widths Of
 	// The Bitmap Data That We Will Need In Order To Create
 	// Our Texture.
-	int width = next_p2(bitmap.width);
-	int height = next_p2(bitmap.rows);
+	int width = Next_p2(bitmap.width);
+	int height = Next_p2(bitmap.rows);
 
 	// Allocate Memory For The Texture Data.
 	GLubyte* expanded_data = new GLubyte[2 * width * height];
@@ -228,11 +237,9 @@ void ModuleFonts::make_dlist(FT_Face face, char ch, GLuint list_base, GLuint * t
 }
 
 
-
-
 // This Function Gets The First Power Of 2 >= The
 // Int That We Pass It.
-inline int ModuleFonts::next_p2(int a)
+int ModuleFonts::Next_p2(int a)
 {
 	int rval = 1;
 	// rval<<=1 Is A Prettier Way Of Writing rval*=2;
@@ -240,7 +247,7 @@ inline int ModuleFonts::next_p2(int a)
 	return rval;
 }
 
-inline void ModuleFonts::pushScreenCoordinateMatrix()
+void ModuleFonts::pushScreenCoordinateMatrix()
 {
 	glPushAttrib(GL_TRANSFORM_BIT);
 	GLint   viewport[4];
@@ -252,7 +259,7 @@ inline void ModuleFonts::pushScreenCoordinateMatrix()
 	glPopAttrib();
 }
 
-inline void ModuleFonts::pop_projection_matrix()
+void ModuleFonts::pop_projection_matrix()
 {
 	glPushAttrib(GL_TRANSFORM_BIT);
 	glMatrixMode(GL_PROJECTION);
@@ -295,8 +302,9 @@ void font_data::init(const char * fname, unsigned int h)
 	glGenTextures(128, textures);
 
 	// This Is Where We Actually Create Each Of The Fonts Display Lists.
-	for (unsigned char i = 0; i < 128; i++)
-		make_dlist(face, i, list_base, textures);
+	for (unsigned char i = 0; i < 128; i++) {
+		Make_dlist(face, i, list_base, textures);
+	}
 
 	// We Don't Need The Face Information Now That The Display
 	// Lists Have Been Created, So We Free The Assosiated Resources.
@@ -305,5 +313,4 @@ void font_data::init(const char * fname, unsigned int h)
 	// Ditto For The Font Library.
 	FT_Done_FreeType(library);
 }
-
 */
