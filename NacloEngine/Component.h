@@ -36,9 +36,9 @@ public:
 
 public:
 	bool active = false;
+	bool interactive = false;
 	GameObject* container;
 	COMPONENT_TYPE type;
-
 };
 
 #endif

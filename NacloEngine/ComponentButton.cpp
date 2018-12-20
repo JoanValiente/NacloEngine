@@ -1,16 +1,22 @@
 #include "Glew/include/glew.h"
-#include "Component.h"
 #include "GameObject.h"
 #include "ComponentButton.h"
 #include "ModuleInput.h"
 #include "Application.h"
 #include "ComponentCanvas.h"
 #include "ComponentRectTransform.h"
-#include "ModuleWindow.h"
+#include "Component.h"
 
-ComponentButton::ComponentButton(GameObject * container) : Component(container)
+ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(container)
 {
 	this->type = COMPONENT_BUTTON;
+	interactive = true;
+
+	container->parent->canvas->interactive_components.push_back(this);
+}
+
+ComponentButton::~ComponentButton()
+{
 }
 
 void ComponentButton::Update(float dt)
@@ -60,50 +66,4 @@ void ComponentButton::SaveComponent(Config & conf)
 void ComponentButton::LoadComponent(Config & conf)
 {
 }
-
-void ComponentButton::isHovered()
-{
-	float width = container->rectTransform->width;
-	float height = container->rectTransform->height;
-	float x = container->rectTransform->localmatrix.TranslatePart().x;
-	float y = container->rectTransform->localmatrix.TranslatePart().y;
-
-	float left, right, top, bottom;
-
-	left = x - width / 2;
-	right = x + width / 2;
-	top = y - height / 2;
-	bottom = y + height / 2;
-
-	SetValueOneToZero(left, top);
-	SetValueOneToZero(right, bottom);
-
-
-	float mouse_x = App->input->GetMouseX();
-	float mouse_y = App->input->GetMouseY();
-
-	SetMouseValueOneToZero(mouse_x, mouse_y);
-
-	if (mouse_x >= left && mouse_y >= top && mouse_x <= right && mouse_y <= bottom)
-	{
-		LOG("HOVERED LMAO!!");
-	}
-}
-
-void ComponentButton::SetValueOneToZero(float & x, float & y)
-{
-	x = (x / 50);
-	y = (y / 50);
-
-	x = (x + 1) / 2;
-	y = (y + 1) / 2;
-
-}
-
-void ComponentButton::SetMouseValueOneToZero(float & x, float & y)
-{
-	x = x / App->window->width;
-	y = y / App->window->height;
-}
-
 

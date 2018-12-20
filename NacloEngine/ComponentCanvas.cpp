@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ComponentCanvas.h"
 #include "ComponentRectTransform.h"
+#include "ComponentInteractive.h"
 #include "ComponentTransform.h"
 #include "ComponentCamera.h"
 #include "GameObject.h"
@@ -26,12 +27,17 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 void ComponentCanvas::Update(float dt)
 {
 	SetCanvasPosition();
+	ChangeCambasState();
 	
-	if (App->engineState == ENGINE_STATE::EDITOR) {
+	if (App->engineState == ENGINE_STATE::EDITOR)
+	{
 		DebugDraw();
 	}
 
-	ChangeCambasState();
+	else
+	{
+		UpdateInteractive();
+	}
 }
 
 void ComponentCanvas::ShowInspector()
@@ -78,6 +84,15 @@ void ComponentCanvas::SaveComponent(Config &conf)
 
 void ComponentCanvas::LoadComponent(Config & conf)
 {
+}
+
+void ComponentCanvas::UpdateInteractive()
+{
+	for (std::vector<ComponentInteractive*>::iterator it = interactive_components.begin(); it != interactive_components.end(); it++)
+	{
+		(*it)->UpdateInteractive();
+	}
+
 }
 
 void ComponentCanvas::ChangeCambasState()

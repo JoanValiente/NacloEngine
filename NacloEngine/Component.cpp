@@ -31,6 +31,4 @@ void Component::LoadComponent(Config & conf)
 
 void Component::CleanUp()
 {
-	//delete container;
-	//container = nullptr;
 }

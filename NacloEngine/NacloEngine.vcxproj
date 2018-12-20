@@ -81,6 +81,7 @@
     <ClInclude Include="ComponentCamera.h" />
     <ClInclude Include="ComponentCanvas.h" />
     <ClInclude Include="ComponentImage.h" />
+    <ClInclude Include="ComponentInteractive.h" />
     <ClInclude Include="ComponentLabel.h" />
     <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="ComponentMesh.h" />
@@ -207,6 +208,7 @@
     <ClCompile Include="ComponentCamera.cpp" />
     <ClCompile Include="ComponentCanvas.cpp" />
     <ClCompile Include="ComponentImage.cpp" />
+    <ClCompile Include="ComponentInteractive.cpp" />
     <ClCompile Include="ComponentLabel.cpp" />
     <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="ComponentMesh.cpp" />
