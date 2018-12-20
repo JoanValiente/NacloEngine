@@ -214,6 +214,16 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_BUTTON);
 				}
+				if (ImGui::MenuItem("Label", NULL, false, true))
+				{
+					if (App->scene->canvas.empty()) {
+						App->scene->CreateCanvas();
+					}
+					vector<GameObject*>::iterator it = App->scene->canvas.begin();
+					GameObject* go = new GameObject((*it), "Label");
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_LABEL);
+				}
 				ImGui::EndMenu();
 			}
 			ImGui::EndMenu();

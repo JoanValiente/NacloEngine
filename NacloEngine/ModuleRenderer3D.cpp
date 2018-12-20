@@ -16,6 +16,7 @@
 #include "ComponentRectTransform.h"
 #include "ComponentCamera.h"
 #include "ComponentImage.h"
+#include "ComponentLabel.h"
 #include "Quadtree.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
@@ -179,6 +180,7 @@ update_status ModuleRenderer3D::Update(float dt)
 
 	ComponentMesh* m = nullptr;
 	ComponentImage* image = nullptr;
+	ComponentLabel* label = nullptr;
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
@@ -209,7 +211,16 @@ update_status ModuleRenderer3D::Update(float dt)
 				{
 					image = (ComponentImage*)(*it);					
 				}
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_LABEL)
+				{
+					label = (ComponentLabel*)(*it);
+				}
 				if (image != nullptr)
+				{
+					DrawUI((*iterator));
+					image = nullptr;
+				}
+				if (label != nullptr)
 				{
 					DrawUI((*iterator));
 					image = nullptr;
@@ -313,15 +324,23 @@ void ModuleRenderer3D::DrawMesh(GameObject* go)
 
 void ModuleRenderer3D::DrawUI(GameObject* go)
 {
-	if (go->rectTransform != nullptr && go->image != nullptr)
+	if (go->rectTransform != nullptr)
 	{
 		int ID_texture = 0;
-		if (go->image->tex != nullptr)
-		{
-			ID_texture = go->image->tex->texture_id;
+		if (go->image != nullptr) {
+			if (go->image->tex != nullptr)
+			{
+				ID_texture = go->image->tex->texture_id;
+			}
+			go->image->Render(ID_texture);
 		}
 
-		go->image->Render(ID_texture);
+		if (go->label != nullptr) {
+			if (go->label->tex != nullptr) {
+				ID_texture = go->label->tex->texture_id;
+			}
+			go->label->Render(ID_texture);
+		}
 	}
 	else
 	{
