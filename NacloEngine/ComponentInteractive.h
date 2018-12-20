@@ -25,12 +25,12 @@ public:
 	void isHovered();
 
 
-	void Enter();
-	void Hover();
-	void Down();
-	void Exit();
+	virtual void Enter() {};
+	virtual void Hover() {};
+	virtual void Down() {};
+	virtual void Exit() {};
 
-	void SaveComponent(Config &conf);
+	virtual void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
 
@@ -40,7 +40,8 @@ private:
 	void SetMouseValueOneToZero(float &x, float &y);
 
 public:
-	ComponentCanvas* canvas = nullptr;
+	InteractiveStates state = NO_STATE;
+	ComponentCanvas* incanvas = nullptr;
 };
 
 #endif

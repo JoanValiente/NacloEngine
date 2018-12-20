@@ -47,6 +47,30 @@ void ComponentRectTransform::UpdateMatrix()
 		globalMatrix = localmatrix;
 }
 
+float4x4 ComponentRectTransform::GetLocalCanvasMatrix()
+{
+	localmatrix = float4x4::FromTRS(position, quaternion, size);
+	float4x4 ret = localmatrix;
+
+	if (container != nullptr && container->parent != nullptr && container->parent->canvas == nullptr) {
+
+		ComponentRectTransform* contParentTransform = (ComponentRectTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+
+		if (contParentTransform != nullptr) {
+
+			float4x4 parentTransformMatrix = contParentTransform->globalMatrix;
+
+			ret = parentTransformMatrix * localmatrix;
+		}
+		else
+			ret = localmatrix;
+	}
+	else
+		ret = localmatrix;
+
+	return ret;
+}
+
 
 
 void ComponentRectTransform::SetPosition(float3 position)

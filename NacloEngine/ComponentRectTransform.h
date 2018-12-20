@@ -12,6 +12,7 @@ public:
 	void DrawGuizmos();
 
 	void UpdateMatrix();
+	float4x4 GetLocalCanvasMatrix();
 
 	void SetPosition(float3 position);
 	void SetRotation(float3 rotation);
@@ -30,7 +31,6 @@ public:
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
-
 public:
 
 	float3 position = float3::zero;

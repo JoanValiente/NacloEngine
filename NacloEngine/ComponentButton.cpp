@@ -11,10 +11,10 @@ ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(
 {
 	this->type = COMPONENT_BUTTON;
 	interactive = true;
-	canvas = GetCanvas();
-	if (canvas != nullptr)
+	incanvas = GetCanvas();
+	if (incanvas != nullptr)
 	{
-		canvas->interactive_components.push_back(this);
+		incanvas->interactive_components.push_back(this);
 	}
 }
 
@@ -67,5 +67,10 @@ void ComponentButton::SaveComponent(Config & conf)
 
 void ComponentButton::LoadComponent(Config & conf)
 {
+}
+
+void ComponentButton::Hover()
+{
+	LOG("Hovered!");
 }
 

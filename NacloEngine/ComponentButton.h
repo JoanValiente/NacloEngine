@@ -20,6 +20,7 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
+	void Hover();
 
 private: 
 	float2 size = {10, 5};

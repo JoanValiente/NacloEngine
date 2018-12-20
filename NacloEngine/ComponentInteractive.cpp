@@ -42,7 +42,41 @@ void ComponentInteractive::UpdateInteractive()
 
 	if (mouse_x >= left && mouse_y >= top && mouse_x <= right && mouse_y <= bottom)
 	{
-		LOG("HOVERED LMAO!!");
+		if (state == NO_STATE)
+		{
+			state = ENTER;
+			Enter();
+		}
+		if (state == ENTER)
+		{
+			state = HOVER;
+		}
+
+		if (state == HOVER)
+		{
+			Hover();
+			if (App->input->GetMouseButton(SDL_MOUSEBUTTONDOWN))
+			{
+				state = DOWN;
+				Down();
+			}
+			if (App->input->GetMouseButton(SDL_MOUSEBUTTONUP))
+			{
+				state = HOVER;
+			}
+		}
+	}
+	else
+	{
+		if (state == HOVER)
+		{
+			state = EXIT;
+			Exit();
+		}
+		else
+		{
+			state = NO_STATE;
+		}
 	}
 }
 
