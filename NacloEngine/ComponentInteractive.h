@@ -20,8 +20,6 @@ public:
 	ComponentInteractive(GameObject* container);
 	~ComponentInteractive();
 
-	void Update(float dt);
-
 	void UpdateInteractive();
 
 	void isHovered();
@@ -35,11 +33,13 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
+
+	ComponentCanvas* GetCanvas();
 private:
 	void SetValueOneToZero(float &x, float &y);
 	void SetMouseValueOneToZero(float &x, float &y);
 
-private:
+public:
 	ComponentCanvas* canvas = nullptr;
 };
 

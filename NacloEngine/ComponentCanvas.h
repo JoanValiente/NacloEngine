@@ -21,6 +21,7 @@ public:
 
 public:
 	std::vector<ComponentInteractive*> interactive_components;
+
 private:
 	void UpdateInteractive();
 	void ChangeCambasState();

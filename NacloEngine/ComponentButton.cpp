@@ -11,8 +11,11 @@ ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(
 {
 	this->type = COMPONENT_BUTTON;
 	interactive = true;
-
-	container->parent->canvas->interactive_components.push_back(this);
+	canvas = GetCanvas();
+	if (canvas != nullptr)
+	{
+		canvas->interactive_components.push_back(this);
+	}
 }
 
 ComponentButton::~ComponentButton()
@@ -22,7 +25,6 @@ ComponentButton::~ComponentButton()
 void ComponentButton::Update(float dt)
 {
 	DebugDraw();
-	isHovered();
 }
 
 void ComponentButton::ShowInspector()

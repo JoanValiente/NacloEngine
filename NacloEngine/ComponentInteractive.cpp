@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "ComponentInteractive.h"
 #include "ComponentRectTransform.h"
+#include "ComponentCanvas.h"
 #include "GameObject.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
@@ -13,10 +14,6 @@ ComponentInteractive::ComponentInteractive(GameObject * container) : Component(c
 }
 
 ComponentInteractive::~ComponentInteractive()
-{
-}
-
-void ComponentInteractive::Update(float dt)
 {
 }
 
@@ -77,4 +74,29 @@ void ComponentInteractive::SaveComponent(Config & conf)
 
 void ComponentInteractive::LoadComponent(Config & conf)
 {
+}
+
+ComponentCanvas * ComponentInteractive::GetCanvas()
+{
+	ComponentCanvas* ret = nullptr;
+	GameObject* tmp = container;
+	while (ret == nullptr)
+	{
+		if (tmp->parent->canvas != nullptr)
+		{
+			ret = tmp->parent->canvas;
+		}
+		else
+		{
+			if (tmp->parent != nullptr)
+				tmp = tmp->parent;
+			else
+			{
+				return nullptr;
+				LOG("COULDN'T FIND GAME OBJECT CANVAS");
+			}
+		}
+	}
+
+	return ret;
 }
