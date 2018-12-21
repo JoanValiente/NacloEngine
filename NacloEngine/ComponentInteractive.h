@@ -27,7 +27,7 @@ public:
 
 	virtual void Enter() {};
 	virtual void Hover() {};
-	virtual void Down() {};
+	virtual void OnClick() {};
 	virtual void Exit() {};
 
 	virtual void SaveComponent(Config &conf);

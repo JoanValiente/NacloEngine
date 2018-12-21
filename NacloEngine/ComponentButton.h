@@ -21,6 +21,9 @@ public:
 	void LoadComponent(Config &conf);
 
 	void Hover();
+	void Enter();
+	void Exit();
+	void OnClick();
 
 private: 
 	float2 size = {10, 5};

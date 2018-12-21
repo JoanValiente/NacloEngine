@@ -39,7 +39,7 @@ bool ModuleScene::Start()
 	main_camera->staticGO = false;
 
 	quadtree = new Quadtree();
-
+	
 	return true;
 }
 

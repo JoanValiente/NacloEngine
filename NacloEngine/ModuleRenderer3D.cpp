@@ -197,10 +197,9 @@ update_status ModuleRenderer3D::Update(float dt)
 				DrawMesh((*iterator));
 				m = nullptr;
 			}
-			
+
 		}
 	}
-
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{

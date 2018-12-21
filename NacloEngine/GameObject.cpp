@@ -415,16 +415,20 @@ bool GameObject::SearchForParent(GameObject * parent, GameObject* child)
 
 void GameObject::EqualGameObjects(GameObject* copy, GameObject* &paste)
 {
-	paste->active		= copy->active;
-	paste->boundingBox	= copy->boundingBox;
-	paste->camera		= copy->camera;
-	paste->children		= copy->children;
-	paste->components	= copy->components;
-	paste->transform	= copy->transform;
-	paste->mesh			= copy->mesh;
-	paste->camera		= copy->camera;
-	paste->material		= copy->material;
-	paste->staticGO		= copy->staticGO;
+	paste->active		 = copy->active;
+	paste->boundingBox	 =  copy->boundingBox;
+	paste->camera		 = copy->camera;
+	paste->children		 = copy->children;
+	paste->components	 = copy->components;
+	paste->transform	 = copy->transform;
+	paste->mesh			 = copy->mesh;
+	paste->camera		 = copy->camera;
+	paste->material		 = copy->material;
+	paste->staticGO		 = copy->staticGO;
+	paste->button		 = copy->button;
+	paste->rectTransform = copy->rectTransform;
+	paste->image		 = copy->image;
+	paste->label		 = copy->label;
 
 
 	for (int it = 0; it < components.size(); ++it)

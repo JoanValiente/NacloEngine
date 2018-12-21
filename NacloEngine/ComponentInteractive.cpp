@@ -26,56 +26,59 @@ void ComponentInteractive::UpdateInteractive()
 
 	float left, right, top, bottom;
 
-	left = x - width / 2;
-	right = x + width / 2;
-	top = y - height / 2;
-	bottom = y + height / 2;
+	right = x - width / 2;
+	left = x + width / 2;
+	bottom = y - height / 2;
+	top = y + height / 2;
 
 	SetValueOneToZero(left, top);
 	SetValueOneToZero(right, bottom);
-
 
 	float mouse_x = App->input->GetMouseX();
 	float mouse_y = App->input->GetMouseY();
 
 	SetMouseValueOneToZero(mouse_x, mouse_y);
 
-	if (mouse_x >= left && mouse_y >= top && mouse_x <= right && mouse_y <= bottom)
+	if (interactive == true)
 	{
-		if (state == NO_STATE)
+		if (mouse_x >= left && mouse_y >= top && mouse_x <= right && mouse_y <= bottom)
 		{
-			state = ENTER;
-			Enter();
-		}
-		if (state == ENTER)
-		{
-			state = HOVER;
-		}
 
-		if (state == HOVER)
-		{
-			Hover();
-			if (App->input->GetMouseButton(SDL_MOUSEBUTTONDOWN))
+			if (state == NO_STATE)
 			{
-				state = DOWN;
-				Down();
+				state = ENTER;
+				Enter();
 			}
-			if (App->input->GetMouseButton(SDL_MOUSEBUTTONUP))
+			if (state == ENTER)
 			{
 				state = HOVER;
 			}
-		}
-	}
-	else
-	{
-		if (state == HOVER)
-		{
-			state = EXIT;
-			Exit();
+
+			if (state == HOVER)
+			{
+				Hover();
+				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+				{
+					state = DOWN;
+					OnClick();
+				}
+				if (App->input->GetMouseButton(SDL_MOUSEBUTTONUP))
+				{
+					state = HOVER;
+				}
+			}
 		}
 		else
 		{
-			state = NO_STATE;
+			if (state == HOVER)
+			{
+				state = EXIT;
+				Exit();
+			}
+			else
+			{
+				state = NO_STATE;
+			}
 		}
 	}
 }
@@ -85,9 +88,8 @@ void ComponentInteractive::SetValueOneToZero(float & x, float & y)
 	x = (x / 50);
 	y = (y / 50);
 
-	x = (x + 1) / 2;
-	y = (y + 1) / 2;
-
+	x = fabs((x - 1) / 2);
+	y = fabs((y - 1) / 2);
 }
 
 void ComponentInteractive::SetMouseValueOneToZero(float & x, float & y)

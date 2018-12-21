@@ -14,6 +14,7 @@ ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(
 	incanvas = GetCanvas();
 	if (incanvas != nullptr)
 	{
+		interactive = true;
 		incanvas->interactive_components.push_back(this);
 	}
 }
@@ -67,6 +68,21 @@ void ComponentButton::SaveComponent(Config & conf)
 
 void ComponentButton::LoadComponent(Config & conf)
 {
+}
+
+void ComponentButton::Enter()
+{
+	LOG("Entered!");
+}
+
+void ComponentButton::Exit()
+{
+	LOG("Exit!");
+}
+
+void ComponentButton::OnClick()
+{
+	LOG("Clicked!");
 }
 
 void ComponentButton::Hover()
