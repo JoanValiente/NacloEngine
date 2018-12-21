@@ -7,6 +7,7 @@
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 #pragma comment ( lib, "SDL2_ttf/libx86/SDL2_ttf.lib")
+#include "SDL2_ttf/include/SDL_ttf.h"
 
 enum main_states
 {

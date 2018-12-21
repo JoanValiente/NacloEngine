@@ -18,6 +18,7 @@ struct ModuleTimer;
 struct ModuleRenderer3D;
 struct ModuleCamera3D;
 struct ModuleFileSystem;
+struct ModuleFonts;
 
 struct SceneSerialization;
 struct MeshImporter;
@@ -48,6 +49,7 @@ public:
 	ModuleScene* scene;
 	ModuleResources* resources;
 	ModuleTimer* timer;
+	ModuleFonts* fonts;
 	ModuleRenderer3D* renderer3D;
 	ModuleCamera3D* camera;
 	ModuleFileSystem* fs;

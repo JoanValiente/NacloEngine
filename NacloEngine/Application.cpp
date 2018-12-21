@@ -6,6 +6,7 @@
 #include "ModuleRenderer3D.h"
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
+#include "ModuleFonts.h"
 #include "ModuleResources.h"
 #include "ModuleTimer.h"
 #include "TextureImporter.h"
@@ -23,6 +24,7 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	scene = new ModuleScene(this);
+	fonts = new ModuleFonts(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
 	fs = new ModuleFileSystem(this);
@@ -42,6 +44,7 @@ Application::Application()
 	AddModule(resources);
 	AddModule(input);
 	AddModule(scene);
+	AddModule(fonts);
 	AddModule(camera);
 
 #ifndef GAME_MODE

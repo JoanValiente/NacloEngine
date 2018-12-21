@@ -3,6 +3,7 @@
 
 struct SDL_Surface;
 struct Texture;
+struct Font;
 typedef struct _TTF_Font TTF_Font;
 
 #include "MathGeoLib/Math/float4.h"
@@ -22,12 +23,6 @@ struct LabelPlane
 	uint indexId = 0;
 	uint vertexId = 0;
 	uint textureId = 0;
-};
-
-struct Font
-{
-	TTF_Font* font = NULL;
-	int size = 12;
 };
 
 class ComponentLabel : public Component

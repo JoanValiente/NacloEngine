@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "ComponentRectTransform.h"
 #include "ModuleRenderer3D.h"
+#include "ModuleFonts.h"
 #include "SDL2_ttf/include/SDL_ttf.h"
 
 
@@ -14,6 +15,7 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 	glGenTextures(1, &id_font);
 	RELEASE_ARRAY(input_text);
 	ReSizeInput();
+	tex = new Texture;
 
 	if (container->rectTransform != nullptr)
 	{
@@ -24,17 +26,20 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 		CreateLabelPlane();
 		container->rectTransform->UpdateMatrix();
 	}
+	text = App->fonts->Load(DEFAULT_FONT, DEFAULT_FONT_SIZE);
 	text_str = "test";
 }
 
 ComponentLabel::~ComponentLabel()
 {
+	TTF_CloseFont(text->font);
 }
 
 void ComponentLabel::Update(float dt)
 {
 	if (container->rectTransform != nullptr) {
 		GenerateText();
+		UpdateText();
 	}
 }
 
@@ -86,8 +91,10 @@ void ComponentLabel::UpdateText()
 {
 	if (text == nullptr)
 		return;
+	
 	if (!text->font || text_str.empty())
 		return;
+
 	update_text = true;
 	text->size = text_size;
 	TTF_SizeText(text->font, text_str.c_str(), &text_width, &text_height);
@@ -211,6 +218,7 @@ void ComponentLabel::CreateLabelPlane()
 	glGenBuffers(1, (GLuint*)&plane.textureId);
 	glBindBuffer(GL_ARRAY_BUFFER, plane.textureId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 8, plane.uv, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glGenBuffers(1, (GLuint*)&plane.indexId);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, plane.indexId);
