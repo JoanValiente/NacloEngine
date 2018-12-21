@@ -11,6 +11,7 @@ enum InteractiveStates
 	ENTER,
 	HOVER,
 	DOWN,
+	MOVE,
 	EXIT
 };
 
@@ -29,6 +30,7 @@ public:
 	virtual void Hover() {};
 	virtual void OnClick() {};
 	virtual void Exit() {};
+	void Move();
 
 	virtual void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
@@ -40,6 +42,7 @@ private:
 	void SetMouseValueOneToZero(float &x, float &y);
 
 public:
+	bool dragable = false;
 	InteractiveStates state = NO_STATE;
 	ComponentCanvas* incanvas = nullptr;
 };

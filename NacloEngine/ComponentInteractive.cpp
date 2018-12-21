@@ -56,14 +56,21 @@ void ComponentInteractive::UpdateInteractive()
 
 			if (state == HOVER)
 			{
-				Hover();
 				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 				{
 					state = DOWN;
 					OnClick();
 				}
-				if (App->input->GetMouseButton(SDL_MOUSEBUTTONUP))
+				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+				{ 
+					if (dragable)
+					{
+						Move();
+					}
+				}
+				else
 				{
+					Hover();
 					state = HOVER;
 				}
 			}
@@ -102,6 +109,17 @@ void ComponentInteractive::SetMouseValueOneToZero(float & x, float & y)
 void ComponentInteractive::isHovered()
 {
 
+}
+
+void ComponentInteractive::Move()
+{
+	float mouse_motion_x = App->input->GetMouseXMotion();
+	float mouse_motion_y = App->input->GetMouseYMotion();
+
+	container->rectTransform->position.x -= mouse_motion_x / 20;
+	container->rectTransform->position.y -= mouse_motion_y / 10;
+
+	LOG("%i, %i", mouse_motion_x, mouse_motion_y);
 }
 
 void ComponentInteractive::SaveComponent(Config & conf)
