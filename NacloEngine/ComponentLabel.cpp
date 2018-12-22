@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "ComponentRectTransform.h"
 #include "ModuleRenderer3D.h"
+#include "TextureImporter.h"
 #include "ModuleFonts.h"
 #include "SDL2_ttf/include/SDL_ttf.h"
 
@@ -16,6 +17,7 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 	RELEASE_ARRAY(input_text);
 	ReSizeInput();
 	tex = new Texture;
+	this->type = COMPONENT_LABEL;
 
 	if (container->rectTransform != nullptr)
 	{
@@ -26,7 +28,7 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 		CreateLabelPlane();
 		container->rectTransform->UpdateMatrix();
 	}
-	text = App->fonts->Load(DEFAULT_FONT, DEFAULT_FONT_SIZE);
+	text = App->fonts->Load(DEFAULT_FONT, 48);
 	text_str = "test";
 }
 
@@ -45,11 +47,18 @@ void ComponentLabel::Update(float dt)
 
 void ComponentLabel::ShowInspector()
 {
+	int newSize = text->size;
 	if (ImGui::CollapsingHeader("Label"))
 	{
 		if (ImGui::InputTextMultiline("Text", input_text, max_input, ImVec2(ImGui::GetWindowWidth(), 100), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CtrlEnterForNewLine))
 		{
 			SetString(input_text);
+		}
+
+		ImGui::Text("Size");
+		ImGui::SameLine();
+		if (ImGui::DragInt("##size", &newSize, 1)) {
+			text->size = newSize;
 		}
 
 		ImGui::ColorEdit4("Color##image_rgba", color.ptr());
@@ -96,7 +105,7 @@ void ComponentLabel::UpdateText()
 		return;
 
 	update_text = true;
-	text->size = text_size;
+	//text->size = text_size;
 	TTF_SizeText(text->font, text_str.c_str(), &text_width, &text_height);
 
 	s_font = TTF_RenderText_Blended_Wrapped(text->font, text_str.c_str(), SDL_Color{ (Uint8)(color.x * 255), (Uint8)(color.y * 255),(Uint8)(color.z * 255), (Uint8)(color.w * 255) }, text_width);
@@ -113,19 +122,22 @@ void ComponentLabel::UpdateText()
 void ComponentLabel::Render(uint texture_id)
 {
 	glPushMatrix();
-
 	UpdateLabelPlane();
 	float4x4 matrix = container->rectTransform->globalMatrix;
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
-	glColor3f(255, 255, 255);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+
+	glColor4f(255, 255, 255, 1.0f);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 1);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 
 	glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
