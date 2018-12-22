@@ -165,7 +165,7 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 
 	case Component::COMPONENT_TYPE::COMPONENT_INPUTBOX:
 		if (this->rectTransform == nullptr) {
-			NewComponent(Component::COMPONENT_TYPE::COMPONENT_INPUTBOX);
+			NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 		}
 		component = new ComponentInputBox(this);
 		this->inputBox = (ComponentInputBox*)component;

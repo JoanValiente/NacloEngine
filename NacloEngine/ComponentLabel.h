@@ -43,9 +43,10 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
-private:
 	void UpdateText();
 	bool GenerateText();
+
+private:	
 	bool TextCanFit(float4 rect_transform);
 	void ReSizeInput();
 	void ExpandMesh();

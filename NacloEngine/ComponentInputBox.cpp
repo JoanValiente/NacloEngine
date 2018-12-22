@@ -1,14 +1,17 @@
 #include "ComponentInputBox.h"
+#include "Application.h"
 #include "ComponentImage.h"
 #include "ComponentLabel.h"
 #include "ComponentRectTransform.h"
+#include "ComponentCanvas.h"
 #include "ModuleFonts.h"
 #include "GameObject.h"
+#include "ModuleInput.h"
 #include "SDL/include/SDL.h"
 
-ComponentInputBox::ComponentInputBox(GameObject * container) : Component(container)
+ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteractive(container)
 {
-	this->type = COMPONENT_IMAGE;
+	this->type = COMPONENT_INPUTBOX;
 
 	if (container->rectTransform != nullptr)
 	{
@@ -22,8 +25,18 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : Component(contain
 		LOG("Error creating Image Rect, no rect transform component created");
 	}
 
+	interactive = true;
+	incanvas = GetCanvas();
+	dragable = true;
+	if (incanvas != nullptr)
+	{
+		interactive = true;
+		incanvas->interactive_components.push_back(this);
+	}
 	//image = new ComponentImage(container);
 	text = new ComponentLabel(container);
+	text->text_str = "Input box";
+	text->text = App->fonts->Load(DEFAULT_FONT, 48);
 }
 
 ComponentInputBox::~ComponentInputBox()
@@ -32,45 +45,10 @@ ComponentInputBox::~ComponentInputBox()
 
 void ComponentInputBox::Update(float dt)
 {
-	SDL_StartTextInput();
-	SDL_Event e;
-	while (SDL_PollEvent(&e) != 0)
-	{
-		if (e.type == SDL_KEYDOWN)
-		{
-			//Handle backspace
-			if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
-			{
-				//lop off character
-				composition.pop_back();
-				//renderText = true;
-			}
-			//Handle copy
-			else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
-			{
-				SDL_SetClipboardText(composition.c_str());
-			}
-			//Handle paste
-			else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
-			{
-				composition = SDL_GetClipboardText();
-				//renderText = true;
-			}
-
-			//Special text input event
-			else if (e.type == SDL_TEXTINPUT)
-			{
-				//Not copy or pasting
-				if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
-				{
-					//Append character
-					composition += e.text.text;
-					//renderText = true;
-				}
-			}
-		}
-	}
-	text->SetString(composition);
+	//SDL_StartTextInput();
+	text->GenerateText();
+	text->UpdateText();
+	text->SetString(App->input->composition);
 }
 
 void ComponentInputBox::ShowInspector()
@@ -80,6 +58,23 @@ void ComponentInputBox::ShowInspector()
 	}
 
 	text->ShowInspector();
+}
+
+void ComponentInputBox::Hover()
+{
+	LOG("Hover");
+}
+
+void ComponentInputBox::Enter()
+{
+}
+
+void ComponentInputBox::Exit()
+{
+}
+
+void ComponentInputBox::OnClick()
+{
 }
 
 void ComponentInputBox::SaveComponent(Config & conf)

@@ -2,11 +2,12 @@
 #define __ComponentInputBox_H__
 
 #include "Component.h"
+#include "ComponentInteractive.h"
 
 struct ComponentLabel;
 struct ComponentImage;
 
-class ComponentInputBox : public Component
+class ComponentInputBox : public ComponentInteractive
 {
 public:
 	ComponentInputBox(GameObject* container);
@@ -15,6 +16,10 @@ public:
 	void ShowInspector();
 	//int GetWidth()const;
 	//int GetHeight()const;
+	void Hover();
+	void Enter();
+	void Exit();
+	void OnClick();
 
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);

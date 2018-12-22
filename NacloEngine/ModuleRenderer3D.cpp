@@ -182,6 +182,7 @@ update_status ModuleRenderer3D::Update(float dt)
 	ComponentMesh* m = nullptr;
 	ComponentImage* image = nullptr;
 	ComponentLabel* label = nullptr;
+	ComponentInputBox* inputBox = nullptr;
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
@@ -215,6 +216,10 @@ update_status ModuleRenderer3D::Update(float dt)
 				{
 					label = (ComponentLabel*)(*it);
 				}
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_INPUTBOX)
+				{
+					inputBox = (ComponentInputBox*)(*it);
+				}
 				if (image != nullptr)
 				{
 					DrawUI((*iterator));
@@ -224,6 +229,11 @@ update_status ModuleRenderer3D::Update(float dt)
 				{
 					DrawUI((*iterator));
 					image = nullptr;
+				}
+				if (inputBox != nullptr)
+				{
+					DrawUI((*iterator));
+					inputBox = nullptr;
 				}
 			}
 		}
