@@ -27,7 +27,6 @@ public:
 
 private: 
 	float2 size = {10, 5};
-	float3 pos = float3::zero;
 };
 
 #endif

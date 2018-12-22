@@ -19,6 +19,11 @@ ComponentInteractive::~ComponentInteractive()
 
 void ComponentInteractive::UpdateInteractive()
 {
+	float3 pos;
+	Quat rot;
+	float3 size;
+	container->rectTransform->globalMatrix.Decompose(pos, rot, size);
+
 	float width = container->rectTransform->width;
 	float height = container->rectTransform->height;
 	float size_x = container->rectTransform->size.x;
