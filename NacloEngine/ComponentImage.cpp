@@ -6,6 +6,8 @@
 #include "Globals.h"
 #include "Primitive.h"
 #include "ComponentRectTransform.h"
+#include "TextureImporter.h"
+#include "ModuleRenderer3D.h"
 
 
 ComponentImage::ComponentImage(GameObject* container) : Component(container)
@@ -31,6 +33,63 @@ void ComponentImage::ShowInspector()
 {	
 	if (ImGui::CollapsingHeader("Image"))
 	{
+		if (tex != nullptr)
+		{
+			if (ImGui::Button("Change Texture"))
+			{
+				ImGui::OpenPopup("Change_Texture");
+			}
+			ImGui::Image((ImTextureID)tex->texture_id, { 256,256 });
+
+			if (ImGui::BeginPopup("Change_Texture"))
+			{
+				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
+
+				while (item != App->texture->textures_loaded.end())
+				{
+					if ((*item) != nullptr)
+					{
+						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
+						if (ImGui::IsItemClicked())
+						{
+							tex->texture_id = (*item)->texture_id;
+						}
+					}
+					item++;
+				}
+				ImGui::EndPopup();
+			}
+		}
+		else
+		{
+			ImGui::Text("No texture assigned");
+
+			if (ImGui::Button("Add Texture"))
+			{
+				ImGui::OpenPopup("Change_Texture");
+			}
+			ImGui::Image(0, { 256,256 });
+
+			if (ImGui::BeginPopup("Change_Texture"))
+			{
+				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
+
+				while (item != App->texture->textures_loaded.end())
+				{
+					if ((*item) != nullptr)
+					{
+						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
+						if (ImGui::IsItemClicked())
+						{
+							tex = (*item);
+							tex->texture_id = (*item)->texture_id;
+						}
+					}
+					item++;
+				}
+				ImGui::EndPopup();
+			}
+		}
 	}
 }
 

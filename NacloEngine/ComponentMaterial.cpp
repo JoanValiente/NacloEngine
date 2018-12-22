@@ -26,19 +26,20 @@ void ComponentMaterial::AssignTexture(Texture* texture)
 
 void ComponentMaterial::ShowInspector()
 {
-	if (texture != nullptr)
+	if (ImGui::CollapsingHeader("Texture"), ImGuiTreeNodeFlags_DefaultOpen)
 	{
-		if (ImGui::CollapsingHeader("Texture"), ImGuiTreeNodeFlags_DefaultOpen)
+		if (texture != nullptr)
 		{
 			ImGui::InputText("##Name", (char*)texture->texture_name.c_str(), 64);
 			ImGui::Text("SIZE");
 			ImGui::Text("Width: %i", texture->width); ImGui::SameLine();
 			ImGui::Text("Height: %i", texture->height);
+
 			if (ImGui::Button("Change Texture"))
 			{
 				ImGui::OpenPopup("Change_Texture");
 			}
-			ImGui::Image((ImTextureID)App->renderer3D->frameBuffer, { 256,256 });
+			ImGui::Image((ImTextureID)texture->texture_id, { 256,256 });
 
 			if (ImGui::BeginPopup("Change_Texture"))
 			{
@@ -59,7 +60,36 @@ void ComponentMaterial::ShowInspector()
 				ImGui::EndPopup();
 			}
 		}
-		
+		else
+		{
+			ImGui::Text("No texture assigned");
+
+			if (ImGui::Button("Add Texture"))
+			{
+				ImGui::OpenPopup("Change_Texture");
+			}
+			ImGui::Image(0, { 256,256 });
+
+			if (ImGui::BeginPopup("Change_Texture"))
+			{
+				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
+
+				while (item != App->texture->textures_loaded.end())
+				{
+					if ((*item) != nullptr)
+					{
+						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
+						if (ImGui::IsItemClicked())
+						{
+							texture = (*item);
+							texture->texture_id = (*item)->texture_id;
+						}
+					}
+					item++;
+				}
+				ImGui::EndPopup();
+			}
+		}
 	}
 }
 
