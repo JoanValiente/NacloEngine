@@ -54,9 +54,9 @@ public:
 	SDL_Surface * s_font = nullptr;
 	Font* text = nullptr;
 	std::string text_str;
+	char* input_text = nullptr;
 	LabelPlane plane;
 	Texture* tex;
-
 
 private:
 
@@ -66,7 +66,6 @@ private:
 	int text_height = 0;
 
 	//std::string input_text;
-	char* input_text = nullptr;
 	int max_input = 20;
 	int text_size = 12;
 	uint id_font = 0;

@@ -17,6 +17,7 @@
 #include "ComponentCamera.h"
 #include "ComponentImage.h"
 #include "ComponentLabel.h"
+#include "ComponentInputBox.h"
 #include "Quadtree.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
@@ -339,6 +340,13 @@ void ModuleRenderer3D::DrawUI(GameObject* go)
 				ID_texture = go->label->tex->texture_id;
 			}
 			go->label->Render(ID_texture);
+		}
+
+		if (go->inputBox != nullptr) {
+			if (go->inputBox->text->tex != nullptr) {
+				ID_texture = go->inputBox->text->tex->texture_id;
+			}
+			go->inputBox->text->Render(ID_texture);
 		}
 	}
 	else
