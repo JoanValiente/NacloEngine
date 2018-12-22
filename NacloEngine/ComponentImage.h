@@ -4,6 +4,7 @@
 struct Texture;
 class plane;
 
+#include "ComponentInteractive.h"
 #include "MathGeoLib/MathGeoLib.h"
 
 struct ImagePlane
@@ -20,11 +21,13 @@ struct ImagePlane
 	uint textureId = 0;
 };
 
-class ComponentImage : public Component
+class ComponentImage : public ComponentInteractive
 {
 public:
 	ComponentImage(GameObject* container);
 	~ComponentImage();
+
+	void Update(float dt);
 
 	void ShowInspector();
 	void AssignTexture(Texture* texture);
@@ -37,15 +40,18 @@ public:
 	void LoadComponent(Config &conf);
 
 private:
+	void PreserveAspect();
 	void CreateImagePlane();
 	Texture* CreateEmptyTexture();
 public:
 	Texture * tex = nullptr;
 	ImagePlane plane;
+	float4 color = float4::one;
 
 private:
-	float alpha = 1.0f;
 	bool preserveAspect = false;
+	float aux_width = 0.0f;
+	float aux_height = 0.0f;
 };
 
 #endif

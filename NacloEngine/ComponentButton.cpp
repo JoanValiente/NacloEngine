@@ -12,7 +12,7 @@ ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(
 	this->type = COMPONENT_BUTTON;
 	interactive = true;
 	incanvas = GetCanvas();
-	dragable = true;
+
 	if (incanvas != nullptr)
 	{
 		interactive = true;

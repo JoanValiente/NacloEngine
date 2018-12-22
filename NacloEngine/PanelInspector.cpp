@@ -52,6 +52,8 @@ void PanelInspector::DrawInspector()
 			}
 			go->Inspector();
 
+			ImGui::Separator();
+
 			if (ImGui::Button("Add Component"))
 			{
 				ImGui::OpenPopup("Component");

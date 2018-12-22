@@ -8,9 +8,9 @@
 #include "ComponentRectTransform.h"
 #include "TextureImporter.h"
 #include "ModuleRenderer3D.h"
+#include "ComponentCanvas.h"
 
-
-ComponentImage::ComponentImage(GameObject* container) : Component(container)
+ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(container)
 {
 	this->type = COMPONENT_IMAGE;
 
@@ -29,6 +29,12 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 	{
 		LOG("Error creating Image Rect, no rect transform component created");
 	}
+
+	incanvas = GetCanvas();
+	if (incanvas != nullptr)
+	{
+		incanvas->interactive_components.push_back(this);
+	}
 }
 
 ComponentImage::~ComponentImage()
@@ -36,25 +42,32 @@ ComponentImage::~ComponentImage()
 	delete tex;
 }
 
+void ComponentImage::Update(float dt)
+{
+	if (preserveAspect)
+	{
+		PreserveAspect();
+	}
+}
+
 void ComponentImage::ShowInspector()
 {	
 	if (ImGui::CollapsingHeader("Image"))
 	{
-		if (tex != nullptr)
+		if (tex->texture_id != 0)
 		{
-			ImGui::InputText("##Name", (char*)tex->texture_name.c_str(), 64);
-			ImGui::Text("SIZE");
-			ImGui::Text("Width: %i", tex->width); ImGui::SameLine();
-			ImGui::Text("Height: %i", tex->height);
+			ImGui::InputText("##Source Image", (char*)tex->texture_name.c_str(), 64);
+			ImGui::SameLine();
+			ImGui::Image((ImTextureID)tex->texture_id, { 20,20 });
+			ImGui::SameLine();
 
-			ImGui::SliderFloat("Alpha", &alpha, 0.0f, 1.0f);
-
-			if (ImGui::Button("Change Texture"))
+			if (ImGui::ArrowButton("Change Texture", ImGuiDir_Down))
 			{
 				ImGui::OpenPopup("Change_Texture");
 			}
-			ImGui::Image((ImTextureID)tex->texture_id, { 256,256 });
 
+			ImGui::SliderFloat("Alpha", &color.w, 0.0f, 1.0f);
+			
 			if (ImGui::BeginPopup("Change_Texture"))
 			{
 				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
@@ -73,16 +86,45 @@ void ComponentImage::ShowInspector()
 				}
 				ImGui::EndPopup();
 			}
+
+			ImGui::ColorEdit4("Color##image_rgba", color.ptr());
+
+
+			if (ImGui::Checkbox("Dragable", &dragable))
+			{
+				interactive = !interactive;
+			}
+			if (ImGui::Checkbox("Preserve Aspect", &preserveAspect))
+			{
+				aux_width = container->rectTransform->width;
+				aux_height = container->rectTransform->height;
+
+				if (preserveAspect)
+				{
+					float ratio = tex->width / tex->height;
+					container->rectTransform->height = container->rectTransform->width / ratio;
+					container->rectTransform->width = container->rectTransform->height * ratio;
+				}
+			}
+
+			if (ImGui::Button("Set Native Size"))
+			{
+				container->rectTransform->SetWidth(tex->width);
+				container->rectTransform->SetHeight(tex->height);
+			}
+
 		}
 		else
 		{
-			ImGui::Text("No texture assigned");
+			ImGui::Text("None (Texture)");
+			ImGui::SameLine();
 
-			if (ImGui::Button("Add Texture"))
+			if (ImGui::ArrowButton("Add Texture", ImGuiDir_Down))
 			{
 				ImGui::OpenPopup("Change_Texture");
 			}
-			ImGui::Image(0, { 256,256 });
+
+			ImGui::ColorEdit4("Color##image_rgba", color.ptr());
 
 			if (ImGui::BeginPopup("Change_Texture"))
 			{
@@ -95,10 +137,7 @@ void ComponentImage::ShowInspector()
 						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
 						if (ImGui::IsItemClicked())
 						{
-							tex->texture_name = (*item)->texture_name;
-							tex->width = (*item)->width;
-							tex->height = (*item)->height;
-							tex->texture_id = (*item)->texture_id;
+							tex = (*item);
 						}
 					}
 					item++;
@@ -128,7 +167,7 @@ void ComponentImage::Render(uint texture_id)
 	glEnable(GL_ALPHA_TEST);
 	glAlphaFunc(GL_GREATER, 0.0f);
 
-	glColor4f(255, 255, 255, alpha);
+	glColor4f(color.x, color.y, color.z, color.w);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -180,6 +219,27 @@ void ComponentImage::SaveComponent(Config &conf)
 
 void ComponentImage::LoadComponent(Config & conf)
 {
+}
+
+void ComponentImage::PreserveAspect()
+{
+	float ratio = tex->width / tex->height;
+	float ratio2 = container->rectTransform->width / container->rectTransform->height;
+	if (ratio != ratio2 )
+	{
+		if (aux_width != container->rectTransform->width)
+		{
+			container->rectTransform->height = container->rectTransform->width / ratio;
+			aux_width = container->rectTransform->width;
+			aux_height = container->rectTransform->height;
+		}
+		else if (aux_height != container->rectTransform->height)
+		{
+			container->rectTransform->width = container->rectTransform->height * ratio;
+			aux_width = container->rectTransform->width;
+			aux_height = container->rectTransform->height;
+		}
+	}
 }
 
 void ComponentImage::CreateImagePlane()

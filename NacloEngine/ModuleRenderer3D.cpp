@@ -350,8 +350,6 @@ void ModuleRenderer3D::DrawUI(GameObject* go)
 
 void ModuleRenderer3D::OnResize(int width, int height)
 {
-	myWidth = width;
-	myHeight = height;
 	glViewport(0, 0, width, height);
 	CurrentCamera->SetAspectRatio(((float)width) / ((float)height));
 	RecalculateProjection();

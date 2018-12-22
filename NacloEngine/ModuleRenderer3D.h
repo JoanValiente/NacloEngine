@@ -45,8 +45,8 @@ struct Mesh
 
 struct Texture
 {
-	uint width = 0;
-	uint height = 0;
+	float width = 0;
+	float height = 0;
 	std::string texture_name;
 	std::string path;
 	std::string texture_dds;
