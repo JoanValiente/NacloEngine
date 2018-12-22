@@ -28,6 +28,7 @@ void PanelInspector::DrawInspector()
 
 		ImGui::SetNextWindowPos(ImVec2(width / 2 + width / 4 + 53, height/55));
 		ImGui::SetNextWindowSize(ImVec2(width / 4 - 50, height / 2 + height/5));		
+		ImGui::SetNextWindowBgAlpha(0.5f);
 
 		if (ImGui::Begin("Inspector", &active))
 		{

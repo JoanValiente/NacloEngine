@@ -21,6 +21,7 @@ void PanelHierarchy::Draw()
 
 	ImGui::SetNextWindowPos(ImVec2(0, height / 28));
 	ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5.5));
+	ImGui::SetNextWindowBgAlpha(0.5f);
 
 	if(ImGui::Begin("Game Objects", &active)) 
 	{

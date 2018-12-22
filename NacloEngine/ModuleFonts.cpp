@@ -37,12 +37,7 @@ bool ModuleFonts::Init()
 // Called before quitting
 bool ModuleFonts::CleanUp()
 {
-	LOG("Freeing True Type fonts and library");
-	for (std::vector<Font*>::const_iterator item = fonts.begin(); item != fonts.end(); ++item)
-	{
-		TTF_CloseFont((*item)->font);
-	}
-
+	LOG("Freeing True Type library");
 	fonts.clear();
 	TTF_Quit();
 	return true;

@@ -329,6 +329,8 @@ void ModuleImgui::ShowImGuiInfo()
 	bool frame_border = style.FrameBorderSize;
 	if (ImGui::Checkbox("FrameBorder", &frame_border)) 
 		style.FrameBorderSize = frame_border; 
+
+	
 }
 
 #endif

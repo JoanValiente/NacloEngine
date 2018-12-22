@@ -70,7 +70,5 @@ private:
 	int max_input = 20;
 	int text_size = 12;
 	uint id_font = 0;
-
-
 };
 #endif //__ComponentLabel_H__

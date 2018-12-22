@@ -20,6 +20,8 @@ void PanelRandomNumberGenerator::Draw()
 	static double random1 = 0.0f;
 	static int random2 = 0;
 
+	ImGui::SetNextWindowBgAlpha(0.5f);
+
 	if (!ImGui::Begin(("Random Number Generator"), &active))
 	{
 		ImGui::End();

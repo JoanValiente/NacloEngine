@@ -15,6 +15,8 @@ PanelAbout::~PanelAbout()
 // ---------------------------------------------------------
 void PanelAbout::Draw()
 {
+	ImGui::SetNextWindowBgAlpha(0.5f);
+
 	if (!ImGui::Begin(("About"), &active))
 	{
 		ImGui::End();

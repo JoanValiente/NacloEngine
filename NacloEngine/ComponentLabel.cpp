@@ -21,8 +21,8 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->SetHeight(10.0f);
-		container->rectTransform->SetWidth(20.0f);
+		container->rectTransform->SetHeight(2.5f);
+		container->rectTransform->SetWidth(5.0f);
 		text_width = container->rectTransform->width;
 		text_height = container->rectTransform->height;
 		CreateLabelPlane();
@@ -30,11 +30,14 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 	}
 	text = App->fonts->Load(DEFAULT_FONT, 48);
 	text_str = "test";
+
+	aRat = float2(text->size * container->rectTransform->width, text->size * container->rectTransform->height);
 }
 
 ComponentLabel::~ComponentLabel()
 {
 	TTF_CloseFont(text->font);
+	delete text;
 }
 
 void ComponentLabel::Update(float dt)
@@ -48,8 +51,16 @@ void ComponentLabel::Update(float dt)
 void ComponentLabel::ShowInspector()
 {
 	int newSize = text->size;
+	int newMaxInput = max_input;
+
 	if (ImGui::CollapsingHeader("Label"))
 	{
+		ImGui::Text("Max Input");
+		ImGui::SameLine();
+		if (ImGui::DragInt("##maxInput", &newMaxInput, 1)) {
+			max_input = newMaxInput;
+		}
+
 		if (ImGui::InputTextMultiline("Text", input_text, max_input, ImVec2(ImGui::GetWindowWidth(), 100), ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CtrlEnterForNewLine))
 		{
 			SetString(input_text);
@@ -58,7 +69,9 @@ void ComponentLabel::ShowInspector()
 		ImGui::Text("Size");
 		ImGui::SameLine();
 		if (ImGui::DragInt("##size", &newSize, 1)) {
-			text->size = newSize;
+			TTF_CloseFont(text->font);
+			text = nullptr;
+			text = App->fonts->Load(DEFAULT_FONT, newSize);
 		}
 
 		ImGui::ColorEdit4("Color##image_rgba", color.ptr());
