@@ -47,6 +47,8 @@ void ComponentImage::ShowInspector()
 			ImGui::Text("Width: %i", tex->width); ImGui::SameLine();
 			ImGui::Text("Height: %i", tex->height);
 
+			ImGui::SliderFloat("Alpha", &alpha, 0.0f, 1.0f);
+
 			if (ImGui::Button("Change Texture"))
 			{
 				ImGui::OpenPopup("Change_Texture");
@@ -119,7 +121,14 @@ void ComponentImage::Render(uint texture_id)
 	float4x4 matrix = container->rectTransform->globalMatrix;
 	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
-	glColor3f(255, 255, 255);
+	//TRANSPARENCI
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_ALPHA_TEST);
+	glAlphaFunc(GL_GREATER, 0.0f);
+
+	glColor4f(255, 255, 255, alpha);
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
@@ -146,7 +155,7 @@ void ComponentImage::Render(uint texture_id)
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
+	glDisable(GL_ALPHA_TEST);
 	glPopMatrix();
 }
 
