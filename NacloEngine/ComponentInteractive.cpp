@@ -19,17 +19,17 @@ ComponentInteractive::~ComponentInteractive()
 
 void ComponentInteractive::UpdateInteractive()
 {
-	float3 pos;
-	Quat rot;
-	float3 size;
-	container->rectTransform->globalMatrix.Decompose(pos, rot, size);
+	float3 pos = float3::zero;
+	Quat rot = Quat::identity;
+	float3 size = float3::zero;
+	container->rectTransform->GetLocalCanvasMatrix().Decompose(pos, rot, size);
 
 	float width = container->rectTransform->width;
 	float height = container->rectTransform->height;
-	float size_x = container->rectTransform->size.x;
-	float size_y = container->rectTransform->size.y;
-	float x = container->rectTransform->localmatrix.TranslatePart().x;
-	float y = container->rectTransform->localmatrix.TranslatePart().y;
+	float size_x = size.x;
+	float size_y = size.y;
+	float x = pos.x;
+	float y = pos.y;
 
 	float left, right, top, bottom;
 

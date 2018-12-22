@@ -52,18 +52,25 @@ float4x4 ComponentRectTransform::GetLocalCanvasMatrix()
 	localmatrix = float4x4::FromTRS(position, quaternion, size);
 	float4x4 ret = localmatrix;
 
-	if (container != nullptr && container->parent != nullptr && container->parent->canvas == nullptr) {
+	GameObject* tmp = container;
 
-		ComponentRectTransform* contParentTransform = (ComponentRectTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+	if (tmp != nullptr && tmp->parent != nullptr && tmp->parent->canvas == nullptr) {
 
-		if (contParentTransform != nullptr) {
+		while (tmp->parent != nullptr && tmp->parent->canvas == nullptr)
+		{
+			ComponentRectTransform* contParentTransform = (ComponentRectTransform*)tmp->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 
-			float4x4 parentTransformMatrix = contParentTransform->globalMatrix;
+			if (contParentTransform != nullptr) {
 
-			ret = parentTransformMatrix * localmatrix;
+				float4x4 parentTransformMatrix = contParentTransform->localmatrix;
+
+				ret = parentTransformMatrix * localmatrix;
+			}
+			else
+				ret = localmatrix;
+
+			tmp = tmp->parent;			
 		}
-		else
-			ret = localmatrix;
 	}
 	else
 		ret = localmatrix;
