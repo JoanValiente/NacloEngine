@@ -44,7 +44,7 @@ public:
 	ImagePlane plane;
 
 private:
-	//aiColor4D color;
+	float alpha = 1.0f;
 	bool preserveAspect = false;
 };
 

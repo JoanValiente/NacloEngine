@@ -124,8 +124,6 @@ void ComponentLabel::Render(uint texture_id)
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 1);
 	glBindTexture(GL_TEXTURE_2D, texture_id);
 
 	glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
