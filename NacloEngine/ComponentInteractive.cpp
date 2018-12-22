@@ -21,15 +21,17 @@ void ComponentInteractive::UpdateInteractive()
 {
 	float width = container->rectTransform->width;
 	float height = container->rectTransform->height;
+	float size_x = container->rectTransform->size.x;
+	float size_y = container->rectTransform->size.y;
 	float x = container->rectTransform->localmatrix.TranslatePart().x;
 	float y = container->rectTransform->localmatrix.TranslatePart().y;
 
 	float left, right, top, bottom;
 
-	right = x - width / 2;
-	left = x + width / 2;
-	bottom = y - height / 2;
-	top = y + height / 2;
+	right = x - width * size_x / 2;
+	left = x + width * size_x / 2;
+	bottom = y - height * size_y / 2;
+	top = y + height * size_y / 2;
 
 	SetValueOneToZero(left, top);
 	SetValueOneToZero(right, bottom);
