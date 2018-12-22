@@ -29,7 +29,7 @@ Texture* TextureImporter::LoadTexture(const char* path)
 	ret->path = name;
 	std::string extension = name;
 	extension.erase(0, extension.find_last_of("."));
-	ret->texture_name = name.erase(0, name.find_last_of("//"));
+	ret->texture_name = name.erase(0, name.find_last_of("\\") + 1);
 	std::string new_path = path;
 	char* buffer = nullptr;
 	uint size = App->fs->Load(path, &buffer);

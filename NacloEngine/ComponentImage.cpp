@@ -21,6 +21,8 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 
 		CreateImagePlane();
 		container->rectTransform->UpdateMatrix();
+
+		tex = CreateEmptyTexture();
 	}
 
 	else
@@ -29,12 +31,22 @@ ComponentImage::ComponentImage(GameObject* container) : Component(container)
 	}
 }
 
+ComponentImage::~ComponentImage()
+{
+	delete tex;
+}
+
 void ComponentImage::ShowInspector()
 {	
 	if (ImGui::CollapsingHeader("Image"))
 	{
 		if (tex != nullptr)
 		{
+			ImGui::InputText("##Name", (char*)tex->texture_name.c_str(), 64);
+			ImGui::Text("SIZE");
+			ImGui::Text("Width: %i", tex->width); ImGui::SameLine();
+			ImGui::Text("Height: %i", tex->height);
+
 			if (ImGui::Button("Change Texture"))
 			{
 				ImGui::OpenPopup("Change_Texture");
@@ -52,7 +64,7 @@ void ComponentImage::ShowInspector()
 						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
 						if (ImGui::IsItemClicked())
 						{
-							tex->texture_id = (*item)->texture_id;
+							tex = (*item);
 						}
 					}
 					item++;
@@ -81,7 +93,9 @@ void ComponentImage::ShowInspector()
 						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
 						if (ImGui::IsItemClicked())
 						{
-							tex = (*item);
+							tex->texture_name = (*item)->texture_name;
+							tex->width = (*item)->width;
+							tex->height = (*item)->height;
 							tex->texture_id = (*item)->texture_id;
 						}
 					}
@@ -190,4 +204,17 @@ void ComponentImage::CreateImagePlane()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(float) * 6, plane.index, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
+}
+
+Texture * ComponentImage::CreateEmptyTexture()
+{
+	Texture* ret = new Texture(); 
+
+	ret->height = 0;
+	ret->width = 0;
+	ret->path = "No Image Added";
+	ret->texture_id = 0;
+	ret->texture_name = "No Image Added";
+
+	return ret;
 }

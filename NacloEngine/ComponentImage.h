@@ -24,6 +24,7 @@ class ComponentImage : public Component
 {
 public:
 	ComponentImage(GameObject* container);
+	~ComponentImage();
 
 	void ShowInspector();
 	void AssignTexture(Texture* texture);
@@ -37,7 +38,7 @@ public:
 
 private:
 	void CreateImagePlane();
-
+	Texture* CreateEmptyTexture();
 public:
 	Texture * tex = nullptr;
 	ImagePlane plane;
