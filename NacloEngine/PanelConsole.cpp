@@ -36,6 +36,7 @@ void PanelConsole::Draw()
 
 	ImGui::SetNextWindowPos(ImVec2(0, height/2 + height/4 - 35));
 	ImGui::SetNextWindowSize(ImVec2(width, height / 4 + height / 100));
+	ImGui::SetNextWindowBgAlpha(0.5f);
 
 	ImGui::Begin("Console", &active);
 	ImGui::TextUnformatted(console_logs.begin());

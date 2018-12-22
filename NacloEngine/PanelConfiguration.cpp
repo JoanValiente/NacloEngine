@@ -32,6 +32,7 @@ void PanelConfiguration::Draw()
 
 	ImGui::SetNextWindowPos(ImVec2(0, height / 55));
 	ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5));
+	ImGui::SetNextWindowBgAlpha(0.5f);
 
 	if (!ImGui::Begin("Configuration", &active))
 	{
