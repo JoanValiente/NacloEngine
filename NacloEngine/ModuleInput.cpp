@@ -35,6 +35,8 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 
+	composition = "";
+
 	return ret;
 }
 
@@ -42,7 +44,7 @@ bool ModuleInput::Init()
 update_status ModuleInput::PreUpdate(float dt)
 {
 	SDL_PumpEvents();
-
+	SDL_StartTextInput();
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 	
 	for(int i = 0; i < MAX_KEYS; ++i)
@@ -136,6 +138,40 @@ update_status ModuleInput::PreUpdate(float dt)
 				LoadDraggedFile(dropped_filedir);
 				SDL_free(dropped_filedir);    // Free dropped_filedir memory
 
+				break;
+			}
+			case SDL_KEYDOWN:
+			{
+				//Handle backspace
+				if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
+				{
+					//lop off character
+					composition.pop_back();
+					//renderText = true;
+				}
+				//Handle copy
+				else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
+				{
+					SDL_SetClipboardText(composition.c_str());
+				}
+				//Handle paste
+				else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+				{
+					composition = SDL_GetClipboardText();
+					//renderText = true;
+				}
+
+				//Special text input event
+				else if (e.type == SDL_TEXTINPUT)
+				{
+					//Not copy or pasting
+					if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
+					{
+						//Append character
+						composition += e.text.text;
+						//renderText = true;
+					}
+				}
 				break;
 			}
 #endif

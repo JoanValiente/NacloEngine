@@ -73,6 +73,9 @@ private:
 	int mouse_x_motion;
 	int mouse_y_motion;
 	//int mouse_z_motion;
+
+public: 
+	std::string composition;
 };
 
 #endif

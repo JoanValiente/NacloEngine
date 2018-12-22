@@ -17,6 +17,7 @@
 #include "ComponentCamera.h"
 #include "ComponentImage.h"
 #include "ComponentLabel.h"
+#include "ComponentInputBox.h"
 #include "Quadtree.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
@@ -181,6 +182,7 @@ update_status ModuleRenderer3D::Update(float dt)
 	ComponentMesh* m = nullptr;
 	ComponentImage* image = nullptr;
 	ComponentLabel* label = nullptr;
+	ComponentInputBox* inputBox = nullptr;
 
 	for (std::vector<GameObject*>::const_iterator iterator = App->scene->gameObjects.begin(); iterator != App->scene->gameObjects.end(); ++iterator)
 	{
@@ -214,6 +216,10 @@ update_status ModuleRenderer3D::Update(float dt)
 				{
 					label = (ComponentLabel*)(*it);
 				}
+				if ((*it)->type == Component::COMPONENT_TYPE::COMPONENT_INPUTBOX)
+				{
+					inputBox = (ComponentInputBox*)(*it);
+				}
 				if (image != nullptr)
 				{
 					DrawUI((*iterator));
@@ -223,6 +229,11 @@ update_status ModuleRenderer3D::Update(float dt)
 				{
 					DrawUI((*iterator));
 					image = nullptr;
+				}
+				if (inputBox != nullptr)
+				{
+					DrawUI((*iterator));
+					inputBox = nullptr;
 				}
 			}
 		}
@@ -339,6 +350,13 @@ void ModuleRenderer3D::DrawUI(GameObject* go)
 				ID_texture = go->label->tex->texture_id;
 			}
 			go->label->Render(ID_texture);
+		}
+
+		if (go->inputBox != nullptr) {
+			if (go->inputBox->text->tex != nullptr) {
+				ID_texture = go->inputBox->text->tex->texture_id;
+			}
+			go->inputBox->text->Render(ID_texture);
 		}
 	}
 	else

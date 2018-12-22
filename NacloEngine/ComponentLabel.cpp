@@ -29,9 +29,7 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 		container->rectTransform->UpdateMatrix();
 	}
 	text = App->fonts->Load(DEFAULT_FONT, 48);
-	text_str = "test";
-
-	aRat = float2(text->size * container->rectTransform->width, text->size * container->rectTransform->height);
+	text_str = "Label";
 }
 
 ComponentLabel::~ComponentLabel()

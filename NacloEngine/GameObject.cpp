@@ -13,6 +13,7 @@
 #include "ComponentButton.h"
 #include "ComponentImage.h"
 #include "ComponentLabel.h"
+#include "ComponentInputBox.h"
 #include "ModuleScene.h"
 #include "Config.h"
 
@@ -160,6 +161,14 @@ Component* GameObject::NewComponent(Component::COMPONENT_TYPE type)
 		}
 		component = new ComponentLabel(this);
 		this->label = (ComponentLabel*)component;
+		break;
+
+	case Component::COMPONENT_TYPE::COMPONENT_INPUTBOX:
+		if (this->rectTransform == nullptr) {
+			NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+		}
+		component = new ComponentInputBox(this);
+		this->inputBox = (ComponentInputBox*)component;
 		break;
 
 	case Component::COMPONENT_TYPE::COMPONENT_NONE:
