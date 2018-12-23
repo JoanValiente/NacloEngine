@@ -9,12 +9,11 @@
 ComponentCheckbox::ComponentCheckbox(GameObject * container) : ComponentInteractive(container)
 {
 	this->type = COMPONENT_CHECKBOX;
-	incanvas = GetCanvas();
 
-	if (incanvas != nullptr)
+	if (container->parent != nullptr)
 	{
 		interactive = true;
-		incanvas->interactive_components.push_back(this);
+		AddToTheList();
 	}
 
 	if (container->image != nullptr)
@@ -76,6 +75,10 @@ void ComponentCheckbox::ShowInspector()
 
 void ComponentCheckbox::Update(float dt)
 {
+	if (!added)
+	{
+		AddToTheList();
+	}
 }
 
 void ComponentCheckbox::DebugDraw()

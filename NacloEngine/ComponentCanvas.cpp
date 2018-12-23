@@ -78,14 +78,6 @@ void ComponentCanvas::DebugDraw()
 	}
 }
 
-void ComponentCanvas::SaveComponent(Config &conf)
-{
-}
-
-void ComponentCanvas::LoadComponent(Config & conf)
-{
-}
-
 void ComponentCanvas::UpdateInteractive()
 {
 	for (std::vector<ComponentInteractive*>::iterator it = interactive_components.begin(); it != interactive_components.end(); it++)
@@ -124,6 +116,8 @@ void ComponentCanvas::ChangeCambasState()
 
 void ComponentCanvas::SetCanvasGameMode()
 {
+
+	container->rectTransform->SetRotation(float3(container->rectTransform->rotation.x, 180,0));
 	container->rectTransform->SetNewSize(App->scene->main_camera->camera->frustum.NearPlaneWidth() / 2, App->scene->main_camera->camera->frustum.NearPlaneHeight() / 2);
 }
 
@@ -144,4 +138,14 @@ void ComponentCanvas::SetCanvasPosition()
 		container->rectTransform->SetPosition(float3::zero);
 		container->rectTransform->SetQuaternion(Quat::identity);
 	}
+}
+
+
+void ComponentCanvas::SaveComponent(Config &conf)
+{
+}
+
+void ComponentCanvas::LoadComponent(Config & conf)
+{
+	App->scene->canvas.push_back(container);
 }

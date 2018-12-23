@@ -12,12 +12,11 @@
 ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(container)
 {
 	this->type = COMPONENT_BUTTON;
-	incanvas = GetCanvas();
 
-	if (incanvas != nullptr)
+	if (container->parent != nullptr)
 	{
 		interactive = true;
-		incanvas->interactive_components.push_back(this);
+		AddToTheList();
 	}
 
 	if (container->image != nullptr)
@@ -32,7 +31,14 @@ ComponentButton::~ComponentButton()
 
 void ComponentButton::Update(float dt)
 {
-	DebugDraw();
+	if (!added)
+	{
+		AddToTheList();
+	}
+	if (App->engineState == ENGINE_STATE::EDITOR)
+	{
+		DebugDraw();
+	}
 }
 
 void ComponentButton::ShowInspector()

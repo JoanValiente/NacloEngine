@@ -26,14 +26,12 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 		LOG("Error creating Image Rect, no rect transform component created");
 	}
 
-	interactive = true;
-	incanvas = GetCanvas();
-	dragable = false;
-	if (incanvas != nullptr)
+	if (container->parent != nullptr)
 	{
 		interactive = true;
-		incanvas->interactive_components.push_back(this);
+		AddToTheList();
 	}
+
 	//image = new ComponentImage(container);
 	text = new ComponentLabel(container);
 	text->text_str = "Input box";
@@ -46,6 +44,10 @@ ComponentInputBox::~ComponentInputBox()
 
 void ComponentInputBox::Update(float dt)
 {
+	if (!added)
+	{
+		AddToTheList();
+	}
 	//SDL_StartTextInput();
 	/*
 	SDL_PumpEvents();

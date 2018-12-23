@@ -9,6 +9,7 @@
 #include "TextureImporter.h"
 #include "ModuleRenderer3D.h"
 #include "ComponentCanvas.h"
+#include "Config.h"
 
 ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(container)
 {
@@ -30,10 +31,9 @@ ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(con
 		LOG("Error creating Image Rect, no rect transform component created");
 	}
 
-	incanvas = GetCanvas();
-	if (incanvas != nullptr)
+	if (container->parent != nullptr)
 	{
-		incanvas->interactive_components.push_back(this);
+		AddToTheList();
 	}
 }
 
@@ -44,6 +44,10 @@ ComponentImage::~ComponentImage()
 
 void ComponentImage::Update(float dt)
 {
+	if (!added)
+	{
+		AddToTheList();
+	}
 	if (preserveAspect)
 	{
 		PreserveAspect();
@@ -51,7 +55,7 @@ void ComponentImage::Update(float dt)
 }
 
 void ComponentImage::ShowInspector()
-{	
+{
 	if (ImGui::CollapsingHeader("Image"))
 	{
 		if (tex->texture_id != 0)
@@ -67,7 +71,7 @@ void ComponentImage::ShowInspector()
 			}
 
 			ImGui::SliderFloat("Alpha", &color.w, 0.0f, 1.0f);
-			
+
 			if (ImGui::BeginPopup("Change_Texture"))
 			{
 				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
@@ -88,12 +92,14 @@ void ComponentImage::ShowInspector()
 			}
 
 			ImGui::ColorEdit4("Color##image_rgba", color.ptr());
+		}
 
-
-			if (ImGui::Checkbox("Dragable", &dragable))
-			{
-				interactive = !interactive;
-			}
+		if (ImGui::Checkbox("Dragable", &dragable))
+		{
+			interactive = !interactive;
+		}
+		if (tex->texture_id != 0)
+		{
 			if (ImGui::Checkbox("Preserve Aspect", &preserveAspect))
 			{
 				aux_width = container->rectTransform->width;
@@ -112,8 +118,8 @@ void ComponentImage::ShowInspector()
 				container->rectTransform->SetWidth(tex->width);
 				container->rectTransform->SetHeight(tex->height);
 			}
-
 		}
+
 		else
 		{
 			ImGui::Text("None (Texture)");
@@ -213,14 +219,6 @@ void ComponentImage::UpdateImagePlane()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void ComponentImage::SaveComponent(Config &conf)
-{
-}
-
-void ComponentImage::LoadComponent(Config & conf)
-{
-}
-
 void ComponentImage::PreserveAspect()
 {
 	float ratio = tex->width / tex->height;
@@ -287,3 +285,40 @@ Texture * ComponentImage::CreateEmptyTexture()
 
 	return ret;
 }
+
+void ComponentImage::SaveComponent(Config &conf)
+{
+	if (tex != nullptr)
+	{
+		conf.SetString("Path", tex->path.c_str());
+		conf.SetString("Name", tex->texture_name.c_str());
+		conf.SetString("DDS Path", tex->texture_dds.c_str());
+		conf.SetInt("Width", tex->width);
+		conf.SetInt("Height", tex->height);
+	}
+
+	conf.SetFloat4("Color", color);
+	conf.SetBool("Preserve Aspect", preserveAspect);
+	conf.SetBool("Dragable", dragable);
+}
+
+void ComponentImage::LoadComponent(Config & conf)
+{
+	if (conf.GetString("DDS Path") != NULL)
+	{
+		tex = App->texture->LoadTexture(conf.GetString("DDS Path"));
+		if (tex != nullptr)
+		{
+			tex->texture_dds = conf.GetString("DDS Path");
+			tex->path = conf.GetString("Path");
+			tex->texture_name = conf.GetString("Name");
+			tex->width = conf.GetInt("Width");
+			tex->height = conf.GetInt("Height");
+		}
+	}
+
+	color = conf.GetFloat4("Color");
+	preserveAspect = conf.GetBool("Preserve Aspect");
+	dragable = conf.GetBool("Dragable");
+}
+

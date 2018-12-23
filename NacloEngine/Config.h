@@ -43,6 +43,8 @@ public:
 	bool SetFloat3(const char* name, const float3 value);
 	float3 GetFloat3(const char* name);
 
+	bool SetFloat4(const char* name, const float4 value);
+	float4 GetFloat4(const char* name);
 
 	bool Save(const char* folder = ASSETS_SCENES_FOLDER);
 

@@ -104,6 +104,20 @@ void ComponentInteractive::UpdateInteractive()
 	}
 }
 
+void ComponentInteractive::AddToTheList()
+{
+	incanvas = GetCanvas();
+	if (incanvas != nullptr)
+	{
+		added = true;
+		incanvas->interactive_components.push_back(this);
+	}
+	else
+	{
+		LOG("CANVAS NOT FOUND");
+	}
+}
+
 void ComponentInteractive::SetValueOneToZero(float & x, float & y)
 {
 	x = (x / 50);
@@ -119,11 +133,6 @@ void ComponentInteractive::SetMouseValueOneToZero(float & x, float & y)
 	y = y / App->window->height;
 }
 
-
-void ComponentInteractive::isHovered()
-{
-
-}
 
 void ComponentInteractive::Move()
 {

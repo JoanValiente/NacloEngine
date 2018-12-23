@@ -228,6 +228,25 @@ float3 Config::GetFloat3(const char * name)
 	return ret;
 }
 
+bool Config::SetFloat4(const char * name, const float4 value)
+{
+	float new_float4[4] = { value.x, value.y, value.z, value.w };
+	return SetFloatArray(name, new_float4, 4);
+}
+
+float4 Config::GetFloat4(const char * name)
+{
+	float4 ret = float4::zero;
+
+	JSON_Array* aux = json_object_get_array(root, name);
+	ret.x = json_value_get_number(json_array_get_value(aux, 0));
+	ret.y = json_value_get_number(json_array_get_value(aux, 1));
+	ret.z = json_value_get_number(json_array_get_value(aux, 2));
+	ret.w = json_value_get_number(json_array_get_value(aux, 3));
+
+	return ret;
+}
+
 
 //---------------- SAVE ----------------
 

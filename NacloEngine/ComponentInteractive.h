@@ -18,10 +18,10 @@ class ComponentInteractive : public Component
 public:
 	ComponentInteractive(GameObject* container);
 	~ComponentInteractive();
-
+	
 	void UpdateInteractive();
 
-	void isHovered();
+	void AddToTheList();
 
 
 	virtual void Enter() {};
@@ -42,6 +42,7 @@ private:
 	void SetMouseValueOneToZero(float &x, float &y);
 
 public:
+	bool added = false;
 	bool dragable = false;
 	InteractiveStates state = NO_STATE;
 	ComponentCanvas* incanvas = nullptr;
