@@ -65,17 +65,12 @@ update_status ModuleScene::Update(float dt)
 	App->imgui->inspector->DrawInspector();
 
 	if (App->engineState == ENGINE_STATE::GAME && App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
-		if (optionsMenu != nullptr) {
-			optionsMenu->active = !optionsMenu->active;
-		}
-		else {
 			for (std::vector<GameObject*>::const_iterator it = gameObjects.begin(); it != gameObjects.end(); it++) {
 				if ((*it)->goUID == 3450431227) {
 					optionsMenu = (*it);
-					optionsMenu->active = !optionsMenu->active;
+					optionsMenu->SetActive(optionsMenu, !optionsMenu->active);
 				}
 			}
-		}
 	}
 
 	return ret;
@@ -200,6 +195,7 @@ void ModuleScene::DeleteAllGameObject()
 
 void ModuleScene::DestroyAllGameObjects()
 {
+	canvas.clear();
 	gameObjects.clear();
 }
 

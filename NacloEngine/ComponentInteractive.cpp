@@ -33,8 +33,8 @@ void ComponentInteractive::UpdateInteractive()
 
 	float left, right, top, bottom;
 
-	right = x - width * size_x / 2;
-	left = x + width * size_x / 2;
+	right = x + width * size_x / 2;
+	left = x - width * size_x / 2;
 	bottom = y - height * size_y / 2;
 	top = y + height * size_y / 2;
 
