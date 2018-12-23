@@ -17,7 +17,7 @@ class ComponentInteractive : public Component
 {
 public:
 	ComponentInteractive(GameObject* container);
-	~ComponentInteractive();
+	virtual ~ComponentInteractive();
 	
 	void UpdateInteractive();
 

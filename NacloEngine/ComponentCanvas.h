@@ -9,6 +9,7 @@ class ComponentCanvas : public Component
 {
 public:
 	ComponentCanvas(GameObject* container);
+	~ComponentCanvas();
 
 	void Update(float dt);
 

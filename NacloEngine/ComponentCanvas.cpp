@@ -10,7 +10,6 @@
 #include "ModuleScene.h"
 #include "Globals.h"
 
-
 ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 {
 	this->type = COMPONENT_CANVAS;
@@ -21,6 +20,18 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 	{
 		container->rectTransform->default_height = 50;
 		container->rectTransform->default_width = 50;
+	}
+}
+
+ComponentCanvas::~ComponentCanvas()
+{
+	for (std::vector<GameObject*>::iterator it = App->scene->canvas.begin(); it != App->scene->canvas.end();)
+	{
+		if ((*it)->goUID == container->goUID)
+		{
+			App->scene->canvas.erase(it);
+			return;
+		}
 	}
 }
 

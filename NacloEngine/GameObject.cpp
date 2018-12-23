@@ -211,6 +211,13 @@ void GameObject::DeleteAllComponents()
 	RELEASE(mesh);
 	RELEASE(material);
 	RELEASE(camera);
+	RELEASE(canvas);
+	RELEASE(rectTransform);
+	RELEASE(image);
+	RELEASE(button);
+	RELEASE(checkbox);
+	RELEASE(label);
+	RELEASE(inputBox);
 
 	components.clear();
 }
