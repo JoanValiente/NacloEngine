@@ -113,6 +113,7 @@ void ComponentInputBox::OnClick()
 	if (App->engineState == GAME) {
 		LOG("Input Box Selected");
 		App->scene->uiGoSelected = this->container;
+		App->input->composition = "";
 	}
 }
 
