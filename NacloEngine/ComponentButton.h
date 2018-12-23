@@ -36,6 +36,7 @@ private:
 	void OpenPopUps();
 
 	bool FadeFunction(float dt);
+
 private: 
 	bool function = false;
 	ImVec4 normal_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
