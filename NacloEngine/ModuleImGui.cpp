@@ -245,6 +245,7 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 					vector<GameObject*>::iterator it = App->scene->canvas.begin();
 					GameObject* go = new GameObject((*it), "InputBox");
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_LABEL);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_INPUTBOX);
 					GameObject* go2 = new GameObject(go, "Image");					
 					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);

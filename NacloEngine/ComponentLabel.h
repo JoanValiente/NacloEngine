@@ -46,12 +46,16 @@ public:
 	void UpdateText();
 	bool GenerateText();
 
+	void PreserveAspect();
+
 private:	
 	bool TextCanFit(float4 rect_transform);
 	void ReSizeInput();
 	void ExpandMesh();
 
+
 public:
+	bool first_time = false;
 	SDL_Surface * s_font = nullptr;
 	Font* text = nullptr;
 	std::string text_str;
@@ -59,12 +63,16 @@ public:
 	LabelPlane plane;
 	Texture* tex;
 
+	int text_width = 0;
+	int text_height = 0;
 private:
+	float ratio = 0.0f;
+	float ratio_2 = 0.0f;
 
 	float4 color = float4::one;
 	bool update_text = false;
-	int text_width = 0;
-	int text_height = 0;
+	float aux_text_width = 0;
+	float aux_text_height = 0;
 
 	//std::string input_text;
 	int max_input = 20;

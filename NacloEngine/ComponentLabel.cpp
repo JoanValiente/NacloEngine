@@ -29,6 +29,8 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 		}
 		text_width = container->rectTransform->width;
 		text_height = container->rectTransform->height;
+
+
 		CreateLabelPlane();
 		container->rectTransform->UpdateMatrix();
 	}
@@ -47,6 +49,7 @@ void ComponentLabel::Update(float dt)
 	if (container->rectTransform != nullptr) {
 		GenerateText();
 		UpdateText();
+		PreserveAspect();
 	}
 }
 
@@ -114,6 +117,15 @@ void ComponentLabel::UpdateText()
 	update_text = true;
 	//text->size = text_size;
 	TTF_SizeText(text->font, text_str.c_str(), &text_width, &text_height);
+	if (!first_time)
+	{
+		aux_text_width = text_width;
+		aux_text_height = text_height;
+		ratio = container->rectTransform->width / aux_text_width;
+		ratio_2 = container->rectTransform->height / aux_text_height;
+
+		first_time = true;
+	}
 
 	s_font = TTF_RenderText_Blended_Wrapped(text->font, text_str.c_str(), SDL_Color{ (Uint8)(color.x * 255), (Uint8)(color.y * 255),(Uint8)(color.z * 255), (Uint8)(color.w * 255) }, text_width);
 
@@ -191,7 +203,7 @@ bool ComponentLabel::GenerateText()
 
 bool ComponentLabel::TextCanFit(float4 rect_transform)
 {
-	if (abs(rect_transform.x) + abs(rect_transform.z) > text_width&&abs(rect_transform.y) + abs(rect_transform.w) > text_height)
+	if (abs(rect_transform.x) + abs(rect_transform.z) > text_width && abs(rect_transform.y) + abs(rect_transform.w) > text_height)
 	{
 		return true;
 	}
@@ -213,6 +225,20 @@ void ComponentLabel::ExpandMesh()
 {
 	UpdateText();
 	GenerateText();
+}
+
+void ComponentLabel::PreserveAspect()
+{
+	if (text_width != aux_text_width)
+	{
+		container->rectTransform->width = text_width * ratio;
+		aux_text_width = text_width;
+	}
+	if (text_height != aux_text_height)
+	{
+		container->rectTransform->height = text_height * ratio_2;
+		aux_text_height = text_height;
+	}
 }
 
 void ComponentLabel::CreateLabelPlane()

@@ -29,6 +29,7 @@ public:
 	char* newText = nullptr;
 	std::string composition;
 	ComponentLabel* text = nullptr;
+	ComponentImage* image = nullptr;
 	int horizontalMargin = 0;
 	int verticalMargin = 0;
 };

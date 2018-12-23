@@ -19,8 +19,8 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 	{
 		if (!container->rectTransform->loading)
 		{
-			container->rectTransform->SetHeight(10.0f);
-			container->rectTransform->SetWidth(20.0f);
+			container->rectTransform->SetHeight(2.5f);
+			container->rectTransform->SetWidth(5.0f);
 		}
 
 		container->rectTransform->UpdateMatrix();
@@ -37,7 +37,7 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 	}
 
 	//image = new ComponentImage(container);
-	text = new ComponentLabel(container);
+	text = container->label;
 	text->text_str = "Input box";
 	text->text = App->fonts->Load(DEFAULT_FONT, 48);
 }
@@ -80,19 +80,15 @@ void ComponentInputBox::Update(float dt)
 			break;
 		}
 		}
-		
+
 	}
 	*/
-	if (App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->goUID == this->container->goUID) {
+	if (App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->goUID == this->container->goUID)
+	{
 		text->SetString(App->input->composition);
-		text->GenerateText();
-		text->UpdateText();
 
-		for (std::vector<GameObject*>::const_iterator it = this->container->children.begin(); it != this->container->children.end(); ++it) {
-			if ((*it)->GetComponentByType(COMPONENT_TYPE::COMPONENT_IMAGE)) {
-				(*it)->rectTransform->width = this->container->rectTransform->width + horizontalMargin;
-				(*it)->rectTransform->height = this->container->rectTransform->height + verticalMargin;
-			}
+		if (text->text_width < this->container->rectTransform->width + horizontalMargin)
+		{
 		}
 	}
 }
@@ -122,7 +118,6 @@ void ComponentInputBox::ShowInspector()
 
 void ComponentInputBox::Hover()
 {
-	LOG("Patata");
 }
 
 void ComponentInputBox::Enter()
