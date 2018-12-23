@@ -322,9 +322,7 @@ void GameObject::ChangeHierarchy(GameObject* &obj)
 			}
 		}
 
-		obj->parent->children.erase(test);
-
-		
+		obj->parent->children.erase(test);	
 	}
 }
 

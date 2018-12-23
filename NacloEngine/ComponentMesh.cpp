@@ -60,4 +60,9 @@ void ComponentMesh::LoadComponent(Config & conf)
 		mesh->path = conf.GetString("Path");
 		mesh->ncl_path = conf.GetString("NCL Path");
 	}
+	else
+	{
+		std::string output;
+		App->meshes->Import(conf.GetString("Path"), output);
+	}
 }

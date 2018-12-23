@@ -31,18 +31,21 @@ void ComponentRectTransform::UpdateMatrix()
 {
 	localmatrix = float4x4::FromTRS(position, quaternion, size);
 
-	if (container != nullptr && container->parent != nullptr) {
+	if (container != nullptr) 
+	{
+		if (container->parent != nullptr)
+		{
+			ComponentRectTransform* contParentTransform = (ComponentRectTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 
-		ComponentRectTransform* contParentTransform = (ComponentRectTransform*)container->parent->GetComponentByType(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+			if (contParentTransform != nullptr) {
 
-		if (contParentTransform != nullptr) {
+				float4x4 parentTransformMatrix = contParentTransform->globalMatrix;
 
-			float4x4 parentTransformMatrix = contParentTransform->globalMatrix;
-
-			globalMatrix = parentTransformMatrix * localmatrix;
+				globalMatrix = parentTransformMatrix * localmatrix;
+			}
+			else
+				globalMatrix = localmatrix;
 		}
-		else
-			globalMatrix = localmatrix;
 	}
 	else
 		globalMatrix = localmatrix;
