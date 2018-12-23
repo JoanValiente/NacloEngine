@@ -47,7 +47,6 @@ update_status ModuleScene::PreUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-
 	//App->camera->CullingGameObjects(root);
 
 	UpdateQuadtree();

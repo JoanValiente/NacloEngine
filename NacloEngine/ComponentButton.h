@@ -42,7 +42,7 @@ private:
 	ImVec4 highlighted_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	ImVec4 pressed_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	ComponentImage * target_graphic;
-	float2 size = {10, 5};
+	float2 size = {20, 10};
 };
 
 #endif
