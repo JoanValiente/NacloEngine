@@ -360,6 +360,8 @@ bool GameObject::SaveGO(Config* & conf)
 	go.SetUID("UID", goUID);
 	go.SetUID("Parent UID", parent->goUID);
 	go.SetArray("COMPONENTS");
+	go.SetBool("Activated", activated);
+	go.SetBool("Active", active);
 
 	for (std::vector<Component*>::const_iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -383,6 +385,8 @@ bool GameObject::LoadGO(Config& conf)
 	name = conf.GetString("Name");
 	goUID = conf.GetUID("UID");
 	parent_UID = conf.GetUID("Parent UID");
+	activated = conf.GetBool("Activated");
+	active = conf.GetBool("Active");
 
 	int size = conf.GetArraySize("COMPONENTS");
 

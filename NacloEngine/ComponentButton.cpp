@@ -22,8 +22,11 @@ ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->width = size.x;
-		container->rectTransform->height = size.y;
+		if (container->rectTransform->width == 0)
+		{
+			container->rectTransform->width = size.x;
+			container->rectTransform->height = size.y;
+		}
 	}
 
 	if (container->image != nullptr)
@@ -260,6 +263,7 @@ void ComponentButton::LoadComponent(Config & conf)
 	aux = conf.GetFloat4("Pressed Color");
 	FloatToImVec(aux, pressed_color);
 
+	function = false;
 	interactive = conf.GetBool("Interactable");
 }
 

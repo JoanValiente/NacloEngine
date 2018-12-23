@@ -115,7 +115,7 @@ void ModuleFileSystem::NormalizePath(std::string &file)
 			*iterator = '/';
 	}
 
-	int erase = file.find("Game");
+	int erase = file.find("Naclo Engine");
 	if (erase >= 0)
 	{
 		file = file.erase(0, erase + 5);

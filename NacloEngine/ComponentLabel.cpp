@@ -24,8 +24,11 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 	{
 		if (!container->rectTransform->loading)
 		{
-			container->rectTransform->SetHeight(size.y);
-			container->rectTransform->SetWidth(size.x);
+			if (container->rectTransform->width == 0)
+			{
+				container->rectTransform->SetHeight(size.y);
+				container->rectTransform->SetWidth(size.x);
+			}
 		}
 		text_width = container->rectTransform->width;
 		text_height = container->rectTransform->height;

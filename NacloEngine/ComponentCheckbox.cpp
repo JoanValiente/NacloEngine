@@ -20,8 +20,11 @@ ComponentCheckbox::ComponentCheckbox(GameObject * container) : ComponentInteract
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->width = size.x;
-		container->rectTransform->height = size.y;
+		if (container->rectTransform->width == 0)
+		{
+			container->rectTransform->width = size.x;
+			container->rectTransform->height = size.y;
+		}
 	}
 
 	if (container->image != nullptr)

@@ -20,8 +20,8 @@ ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(con
 	{
 		if (!container->rectTransform->loading)
 		{
-			container->rectTransform->SetHeight(size.x);
-			container->rectTransform->SetWidth(size.y);
+			container->rectTransform->SetHeight(size.y);
+			container->rectTransform->SetWidth(size.x);
 		}
 
 		CreateImagePlane();
@@ -99,63 +99,63 @@ void ComponentImage::ShowInspector()
 
 				ImGui::ColorEdit4("Color##image_rgba", color.ptr());
 			}
-		}
 
-		if (ImGui::Checkbox("Dragable", &dragable))
-		{
-			interactive = !interactive;
-		}
-		if (tex->texture_id != 0)
-		{
-			if (ImGui::Checkbox("Preserve Aspect", &preserveAspect))
+
+			if (ImGui::Checkbox("Dragable", &dragable))
 			{
-				aux_width = container->rectTransform->width;
-				aux_height = container->rectTransform->height;
-
-				if (preserveAspect)
+				interactive = !interactive;
+			}
+			if (tex->texture_id != 0)
+			{
+				if (ImGui::Checkbox("Preserve Aspect", &preserveAspect))
 				{
-					float ratio = tex->width / tex->height;
-					container->rectTransform->height = container->rectTransform->width / ratio;
-					container->rectTransform->width = container->rectTransform->height * ratio;
-				}
-			}
+					aux_width = container->rectTransform->width;
+					aux_height = container->rectTransform->height;
 
-			if (ImGui::Button("Set Native Size"))
-			{
-				container->rectTransform->SetWidth(tex->width);
-				container->rectTransform->SetHeight(tex->height);
-			}
-		}
-
-		else
-		{
-			ImGui::Text("None (Texture)");
-			ImGui::SameLine();
-
-			if (ImGui::ArrowButton("Add Texture", ImGuiDir_Down))
-			{
-				ImGui::OpenPopup("Change_Texture");
-			}
-
-			ImGui::ColorEdit4("Color##image_rgba", color.ptr());
-
-			if (ImGui::BeginPopup("Change_Texture"))
-			{
-				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
-
-				while (item != App->texture->textures_loaded.end())
-				{
-					if ((*item) != nullptr)
+					if (preserveAspect)
 					{
-						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
-						if (ImGui::IsItemClicked())
-						{
-							tex = (*item);
-						}
+						float ratio = tex->width / tex->height;
+						container->rectTransform->height = container->rectTransform->width / ratio;
+						container->rectTransform->width = container->rectTransform->height * ratio;
 					}
-					item++;
 				}
-				ImGui::EndPopup();
+
+				if (ImGui::Button("Set Native Size"))
+				{
+					container->rectTransform->SetWidth(tex->width);
+					container->rectTransform->SetHeight(tex->height);
+				}
+			}
+			else
+			{
+				ImGui::Text("None (Texture)");
+				ImGui::SameLine();
+
+				if (ImGui::ArrowButton("Add Texture", ImGuiDir_Down))
+				{
+					ImGui::OpenPopup("Change_Texture");
+				}
+
+				ImGui::ColorEdit4("Color##image_rgba", color.ptr());
+
+				if (ImGui::BeginPopup("Change_Texture"))
+				{
+					list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
+
+					while (item != App->texture->textures_loaded.end())
+					{
+						if ((*item) != nullptr)
+						{
+							ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
+							if (ImGui::IsItemClicked())
+							{
+								tex = (*item);
+							}
+						}
+						item++;
+					}
+					ImGui::EndPopup();
+				}
 			}
 		}
 	}
@@ -335,7 +335,7 @@ bool ComponentImage::Fade(float dt)
 {
 	if (color.w <= 0.01)
 	{
-		container->active = false;
+		container->SetActive(container, false);
 		return true;
 	}
 	else
