@@ -29,5 +29,7 @@ public:
 	char* newText = nullptr;
 	std::string composition;
 	ComponentLabel* text = nullptr;
+	int horizontalMargin = 0;
+	int verticalMargin = 0;
 };
 #endif //__ComponentInputBox_H__

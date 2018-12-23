@@ -142,7 +142,7 @@ update_status ModuleInput::PreUpdate(float dt)
 				break;
 			}
 
-			case SDL_TEXTINPUT:
+			case SDL_KEYDOWN:
 			{
 				if (App->engineState == GAME && App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->inputBox != nullptr) {
 					//Not copy or pasting
@@ -152,19 +152,26 @@ update_status ModuleInput::PreUpdate(float dt)
 						composition.pop_back();
 						//renderText = true;
 					}
-					//Handle copy
-					else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
-					{
-						SDL_SetClipboardText(composition.c_str());
-					}
-					//Handle paste
-					else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
-					{
-						composition = SDL_GetClipboardText();
-						//renderText = true;
-					}
+				}
+				//Handle copy
+				else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
+				{
+					SDL_SetClipboardText(composition.c_str());
+				}
+				//Handle paste
+				else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+				{
+					composition = SDL_GetClipboardText();
+					//renderText = true;
+				}
+				break;
+			}
 
-					else if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
+			case SDL_TEXTINPUT:
+			{
+				if (App->engineState == GAME && App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->inputBox != nullptr) {
+
+					if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
 					{
 						//Append character
 						composition += e.text.text;
