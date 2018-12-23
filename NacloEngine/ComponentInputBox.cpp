@@ -38,7 +38,8 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 
 	//image = new ComponentImage(container);
 	text = new ComponentLabel(container);
-	text->text_str = "Input box";
+	text->text_str = "Enter text";
+	App->input->composition = "Enter text";
 	text->text = App->fonts->Load(DEFAULT_FONT, 48);
 }
 
@@ -99,20 +100,20 @@ void ComponentInputBox::Update(float dt)
 
 void ComponentInputBox::ShowInspector()
 {
-	int newHorizontalMargin = horizontalMargin;
-	int newVerticalMargin = verticalMargin;
+	float newHorizontalMargin = horizontalMargin;
+	float newVerticalMargin = verticalMargin;
 
 	if (ImGui::CollapsingHeader("InputBox"))
 	{
 		ImGui::Text("Horizontal Margin");
 		ImGui::SameLine();
-		if (ImGui::DragInt("##horizontalMargin", &newHorizontalMargin, 1)) {
+		if (ImGui::DragFloat("##horizontalMargin", &newHorizontalMargin, 0.1f)) {
 			horizontalMargin = newHorizontalMargin;
 		}
 
 		ImGui::Text("Vertical Margin");
 		ImGui::SameLine();
-		if (ImGui::DragInt("##verticalMargin", &newVerticalMargin, 1)) {
+		if (ImGui::DragFloat("##verticalMargin", &newVerticalMargin, 0.1f)) {
 			verticalMargin = newVerticalMargin;
 		}
 
