@@ -4,6 +4,8 @@
 #include "MeshImporter.h"
 #include "ModuleRenderer3D.h"
 #include "TextureImporter.h"
+#include "ModuleScene.h"
+#include "GameObject.h"
 #include "ImGui/imgui.h"
 #include "ImGui/imgui_impl_sdl.h"
 
@@ -44,7 +46,7 @@ bool ModuleInput::Init()
 update_status ModuleInput::PreUpdate(float dt)
 {
 	SDL_PumpEvents();
-	SDL_StartTextInput();
+	//SDL_StartTextInput();
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 	
 	for(int i = 0; i < MAX_KEYS; ++i)
@@ -130,7 +132,6 @@ update_status ModuleInput::PreUpdate(float dt)
 				break;
 			}
 			
-#ifndef GAME_MODE
 			case SDL_DROPFILE: 
 			{     
 				char* dropped_filedir = nullptr;
@@ -140,32 +141,30 @@ update_status ModuleInput::PreUpdate(float dt)
 
 				break;
 			}
-			case SDL_KEYDOWN:
-			{
-				//Handle backspace
-				if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
-				{
-					//lop off character
-					composition.pop_back();
-					//renderText = true;
-				}
-				//Handle copy
-				else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
-				{
-					SDL_SetClipboardText(composition.c_str());
-				}
-				//Handle paste
-				else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
-				{
-					composition = SDL_GetClipboardText();
-					//renderText = true;
-				}
 
-				//Special text input event
-				else if (e.type == SDL_TEXTINPUT)
-				{
+			case SDL_TEXTINPUT:
+			{
+				if (App->engineState == GAME && App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->inputBox != nullptr) {
 					//Not copy or pasting
-					if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
+					if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
+					{
+						//lop off character
+						composition.pop_back();
+						//renderText = true;
+					}
+					//Handle copy
+					else if (e.key.keysym.sym == SDLK_c && SDL_GetModState() & KMOD_CTRL)
+					{
+						SDL_SetClipboardText(composition.c_str());
+					}
+					//Handle paste
+					else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
+					{
+						composition = SDL_GetClipboardText();
+						//renderText = true;
+					}
+
+					else if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
 					{
 						//Append character
 						composition += e.text.text;
@@ -173,9 +172,7 @@ update_status ModuleInput::PreUpdate(float dt)
 					}
 				}
 				break;
-			}
-#endif
-		
+			}	
 		}
 	}
 

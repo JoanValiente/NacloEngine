@@ -9,6 +9,8 @@
 #include "Component.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
+#include "ComponentRectTransform.h"
+#include "ComponentImage.h"
 #include "Panel.h"
 #include "PanelAbout.h"
 #include "PanelConfiguration.h"
@@ -233,6 +235,12 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 					GameObject* go = new GameObject((*it), "InputBox");
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_INPUTBOX);
+					GameObject* go2 = new GameObject(go, "Image");					
+					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
+					go2->rectTransform->width = go->rectTransform->width;
+					go2->rectTransform->height = go->rectTransform->height;
+					go2->image->color = float4(255, 255, 255, 255);
 				}
 				ImGui::EndMenu();
 			}
