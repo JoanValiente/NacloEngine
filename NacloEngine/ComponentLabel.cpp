@@ -194,9 +194,6 @@ bool ComponentLabel::GenerateText()
 
 	if (TextCanFit(rect_transform))
 	{
-		//Generate quad pos with horizontal and vertical pos
-		//Just put it in the middle for now
-		//Need to generate quad vertexs and indexs
 		UpdateLabelPlane();
 	}
 }

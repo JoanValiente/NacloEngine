@@ -37,7 +37,7 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 	}
 
 	//image = new ComponentImage(container);
-
+	container->label->color = float4(0, 0, 0, 255);
 	text = container->label;
 	text->text_str = "Enter text";
 	App->input->composition = "Enter text";
@@ -62,29 +62,7 @@ void ComponentInputBox::Update(float dt)
 			text = container->label;
 		}
 	}
-	//SDL_StartTextInput();
-	/*
-	SDL_PumpEvents();
-	SDL_Event e;
-	while (SDL_PollEvent(&e))
-	{
-		switch (e.type)
-		{
-		case SDL_TEXTINPUT:
-		{
-			//Not copy or pasting
-			if (!((e.text.text[0] == 'c' || e.text.text[0] == 'C') && (e.text.text[0] == 'v' || e.text.text[0] == 'V') && SDL_GetModState() & KMOD_CTRL))
-			{
-				//Append character
-				composition += e.text.text;
-				//renderText = true;
-			}
-			break;
-		}
-		}
 
-	}
-	*/
 	if (App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->goUID == this->container->goUID)
 	{
 		text->SetString(App->input->composition);
