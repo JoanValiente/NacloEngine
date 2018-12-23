@@ -4,6 +4,8 @@
 #include "ComponentInteractive.h"
 #include "MathGeoLib/MathGeoLib.h"
 
+struct ComponentImage;
+
 class ComponentButton : public ComponentInteractive
 {
 public:
@@ -20,12 +22,22 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
-	void Hover();
+	void Idle();
 	void Enter();
-	void Exit();
+	void Hover();
+	void Down();
 	void OnClick();
+	void Exit();
 
+
+
+private:
+	void OpenPopUps();
 private: 
+	ImVec4 normal_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ImVec4 highlighted_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ImVec4 pressed_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ComponentImage * target_graphic;
 	float2 size = {10, 5};
 };
 

@@ -90,7 +90,8 @@ void ComponentCanvas::UpdateInteractive()
 {
 	for (std::vector<ComponentInteractive*>::iterator it = interactive_components.begin(); it != interactive_components.end(); it++)
 	{
-		(*it)->UpdateInteractive();
+		if ((*it)->container->active)
+			(*it)->UpdateInteractive();
 	}
 
 }

@@ -10,8 +10,6 @@ enum InteractiveStates
 	NO_STATE,
 	ENTER,
 	HOVER,
-	DOWN,
-	MOVE,
 	EXIT
 };
 
@@ -28,8 +26,10 @@ public:
 
 	virtual void Enter() {};
 	virtual void Hover() {};
+	virtual void Down() {};
 	virtual void OnClick() {};
 	virtual void Exit() {};
+	virtual void Idle() {};
 	void Move();
 
 	virtual void SaveComponent(Config &conf);

@@ -63,10 +63,9 @@ void ComponentInteractive::UpdateInteractive()
 
 			if (state == HOVER)
 			{
-				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
 				{
-					state = DOWN;
-					OnClick();
+					Down();
 				}
 				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 				{ 
@@ -75,10 +74,16 @@ void ComponentInteractive::UpdateInteractive()
 						Move();
 					}
 				}
+				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+				{
+					if (!dragable)
+					{
+						OnClick();
+					}
+				}
 				else
 				{
 					Hover();
-					state = HOVER;
 				}
 			}
 		}
@@ -92,6 +97,7 @@ void ComponentInteractive::UpdateInteractive()
 			else
 			{
 				state = NO_STATE;
+				Idle();
 			}
 		}
 	}
