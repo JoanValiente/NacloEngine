@@ -26,6 +26,7 @@ public:
 
 public:
 	//ComponentImage* image = nullptr;
+	float2 size = { 50, 10 };
 	char* newText = nullptr;
 	std::string composition;
 	ComponentLabel* text = nullptr;

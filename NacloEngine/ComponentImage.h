@@ -49,6 +49,8 @@ public:
 	float4 color = float4::one;
 
 private:
+	float2 size = { 40, 40 };
+
 	bool preserveAspect = false;
 	float aux_width = 0.0f;
 	float aux_height = 0.0f;

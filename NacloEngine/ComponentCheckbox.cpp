@@ -18,6 +18,12 @@ ComponentCheckbox::ComponentCheckbox(GameObject * container) : ComponentInteract
 		AddToTheList();
 	}
 
+	if (container->rectTransform != nullptr)
+	{
+		container->rectTransform->width = size.x;
+		container->rectTransform->height = size.y;
+	}
+
 	if (container->image != nullptr)
 	{
 		target_graphic = container->image;
