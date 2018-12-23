@@ -294,7 +294,7 @@ void ComponentLabel::SaveComponent(Config & conf)
 	conf.SetInt("Width", text_width);
 	conf.SetInt("Height", text_height);
 	conf.SetInt("Max Input", max_input);
-	conf.SetInt("Text Size", text_size);
+	conf.SetInt("Text Size", text->size);
 	conf.SetString("Text", text_str.c_str());
 }
 
@@ -305,6 +305,6 @@ void ComponentLabel::LoadComponent(Config & conf)
 	text_width	= conf.GetInt("Width");
 	text_height	= conf.GetInt("Height");
 	max_input	= conf.GetInt("Max Input");
-	text_size	= conf.GetInt("Text Size");
+	text->size  = conf.GetInt("Text Size");
 	text_str	= (char*)conf.GetString("Text");
 }

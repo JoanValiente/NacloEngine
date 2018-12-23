@@ -127,13 +127,6 @@ void ComponentButton::DebugDraw()
 
 void ComponentButton::Idle()
 {
-	if (target_graphic != nullptr)
-	{
-		target_graphic->color.x = normal_color.x;
-		target_graphic->color.y = normal_color.y;
-		target_graphic->color.z = normal_color.z;
-		target_graphic->color.w = normal_color.w;
-	}
 }
 
 void ComponentButton::Enter()
@@ -142,7 +135,7 @@ void ComponentButton::Enter()
 
 void ComponentButton::Hover()
 {
-	if (target_graphic != nullptr)
+	if (target_graphic != nullptr && !function)
 	{
 		target_graphic->color.x = highlighted_color.x;
 		target_graphic->color.y = highlighted_color.y;
@@ -153,7 +146,7 @@ void ComponentButton::Hover()
 
 void ComponentButton::Down()
 {
-	if (target_graphic != nullptr)
+	if (target_graphic != nullptr && !function)
 	{
 		target_graphic->color.x = pressed_color.x;
 		target_graphic->color.y = pressed_color.y;
@@ -169,6 +162,13 @@ void ComponentButton::OnClick()
 
 void ComponentButton::Exit()
 {
+	if (target_graphic != nullptr && !function)
+	{
+		target_graphic->color.x = normal_color.x;
+		target_graphic->color.y = normal_color.y;
+		target_graphic->color.z = normal_color.z;
+		target_graphic->color.w = normal_color.w;
+	}
 }
 
 
@@ -266,7 +266,10 @@ bool ComponentButton::FadeFunction(float dt)
 {
 	bool ret = false;
 
-	ret = container->parent->image->Fade(dt);
+	if (container->parent->image != nullptr)
+	{
+		ret = container->parent->image->Fade(dt);
+	}
 	target_graphic->Fade(dt);
 
 	return ret;

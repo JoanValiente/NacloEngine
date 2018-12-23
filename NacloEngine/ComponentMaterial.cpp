@@ -118,6 +118,14 @@ void ComponentMaterial::LoadComponent(Config & conf)
 			texture->width = conf.GetInt("Width");
 			texture->height = conf.GetInt("Height");
 		}
+		else
+		{
+			texture = App->texture->LoadTexture(conf.GetString("Path"));
+			if (texture == nullptr)
+			{
+				LOG("CANNOT FIND TEXTURE PATH");
+			}
+		}
 
 	}
 }

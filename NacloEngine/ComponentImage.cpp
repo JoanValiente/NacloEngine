@@ -165,47 +165,49 @@ void ComponentImage::AssignTexture(Texture * texture)
 
 void ComponentImage::Render(uint texture_id)
 {
-	glPushMatrix();
-	UpdateImagePlane();
-	float4x4 matrix = container->rectTransform->globalMatrix;
-	glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
+	if (container->active)
+	{
+		glPushMatrix();
+		UpdateImagePlane();
+		float4x4 matrix = container->rectTransform->globalMatrix;
+		glMultMatrixf((GLfloat*)matrix.Transposed().ptr());
 
-	//TRANSPARENCI
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	glEnable(GL_ALPHA_TEST);
-	glAlphaFunc(GL_GREATER, 0.0f);
+		glEnable(GL_ALPHA_TEST);
+		glAlphaFunc(GL_GREATER, 0.0f);
 
-	glColor4f(color.x, color.y, color.z, color.w);
+		glColor4f(color.x, color.y, color.z, color.w);
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_VERTEX_ARRAY);
 
-	glBindTexture(GL_TEXTURE_2D, texture_id);
+		glBindTexture(GL_TEXTURE_2D, texture_id);
 
-	glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	glBindBuffer(GL_ARRAY_BUFFER, plane.textureId);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		glBindBuffer(GL_ARRAY_BUFFER, plane.textureId);
+		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, plane.indexId);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, plane.indexId);
 
-	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
+		glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, NULL);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
-	glDisable(GL_ALPHA_TEST);
-	glPopMatrix();
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glDisable(GL_ALPHA_TEST);
+		glPopMatrix();
+	}
 }
 
 void ComponentImage::UpdateImagePlane()
@@ -335,7 +337,7 @@ bool ComponentImage::Fade(float dt)
 	}
 	else
 	{
-		color.w -= 10 * dt;
+		color.w -= 2 * dt;
 		return false;
 	}
 }

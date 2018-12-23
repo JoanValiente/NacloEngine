@@ -187,7 +187,7 @@ void ModuleScene::DeleteAllGameObject()
 
 void ModuleScene::DestroyAllGameObjects()
 {
-	DeleteGameObject(root);
+	gameObjects.clear();
 }
 
 bool ModuleScene::CleanUp()
