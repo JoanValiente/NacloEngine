@@ -168,6 +168,8 @@ void ComponentCamera::LoadComponent(Config & conf)
 	frustum.verticalFov			 = conf.GetFloat("Vertical Fov");
 	frustum.horizontalFov		 = conf.GetFloat("Horizontal Fov");
 	debugDraw					 = conf.GetBool("DebugDraw");
+	App->scene->main_camera		 = container;
+	App->scene->mainCamera		 = this;
 }
 
 void ComponentCamera::CullingGameObjects()

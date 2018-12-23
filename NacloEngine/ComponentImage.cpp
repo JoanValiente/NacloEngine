@@ -20,8 +20,8 @@ ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(con
 	{
 		if (!container->rectTransform->loading)
 		{
-			container->rectTransform->SetHeight(10.0f);
-			container->rectTransform->SetWidth(20.0f);
+			container->rectTransform->SetHeight(size.x);
+			container->rectTransform->SetWidth(size.y);
 		}
 
 		CreateImagePlane();

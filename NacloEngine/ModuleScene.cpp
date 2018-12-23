@@ -47,7 +47,6 @@ update_status ModuleScene::PreUpdate(float dt)
 {
 	update_status ret = UPDATE_CONTINUE;
 
-
 	//App->camera->CullingGameObjects(root);
 
 	UpdateQuadtree();
@@ -98,7 +97,10 @@ void ModuleScene::DeleteGameObject(GameObject * go)
 					i--;
 				}
 			}
-			(*it)->parent->DeleteChildren((*it));
+			if ((*it) != root)
+			{
+				(*it)->parent->DeleteChildren((*it));
+			}
 			(*it)->DeleteAllComponents();
 			gameObjects.erase(it);
 			break;
@@ -185,7 +187,7 @@ void ModuleScene::DeleteAllGameObject()
 
 void ModuleScene::DestroyAllGameObjects()
 {
-	gameObjects.clear();
+	DeleteGameObject(root);
 }
 
 bool ModuleScene::CleanUp()

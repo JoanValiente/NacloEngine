@@ -9,6 +9,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "Globals.h"
+#include "ModuleWindow.h"
 
 ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 {
@@ -18,8 +19,8 @@ ComponentCanvas::ComponentCanvas(GameObject* container) : Component(container)
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->default_height = 50;
-		container->rectTransform->default_width = 50;
+		container->rectTransform->default_height = App->window->height / 10;
+		container->rectTransform->default_width = App->window->width / 10;
 	}
 }
 
@@ -66,8 +67,8 @@ void ComponentCanvas::DebugDraw()
 		glLineWidth(8.0f);
 		glColor4f(0.25f, 1.0f, 0.0f, 1.0f);
 
-		float canvas_height = container->rectTransform->default_height;
-		float canvas_width = container->rectTransform->default_width;
+		float canvas_height = container->rectTransform->height; 
+		float canvas_width = container->rectTransform->width;
 
 		float3 pos = container->rectTransform->position;
 		float3 v1 = float3(pos.x - canvas_width, pos.y - canvas_height, pos.z);
@@ -134,7 +135,7 @@ void ComponentCanvas::SetCanvasGameMode()
 
 void ComponentCanvas::SetCanvasEditorMode()
 {
-	container->rectTransform->SetNewSize(container->rectTransform->default_width, container->rectTransform->default_height);
+	container->rectTransform->SetNewSize(container->rectTransform->width, container->rectTransform->height);
 }
 
 void ComponentCanvas::SetCanvasPosition()
@@ -146,6 +147,8 @@ void ComponentCanvas::SetCanvasPosition()
 	}
 	else
 	{
+		container->rectTransform->height = App->window->height / 10;
+		container->rectTransform->width = App->window->width / 10;
 		container->rectTransform->SetPosition(float3::zero);
 		container->rectTransform->SetQuaternion(Quat::identity);
 	}
@@ -158,5 +161,4 @@ void ComponentCanvas::SaveComponent(Config &conf)
 
 void ComponentCanvas::LoadComponent(Config & conf)
 {
-	App->scene->canvas.push_back(container);
 }

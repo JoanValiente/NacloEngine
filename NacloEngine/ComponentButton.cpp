@@ -20,6 +20,12 @@ ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(
 		AddToTheList();
 	}
 
+	if (container->rectTransform != nullptr)
+	{
+		container->rectTransform->width = size.x;
+		container->rectTransform->height = size.y;
+	}
+
 	if (container->image != nullptr)
 	{
 		target_graphic = container->image;

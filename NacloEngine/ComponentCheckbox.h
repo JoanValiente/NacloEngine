@@ -35,7 +35,7 @@ private:
 	void OpenPopUps();
 
 private:
-	float2 size = { 10, 5 };
+	float2 size = { 10, 10 };
 	ComponentImage* target_graphic = nullptr;
 	ComponentImage* graphic = nullptr;
 
