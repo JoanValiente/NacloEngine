@@ -149,7 +149,8 @@ update_status ModuleInput::PreUpdate(float dt)
 					if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() == 1)
 					{
 						//lop off character
-						composition = "";
+						App->scene->uiGoSelected = nullptr;
+						composition = "Enter Text";
 					}
 					else if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
 					{

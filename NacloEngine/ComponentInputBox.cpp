@@ -113,7 +113,7 @@ void ComponentInputBox::OnClick()
 		LOG("Input Box Selected");
 		App->scene->uiGoSelected = this->container;
 		App->input->composition = "";
-		container->label->text_str = "";
+		text->SetString("");
 	}
 }
 

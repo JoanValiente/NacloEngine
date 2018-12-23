@@ -148,12 +148,27 @@ As properties it has:
 
 ## Button
 
+## Label
+The label component control displays a non-interactive text to the user. It makes a plane (same as image) and makes a texture with the given text using SDL2_TTF. This can be used to provide captions or labels.
+In the inspector panel you can change the text, the color, the size of the font and the max input of the label. 
 
 As properties it has:
 - Texture.
-- ImagePlane.
+- LabelPlane.
 - Color.
-- Size. 
+- Text. 
+- Size.
+- MaxInput.
+- Font.
+[...]
+
+## Input Box
+This component is a combination of label and image (for background) that handles a SDL_TEXTINPUT when it is selected.
+As properties it has a component label and a component image, two int values for horizontal and vertical margins, and 
+a string named "composition" that the input module fills.
+In the inspector you can change the margins values and the label and image options.
+
+## InputBox
 
 # Controls <a name="controls"></a>
 
