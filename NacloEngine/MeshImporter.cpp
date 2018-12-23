@@ -323,19 +323,18 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 {
 	if (buffer != nullptr)
 	{
-		uint ranges[7] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture, mesh->id_vertices, mesh->id_indices, mesh->id_texture, mesh->id_color};
-		uint colors[4] = {mesh->color.r, mesh->color.g ,mesh->color.b ,mesh->color.a };
+		uint ranges[3] = { mesh->num_vertices, mesh->num_indices, mesh->num_texture};
 
-		uint size = sizeof(ranges) + sizeof(colors) + sizeof(float3) * mesh->num_vertices * 3 + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
+		uint size = sizeof(ranges) + sizeof(float) * mesh->num_vertices * 3 + sizeof(uint) * mesh->num_indices + sizeof(float)* mesh->num_texture * 2;
 
-		char* data = new char[size]; // Allocate
+		char* data = new char[size];// Allocate
 		char* cursor = data;
 
-		// First store ranges
+		//Store ranges
 		uint bytes = sizeof(ranges);
 		memcpy(cursor, ranges, bytes);
-		cursor += bytes;
 
+		cursor += bytes;
 		LOG("Stored ranges");
 
 		//Store vertices
@@ -351,7 +350,6 @@ void MeshImporter::ExportNCL(const void * buffer, Mesh* mesh, std::string& outpu
 		memcpy(cursor, mesh->indices, bytes);
 
 		cursor += bytes;
-
 		LOG("Stored indices");
 
 		//Store Uv
@@ -383,6 +381,7 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 	{
 		LOG("LOADING OWN MESH %s", path);
 		ret = LoadNCL(buffer, size);
+		SetBuffers(ret);
 		RELEASE_ARRAY(buffer);
 	}
 	else
@@ -396,35 +395,23 @@ Mesh * MeshImporter::ImportNCL(const char * path)
 
 Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 {
+	if (buffer == nullptr)
+		return false;
+
 	Mesh* ret = new Mesh;
 	char* cursor = (char*)buffer;
 
 	// amount of indices / vertices / colors / normals / texture_coords
-	uint ranges[7];
+	uint ranges[3];
 	uint bytes = sizeof(ranges);
 	memcpy(ranges, cursor, bytes);
 
 	cursor += bytes;
 
-	uint colors[4];
-	uint bytes_colors = sizeof(colors);
-	memcpy(colors, cursor, bytes_colors);
-
 	ret->num_vertices	= ranges[0];
 	ret->num_indices	= ranges[1];
 	ret->num_texture	= ranges[2];
-	ret->id_vertices	= ranges[3];
-	ret->id_indices		= ranges[4];
-	ret->id_texture		= ranges[5];
-	ret->id_color		= ranges[6];
 
-
-	ret->color.r = colors[0];
-	ret->color.g = colors[1];
-	ret->color.b = colors[2];
-	ret->color.a = colors[3];
-
-	cursor += bytes;
 
 	//Load Vertices
 	bytes = sizeof(float) * ret->num_vertices * 3;
@@ -439,9 +426,11 @@ Mesh * MeshImporter::LoadNCL(const void * buffer, uint size)
 
 	//Load UV
 	cursor += bytes;
-	bytes = sizeof(float) * ret->num_texture * 3;
-	ret->texture = new float[ret->num_texture * 3];
+	bytes = sizeof(float) * ret->num_texture * 2;
+	ret->texture = new float[ret->num_texture * 2];
 	memcpy(ret->texture, cursor, bytes);
+
+	ret->color = aiColor4D(255.0f, 255.0f, 255.0f, 255.0f);
 
 	App->renderer3D->AddMesh(ret);
 

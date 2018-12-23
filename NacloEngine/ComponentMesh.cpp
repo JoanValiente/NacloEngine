@@ -55,9 +55,9 @@ void ComponentMesh::LoadComponent(Config & conf)
 {
 	AssignMesh(App->meshes->ImportNCL(conf.GetString("NCL Path")));
 	if (mesh != nullptr)
-	{
-		
+	{	
 		mesh->filename = conf.GetString("Name");
 		mesh->path = conf.GetString("Path");
+		mesh->ncl_path = conf.GetString("NCL Path");
 	}
 }

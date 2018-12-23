@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "ModuleRenderer3D.h"
 #include "SceneSerialization.h"
+#include "ModuleFileSystem.h"
 #include "Imgui/imgui.h"
 
 PanelTime::PanelTime() : Panel("Time")
@@ -48,6 +49,7 @@ void PanelTime::Draw()
 	{
 		App->gameState = GAME_STATE::PLAY;
 		App->engineState = ENGINE_STATE::GAME;
+		App->sceneser->SaveScene("tmp");
 		App->camera->activeCamera = App->scene->mainCamera;
 		App->renderer3D->ChangeCamera();
 	}
@@ -58,6 +60,9 @@ void PanelTime::Draw()
 	{
 		App->gameState = GAME_STATE::STOP;
 		App->engineState = ENGINE_STATE::EDITOR;
+		App->sceneser->LoadScene("tmp");
+		std::string path = "Assets/Scenes/tmp.json";
+		App->fs->Phys_DeleteFile(path.c_str());
 		App->camera->activeCamera = App->camera->camera;
 		App->renderer3D->ChangeCamera();
 	}
