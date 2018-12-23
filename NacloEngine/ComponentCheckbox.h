@@ -4,7 +4,7 @@
 #include "ComponentInteractive.h"
 #include "MathGeoLib/MathGeoLib.h"
 
-struct Image;
+struct ComponentImage;
 struct GameObject;
 struct Config;
 
@@ -31,9 +31,18 @@ public:
 	void ExecuteFunction();
 
 private:
+	void OpenPopUps();
+
+private:
 	float2 size = { 10, 5 };
-	float3 pos = float3::zero;
-	bool checked = false;
+	ComponentImage* target_graphic = nullptr;
+	ComponentImage* graphic = nullptr;
+
+	ImVec4 normal_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ImVec4 highlighted_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+	ImVec4 pressed_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	bool isOn = false;
 };
 
 #endif
