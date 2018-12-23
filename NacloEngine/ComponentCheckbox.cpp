@@ -4,6 +4,8 @@
 #include "ComponentRectTransform.h"
 #include "Component.h"
 #include "ComponentImage.h"
+#include "Config.h"
+
 
 
 ComponentCheckbox::ComponentCheckbox(GameObject * container) : ComponentInteractive(container)
@@ -82,14 +84,6 @@ void ComponentCheckbox::Update(float dt)
 }
 
 void ComponentCheckbox::DebugDraw()
-{
-}
-
-void ComponentCheckbox::SaveComponent(Config & conf)
-{
-}
-
-void ComponentCheckbox::LoadComponent(Config & conf)
 {
 }
 
@@ -172,3 +166,37 @@ void ComponentCheckbox::OpenPopUps()
 			ImGui::EndPopup();
 		}
 }
+
+
+void ComponentCheckbox::SaveComponent(Config & conf)
+{
+	conf.SetBool("Interactable", interactive);
+	conf.SetBool("Is On", isOn);
+	conf.SetFloat4("Normal Color", float4(normal_color.x, normal_color.y, normal_color.z, normal_color.w));
+	conf.SetFloat4("Highlighted Color", float4(highlighted_color.x, highlighted_color.y, highlighted_color.z, highlighted_color.w));
+	conf.SetFloat4("Pressed Color", float4(pressed_color.x, pressed_color.y, pressed_color.z, pressed_color.w));
+}
+
+void ComponentCheckbox::LoadComponent(Config & conf)
+{
+	float4 aux;
+	aux = conf.GetFloat4("Normal Color");
+	FloatToImVec(aux, normal_color);
+	aux = conf.GetFloat4("Highlighted Color");
+	FloatToImVec(aux, highlighted_color);
+	aux = conf.GetFloat4("Pressed Color");
+	FloatToImVec(aux, pressed_color);
+
+	interactive = conf.GetBool("Interactable");
+	isOn = conf.GetBool("Is On");
+
+}
+
+void ComponentCheckbox::FloatToImVec(float4 aux, ImVec4 & vec)
+{
+	vec.x = aux.x;
+	vec.y = aux.y;
+	vec.z = aux.z;
+	vec.w = aux.w;
+}
+

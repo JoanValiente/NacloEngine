@@ -32,6 +32,7 @@ public:
 
 
 private:
+	void FloatToImVec(float4 aux, ImVec4 &vec);
 	void OpenPopUps();
 private: 
 	ImVec4 normal_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);

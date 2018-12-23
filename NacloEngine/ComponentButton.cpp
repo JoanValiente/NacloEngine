@@ -8,6 +8,7 @@
 #include "Component.h"
 #include "ComponentImage.h"
 #include "GameObject.h"
+#include "Config.h"
 
 ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(container)
 {
@@ -34,6 +35,10 @@ void ComponentButton::Update(float dt)
 	if (!added)
 	{
 		AddToTheList();
+	}
+	if (target_graphic->tex == nullptr)
+	{
+		target_graphic = container->image;
 	}
 	if (App->engineState == ENGINE_STATE::EDITOR)
 	{
@@ -110,14 +115,6 @@ void ComponentButton::DebugDraw()
 	}
 }
 
-void ComponentButton::SaveComponent(Config & conf)
-{
-}
-
-void ComponentButton::LoadComponent(Config & conf)
-{
-}
-
 void ComponentButton::Idle()
 {
 	if (target_graphic != nullptr)
@@ -163,6 +160,14 @@ void ComponentButton::Exit()
 {
 }
 
+
+void ComponentButton::FloatToImVec(float4 aux, ImVec4 & vec)
+{
+	vec.x = aux.x;
+	vec.y = aux.y;
+	vec.z = aux.z;
+	vec.w = aux.w;
+}
 
 void ComponentButton::OpenPopUps()
 {
@@ -221,5 +226,26 @@ void ComponentButton::OpenPopUps()
 		ImGui::EndPopup();
 	}
 
+}
+
+void ComponentButton::SaveComponent(Config & conf)
+{
+	conf.SetBool("Interactable", interactive);
+	conf.SetFloat4("Normal Color", float4(normal_color.x, normal_color.y, normal_color.z, normal_color.w));
+	conf.SetFloat4("Highlighted Color", float4(highlighted_color.x, highlighted_color.y, highlighted_color.z, highlighted_color.w));
+	conf.SetFloat4("Pressed Color", float4(pressed_color.x, pressed_color.y, pressed_color.z, pressed_color.w));
+}
+
+void ComponentButton::LoadComponent(Config & conf)
+{
+	float4 aux;
+	aux = conf.GetFloat4("Normal Color");
+	FloatToImVec(aux, normal_color);
+	aux = conf.GetFloat4("Highlighted Color");	
+	FloatToImVec(aux, highlighted_color);
+	aux = conf.GetFloat4("Pressed Color");
+	FloatToImVec(aux, pressed_color);
+
+	interactive = conf.GetBool("Interactable");
 }
 

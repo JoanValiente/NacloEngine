@@ -31,6 +31,7 @@ public:
 	void ExecuteFunction();
 
 private:
+	void FloatToImVec(float4 aux, ImVec4 & vec);
 	void OpenPopUps();
 
 private:
