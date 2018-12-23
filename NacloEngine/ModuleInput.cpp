@@ -146,11 +146,15 @@ update_status ModuleInput::PreUpdate(float dt)
 			{
 				if (App->engineState == GAME && App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->inputBox != nullptr) {
 					//Not copy or pasting
-					if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
+					if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() == 1)
+					{
+						//lop off character
+						composition = "Enter text";
+					}
+					else if (e.key.keysym.sym == SDLK_BACKSPACE && composition.length() > 0)
 					{
 						//lop off character
 						composition.pop_back();
-						//renderText = true;
 					}
 				}
 				//Handle copy
@@ -162,7 +166,6 @@ update_status ModuleInput::PreUpdate(float dt)
 				else if (e.key.keysym.sym == SDLK_v && SDL_GetModState() & KMOD_CTRL)
 				{
 					composition = SDL_GetClipboardText();
-					//renderText = true;
 				}
 				break;
 			}
@@ -175,7 +178,6 @@ update_status ModuleInput::PreUpdate(float dt)
 					{
 						//Append character
 						composition += e.text.text;
-						//renderText = true;
 					}
 				}
 				break;
