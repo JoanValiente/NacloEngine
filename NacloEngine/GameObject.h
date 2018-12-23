@@ -18,6 +18,7 @@ struct ComponentImage;
 struct ComponentButton;
 struct ComponentLabel;
 struct ComponentInputBox;
+struct ComponentCheckbox;
 struct Config;
 
 
@@ -81,6 +82,7 @@ public:
 	ComponentRectTransform* rectTransform = nullptr;
 	ComponentImage* image = nullptr;
 	ComponentButton* button = nullptr;
+	ComponentCheckbox* checkbox = nullptr;
 	ComponentLabel* label = nullptr;
 	ComponentInputBox* inputBox = nullptr;
 

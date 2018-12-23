@@ -27,7 +27,7 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 
 	interactive = true;
 	incanvas = GetCanvas();
-	dragable = true;
+	dragable = false;
 	if (incanvas != nullptr)
 	{
 		interactive = true;

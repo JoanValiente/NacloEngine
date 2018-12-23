@@ -67,14 +67,15 @@ void ComponentInteractive::UpdateInteractive()
 				{
 					Down();
 				}
-				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
+				else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
 				{ 
+					Down();
 					if (dragable)
 					{
 						Move();
 					}
 				}
-				if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
+				else if (App->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_UP)
 				{
 					if (!dragable)
 					{
@@ -131,8 +132,6 @@ void ComponentInteractive::Move()
 
 	container->rectTransform->position.x -= mouse_motion_x / 20;
 	container->rectTransform->position.y -= mouse_motion_y / 10;
-
-	LOG("%i, %i", mouse_motion_x, mouse_motion_y);
 }
 
 void ComponentInteractive::SaveComponent(Config & conf)

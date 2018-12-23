@@ -12,7 +12,6 @@
 ComponentButton::ComponentButton(GameObject * container) : ComponentInteractive(container)
 {
 	this->type = COMPONENT_BUTTON;
-	interactive = true;
 	incanvas = GetCanvas();
 
 	if (incanvas != nullptr)
@@ -152,13 +151,6 @@ void ComponentButton::Down()
 
 void ComponentButton::OnClick()
 {
-	if (target_graphic != nullptr)
-	{
-		target_graphic->color.x = highlighted_color.x;
-		target_graphic->color.y = highlighted_color.y;
-		target_graphic->color.z = highlighted_color.z;
-		target_graphic->color.w = highlighted_color.w;
-	}
 }
 
 void ComponentButton::Exit()
