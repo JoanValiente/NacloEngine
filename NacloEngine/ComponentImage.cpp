@@ -326,3 +326,17 @@ void ComponentImage::LoadComponent(Config & conf)
 	dragable = conf.GetBool("Dragable");
 }
 
+bool ComponentImage::Fade(float dt)
+{
+	if (color.w <= 0.01)
+	{
+		container->active = false;
+		return true;
+	}
+	else
+	{
+		color.w -= 10 * dt;
+		return false;
+	}
+}
+

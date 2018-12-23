@@ -39,6 +39,8 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 
+	bool Fade(float dt);
+
 private:
 	void PreserveAspect();
 	void CreateImagePlane();

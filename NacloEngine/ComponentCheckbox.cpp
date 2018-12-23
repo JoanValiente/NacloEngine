@@ -5,7 +5,7 @@
 #include "Component.h"
 #include "ComponentImage.h"
 #include "Config.h"
-
+#include "Application.h"
 
 
 ComponentCheckbox::ComponentCheckbox(GameObject * container) : ComponentInteractive(container)
@@ -87,6 +87,10 @@ void ComponentCheckbox::Update(float dt)
 	{
 		AddToTheList();
 	}
+	if (isOn)
+	{
+		ExecuteFunction();
+	}
 }
 
 void ComponentCheckbox::DebugDraw()
@@ -113,6 +117,7 @@ void ComponentCheckbox::OnClick()
 
 void ComponentCheckbox::ExecuteFunction()
 {
+	App->FPS_cap = 60;
 }
 
 void ComponentCheckbox::OpenPopUps()

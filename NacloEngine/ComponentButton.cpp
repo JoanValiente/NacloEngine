@@ -46,6 +46,10 @@ void ComponentButton::Update(float dt)
 	{
 		target_graphic = container->image;
 	}
+	if (function)
+	{
+		function = !FadeFunction(dt);
+	}
 	if (App->engineState == ENGINE_STATE::EDITOR)
 	{
 		DebugDraw();
@@ -160,6 +164,7 @@ void ComponentButton::Down()
 
 void ComponentButton::OnClick()
 {
+	function = true;
 }
 
 void ComponentButton::Exit()
@@ -255,3 +260,14 @@ void ComponentButton::LoadComponent(Config & conf)
 	interactive = conf.GetBool("Interactable");
 }
 
+//HARDCODDED FUNCTIONS
+
+bool ComponentButton::FadeFunction(float dt)
+{
+	bool ret = false;
+
+	ret = container->parent->image->Fade(dt);
+	target_graphic->Fade(dt);
+
+	return ret;
+}

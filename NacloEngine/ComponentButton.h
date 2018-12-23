@@ -34,7 +34,10 @@ public:
 private:
 	void FloatToImVec(float4 aux, ImVec4 &vec);
 	void OpenPopUps();
+
+	bool FadeFunction(float dt);
 private: 
+	bool function = false;
 	ImVec4 normal_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	ImVec4 highlighted_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	ImVec4 pressed_color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
