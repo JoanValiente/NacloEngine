@@ -38,6 +38,7 @@ public:
 	std::vector<GameObject*> canvas;
 	GameObject* main_camera = nullptr;
 	ComponentCamera* mainCamera = nullptr;
+	GameObject* uiGoSelected = nullptr;
 
 	Quadtree* quadtree = nullptr;
 	bool quadtreeUpdate = true;
