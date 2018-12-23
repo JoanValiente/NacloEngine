@@ -40,6 +40,9 @@ public:
 	bool SetIntArray(const char* name, int* values, int size);
 	bool SetFloatArray(const char* name, const float* values, int size);
 
+	bool SetFloat2(const char* name, const float2 value);
+	float2 GetFloat2(const char* name);
+
 	bool SetFloat3(const char* name, const float3 value);
 	float3 GetFloat3(const char* name);
 

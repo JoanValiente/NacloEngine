@@ -11,6 +11,8 @@ public:
 	void ShowInspector();
 	void DrawGuizmos();
 
+	void Update(float dt);
+
 	void UpdateMatrix();
 	float4x4 GetLocalCanvasMatrix();
 
@@ -32,7 +34,7 @@ public:
 	void SaveComponent(Config &conf);
 	void LoadComponent(Config &conf);
 public:
-
+	bool loading = false;
 	float3 position = float3::zero;
 	float3 rotation = float3::zero;
 	Quat quaternion = Quat::identity;

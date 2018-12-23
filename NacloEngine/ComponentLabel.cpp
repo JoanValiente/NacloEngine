@@ -21,8 +21,11 @@ ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->SetHeight(2.5f);
-		container->rectTransform->SetWidth(5.0f);
+		if (!container->rectTransform->loading)
+		{
+			container->rectTransform->SetHeight(2.5f);
+			container->rectTransform->SetWidth(5.0f);
+		}
 		text_width = container->rectTransform->width;
 		text_height = container->rectTransform->height;
 		CreateLabelPlane();

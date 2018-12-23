@@ -8,6 +8,7 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleCamera3D.h"
+#include "Config.h"
 
 
 ComponentRectTransform::ComponentRectTransform(GameObject* container) : Component(container)
@@ -281,12 +282,9 @@ void ComponentRectTransform::DrawGuizmos()
 	}
 }
 
-void ComponentRectTransform::SaveComponent(Config &conf)
+void ComponentRectTransform::Update(float dt)
 {
-}
-
-void ComponentRectTransform::LoadComponent(Config & conf)
-{
+	loading = false;
 }
 
 void ComponentRectTransform::SetNewSize(float width, float height)
@@ -303,3 +301,28 @@ void ComponentRectTransform::SetNewSize(float width, float height)
 		SetSize(float3(new_size_x, size.y, size.z));
 	}
 }
+
+void ComponentRectTransform::SaveComponent(Config &conf)
+{
+	conf.SetFloat3("Position", position);
+	conf.SetFloat3("Size",	size);
+	conf.SetFloat2("Pivot",	pivot);
+	conf.SetFloat2("Pivot",	minAnchor);
+	conf.SetFloat2("Pivot",	maxAnchor);
+	conf.SetFloat("Width",	width);
+	conf.SetFloat("Height",	height);
+
+
+}
+
+void ComponentRectTransform::LoadComponent(Config & conf)
+{
+	position	= conf.GetFloat3("Position");
+	size		= conf.GetFloat3("Size");
+	pivot		= conf.GetFloat2("Pivot");
+	minAnchor	= conf.GetFloat2("Pivot");
+	maxAnchor	= conf.GetFloat2("Pivot");
+	width		= conf.GetFloat("Width");
+	height		= conf.GetFloat("Height");
+	loading = true;
+}	

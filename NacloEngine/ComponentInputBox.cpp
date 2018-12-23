@@ -16,8 +16,11 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->SetHeight(10.0f);
-		container->rectTransform->SetWidth(20.0f);
+		if (!container->rectTransform->loading)
+		{
+			container->rectTransform->SetHeight(10.0f);
+			container->rectTransform->SetWidth(20.0f);
+		}
 
 		container->rectTransform->UpdateMatrix();
 	}

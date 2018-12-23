@@ -15,10 +15,14 @@ ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(con
 {
 	this->type = COMPONENT_IMAGE;
 
+
 	if (container->rectTransform != nullptr)
 	{
-		container->rectTransform->SetHeight(10.0f);
-		container->rectTransform->SetWidth(20.0f);
+		if (!container->rectTransform->loading)
+		{
+			container->rectTransform->SetHeight(10.0f);
+			container->rectTransform->SetWidth(20.0f);
+		}
 
 		CreateImagePlane();
 		container->rectTransform->UpdateMatrix();

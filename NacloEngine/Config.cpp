@@ -210,6 +210,23 @@ bool Config::SetFloatArray(const char * name, const float* values, int size)
 	return false;
 }
 
+bool Config::SetFloat2(const char * name, const float2 value)
+{
+	float new_float2[2] = { value.x, value.y};
+	return SetFloatArray(name, new_float2, 2);
+}
+
+float2 Config::GetFloat2(const char * name)
+{
+	float2 ret = float2::zero;
+
+	JSON_Array* aux = json_object_get_array(root, name);
+	ret.x = json_value_get_number(json_array_get_value(aux, 0));
+	ret.y = json_value_get_number(json_array_get_value(aux, 1));
+
+	return ret;
+}
+
 bool Config::SetFloat3(const char * name, const float3 value)
 {
 	float new_float3[3] = { value.x, value.y, value.z };
