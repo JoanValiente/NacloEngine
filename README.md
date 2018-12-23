@@ -34,13 +34,31 @@ Project GitHub repository [here](https://github.com/JoanValiente/NacloEngine)
 
 # Members <a name="members"></a>
 
+![Captura3](https://raw.githubusercontent.com/JoanValiente/NacloEngine/master/docs/Captura3.PNG)
+
 David Lozano. [GitHub](https://github.com/DavidTheMaaster)
 
-![Captura3](https://raw.githubusercontent.com/JoanValiente/NacloEngine/master/docs/Captura3.PNG)
+- Importers
+- Own binary file format
+- Component Mesh 
+- Component Material
+- Scene serialization
+- File system
+- Engine interface
+- UI system
+
+![Captura2](https://raw.githubusercontent.com/JoanValiente/NacloEngine/master/docs/Captura2.PNG)
 
 Joan Valiente. [GitHub](https://github.com/JoanValiente/)
 
-![Captura2](https://raw.githubusercontent.com/JoanValiente/NacloEngine/master/docs/Captura2.PNG)
+- Gameobjects and components (engine structure)
+- Component Transform
+- Module and Component Camera
+- Mouse picking
+- Guizmos
+- Engine interface
+- Scene partitioning (Quadtree)
+- UI system
 
 
 # Video <a name="video"></a>
