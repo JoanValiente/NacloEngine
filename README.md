@@ -64,7 +64,7 @@ A game objects hierarchy system with its components. There are 11 different comp
  - And the UI ones: canvas, rect_transform, image, button, label, checkbox and inputbox.
 
 Game objects have hierarchy showed in the hierarchy panel, on the left of the screen. You can select game objects by clicking them in this panel, or change the hierarchy by dragging them.
-We can create empty game objects with Create->GameObject->CreateEmpty. 
+We can create empty game objects with Create->GameObject->CreateEmpty.
 
 Selecting a gameobject will show its inspector panel. Here you can find the main information and options about the game object (name, static value, option to delete it, etc), and the information and options of its components.
 You can add components to a game object by clicking the "Add Component" button on the inspector.
@@ -72,6 +72,7 @@ You can add components to a game object by clicking the "Add Component" button o
 ## Importers and own binary format for files <a name="importers"></a>
 
 You can import a file (dragging it into the engine), and our own binary format for that files will be generated in library folder. You can import textures or meshes (in .FBX).
+
 The modules that are resposible for importing the files save the useful data in 2 types of file: .ncl for meshes and .dds for textures. They save all the useful data for load that mesh or texture
 and charge it in the scene faster.
 
@@ -79,7 +80,9 @@ and charge it in the scene faster.
 
 Both the main camera and the editor camera, works with the camera component (whose is handled by a frustum). 
 Our camera module has a ComponentCamera and it handles unity-like camera motion and mouse picking (see below).
+
 You can change some values of the frustum like the Fov, the far and near plane distance, the speed (for editor camera), etc. Main camera options can be changed in the inspector of its GameObject, and editor camera options can be changed on the configuration window.
+
 You can also activate the "culling" option that will discard the render of meshes out the frustum, every mesh have an AABB and if it is outside camera frustum it is not drew, in order to optimize the engine.
 
 ## Space Partitioning / Quadtree <a name="quadtree"></a>
@@ -120,12 +123,12 @@ Time scale modify the time multiplier for game mode. Next to this bar we can see
 * Mouse wheel: zoom.
 * Mouse wheel pressed: Up, right, left and down movement.
 * ShortCuts:
-	1 - Open/Close Configuration Window.
-	2 - Open/Close Inspector.
-	3 - Open/Close Console.
-	4 - Open/Close About Window.
-	Shift + C - Enable/Disable Checkers mode.
-	Shift + M - Enable/Disable Wire mode.
+	- 1: Open/Close Configuration Window.
+	- 2: Open/Close Inspector.
+	- 3: Open/Close Console.
+	- 4: Open/Close About Window.
+	- Shift + C: Enable/Disable Checkers mode.
+	- Shift + M: Enable/Disable Wire mode.
 
 
 
