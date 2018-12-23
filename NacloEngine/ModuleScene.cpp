@@ -14,6 +14,7 @@
 #include "PanelInspector.h"
 #include "MeshImporter.h"
 #include "Config.h"
+#include "SceneSerialization.h"
 
 
 
@@ -29,7 +30,6 @@ bool ModuleScene::Start()
 {
 	Grid = new grid(0, 1, 0, 0);
 	Grid->axis = true;
-
 	root = new GameObject(nullptr, "root");
 	ComponentTransform* root_transform = (ComponentTransform*)root->NewComponent(Component::COMPONENT_TYPE::COMPONENT_TRANSFORM);
 	

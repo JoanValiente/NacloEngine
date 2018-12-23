@@ -19,6 +19,7 @@
 #include "ComponentLabel.h"
 #include "ComponentInputBox.h"
 #include "Quadtree.h"
+#include "SceneSerialization.h"
 
 #pragma comment (lib, "Glew/lib/glew32.lib")
 #pragma comment (lib, "glu32.lib")    /* link OpenGL Utility lib     */
@@ -152,7 +153,7 @@ bool ModuleRenderer3D::Start()
 	OnResize(SCREEN_WIDTH, SCREEN_HEIGHT);                                 
 
 	checkers_path = App->texture->LoadCheckersTexture();
-
+	App->sceneser->LoadScene("Assignment_3");
 	return ret;
 }
 
