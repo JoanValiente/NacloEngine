@@ -30,18 +30,20 @@ void PanelConsole::ConsoleLog(const char* text)
 // ---------------------------------------------------------
 void PanelConsole::Draw()
 {
-	int width;
-	int height;
-	SDL_GetWindowSize(App->window->window, &width, &height);
+	if (App->engineState == ENGINE_STATE::EDITOR) {
+		int width;
+		int height;
+		SDL_GetWindowSize(App->window->window, &width, &height);
 
-	ImGui::SetNextWindowPos(ImVec2(0, height/2 + height/4 - 35));
-	ImGui::SetNextWindowSize(ImVec2(width, height / 4 + height / 100));
-	ImGui::SetNextWindowBgAlpha(0.5f);
+		ImGui::SetNextWindowPos(ImVec2(0, height / 2 + height / 4 - 35));
+		ImGui::SetNextWindowSize(ImVec2(width, height / 4 + height / 100));
+		ImGui::SetNextWindowBgAlpha(0.5f);
 
-	ImGui::Begin("Console", &active);
-	ImGui::TextUnformatted(console_logs.begin());
-	if (ConsoleScroll)
-		ImGui::SetScrollHere(1.0f);
-	ConsoleScroll = false;
-	ImGui::End();
+		ImGui::Begin("Console", &active);
+		ImGui::TextUnformatted(console_logs.begin());
+		if (ConsoleScroll)
+			ImGui::SetScrollHere(1.0f);
+		ConsoleScroll = false;
+		ImGui::End();
+	}
 }

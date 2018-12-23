@@ -184,7 +184,9 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			{
 				if (ImGui::MenuItem("Create Empty", NULL, false, true))
 				{
-					App->scene->CreateEmptyGO();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						App->scene->CreateEmptyGO();
+					}
 				}
 				ImGui::EndMenu();
 			}
@@ -193,70 +195,82 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 			{
 				if (ImGui::MenuItem("Canvas", NULL, false, true))
 				{
-					App->scene->CreateCanvas();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						App->scene->CreateCanvas();
+					}
 				}
 				if (ImGui::MenuItem("Image", NULL, false, true))
 				{
-					if (App->scene->canvas.empty()) {
-						App->scene->CreateCanvas();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						if (App->scene->canvas.empty()) {
+							App->scene->CreateCanvas();
+						}
+						vector<GameObject*>::iterator it = App->scene->canvas.begin();
+						GameObject* go = new GameObject((*it), "Image");
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 					}
-					vector<GameObject*>::iterator it = App->scene->canvas.begin();
-					GameObject* go = new GameObject((*it), "Image");
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 				}
 				if (ImGui::MenuItem("Button", NULL, false, true))
 				{
-					if (App->scene->canvas.empty()) {
-						App->scene->CreateCanvas();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						if (App->scene->canvas.empty()) {
+							App->scene->CreateCanvas();
+						}
+						vector<GameObject*>::iterator it = App->scene->canvas.begin();
+						GameObject* go = new GameObject((*it), "Button");
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_BUTTON);
 					}
-					vector<GameObject*>::iterator it = App->scene->canvas.begin();
-					GameObject* go = new GameObject((*it), "Button");
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_BUTTON);
 				}
 				if (ImGui::MenuItem("CheckBox", NULL, false, true))
 				{
-					if (App->scene->canvas.empty())
-					{
-						App->scene->CreateCanvas();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						if (App->scene->canvas.empty())
+						{
+							App->scene->CreateCanvas();
+						}
+						vector<GameObject*>::iterator it = App->scene->canvas.begin();
+						GameObject* go = new GameObject((*it), "Checkbox");
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CHECKBOX);
+						GameObject* go2 = new GameObject(go, "Image");
+						go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 					}
-					vector<GameObject*>::iterator it = App->scene->canvas.begin();
-					GameObject* go = new GameObject((*it), "Checkbox");
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CHECKBOX);
-					GameObject* go2 = new GameObject(go, "Image");
-					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 				}
 				if (ImGui::MenuItem("Label", NULL, false, true))
 				{
-					if (App->scene->canvas.empty()) {
-						App->scene->CreateCanvas();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						if (App->scene->canvas.empty()) {
+							App->scene->CreateCanvas();
+						}
+						vector<GameObject*>::iterator it = App->scene->canvas.begin();
+						GameObject* go = new GameObject((*it), "Label");
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_LABEL);
 					}
-					vector<GameObject*>::iterator it = App->scene->canvas.begin();
-					GameObject* go = new GameObject((*it), "Label");
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_LABEL);
 				}
 				if (ImGui::MenuItem("InputBox", NULL, false, true))
 				{
-					if (App->scene->canvas.empty()) {
-						App->scene->CreateCanvas();
+					if (App->engineState == ENGINE_STATE::EDITOR) {
+						if (App->scene->canvas.empty()) {
+							App->scene->CreateCanvas();
+						}
+						vector<GameObject*>::iterator it = App->scene->canvas.begin();
+						GameObject* go = new GameObject((*it), "InputBox");
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_LABEL);
+						go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_INPUTBOX);
+						GameObject* go2 = new GameObject(go, "Image");
+						go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+						go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
+						go2->rectTransform->width = go->rectTransform->width;
+						go2->rectTransform->height = go->rectTransform->height;
+						go2->image->color = float4(255, 255, 255, 255);
 					}
-					vector<GameObject*>::iterator it = App->scene->canvas.begin();
-					GameObject* go = new GameObject((*it), "InputBox");
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_LABEL);
-					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_INPUTBOX);
-					GameObject* go2 = new GameObject(go, "Image");					
-					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
-					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
-					go2->rectTransform->width = go->rectTransform->width;
-					go2->rectTransform->height = go->rectTransform->height;
-					go2->image->color = float4(255, 255, 255, 255);
 				}
 				ImGui::EndMenu();
 			}
@@ -266,11 +280,15 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 		{
 			if (ImGui::MenuItem("Random Number Generator", NULL, false, true))
 			{
-				randomNumberGenerator->active = true;
+				if (App->engineState == ENGINE_STATE::EDITOR) {
+					randomNumberGenerator->active = true;
+				}
 			}
 			if (ImGui::MenuItem("Configuration", NULL, false, true))
 			{
-				configuration->active = true;
+				if (App->engineState == ENGINE_STATE::EDITOR) {
+					configuration->active = true;
+				}
 			}
 			ImGui::EndMenu();
 		}
@@ -279,7 +297,9 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 		{
 			if (ImGui::MenuItem("About", NULL, false, true))
 			{
-				about->active = true; 
+				if (App->engineState == ENGINE_STATE::EDITOR) {
+					about->active = true;
+				}
 			}
 
 			if (ImGui::BeginMenu("Help"))

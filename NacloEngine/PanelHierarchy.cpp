@@ -15,36 +15,37 @@ PanelHierarchy::~PanelHierarchy()
 
 void PanelHierarchy::Draw()
 {
-	int width;
-	int height;
-	SDL_GetWindowSize(App->window->window, &width, &height);
+	if (App->engineState == ENGINE_STATE::EDITOR) {
+		int width;
+		int height;
+		SDL_GetWindowSize(App->window->window, &width, &height);
 
-	ImGui::SetNextWindowPos(ImVec2(0, height / 28));
-	ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5.5));
-	ImGui::SetNextWindowBgAlpha(0.5f);
+		ImGui::SetNextWindowPos(ImVec2(0, height / 28));
+		ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5.5));
+		ImGui::SetNextWindowBgAlpha(0.5f);
 
-	if(ImGui::Begin("Game Objects", &active)) 
-	{
-		GameObject* root = App->scene->root;
-
-		for (int iterator = 0; iterator < root->GetNumChildren(); ++iterator)
+		if (ImGui::Begin("Game Objects", &active))
 		{
+			GameObject* root = App->scene->root;
+
+			for (int iterator = 0; iterator < root->GetNumChildren(); ++iterator)
+			{
 				ShowGameObjectHierarchy(root->children.at(iterator));
+			}
+
+			ImGui::End();
+		}
+		else
+		{
+			ImGui::End();
 		}
 
-		ImGui::End();
+		if (move)
+		{
+			target->ChangeHierarchy(toMove);
+			move = false;
+		}
 	}
-	else
-	{
-		ImGui::End();
-	}
-
-	if (move)
-	{
-		target->ChangeHierarchy(toMove);
-		move = false;
-	}
-
 }
 
 bool PanelHierarchy::ShowGameObjectHierarchy(GameObject * go)

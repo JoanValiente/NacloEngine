@@ -1,5 +1,6 @@
 #include "Imgui/imgui.h"
 #include "PanelRandomNumberGenerator.h"
+#include "Application.h"
 
 PanelRandomNumberGenerator::PanelRandomNumberGenerator(): Panel("Random Number Generator")
 {
@@ -17,33 +18,35 @@ PanelRandomNumberGenerator::~PanelRandomNumberGenerator()
 
 void PanelRandomNumberGenerator::Draw()
 {
-	static double random1 = 0.0f;
-	static int random2 = 0;
+	if (App->engineState == ENGINE_STATE::EDITOR) {
+		static double random1 = 0.0f;
+		static int random2 = 0;
 
-	ImGui::SetNextWindowBgAlpha(0.5f);
+		ImGui::SetNextWindowBgAlpha(0.5f);
 
-	if (!ImGui::Begin(("Random Number Generator"), &active))
-	{
-		ImGui::End();
-	}
-	else
-	{
-		ImGui::Text("Generate a random number between 0 - 1");
-		if (ImGui::Button("Generate!"))
+		if (!ImGui::Begin(("Random Number Generator"), &active))
 		{
-			random1 = ldexp(pcg32_random_r(&rng), -32);
+			ImGui::End();
 		}
-		ImGui::SameLine();
-		ImGui::Text("number = %f", random1);
-
-		ImGui::Text("Generate a random number between 0 - 100");
-		if (ImGui::Button("Generate"))
+		else
 		{
-			random2 = (int)pcg32_boundedrand_r(&rng, 101);
-		}
-		ImGui::SameLine();
-		ImGui::Text("number = %i", random2);
+			ImGui::Text("Generate a random number between 0 - 1");
+			if (ImGui::Button("Generate!"))
+			{
+				random1 = ldexp(pcg32_random_r(&rng), -32);
+			}
+			ImGui::SameLine();
+			ImGui::Text("number = %f", random1);
 
-		ImGui::End();
+			ImGui::Text("Generate a random number between 0 - 100");
+			if (ImGui::Button("Generate"))
+			{
+				random2 = (int)pcg32_boundedrand_r(&rng, 101);
+			}
+			ImGui::SameLine();
+			ImGui::Text("number = %i", random2);
+
+			ImGui::End();
+		}
 	}
 }

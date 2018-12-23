@@ -45,6 +45,9 @@ public:
 
 	bool show_quadtree = true;
 
+	//FOR DEMO
+	GameObject* optionsMenu = nullptr;
+
 private:
 	GameObject * selected = nullptr;
 	GameObject * test = nullptr;

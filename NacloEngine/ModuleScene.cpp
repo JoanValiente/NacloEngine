@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleCamera3D.h"
+#include "ModuleInput.h"
 #include "Primitive.h"
 #include "Globals.h"
 #include "MeshImporter.h"
@@ -61,9 +62,13 @@ update_status ModuleScene::Update(float dt)
 
 	root->Update(dt);
 
-	ImGui::ShowDemoWindow();
-
 	App->imgui->inspector->DrawInspector();
+
+	if (App->engineState == ENGINE_STATE::GAME && App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) {
+		if (optionsMenu != nullptr) {
+			optionsMenu->active = true;
+		}
+	}
 
 	return ret;
 }

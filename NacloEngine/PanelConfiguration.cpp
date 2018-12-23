@@ -26,56 +26,58 @@ PanelConfiguration::~PanelConfiguration()
 
 void PanelConfiguration::Draw()
 {
-	int width;
-	int height;
-	SDL_GetWindowSize(App->window->window, &width, &height);
+	if (App->engineState == ENGINE_STATE::EDITOR) {
+		int width;
+		int height;
+		SDL_GetWindowSize(App->window->window, &width, &height);
 
-	ImGui::SetNextWindowPos(ImVec2(0, height / 55));
-	ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5));
-	ImGui::SetNextWindowBgAlpha(0.5f);
+		ImGui::SetNextWindowPos(ImVec2(0, height / 55));
+		ImGui::SetNextWindowSize(ImVec2(width / 4 - 40, height / 2 + height / 5));
+		ImGui::SetNextWindowBgAlpha(0.5f);
 
-	if (!ImGui::Begin("Configuration", &active))
-	{
-		ImGui::End();
-	}
-	else
-	{
-		if (ImGui::CollapsingHeader("Application"))
+		if (!ImGui::Begin("Configuration", &active))
 		{
-			App->ShowApplicationInfo();
+			ImGui::End();
 		}
-
-
-		if (ImGui::CollapsingHeader("Window"))
+		else
 		{
-			App->window->ShowWindowInfo();
-		}
+			if (ImGui::CollapsingHeader("Application"))
+			{
+				App->ShowApplicationInfo();
+			}
 
-		if (ImGui::CollapsingHeader("Camera"))
-		{
-			App->camera->ShowCameraInfo();
-		}
 
-		if (ImGui::CollapsingHeader("Input"))
-		{
-			App->input->ShowInputInfo();
-		}
+			if (ImGui::CollapsingHeader("Window"))
+			{
+				App->window->ShowWindowInfo();
+			}
 
-		if (ImGui::CollapsingHeader("Render"))
-		{
-			App->renderer3D->ShowRenderInfo();
-		}
+			if (ImGui::CollapsingHeader("Camera"))
+			{
+				App->camera->ShowCameraInfo();
+			}
 
-		if (ImGui::CollapsingHeader("ImGui"))
-		{
-			App->imgui->ShowImGuiInfo();
-		}
+			if (ImGui::CollapsingHeader("Input"))
+			{
+				App->input->ShowInputInfo();
+			}
 
-		if (ImGui::CollapsingHeader("Hardware"))
-		{
-			ShowHardwareInfo();
+			if (ImGui::CollapsingHeader("Render"))
+			{
+				App->renderer3D->ShowRenderInfo();
+			}
+
+			if (ImGui::CollapsingHeader("ImGui"))
+			{
+				App->imgui->ShowImGuiInfo();
+			}
+
+			if (ImGui::CollapsingHeader("Hardware"))
+			{
+				ShowHardwareInfo();
+			}
+			ImGui::End();
 		}
-		ImGui::End();
 	}
 }
 
