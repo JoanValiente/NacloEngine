@@ -9,13 +9,13 @@ and about us, and a link to the repository and the lastest release download.
 2. [Members](#members)
 3. [Video](#video)
 4. [Engine subsystems](#subsystems)
- · [GameObjects & Components](#go)
- · [Importers & own binary format](#importers)
- · [Camera](#camera)
- · [Space partitioning](#quadtree)
- · [Scene serialization](#serialization)
- · [Mouse picking](#picking)
- · [Game Mode(#gamemode)
+ * [GameObjects & Components](#go)
+ * [Importers & own binary format](#importers)
+ * [Camera](#camera)
+ * [Space partitioning](#quadtree)
+ * [Scene serialization](#serialization)
+ * [Mouse picking](#picking)
+ * [Game Mode(#gamemode)
 5. [UI system](#ui)
 6. [Each member work](#work)
 7. [Controls](#controls)
@@ -28,7 +28,7 @@ and about us, and a link to the repository and the lastest release download.
 Naclo Engine is a 3D game engine being developed for the "game engines" subject of GameDev grade of CITM (Terrasa).
 The objective of this subject is to develop a game engine in c++, create the main systems of game engines and learn how they work.
 
-Project GitHub repository: [NacloEngine](https://github.com/JoanValiente/NacloEngine)
+Project GitHub repository [here](https://github.com/JoanValiente/NacloEngine)
 
 
 
@@ -59,10 +59,13 @@ Our engine contain the next sub-systems:
 ## Game objects and components <a name="go"></a>
 
 A game objects hierarchy system with its components. There are 11 different components.
- · The main ones: transform, mesh, material and camera.
- · And the UI ones: canvas, rect_transform, image, button, label, checkbox and inputbox.
+
+ - The main ones: transform, mesh, material and camera.
+ - And the UI ones: canvas, rect_transform, image, button, label, checkbox and inputbox.
+
 Game objects have hierarchy showed in the hierarchy panel, on the left of the screen. You can select game objects by clicking them in this panel, or change the hierarchy by dragging them.
 We can create empty game objects with Create->GameObject->CreateEmpty. 
+
 Selecting a gameobject will show its inspector panel. Here you can find the main information and options about the game object (name, static value, option to delete it, etc), and the information and options of its components.
 You can add components to a game object by clicking the "Add Component" button on the inspector.
 
