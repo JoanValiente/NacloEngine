@@ -9,6 +9,7 @@
 #include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
+#include "Config.h"
 
 ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteractive(container)
 {
@@ -50,6 +51,14 @@ void ComponentInputBox::Update(float dt)
 	if (!added)
 	{
 		AddToTheList();
+	}
+
+	if (text == nullptr)
+	{
+		if (container->label != nullptr)
+		{
+			text = container->label;
+		}
 	}
 	//SDL_StartTextInput();
 	/*
@@ -98,6 +107,7 @@ void ComponentInputBox::ShowInspector()
 
 void ComponentInputBox::Hover()
 {
+	LOG("Patata");
 }
 
 void ComponentInputBox::Enter()
@@ -118,8 +128,10 @@ void ComponentInputBox::OnClick()
 
 void ComponentInputBox::SaveComponent(Config & conf)
 {
+	conf.SetBool("Interactive", interactive);
 }
 
 void ComponentInputBox::LoadComponent(Config & conf)
 {
+	interactive = conf.GetBool("Interactive");
 }

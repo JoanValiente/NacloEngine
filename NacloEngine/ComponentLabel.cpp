@@ -9,6 +9,7 @@
 #include "TextureImporter.h"
 #include "ModuleFonts.h"
 #include "SDL2_ttf/include/SDL_ttf.h"
+#include "Config.h"
 
 
 ComponentLabel::ComponentLabel(GameObject * container) : Component (container)
@@ -100,14 +101,6 @@ int ComponentLabel::GetWidth() const
 int ComponentLabel::GetHeight() const
 {
 	return text_height;
-}
-
-void ComponentLabel::SaveComponent(Config & conf)
-{
-}
-
-void ComponentLabel::LoadComponent(Config & conf)
-{
 }
 
 void ComponentLabel::UpdateText()
@@ -269,4 +262,26 @@ void ComponentLabel::UpdateLabelPlane()
 	glBindBuffer(GL_ARRAY_BUFFER, plane.vertexId);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 12, plane.vertex, GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void ComponentLabel::SaveComponent(Config & conf)
+{
+	conf.SetFloat4("Color", color);
+	conf.SetBool("Update Text", update_text);
+	conf.SetInt("Width", text_width);
+	conf.SetInt("Height", text_height);
+	conf.SetInt("Max Input", max_input);
+	conf.SetInt("Text Size", text_size);
+	conf.SetString("Text", text_str.c_str());
+}
+
+void ComponentLabel::LoadComponent(Config & conf)
+{
+	color		= conf.GetFloat4("Color");
+	update_text	= conf.GetBool("Update Text");
+	text_width	= conf.GetInt("Width");
+	text_height	= conf.GetInt("Height");
+	max_input	= conf.GetInt("Max Input");
+	text_size	= conf.GetInt("Text Size");
+	text_str	= (char*)conf.GetString("Text");
 }
