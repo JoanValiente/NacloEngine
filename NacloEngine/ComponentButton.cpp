@@ -50,6 +50,16 @@ void ComponentButton::Update(float dt)
 	{
 		function = !FadeFunction(dt);
 	}
+	else
+	{
+		if (target_graphic != nullptr)
+		{
+			target_graphic->color.x = normal_color.x;
+			target_graphic->color.y = normal_color.y;
+			target_graphic->color.z = normal_color.z;
+			target_graphic->color.w = normal_color.w;
+		}
+	}
 	if (App->engineState == ENGINE_STATE::EDITOR)
 	{
 		DebugDraw();
@@ -162,13 +172,6 @@ void ComponentButton::OnClick()
 
 void ComponentButton::Exit()
 {
-	if (target_graphic != nullptr && !function)
-	{
-		target_graphic->color.x = normal_color.x;
-		target_graphic->color.y = normal_color.y;
-		target_graphic->color.z = normal_color.z;
-		target_graphic->color.w = normal_color.w;
-	}
 }
 
 

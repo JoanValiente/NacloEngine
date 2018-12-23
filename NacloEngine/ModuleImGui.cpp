@@ -218,7 +218,8 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 				}
 				if (ImGui::MenuItem("CheckBox", NULL, false, true))
 				{
-					if (App->scene->canvas.empty()) {
+					if (App->scene->canvas.empty())
+					{
 						App->scene->CreateCanvas();
 					}
 					vector<GameObject*>::iterator it = App->scene->canvas.begin();
@@ -226,6 +227,9 @@ bool ModuleImgui::Show_Main_Menu_Bar()
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 					go->NewComponent(Component::COMPONENT_TYPE::COMPONENT_CHECKBOX);
+					GameObject* go2 = new GameObject(go, "Image");
+					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_RECT_TRANSFORM);
+					go2->NewComponent(Component::COMPONENT_TYPE::COMPONENT_IMAGE);
 				}
 				if (ImGui::MenuItem("Label", NULL, false, true))
 				{
