@@ -66,10 +66,6 @@ void ComponentInputBox::Update(float dt)
 	if (App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->goUID == this->container->goUID)
 	{
 		text->SetString(App->input->composition);
-
-		if (text->text_width < this->container->rectTransform->width + horizontalMargin)
-		{
-		}
 	}
 }
 
