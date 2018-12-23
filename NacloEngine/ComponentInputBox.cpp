@@ -81,8 +81,8 @@ void ComponentInputBox::Update(float dt)
 
 		for (std::vector<GameObject*>::const_iterator it = this->container->children.begin(); it != this->container->children.end(); ++it) {
 			if ((*it)->GetComponentByType(COMPONENT_TYPE::COMPONENT_IMAGE)) {
-				(*it)->rectTransform->width = this->container->rectTransform->width;
-				(*it)->rectTransform->height = this->container->rectTransform->height;
+				(*it)->rectTransform->width = this->container->rectTransform->width + horizontalMargin;
+				(*it)->rectTransform->height = this->container->rectTransform->height + verticalMargin;
 			}
 		}
 	}
@@ -90,8 +90,23 @@ void ComponentInputBox::Update(float dt)
 
 void ComponentInputBox::ShowInspector()
 {
+	int newHorizontalMargin = horizontalMargin;
+	int newVerticalMargin = verticalMargin;
+
 	if (ImGui::CollapsingHeader("InputBox"))
 	{
+		ImGui::Text("Horizontal Margin");
+		ImGui::SameLine();
+		if (ImGui::DragInt("##horizontalMargin", &newHorizontalMargin, 1)) {
+			horizontalMargin = newHorizontalMargin;
+		}
+
+		ImGui::Text("Vertical Margin");
+		ImGui::SameLine();
+		if (ImGui::DragInt("##verticalMargin", &newVerticalMargin, 1)) {
+			verticalMargin = newVerticalMargin;
+		}
+
 		text->ShowInspector();
 	}
 }
