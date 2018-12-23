@@ -151,6 +151,9 @@ making all its children do the same thanks to the rect transform functionality.
 
 ### Interactive
 
+Interactive UI components inherits from this one. It handles Enter, Hover, Down, onClick, Exit and Idle functions. It also handles move function for
+draggable elements. It has a list of the interactive components and a pointer to component canvas to be able to check the states with their transformation.
+
 ## UI Elements
 
 ## Image
@@ -165,6 +168,8 @@ As properties it has:
 - Size. 
 
 ## Button
+This component contains a component image as background and as "graphic target" that uses the image plane to handle interactive events.
+You can change the colors of the button in the different states (normal, hover and pressed) with the inspector.
 
 ## Label
 The label component control displays a non-interactive text to the user. It makes a plane (same as image) and makes a texture with the given text using SDL2_TTF. This can be used to provide captions or labels.
@@ -186,7 +191,9 @@ As properties it has a component label and a component image, two int values for
 a string named "composition" that the input module fills.
 In the inspector you can change the margins values and the label and image options.
 
-## InputBox
+## CheckBox
+It has two states, on and off. It has two graphic targets to handle the states and it works the same way as the button to handle
+the interactive events, so it also inherits from component interacctive.
 
 # Controls <a name="controls"></a>
 
