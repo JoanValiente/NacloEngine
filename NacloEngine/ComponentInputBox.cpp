@@ -40,7 +40,6 @@ ComponentInputBox::ComponentInputBox(GameObject * container) : ComponentInteract
 	container->label->color = float4(0, 0, 0, 255);
 	text = container->label;
 	text->text_str = "Enter text";
-	App->input->composition = "Enter text";
 	text->text = App->fonts->Load(DEFAULT_FONT, 48);
 }
 
@@ -66,6 +65,10 @@ void ComponentInputBox::Update(float dt)
 	if (App->scene->uiGoSelected != nullptr && App->scene->uiGoSelected->goUID == this->container->goUID)
 	{
 		text->SetString(App->input->composition);
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+		{
+			App->scene->uiGoSelected = nullptr;
+		}
 	}
 }
 
@@ -110,6 +113,7 @@ void ComponentInputBox::OnClick()
 		LOG("Input Box Selected");
 		App->scene->uiGoSelected = this->container;
 		App->input->composition = "";
+		container->label->text_str = "";
 	}
 }
 
