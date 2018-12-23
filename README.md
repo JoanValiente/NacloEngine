@@ -17,9 +17,9 @@ and about us, and a link to the repository and the lastest release download.
  - [Mouse picking](#picking)
  - [Game Mode](#gamemode)
 5. [UI system](#ui)
-6. [Each member work](#work)
-7. [Controls](#controls)
-8. [Download](#download)
+6. [Controls](#controls)
+7. [Download](#download)
+8. [License](#license)
 
 
 
@@ -34,18 +34,13 @@ Project GitHub repository [here](https://github.com/JoanValiente/NacloEngine)
 
 # Members <a name="members"></a>
 
-David Lozano
+David Lozano. [GitHub](https://github.com/DavidTheMaaster)
 
 ![Captura3](https://raw.githubusercontent.com/JoanValiente/NacloEngine/master/docs/Captura3.PNG)
 
-[GitHub](https://github.com/DavidTheMaaster)
-
-Joan Valiente
+Joan Valiente. [GitHub](https://github.com/JoanValiente/)
 
 ![Captura2](https://raw.githubusercontent.com/JoanValiente/NacloEngine/master/docs/Captura2.PNG)
-
-[GitHub](https://github.com/JoanValiente/)
-
 
 
 # Video <a name="video"></a>
@@ -58,10 +53,10 @@ Our engine contain the next sub-systems:
 
 ## Game objects and components <a name="go"></a>
 
-A game objects hierarchy system with its components. There are 11 different components.
+A game objects hierarchy system with its components. There are 12 different components.
 
  - The main ones: transform, mesh, material and camera.
- - And the UI ones: canvas, rect_transform, image, button, label, checkbox and inputbox.
+ - And the UI ones: canvas, interactive, rect_transform, image, button, label, checkbox and inputbox.
 
 Game objects have hierarchy showed in the hierarchy panel, on the left of the screen. You can select game objects by clicking them in this panel, or change the hierarchy by dragging them.
 We can create empty game objects with Create->GameObject->CreateEmpty.
@@ -107,11 +102,58 @@ We can activate the game mode by clicking the Play button on the top of the scre
 Stop button returns to the editor mode, and every change on scene will be reseted to the state saved when we clicked the Play button. 
 Time scale modify the time multiplier for game mode. Next to this bar we can see the runtime when we change to game mode.
 
+# UI system <a name="ui"></a>
+We have implemented a UI system based on Unity UI. It is based on 3 basic componets: canvas, rect transform and interactive; 
+and different components for each ui element: button, image, label, etc.
+
+### Rect transform
+
+The Rect Transform component is the 2D layout counterpart of the Transform component. Rect Transform
+represent a rectangle that a UI element can be placed inside. If the parent of a Rect Transform is also a
+Rect Transform, the child Rect Transform can also specify how it should be positioned and sized relative to
+the parent rectangle.
+
+As properties it has:
+- Position.
+- Rotation.
+- Size.
+- Width.
+- Height.
+- Pivot.
+- MinAnchor.
+- MaxAnchor.
+- Local Matrix.
+- Global Matrix.
+
+### Canvas
+
+This game object is used to create an area where all UI elements should be and it must be the parent of
+all UI gameobjects in the scene hierarchy. This game object adapts itself to the screen when you start the game mode,
+making all its children do the same thanks to the rect transform functionality. 
+
+### Interactive
+
+## UI Elements
+
+## Image
+The image component creates a plane (using the rect transform values of its container) where you can put a texture to show. This can be use to create icons, windows, HUD, etc.
+It inherits from interactive component, so you can get input events like clicks or hovers, or make it draggable.
+The render of this component also handles transparency. 
+
+As properties it has:
+- Texture.
+- ImagePlane.
+- Color.
+- Size. 
+
+## Button
 
 
-# Each member work <a name="work"></a>
-
-
+As properties it has:
+- Texture.
+- ImagePlane.
+- Color.
+- Size. 
 
 # Controls <a name="controls"></a>
 

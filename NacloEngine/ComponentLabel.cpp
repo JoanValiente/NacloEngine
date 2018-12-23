@@ -194,9 +194,6 @@ bool ComponentLabel::GenerateText()
 
 	if (TextCanFit(rect_transform))
 	{
-		//Generate quad pos with horizontal and vertical pos
-		//Just put it in the middle for now
-		//Need to generate quad vertexs and indexs
 		UpdateLabelPlane();
 	}
 }
@@ -243,8 +240,8 @@ void ComponentLabel::PreserveAspect()
 
 void ComponentLabel::CreateLabelPlane()
 {
-	float width = container->rectTransform->GetWidth();
-	float height = container->rectTransform->GetHeight();
+	float width = -container->rectTransform->GetWidth();
+	float height = -container->rectTransform->GetHeight();
 	plane.vertex[0] = float3(width / 2, -height / 2, 0);
 	plane.uv[0] = float2(1, 0);
 
@@ -277,8 +274,8 @@ void ComponentLabel::CreateLabelPlane()
 
 void ComponentLabel::UpdateLabelPlane()
 {
-	float width = container->rectTransform->GetWidth();
-	float height = container->rectTransform->GetHeight();
+	float width = -container->rectTransform->GetWidth();
+	float height = -container->rectTransform->GetHeight();
 
 	plane.vertex[0] = float3(width / 2, -height / 2, 0);
 	plane.vertex[1] = float3(width / 2, height / 2, 0);

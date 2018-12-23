@@ -65,12 +65,14 @@ public:
 
 	int text_width = 0;
 	int text_height = 0;
+
+	float4 color = float4::one;
+
 private:
 	float2 size = { 10.0f, 5.0f };
 	float ratio = 0.0f;
 	float ratio_2 = 0.0f;
-
-	float4 color = float4::one;
+	
 	bool update_text = false;
 	float aux_text_width = 0;
 	float aux_text_height = 0;

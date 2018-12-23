@@ -58,13 +58,15 @@ void PanelTime::Draw()
 
 	if (ImGui::Button("STOP", ImVec2(60, 22)))
 	{
-		App->gameState = GAME_STATE::STOP;
-		App->engineState = ENGINE_STATE::EDITOR;
-		App->sceneser->LoadScene("tmp");
-		std::string path = "Assets/Scenes/tmp.json";
-		App->fs->Phys_DeleteFile(path.c_str());
-		App->camera->activeCamera = App->camera->camera;
-		App->renderer3D->ChangeCamera();
+		if (App->engineState == ENGINE_STATE::GAME) {
+			App->gameState = GAME_STATE::STOP;
+			App->engineState = ENGINE_STATE::EDITOR;
+			App->sceneser->LoadScene("tmp");
+			std::string path = "Assets/Scenes/tmp.json";
+			App->fs->Phys_DeleteFile(path.c_str());
+			App->camera->activeCamera = App->camera->camera;
+			App->renderer3D->ChangeCamera();
+		}
 	}
 
 	ImGui::SameLine();
