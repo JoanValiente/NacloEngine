@@ -15,7 +15,7 @@ ComponentImage::ComponentImage(GameObject* container) : ComponentInteractive(con
 {
 	this->type = COMPONENT_IMAGE;
 
-
+	active = true;
 	if (container->rectTransform != nullptr)
 	{
 		if (!container->rectTransform->loading)
@@ -62,40 +62,43 @@ void ComponentImage::ShowInspector()
 {
 	if (ImGui::CollapsingHeader("Image"))
 	{
-		if (tex->texture_id != 0)
+		if (tex != nullptr)
 		{
-			ImGui::InputText("##Source Image", (char*)tex->texture_name.c_str(), 64);
-			ImGui::SameLine();
-			ImGui::Image((ImTextureID)tex->texture_id, { 20,20 });
-			ImGui::SameLine();
-
-			if (ImGui::ArrowButton("Change Texture", ImGuiDir_Down))
+			if (tex->texture_id != 0)
 			{
-				ImGui::OpenPopup("Change_Texture");
-			}
+				ImGui::InputText("##Source Image", (char*)tex->texture_name.c_str(), 64);
+				ImGui::SameLine();
+				ImGui::Image((ImTextureID)tex->texture_id, { 20,20 });
+				ImGui::SameLine();
 
-			ImGui::SliderFloat("Alpha", &color.w, 0.0f, 1.0f);
-
-			if (ImGui::BeginPopup("Change_Texture"))
-			{
-				list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
-
-				while (item != App->texture->textures_loaded.end())
+				if (ImGui::ArrowButton("Change Texture", ImGuiDir_Down))
 				{
-					if ((*item) != nullptr)
-					{
-						ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
-						if (ImGui::IsItemClicked())
-						{
-							tex = (*item);
-						}
-					}
-					item++;
+					ImGui::OpenPopup("Change_Texture");
 				}
-				ImGui::EndPopup();
-			}
 
-			ImGui::ColorEdit4("Color##image_rgba", color.ptr());
+				ImGui::SliderFloat("Alpha", &color.w, 0.0f, 1.0f);
+
+				if (ImGui::BeginPopup("Change_Texture"))
+				{
+					list<Texture*>::const_iterator item = App->texture->textures_loaded.begin();
+
+					while (item != App->texture->textures_loaded.end())
+					{
+						if ((*item) != nullptr)
+						{
+							ImGui::Image((ImTextureID)(*item)->texture_id, { 25,25 });
+							if (ImGui::IsItemClicked())
+							{
+								tex = (*item);
+							}
+						}
+						item++;
+					}
+					ImGui::EndPopup();
+				}
+
+				ImGui::ColorEdit4("Color##image_rgba", color.ptr());
+			}
 		}
 
 		if (ImGui::Checkbox("Dragable", &dragable))
@@ -165,7 +168,7 @@ void ComponentImage::AssignTexture(Texture * texture)
 
 void ComponentImage::Render(uint texture_id)
 {
-	if (container->active)
+	if (active)
 	{
 		glPushMatrix();
 		UpdateImagePlane();

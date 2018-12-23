@@ -28,6 +28,16 @@ ComponentCheckbox::ComponentCheckbox(GameObject * container) : ComponentInteract
 	{
 		target_graphic = container->image;
 	}
+	if (container->children.size() != 0)
+	{
+		if (container->children[0]->image != nullptr)
+		{
+			graphic = container->children[0]->image;
+			graphic->container->rectTransform->width = size.x;
+			graphic->container->rectTransform->height = size.y;
+			graphic->active = false;
+		}
+	}
 }
 
 ComponentCheckbox::~ComponentCheckbox()
@@ -91,6 +101,20 @@ void ComponentCheckbox::Update(float dt)
 	{
 		ExecuteFunction();
 	}
+
+	if (graphic == nullptr)
+	{
+		if (container->children.size() != 0)
+		{
+			if (container->children[0]->image != nullptr)
+			{
+				graphic = container->children[0]->image;
+				graphic->container->rectTransform->width = size.x;
+				graphic->container->rectTransform->height = size.y;
+				graphic->active = false;
+			}
+		}
+	}
 }
 
 void ComponentCheckbox::DebugDraw()
@@ -111,6 +135,8 @@ void ComponentCheckbox::Exit()
 
 void ComponentCheckbox::OnClick()
 {
+	target_graphic->active = !target_graphic->active;
+	graphic->active = !graphic->active;
 	isOn = !isOn;
 	ExecuteFunction();
 }
